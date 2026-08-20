@@ -1,0 +1,20 @@
+configuration:
+  zk_ip:
+    name: "IP máy chấm công"
+    description: "Địa chỉ IPv4 của thiết bị ZKTeco trong mạng LAN"
+  zk_port:
+    name: "Cổng thiết bị"
+    description: "Mặc định của ZKTeco là 4370"
+  zk_password:
+    name: "Mật khẩu giao tiếp"
+    description: "Communication Password trên thiết bị, thường là 0"
+  zk_timeout:
+    name: "Thời gian chờ"
+    description: "Số giây chờ phản hồi từ thiết bị"
+  force_udp:
+    name: "Buộc dùng UDP"
+    description: "Bật nếu thiết bị không giao tiếp được qua TCP"
+  omit_ping:
+    name: "Bỏ kiểm tra ping"
+    description: "Bật nếu mạng chặn gói ICMP"
+

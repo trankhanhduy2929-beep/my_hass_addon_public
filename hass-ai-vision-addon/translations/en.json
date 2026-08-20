@@ -1,0 +1,18 @@
+{
+  "name": "AI Vision Entity Describer",
+  "description": "Capture camera/entity images, describe with AI proxy, and publish descriptions to MQTT",
+  "configuration": {
+    "ha_url": "Home Assistant URL (internal)",
+    "ha_token": "Home Assistant Long-lived token (optional if using SUPERVISOR_TOKEN)",
+    "camera_entities": "Entities to capture (camera.* or entities with entity_picture)",
+    "scan_interval": "Scan interval (seconds)",
+    "ai_proxy_base_url": "AI Proxy base URL (e.g. http://homeassistant.local:1236/v1)",
+    "ai_model": "Vision model name",
+    "ai_api_key": "AI Proxy API key (or openai)",
+    "mqtt_host": "MQTT broker host",
+    "mqtt_port": "MQTT broker port",
+    "mqtt_user": "MQTT username (optional)",
+    "mqtt_password": "MQTT password (optional)",
+    "mqtt_topic_prefix": "MQTT topic prefix"
+  }
+}

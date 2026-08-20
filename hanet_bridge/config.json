@@ -3,13 +3,10 @@
   "version": "2.5.2",
   "slug": "hanet_bridge",
   "description": "Kết nối Hanet AI Camera qua MQTT và Webhook (Port 2912). Bản LITE",
-  "url": "https://github.com/home-assistant/addons/tree/master/mosquitto",
+  "url": "https://github.com/trankhanhduy2929-beep/my_hass_addon_public",
   "arch": [
-    "aarch64",
     "amd64",
-    "armhf",
-    "armv7",
-    "i386"
+    "aarch64"
   ],
   "startup": "application",
   "boot": "auto",

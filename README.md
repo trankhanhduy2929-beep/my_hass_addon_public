@@ -71,6 +71,28 @@ This repository also includes add-ons for:
 
 Open an add-on folder to view its manifest and documentation.
 
+<!-- AUTO-ADDON-CATALOG:START -->
+## Add-on catalog
+
+This table is generated automatically from the private release catalog after successful image builds.
+
+| Add-on | Version | Stage | Architectures | Documentation |
+|---|---:|---|---|---|
+| HANET Connect Gateway | `0.9.0` | experimental | `amd64, aarch64` | [Open](addon_hanet_connect/README.md) |
+| AI Proxy Router | `1.14.0` | stable | `amd64, aarch64` | [Open](ai_proxy_router/README.md) |
+| Chấm Công ZKTeco | `2.0.5` | stable | `amd64, aarch64` | [Open](cham_cong_zkteco/README.md) |
+| Ecovacs China Backend | `1.2.21` | stable | `amd64, aarch64` | [Open](ecovacs_cn_backend/README.md) |
+| Ecovacs Private Gateway | `2.1.0` | stable | `amd64, aarch64` | [Open](ecovacs_gateway/README.md) |
+| Hanet Camera Bridge | `2.5.2` | stable | `amd64, aarch64` | [Open](hanet_bridge/README.md) |
+| Hanet Camera Bridge Pro | `3.0.9` | stable | `amd64, aarch64` | [Open](hanet_bridge_pro/README.md) |
+| AI Vision Entity Describer | `1.1.3` | stable | `amd64, aarch64` | [Open](hass-ai-vision-addon/README.md) |
+| PicoClaw | `0.4.4` | stable | `amd64, aarch64` | [Open](picoclaw/README.md) |
+| HA Camera Face ID | `2.2.0` | stable | `amd64, aarch64` | [Open](rtsp_face_bridge/README.md) |
+| Voice Action Bridge VI Lite | `1.0.4` | stable | `amd64, aarch64` | [Open](voice-action-bridge-vi-lite/README.md) |
+| YouTube Music Cinematic | `1.20.22` | stable | `amd64, aarch64` | [Open](youtube_cast_addon/README.md) |
+
+<!-- AUTO-ADDON-CATALOG:END -->
+
 ## Updates
 
 When a new add-on version is published:

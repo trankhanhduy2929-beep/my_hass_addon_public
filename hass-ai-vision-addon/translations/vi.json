@@ -1,0 +1,18 @@
+{
+  "name": "AI Vision mô tả thực thể",
+  "description": "Lấy ảnh từ camera/thực thể, mô tả bằng AI Proxy, và xuất mô tả ra MQTT",
+  "configuration": {
+    "ha_url": "URL Home Assistant (nội bộ)",
+    "ha_token": "Long-lived token Home Assistant (có thể để trống nếu dùng SUPERVISOR_TOKEN)",
+    "camera_entities": "Danh sách entity cần lấy ảnh (camera.* hoặc entity có entity_picture)",
+    "scan_interval": "Chu kỳ quét (giây)",
+    "ai_proxy_base_url": "Base URL AI Proxy (vd: http://homeassistant.local:1236/v1)",
+    "ai_model": "Tên model vision",
+    "ai_api_key": "API key AI Proxy (hoặc openai)",
+    "mqtt_host": "Host MQTT broker",
+    "mqtt_port": "Port MQTT broker",
+    "mqtt_user": "Tài khoản MQTT (tuỳ chọn)",
+    "mqtt_password": "Mật khẩu MQTT (tuỳ chọn)",
+    "mqtt_topic_prefix": "Tiền tố topic MQTT"
+  }
+}

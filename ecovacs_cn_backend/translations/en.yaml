@@ -1,0 +1,24 @@
+configuration:
+  log_level:
+    name: Log level
+    description: Never use debug logs when sharing diagnostics without reviewing them.
+  map_refresh_interval:
+    name: Map refresh interval
+    description: Fallback seconds between map cache checks when push events are missed.
+  state_refresh_interval:
+    name: State refresh interval
+    description: Fallback seconds between complete robot state refresh requests.
+  mqtt_enabled:
+    name: MQTT Discovery
+    description: Create Home Assistant entities through the configured MQTT broker.
+  mqtt_map_enabled:
+    name: MQTT map
+    description: Publish the SVG map through MQTT Image.
+  mqtt_map_min_interval:
+    name: MQTT map interval
+    description: Minimum seconds between map image publications.
+  mqtt_map_max_bytes:
+    name: Maximum MQTT map size
+    description: Skip SVG maps above this byte limit to protect the broker and Home Assistant.
+network:
+  4545/tcp: Internal API port. Leave unmapped unless external access is required.

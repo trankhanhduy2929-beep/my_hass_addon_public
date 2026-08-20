@@ -1,0 +1,17 @@
+{
+  "schema": 1,
+  "addons": [
+    "addon_hanet_connect",
+    "ai_proxy_router",
+    "cham_cong_zkteco",
+    "ecovacs_cn_backend",
+    "ecovacs_gateway",
+    "hanet_bridge",
+    "hanet_bridge_pro",
+    "hass-ai-vision-addon",
+    "picoclaw",
+    "rtsp_face_bridge",
+    "voice-action-bridge-vi-lite",
+    "youtube_cast_addon"
+  ]
+}

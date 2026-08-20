@@ -1,0 +1,30 @@
+configuration:
+  username:
+    name: HANET username
+    description: Username used by the HANET Connect mobile app.
+  password:
+    name: HANET password
+    description: Password used by the HANET Connect mobile app.
+  api_base_url:
+    name: API base URL
+    description: HANET Connect V4 API endpoint.
+  api_access_key:
+    name: Gateway access key
+    description: Required for direct access through an exposed port.
+  webhook_secret:
+    name: Webhook secret
+    description: Secret accepted by the public webhook endpoint.
+  poll_interval:
+    name: Poll interval
+    description: Seconds between cloud state updates.
+  event_stream:
+    name: Realtime events
+    description: Keep the HANET server-sent event stream connected.
+  verify_tls:
+    name: Verify TLS
+    description: Validate certificates for HANET cloud connections.
+  log_level:
+    name: Log level
+    description: Gateway logging verbosity.
+network:
+  9091/tcp: Authenticated gateway and webhook access.

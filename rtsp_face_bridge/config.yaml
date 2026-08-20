@@ -20,3 +20,4 @@ webui: http://[HOST]:[PORT:6868]
 options: {}
 schema: {}
 image: "ghcr.io/trankhanhduy2929-beep/rtsp_face_bridge-{arch}"
+url: "https://github.com/trankhanhduy2929-beep/my_hass_addon_public"

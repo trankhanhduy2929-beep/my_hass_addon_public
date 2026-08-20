@@ -31,3 +31,4 @@ schema:
   force_udp: bool
   omit_ping: bool
 image: "ghcr.io/trankhanhduy2929-beep/cham_cong_zkteco-{arch}"
+url: "https://github.com/trankhanhduy2929-beep/my_hass_addon_public"

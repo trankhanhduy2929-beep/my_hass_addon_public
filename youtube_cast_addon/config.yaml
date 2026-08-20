@@ -3,10 +3,8 @@ description: "Trình phát nhạc YouTube cao cấp: Tự đề xuất, Infinite
 version: "1.20.22"
 slug: "youtube_cast_addon"
 arch:
-  - aarch64
   - amd64
-  - armhf
-  - armv7
+  - aarch64
 init: false
 panel_icon: "mdi:music-box-multiple"
 panel_title: "YT Music"
@@ -18,3 +16,4 @@ homeassistant_api: true
 
 
 image: "ghcr.io/trankhanhduy2929-beep/youtube_cast_addon-{arch}"
+url: "https://github.com/trankhanhduy2929-beep/my_hass_addon_public"

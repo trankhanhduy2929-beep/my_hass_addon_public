@@ -4,8 +4,8 @@ version: "1.14.0"
 slug: "ai_proxy_router"
 init: false
 arch:
-  - aarch64
   - amd64
+  - aarch64
 panel_icon: mdi:robot-outline
 panel_title: "AI Proxy"
 panel_admin: true
@@ -25,3 +25,4 @@ options: {}
 schema: {}
 hassio_api: true
 image: "ghcr.io/trankhanhduy2929-beep/ai_proxy_router-{arch}"
+url: "https://github.com/trankhanhduy2929-beep/my_hass_addon_public"

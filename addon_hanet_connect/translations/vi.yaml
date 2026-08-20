@@ -1,0 +1,30 @@
+configuration:
+  username:
+    name: Tai khoan HANET
+    description: Tai khoan dang nhap ung dung HANET Connect.
+  password:
+    name: Mat khau HANET
+    description: Mat khau dang nhap ung dung HANET Connect.
+  api_base_url:
+    name: Dia chi API
+    description: Dia chi API V4 cua HANET Connect.
+  api_access_key:
+    name: Khoa truy cap gateway
+    description: Bat buoc khi mo port va truy cap truc tiep ngoai Ingress.
+  webhook_secret:
+    name: Khoa webhook
+    description: Khoa xac thuc cho webhook cong khai.
+  poll_interval:
+    name: Chu ky dong bo
+    description: So giay giua hai lan cap nhat du lieu cloud.
+  event_stream:
+    name: Su kien thoi gian thuc
+    description: Duy tri luong su kien SSE tu HANET.
+  verify_tls:
+    name: Xac minh TLS
+    description: Kiem tra chung chi ket noi cloud HANET.
+  log_level:
+    name: Muc log
+    description: Muc chi tiet cua log gateway.
+network:
+  9091/tcp: Truy cap gateway va webhook co xac thuc.

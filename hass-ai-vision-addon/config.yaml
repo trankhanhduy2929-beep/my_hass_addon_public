@@ -6,7 +6,6 @@ url: "https://github.com/trankhanhduy2929-beep/my_hass_addon_public"
 arch:
   - amd64
   - aarch64
-  - armv7
 init: false
 startup: services
 boot: auto

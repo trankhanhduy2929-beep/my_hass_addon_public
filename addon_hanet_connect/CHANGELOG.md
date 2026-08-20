@@ -1,0 +1,164 @@
+# Changelog
+
+## 0.9.0 - 2026-07-29
+
+- Add a separate dashboard password lock without coupling it to HANET Cloud or
+  the custom integration.
+- Store the built-in password as a PBKDF2-SHA256 hash and persist custom hashes
+  in `/data/ui_auth.json` with owner-only permissions.
+- Add 12-hour `HttpOnly` sessions, password rotation, logout and temporary
+  lockout after repeated failed attempts.
+- Require a minimum of four characters for replacement dashboard passwords.
+- Redesign the Ingress dashboard with an Aurora/Glass visual system, responsive
+  metric cards, a dedicated unlock screen and a security settings panel.
+- Stop accepting webhook secrets in query strings so they cannot enter access
+  logs; the `X-HANET-Webhook-Secret` header is now required.
+- Bind persisted HANET refresh tokens to the configured username so switching
+  add-on accounts cannot silently continue the previous cloud session.
+- Expand Vietnamese installation, usage, feature, security, API and
+  troubleshooting documentation.
+
+## 0.8.0
+
+- Bundle the multi-architecture TUTK runtime in the custom component so Home
+  Assistant opens camera P2P video directly without an add-on URL or media key.
+- Bundle Alpine's per-architecture gcompat runtime for the isolated custom P2P
+  worker, allowing the glibc TUTK SDK to load inside Home Assistant Core's musl
+  container without changing or preloading the main Home Assistant process.
+- Implement the APK's native PTZ protocol using IOCTRL `4097` and the exact
+  direction codes, with a reusable control session and an automatic stop guard.
+- Prefer native P2P PTZ in both packages while retaining cloud command fallbacks
+  for cameras or accounts that do not expose P2P credentials.
+- Verify every camera setting mutation by reading it back from HANET before the
+  UI reports success; failed or ignored changes now return a useful error.
+- Synchronize camera status/settings and cloud event history every five seconds
+  in the add-on when HANET's SSE route is unavailable, and update open setting
+  panels from WebSocket state.
+- Simplify custom component setup to its own HANET username/password and polling
+  interval, with automatic migration away from the retired add-on media proxy.
+
+## 0.7.0
+
+- Fix PTZ with the mobile app's `start_ptz`/`stop_ptz` command lifecycle,
+  press-and-hold controls and a legacy firmware fallback.
+- Let Home Assistant Core reach P2P media through the internal port 9091 path;
+  migrate old media URLs, expose bridge connectivity and keep optional key
+  validation for external URLs.
+- Add familiar/stranger detection entities, recognition timestamps, per-person
+  FaceID images and richer Vietnamese event names.
+- Turn discovered writable boolean and numeric camera settings into native
+  Home Assistant controls while retaining every scalar diagnostic sensor.
+- Replace the Ingress interface with a responsive camera operations dashboard
+  and verify camera cards and PTZ controls at desktop and mobile sizes.
+
+## 0.6.0
+
+- Fix FaceID image upload by sending HANET's required multipart `file` field
+  instead of the incompatible `image` field.
+- Prefer a place containing cameras when creating or bulk-importing FaceIDs.
+- Make the Home Assistant integration authenticate directly with HANET Cloud;
+  the add-on URL and key are now optional and used only for P2P media.
+- Expose all model-specific scalar settings as diagnostic sensors and add nested
+  setting controls plus aliases for recording, detection, security and PTZ.
+- Preserve online state and placement while merging partial device-detail
+  responses.
+
+## 0.5.0
+
+- Discover owned and shared places through both HANET mobile APIs and the
+  authenticated HANET Connect web inventory; camera IDs are no longer required.
+- Expose complete employee and visitor FaceID collections, per-person recognition
+  sensors, event entities and latest-event image entities in Home Assistant.
+- Add Vietnamese entity/action translations plus account, hardware, storage,
+  network and recognition sensors.
+- Add FaceID create, update, delete and bulk-import actions, with local image path
+  validation, and add employee/department management to the Ingress interface.
+- Add recording-history actions and reconnect the same MJPEG response when a
+  transient P2P session ends.
+- Improve desktop/mobile identity filters, quick event/clip review and responsive
+  controls while keeping live playback only in the Home Assistant camera entity.
+
+## 0.4.0
+
+- Load and merge both HANET FaceID categories: employees (`type=0`) and visitors
+  (`type=1`), instead of showing only the four default employee records.
+- Map cloud tracking codes to employee, visitor, stranger, alarm and human events;
+  retain the original type code and recognition state.
+- Raise the daily event ceiling to 2,000 and add fast filters for date, camera,
+  event type, source, search text and recording time period.
+- Link event details to cloud clips from the same camera/day and link each clip
+  back to its matching event list.
+- Remove live viewing from the add-on UI while preserving the P2P/MJPEG gateway
+  endpoint used by the Home Assistant camera entity.
+- Add per-camera Home Assistant sensors for latest event, latest person and event
+  type, including event image, time, place and recognition attributes.
+
+## 0.3.1
+
+- Fix the modern TUTK Linux client output structure used by Home Assistant add-on
+  hosts; the old undersized structure could corrupt memory before video arrived.
+- Share one native P2P/FFmpeg pipeline per camera across Ingress, Home Assistant
+  camera entities and additional browser tabs instead of competing for sessions.
+- Keep an idle stream briefly for quick reconnects and retry once with fresh cloud
+  credentials when the initial P2P handshake or first frame fails.
+- Serve active frames or cloud event images to snapshot polling without opening a
+  second P2P session that interrupts live playback.
+- Increase the Home Assistant MJPEG proxy read tolerance and explicitly close its
+  upstream response when a viewer leaves.
+
+## 0.3.0
+
+- Stream remote HANET cameras through their cloud-issued TUTK P2P session; the
+  gateway no longer requires Home Assistant and the camera to share a LAN.
+- Add isolated native P2P workers for `amd64`, `aarch64` and `armv7`, HEVC
+  keyframe synchronization, FFmpeg MJPEG conversion and clean session shutdown.
+- Serialize video sessions per camera so thumbnail requests cannot interrupt live
+  playback, while different cameras can still connect in parallel.
+- Add a clear per-camera RTSP switch backed by HANET Cloud. RTSP is a firmware
+  option and is not used as the gateway's live transport.
+- Replace the raw dashboard with focused Camera, Events, Recordings, Identity and
+  Settings workspaces, responsive navigation and local Lucide icons.
+- Show detection images, playable cloud recordings, Face ID cards, attendance,
+  PTZ controls and model-specific settings without exposing raw JSON by default.
+- Move the add-on image to glibc-based Debian for the native runtime and fix the
+  container healthcheck without adding another system utility.
+
+## 0.2.0
+
+- Replace raw response tables with task-focused camera, event, Face ID, recording,
+  license plate and attendance views.
+- Load cloud event history with the required case-sensitive `Day` field and display
+  HANET detection images through a restricted media proxy.
+- Fix truncated image/video responses and avoid sending API Bearer tokens to HANET
+  static object-storage hosts.
+- Add cloud recording thumbnails and playable MP4 clips for each camera and day.
+- Add an FFmpeg RTSP-to-MJPEG bridge with recent-event snapshot fallback.
+- Fix the mobile API schemas for device settings and user notification settings.
+- Preserve device settings between polls and load hardware/user settings together.
+- Normalize webhook, SSE, Face ID, plate and attendance records for readable UI cards.
+- Proxy MJPEG through the companion integration without exposing the gateway key in
+  a stream URL.
+
+## 0.1.3
+
+- Recover cloud places omitted by `place/list` from optional camera IDs.
+- Load every device in a recovered place after resolving its numeric `place_id`.
+- Recognize the mobile API's `is_active` field as the camera online state.
+
+## 0.1.2
+
+- Use the verified `POST /stream/checkin` SSE endpoint with numeric `place_ids`.
+- Ignore SSE heartbeat events and stop retrying the nonexistent `/event-stream` route.
+- Show an explicit gateway notice when HANET Cloud returns zero devices.
+
+## 0.1.1
+
+- Preserve string IDs in Home Assistant while sending numeric database IDs to HANET as `int64`.
+- Use the working profile endpoint for account details.
+- Change the gateway, Ingress and integration port to `9091`.
+
+## 0.1.0
+
+- Initial HANET Connect 4.1.10 API catalog.
+- Ingress dashboard, persistent token refresh and event stream bridge.
+- Device settings, commands, media, FaceID, LPR, attendance and raw API access.

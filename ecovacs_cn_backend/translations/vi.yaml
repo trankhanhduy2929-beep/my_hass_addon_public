@@ -1,0 +1,24 @@
+configuration:
+  log_level:
+    name: Mức log
+    description: Không chia sẻ log debug trước khi kiểm tra dữ liệu nhạy cảm.
+  map_refresh_interval:
+    name: Chu kỳ làm mới bản đồ
+    description: Số giây fallback kiểm tra cache bản đồ khi event push bị lỡ.
+  state_refresh_interval:
+    name: Chu kỳ làm mới trạng thái
+    description: Số giây fallback giữa các lần yêu cầu toàn bộ trạng thái robot.
+  mqtt_enabled:
+    name: MQTT Discovery
+    description: Tạo entity Home Assistant trực tiếp qua broker MQTT đã cấu hình.
+  mqtt_map_enabled:
+    name: Bản đồ qua MQTT
+    description: Publish ảnh SVG bản đồ qua MQTT Image.
+  mqtt_map_min_interval:
+    name: Chu kỳ MQTT của bản đồ
+    description: Số giây tối thiểu giữa hai lần publish ảnh bản đồ.
+  mqtt_map_max_bytes:
+    name: Kích thước MQTT tối đa của bản đồ
+    description: Bỏ qua ảnh SVG lớn hơn giới hạn byte này để bảo vệ broker và Home Assistant.
+network:
+  4545/tcp: Cổng API nội bộ. Không ánh xạ ra host nếu không thật sự cần.
