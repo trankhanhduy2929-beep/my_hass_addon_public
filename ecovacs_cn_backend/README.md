@@ -1,6 +1,6 @@
 # Ecovacs đa vùng Backend cho Home Assistant
 
-Ecovacs Backend `1.2.20` là add-on điều khiển robot từ nhiều tài khoản Ecovacs
+Ecovacs Backend `1.2.21` là add-on điều khiển robot từ nhiều tài khoản Ecovacs
 China và quốc tế cùng lúc, sau đó đưa entity vào Home Assistant trực tiếp bằng
 MQTT Discovery. Không cần cài custom component hoặc nhập cloud credential vào
 Home Assistant Core.
@@ -37,6 +37,11 @@ Home Assistant MQTT integration
 - Tài khoản China: Ecovacs ID + mật khẩu, số điện thoại + mật khẩu hoặc SMS.
 - Tài khoản quốc tế: Ecovacs ID/email + mật khẩu và mã quốc gia ISO 2 ký tự như
   `VN`, `US`, `DE`; tài khoản China vẫn dùng tab China riêng.
+- Khi Ecovacs yêu cầu xác minh thiết bị mới, add-on tự gửi mã tới email và hiện
+  form nhập mã ngay trong Ingress; không cần đăng nhập lại từ đầu.
+- Địa chỉ Gmail được hỗ trợ như email Ecovacs. Add-on không dùng Google OAuth;
+  tài khoản chỉ tạo bằng **Đăng nhập bằng Google** phải đặt/reset mật khẩu
+  Ecovacs trong ứng dụng trước.
 - Số điện thoại Trung Quốc nhập nhầm ở tab Ecovacs ID được tự chuyển sang
   luồng điện thoại, không làm thay đổi cách xử lý ID thông thường.
 - Tự migration tài khoản China của bản cũ, giữ nguyên device ID và dữ liệu đã
@@ -197,7 +202,15 @@ Các nút chỉ được tạo khi add-on xác nhận robot hỗ trợ capabilit
 ### Hỗ trợ tài khoản quốc tế
 
 - Add-on dùng luồng xác thực, REST endpoint và Ecovacs MQTT chuẩn của
-  `deebot-client` theo đúng quốc gia đã nhập.
+  `deebot-client` `18.5.1` theo đúng quốc gia đã nhập.
+- Việt Nam dùng mã quốc gia `VN`. Nếu cloud trả yêu cầu xác minh thiết bị mới,
+  add-on gửi mã email, giữ phiên xác thực trong RAM và cho phép nhập/gửi lại mã
+  trong tab **Quốc tế**.
+- Gmail dùng được khi đó là email đăng nhập Ecovacs có mật khẩu Ecovacs. Nút
+  **Đăng nhập bằng Google** của ứng dụng Ecovacs là một luồng OAuth riêng và
+  không được add-on mô phỏng.
+- China và quốc tế dùng chung một add-on nhưng mỗi tài khoản có authenticator,
+  controller, MQTT task và reconnect riêng; không cần chạy add-on thứ hai.
 - Robot quốc tế có class được thư viện nhận diện sẽ có trạng thái và lệnh theo
   capability thực tế giống luồng chuẩn của Ecovacs.
 - Class quốc tế chưa được nhận diện chỉ xuất hiện dạng metadata để tránh áp
@@ -218,11 +231,11 @@ Các nút chỉ được tạo khi add-on xác nhận robot hỗ trợ capabilit
 
 ## Cài add-on local
 
-1. Giải nén `ecovacs_cn_addon-repository-v1.2.20.zip`.
+1. Giải nén `ecovacs_cn_addon-repository-v1.2.21.zip`.
 2. Chép nguyên thư mục `ecovacs_cn_backend` vào `/addons/`.
 3. Mở Add-on Store và chọn **Reload/Check for updates**.
 4. Chọn **Ecovacs China Backend** và nhấn **Install/Rebuild**.
-5. Kiểm tra trang thông tin phải hiển thị phiên bản `1.2.20`.
+5. Kiểm tra trang thông tin phải hiển thị phiên bản `1.2.21`.
 6. Khởi động add-on và bật **Show in sidebar** nếu muốn.
 
 Không chép riêng `addon_app` hoặc `protocol_components`. Docker build cần toàn bộ
@@ -331,7 +344,7 @@ Docker image hoặc backup `/data`. Không mở trực tiếp cổng `4545` ra I
 
 ### Docker báo thiếu protocol file
 
-Phải dùng bản `1.2.20` và chép nguyên thư mục add-on. Trong thư mục phải có:
+Phải dùng bản `1.2.21` và chép nguyên thư mục add-on. Trong thư mục phải có:
 
 ```text
 ecovacs_cn_backend/
@@ -339,6 +352,8 @@ ecovacs_cn_backend/
 ├── protocol_components/ecovacs_cn/
 ├── Dockerfile
 ├── config.yaml
+├── icon.png
+├── logo.png
 └── run.sh
 ```
 
@@ -349,7 +364,7 @@ kiểm tra version rồi chọn **Rebuild**.
 
 ### `ModuleNotFoundError: addon_app`
 
-Kiểm tra đang dùng `1.2.20`. Bản này cài package trực tiếp vào Python
+Kiểm tra đang dùng `1.2.21`. Bản này cài package trực tiếp vào Python
 `site-packages`; Docker build sẽ tự import-test package và không còn phụ thuộc
 `PYTHONPATH` hoặc quyền đọc `/app`.
 
@@ -358,6 +373,10 @@ Kiểm tra đang dùng `1.2.20`. Bản này cài package trực tiếp vào Pyth
 - Kiểm tra robot xuất hiện trong Ecovacs Home đúng vùng tài khoản.
 - Tài khoản China dùng ba tab China; tài khoản quốc tế phải dùng tab **Quốc
   tế** và mã quốc gia ISO đúng nơi tài khoản đăng ký.
+- Tài khoản Việt Nam dùng `VN`. Nếu Ecovacs gửi mã xác minh thiết bị mới, nhập
+  mã trong form xuất hiện ngay trong tab **Quốc tế**.
+- Nếu Gmail chỉ đăng nhập được qua nút Google trong ứng dụng, hãy đặt/reset mật
+  khẩu Ecovacs trước rồi dùng Gmail + mật khẩu đó; add-on không dùng Google OAuth.
 - Chọn reconnect của tài khoản lỗi và xem log cloud/MQTT.
 - Robot quốc tế class chưa được `deebot-client` nhận diện chỉ có metadata, chưa
   có vacuum entity/lệnh cho tới khi profile tương ứng được hỗ trợ.
@@ -365,7 +384,7 @@ Kiểm tra đang dùng `1.2.20`. Bản này cài package trực tiếp vào Pyth
 
 ### Ecovacs MQTT báo `Operation timed out`
 
-- Bản `1.2.20` không chờ MQTT hoàn tất trong request đăng nhập và không tạo
+- Bản `1.2.21` không chờ MQTT hoàn tất trong request đăng nhập và không tạo
   handshake kiểm tra trùng, nên giao diện sẽ trả nhanh sau khi xác thực account.
 - MQTT client vẫn retry mỗi 5 giây theo thư viện Ecovacs. Subscription chưa gửi
   xong được giữ lại qua lần reconnect kế tiếp, không cần nhập lại tài khoản.
@@ -385,8 +404,8 @@ Kiểm tra đang dùng `1.2.20`. Bản này cài package trực tiếp vào Pyth
 ## Gói phát hành
 
 - Mọi bản build mới được lưu trong thư mục `ket_qua` ở root workspace.
-- `ecovacs_cn_addon-repository-v1.2.20.zip`: add-on repository/local build.
-- `SHA256SUMS-v1.2.20.txt`: checksum của archive add-on.
+- `ecovacs_cn_addon-repository-v1.2.21.zip`: add-on repository/local build.
+- `SHA256SUMS-v1.2.21.txt`: checksum của archive add-on.
 
 Xem thêm hướng dẫn vận hành ngắn trong `DOCS.md` và lịch sử thay đổi trong
 `CHANGELOG.md`.
