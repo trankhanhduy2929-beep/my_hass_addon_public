@@ -20,4 +20,4 @@ map:
   - addon_config:rw
 options: {}
 schema: {}
-image: "ghcr.io/trankhanhduy2929-beep/voice-action-bridge-vi-lite-{arch}"
+image: "ghcr.io/trankhanhduy2929-beep/voice-action-bridge-vi-lite"

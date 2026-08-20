@@ -17,4 +17,4 @@ map:
   - share:rw
 options: {}
 schema: {}
-image: "ghcr.io/trankhanhduy2929-beep/hanet_bridge_pro-{arch}"
+image: "ghcr.io/trankhanhduy2929-beep/hanet_bridge_pro"

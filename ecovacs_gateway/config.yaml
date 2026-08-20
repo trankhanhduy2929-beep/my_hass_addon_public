@@ -28,5 +28,5 @@ options:
   log_level: info
 schema:
   log_level: list(debug|info|warning|error)
-image: "ghcr.io/trankhanhduy2929-beep/ecovacs_gateway-{arch}"
+image: "ghcr.io/trankhanhduy2929-beep/ecovacs_gateway"
 url: "https://github.com/trankhanhduy2929-beep/my_hass_addon_public"

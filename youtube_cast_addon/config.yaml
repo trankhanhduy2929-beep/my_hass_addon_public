@@ -15,5 +15,5 @@ hassio_api: true
 homeassistant_api: true
 
 
-image: "ghcr.io/trankhanhduy2929-beep/youtube_cast_addon-{arch}"
+image: "ghcr.io/trankhanhduy2929-beep/youtube_cast_addon"
 url: "https://github.com/trankhanhduy2929-beep/my_hass_addon_public"

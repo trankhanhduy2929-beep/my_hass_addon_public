@@ -46,4 +46,4 @@ schema:
 apparmor: true
 host_network: false
 privileged: []
-image: "ghcr.io/trankhanhduy2929-beep/ecovacs_cn_backend-{arch}"
+image: "ghcr.io/trankhanhduy2929-beep/ecovacs_cn_backend"

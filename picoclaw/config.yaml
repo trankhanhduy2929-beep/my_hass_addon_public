@@ -42,4 +42,4 @@ schema:
   notify_ha_on_new_version: bool
   picoclaw_version: str?
   picoclaw_auto_install_on_start: bool
-image: "ghcr.io/trankhanhduy2929-beep/picoclaw-{arch}"
+image: "ghcr.io/trankhanhduy2929-beep/picoclaw"
