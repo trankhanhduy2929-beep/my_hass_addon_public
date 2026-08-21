@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.4.0 - 2026-08-21
+
+- Cast loa ưu tiên URL audio trực tiếp tương thích với bản gốc, gửi stream dạng `BUFFERED` và tự chuyển sang relay LAN nếu lệnh direct thất bại.
+- Sửa relay audio để tự nhận IP LAN từ Supervisor, hỗ trợ `HEAD`, HTTP Range, CORS và `Content-Disposition: inline`, giúp loa nhận được kích thước stream và dữ liệu audio ổn định hơn.
+- Thêm thanh thời gian, trạng thái phát và tua bằng `media_player.media_seek` cho loa Home Assistant hỗ trợ `SEEK`.
+- Tăng kích thước artwork trong danh sách và player, đồng thời làm nút điều khiển cast dễ chạm hơn trên điện thoại.
+
 ## 2.3.0 - 2026-08-21
 
 - Dừng audio trên điện thoại ngay khi chọn bài khác; với loa Home Assistant, lệnh dừng được gửi ngay và lệnh phát mới được xếp sau để không phát chồng.

@@ -1,4 +1,4 @@
-# YouTube Music Lite 2.3.0
+# YouTube Music Lite 2.4.0
 
 Addon phát nhạc YouTube dành cho Home Assistant, được viết lại theo hướng nhẹ và ưu tiên điện thoại.
 
@@ -19,8 +19,11 @@ Addon phát nhạc YouTube dành cho Home Assistant, được viết lại theo 
 - Frontend mở khóa phần tử audio ngay trong lần chạm, tránh WebView/Safari chặn tự phát sau khi chờ resolve.
 - Dùng Deno cùng `yt-dlp-ejs` để xử lý JavaScript challenge mới của YouTube.
 - Addon ưu tiên audio nhẹ bằng `visionos`; nếu stream bị YouTube từ chối khi phát thật, addon tự fallback sang MP4 bằng client `android`, rồi `android_vr` và cuối cùng là cookie tùy chọn. Từ bài sau, chiến lược vừa thành công được thử trước.
-- Audio được relay qua addon bằng token ngẫu nhiên; URL hết hạn hoặc trả về 403 sẽ được resolve lại tự động.
-- Loa tải audio từ cùng máy Home Assistant, nhờ đó giữ đúng IP và HTTP headers mà YouTube yêu cầu.
+- Audio trên điện thoại được relay qua addon bằng token ngẫu nhiên; URL hết hạn hoặc trả về 403 sẽ được resolve lại tự động.
+- Cast loa ưu tiên URL direct để phát nhanh như bản gốc; relay LAN vẫn sẵn sàng làm đường dự phòng khi loa không lấy được URL YouTube.
+- Cast loa ưu tiên URL audio YouTube trực tiếp như bản gốc, đánh dấu stream `BUFFERED` để loa nhận đúng thời lượng và hỗ trợ tua; nếu Home Assistant không gửi được lệnh, addon tự thử relay LAN.
+- Khi phát trên loa, player hiển thị thời gian thực, thanh kéo tua, trạng thái buffering/paused và âm lượng; loa không hỗ trợ `SEEK` sẽ tự khóa thanh tua.
+- Ảnh bài hát trong danh sách và player được tăng kích thước, tối ưu vùng chạm trên màn hình điện thoại nhỏ.
 - Giữ tương thích dữ liệu playlist, queue, lịch sử và timer của các bản 1.x.
 
 ## Cài đặt
@@ -33,7 +36,7 @@ Addon hỗ trợ `amd64` và `aarch64`.
 
 ## Cast tới loa
 
-Addon mở cổng `2232/tcp` để loa trong LAN lấy audio relay. Mặc định backend tự đọc `internal_url` của Home Assistant và tạo URL dạng:
+Addon mở cổng `2232/tcp` để loa trong LAN lấy audio relay. Backend ưu tiên tự đọc IP LAN chính từ Supervisor, sau đó mới dùng `internal_url` của Home Assistant, và tạo URL dạng:
 
 ```text
 http://<home-assistant-host>:2232/api/media/<token>/audio.m4a
@@ -50,7 +53,7 @@ Chỉ route audio có token và health check được truy cập trực tiếp q
 ## Khắc phục lỗi YouTube
 
 - Kiểm tra mục **Hẹn giờ → Trạng thái hệ thống**: Home Assistant, Deno và yt-dlp phải báo `OK`.
-- Cookie không bắt buộc. Bản 2.3.0 dùng `yt-dlp 2026.8.19` và kiểm tra quyền đọc stream thật trước khi báo phát thành công.
+- Cookie không bắt buộc. Bản 2.4.0 dùng `yt-dlp 2026.8.19` và kiểm tra quyền đọc stream thật trước khi báo phát thành công.
 - Dòng **Extractor** trong trạng thái hệ thống cho biết chiến lược, format, cache và số mili giây của lần resolve gần nhất; dòng **Ưu tiên lần sau** cho biết client sẽ được thử trước.
 - Lựa chọn extractor được lưu tại `/data/extractor_preference.json`, nên vẫn giữ sau khi khởi động lại addon.
 - Chỉ khi cả ba chiến lược đều bị YouTube chặn, có thể mở **Hẹn giờ → Cookie YouTube** và nhập file `cookies.txt`.
@@ -59,6 +62,12 @@ Chỉ route audio có token và health check được truy cập trực tiếp q
 - Addon tự loại bỏ cookie của website khác, chỉ lưu cookie thuộc `youtube.com` tại `/data/cookies.txt` với quyền `0600`.
 - Khi cookie hết hạn hoặc lỗi xuất hiện lại, xuất một file mới rồi nhập đè; không cần khởi động lại addon.
 - Sau khi thay đổi `media_base_url`, khởi động lại addon.
+
+## Tua và kiểm tra loa
+
+- Chọn loa, phát một bài rồi mở player; thanh thời gian nằm ngay phía trên các nút điều khiển.
+- Thanh tua chỉ mở khi Home Assistant báo loa có thời lượng và hỗ trợ tính năng `SEEK`.
+- Nếu loa không có tiếng nhưng trạng thái vẫn phát, kiểm tra mục **Hẹn giờ → Trạng thái hệ thống** và đặt `media_base_url` thành địa chỉ IP LAN của máy Home Assistant, ví dụ `http://192.168.1.20:2232`, sau đó khởi động lại addon.
 
 ## Công nghệ
 

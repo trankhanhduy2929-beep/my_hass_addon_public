@@ -1,6 +1,6 @@
 name: "YouTube Music Lite"
 description: "Trình phát YouTube Music nhẹ, tối ưu điện thoại và relay ổn định tới loa Home Assistant"
-version: "2.3.0"
+version: "2.4.0"
 slug: "youtube_cast_addon"
 arch:
   - amd64
@@ -13,6 +13,7 @@ ingress: true
 ingress_port: 2232
 ingress_stream: true
 homeassistant_api: true
+hassio_api: true
 watchdog: "http://[HOST]:[PORT:2232]/api/health"
 ports:
   2232/tcp: 2232
