@@ -1,68 +1,64 @@
-# YouTube Music Lite 2.3.0
+🎵 YouTube Music Cinematic Addon (v1.20.1)
+YouTube Music Cinematic là một Add-on cao cấp dành cho Home Assistant, cho phép bạn tìm kiếm, phát nhạc trực tuyến từ YouTube và điều khiển các thiết bị Media Player trong nhà với giao diện hiện đại, mượt mà.
 
-Addon phát nhạc YouTube dành cho Home Assistant, được viết lại theo hướng nhẹ và ưu tiên điện thoại.
+✨ Tính năng nổi bật
+Premium Interface: Giao diện lấy cảm hứng từ YouTube Music với hiệu ứng kính mờ (Glassmorphism).
 
-## Điểm mới
+Proxy Stream: Vượt qua các rào cản địa lý và chặn IP từ YouTube để phát nhạc ổn định.
+Infinite Scroll: Cuộn vô tận để khám phá hàng ngàn bài hát mới.
 
-- Giao diện mobile-first bằng HTML, CSS và JavaScript thuần; không còn Tailwind CDN hoặc Google Fonts.
-- Chỉ tập trung vào audio: tìm kiếm, phát trên điện thoại, cast tới `media_player`, playlist, hàng chờ và hẹn giờ.
-- Danh sách khám phá tự tải thêm khi cuộn gần cuối, không cần bấm chuyển trang.
-- Trình phát có chế độ thu gọn thành thanh mini để dùng các chức năng khác trên điện thoại.
-- Có dark/light mode tự nhận theo điện thoại và ghi nhớ lựa chọn cho lần mở sau.
-- Có nút `ⓘ` tại mỗi bài và trên trình phát để xem kênh, thời lượng, lượt xem, lượt thích, ngày đăng và mô tả video.
-- Khi chọn bài khác, frontend hủy lượt phát cũ, dừng audio điện thoại ngay lập tức và gửi lệnh dừng loa song song với quá trình resolve bài mới.
-- Chỉ yêu cầu phát mới nhất được phép chạy, nên bấm/chuyển bài liên tục không còn phát nhầm bài cũ.
-- Cache frontend tăng lên 10 bài; tự làm nóng 3 kết quả đầu và 2 bài kế tiếp của tìm kiếm, playlist, hàng chờ hoặc lịch sử.
-- Backend ghi nhớ extractor vừa chạy tốt và thử extractor đó trước ở bài tiếp theo; client lỗi lặp lại được tạm làm nguội 10 phút.
-- Trước khi trả token phát, backend kiểm tra `Range: bytes=0-` và đọc block đầu 4 KB; giữ kiểm tra stream thật nhưng bỏ request probe thứ hai để giảm thời gian chờ lần đầu.
-- Kết nối relay dùng pool tái sử dụng để giảm thời gian mở audio khi bấm phát hoặc chuyển bài.
-- Frontend mở khóa phần tử audio ngay trong lần chạm, tránh WebView/Safari chặn tự phát sau khi chờ resolve.
-- Dùng Deno cùng `yt-dlp-ejs` để xử lý JavaScript challenge mới của YouTube.
-- Addon ưu tiên audio nhẹ bằng `visionos`; nếu stream bị YouTube từ chối khi phát thật, addon tự fallback sang MP4 bằng client `android`, rồi `android_vr` và cuối cùng là cookie tùy chọn. Từ bài sau, chiến lược vừa thành công được thử trước.
-- Audio được relay qua addon bằng token ngẫu nhiên; URL hết hạn hoặc trả về 403 sẽ được resolve lại tự động.
-- Loa tải audio từ cùng máy Home Assistant, nhờ đó giữ đúng IP và HTTP headers mà YouTube yêu cầu.
-- Giữ tương thích dữ liệu playlist, queue, lịch sử và timer của các bản 1.x.
+Multi-Device Casting: Phát nhạc trực tiếp trên trình duyệt điện thoại hoặc Cast sang các loa thông minh (Google Home, Sonos, v.v.) trong hệ thống HA.
 
-## Cài đặt
+Smart Playlist: Tạo và quản lý danh sách phát yêu thích không giới hạn.
 
-1. Build/cài addon trên Home Assistant OS hoặc Supervised.
-2. Bật **Show in sidebar** và khởi động addon.
-3. Mở giao diện `Music Lite`, chọn **Điện thoại này** hoặc một loa Home Assistant rồi phát nhạc.
+Automation Timer: Hẹn giờ tự động phát hoặc tắt nhạc theo lịch trình hàng ngày.
 
-Addon hỗ trợ `amd64` và `aarch64`.
+Ingress Support: Truy cập trực tiếp và bảo mật từ thanh điều hướng của Home Assistant.
 
-## Cast tới loa
+🚀 Hướng dẫn cài đặt (A-Z)
+1. Thêm Repository
+Mở giao diện Home Assistant của bạn.
+Đi tới Settings (Cài đặt) -> Add-ons (Tiện ích bổ sung).
+Nhấn vào nút Add-on Store (Cửa hàng tiện ích) ở góc dưới bên phải.
+Nhấn vào dấu 3 chấm (góc trên bên phải) -> Chọn Repositories (Kho lưu trữ).
+Dán đường link GitHub vào và nhấn Add (Thêm).
 
-Addon mở cổng `2232/tcp` để loa trong LAN lấy audio relay. Mặc định backend tự đọc `internal_url` của Home Assistant và tạo URL dạng:
+2. Cài đặt Add-on
+Sau khi thêm Repo, tìm kiếm "YouTube Music Cinematic" trong cửa hàng.
+Nhấn Install (Cài đặt). Quá trình này có thể mất vài phút để tải Docker image.
+Bật tùy chọn Show in sidebar (Hiển thị ở thanh bên) để truy cập nhanh.
+Nhấn Start (Bắt đầu).
 
-```text
-http://<home-assistant-host>:2232/api/media/<token>/audio.m4a
-```
+📖 Hướng dẫn sử dụng
 
-Nếu loa không truy cập được URL tự nhận diện, đặt option `media_base_url`, ví dụ:
+🔍 Tìm kiếm & Khám phá
+Nhập từ khóa vào ô tìm kiếm và nhấn TÌM.
+Hệ thống sẽ tự động gợi ý các bài hát hot nhất năm 2025 nếu bạn để trống.
+Cuộn xuống dưới cùng để tải thêm kết quả (Infinite Scroll).
 
-```yaml
-media_base_url: "http://192.168.1.20:2232"
-```
+🔊 Chọn thiết bị phát (Speaker)
+Ở góc trên bên phải, chọn thiết bị bạn muốn phát nhạc.
 
-Chỉ route audio có token và health check được truy cập trực tiếp qua cổng này; giao diện cùng các API quản trị vẫn bị giới hạn qua Home Assistant Ingress.
+📱 ĐIỆN THOẠI: Phát nhạc trực tiếp trên trình duyệt bạn đang mở.
 
-## Khắc phục lỗi YouTube
+🔊 Media Players: Danh sách các loa thông minh hiện có trong Home Assistant của bạn.
 
-- Kiểm tra mục **Hẹn giờ → Trạng thái hệ thống**: Home Assistant, Deno và yt-dlp phải báo `OK`.
-- Cookie không bắt buộc. Bản 2.3.0 dùng `yt-dlp 2026.8.19` và kiểm tra quyền đọc stream thật trước khi báo phát thành công.
-- Dòng **Extractor** trong trạng thái hệ thống cho biết chiến lược, format, cache và số mili giây của lần resolve gần nhất; dòng **Ưu tiên lần sau** cho biết client sẽ được thử trước.
-- Lựa chọn extractor được lưu tại `/data/extractor_preference.json`, nên vẫn giữ sau khi khởi động lại addon.
-- Chỉ khi cả ba chiến lược đều bị YouTube chặn, có thể mở **Hẹn giờ → Cookie YouTube** và nhập file `cookies.txt`.
-- File phải ở định dạng Mozilla/Netscape, được xuất từ một phiên trình duyệt đang đăng nhập YouTube. Nên dùng tài khoản phụ vì YouTube có thể giới hạn tài khoản dùng với công cụ tải media.
-- Cách xuất ổn định: mở một cửa sổ ẩn danh chỉ có một tab, đăng nhập YouTube, trong chính tab đó mở `https://www.youtube.com/robots.txt`, xuất cookie `youtube.com`, rồi đóng hẳn cửa sổ ẩn danh và không mở lại phiên đó.
-- Addon tự loại bỏ cookie của website khác, chỉ lưu cookie thuộc `youtube.com` tại `/data/cookies.txt` với quyền `0600`.
-- Khi cookie hết hạn hoặc lỗi xuất hiện lại, xuất một file mới rồi nhập đè; không cần khởi động lại addon.
-- Sau khi thay đổi `media_base_url`, khởi động lại addon.
+📂 Quản lý Playlist
+Tạo mới: Chuyển sang tab Playlist, nhập tên và nhấn nút +.
+Thêm bài hát: Tại tab Khám phá, nhấn biểu tượng + nhỏ trên mỗi bài hát để chọn playlist muốn thêm vào.
 
-## Công nghệ
+Nghe Playlist: Nhấn vào tên playlist để xem danh sách bài hát và chọn bài muốn phát.
+⏰ Hẹn giờ tự động (Timer)
+Chuyển sang tab Hẹn giờ.
+Chọn các thứ trong tuần, thời gian (Giờ:Phút).
+Chọn hành động: PHÁT (kèm playlist) hoặc TẮT nhạc.
+Bạn có thể đặt thời gian tự động tắt sau khi phát (ví dụ: phát nhạc 30 phút rồi tự tắt).
 
-- Flask + Gunicorn
-- yt-dlp + yt-dlp-ejs
-- Deno JavaScript runtime
-- CSS/JavaScript thuần, không phụ thuộc frontend bên ngoài
+🛠 Yêu cầu hệ thống
+Hệ điều hành: Home Assistant OS hoặc Supervised.
+Kiến trúc: Hỗ trợ đa nền tảng (aarch64, amd64, armhf, armv7).
+Phụ thuộc: Yêu cầu quyền truy cập vào API của Home Assistant (đã cấu hình sẵn trong config.yaml).
+
+📄 Giấy phép & Đóng góp
+Add-on này được phát triển dựa trên Flask, yt-dlp và Tailwind CSS. Mọi đóng góp về code hoặc báo lỗi vui lòng tạo Issue trên GitHub.
+Chúc bạn có những giây phút thư giãn âm nhạc tuyệt vời!

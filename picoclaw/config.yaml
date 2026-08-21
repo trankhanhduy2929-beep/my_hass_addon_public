@@ -2,10 +2,10 @@ name: "PicoClaw"
 slug: "picoclaw"
 version: "0.4.4"
 description: "Run PicoClaw launcher (Web UI) inside Home Assistant"
-url: "https://github.com/trankhanhduy2929-beep/my_hass_addon_public"
+url: "https://github.com/sipeed/picoclaw"
 arch:
-  - amd64
   - aarch64
+  - amd64
 init: false
 startup: services
 boot: auto
@@ -42,4 +42,4 @@ schema:
   notify_ha_on_new_version: bool
   picoclaw_version: str?
   picoclaw_auto_install_on_start: bool
-image: "ghcr.io/trankhanhduy2929-beep/picoclaw"
+image: "ghcr.io/trankhanhduy2929-beep/picoclaw-{arch}"

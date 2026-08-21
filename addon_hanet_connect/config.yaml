@@ -5,6 +5,7 @@ description: HANET camera, access control, FaceID, LPR and attendance gateway
 arch:
   - amd64
   - aarch64
+  - armv7
 startup: application
 boot: auto
 init: false
@@ -40,5 +41,4 @@ schema:
   event_stream: bool
   verify_tls: bool
   log_level: list(debug|info|warning|error)
-image: "ghcr.io/trankhanhduy2929-beep/addon_hanet_connect"
-url: "https://github.com/trankhanhduy2929-beep/my_hass_addon_public"
+image: "ghcr.io/trankhanhduy2929-beep/addon_hanet_connect-{arch}"

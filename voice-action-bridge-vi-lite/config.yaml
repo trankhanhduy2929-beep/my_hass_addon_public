@@ -2,10 +2,11 @@ name: Voice Action Bridge VI Lite
 version: "1.0.4"
 slug: voice_action_bridge_vi_lite
 description: Vietnamese lightweight voice/text command bridge for Home Assistant
-url: "https://github.com/trankhanhduy2929-beep/my_hass_addon_public"
+url: https://github.com/trankhanhduy2929-beep/my_hass_addon_public
 arch:
   - amd64
   - aarch64
+  - armv7
 startup: application
 boot: auto
 init: false
@@ -20,4 +21,4 @@ map:
   - addon_config:rw
 options: {}
 schema: {}
-image: "ghcr.io/trankhanhduy2929-beep/voice-action-bridge-vi-lite"
+image: "ghcr.io/trankhanhduy2929-beep/voice-action-bridge-vi-lite-{arch}"
