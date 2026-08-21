@@ -6,7 +6,6 @@ url: "https://github.com/trankhanhduy2929-beep/my_hass_addon_public"
 arch:
   - amd64
   - aarch64
-  - armv7
 init: false
 startup: services
 boot: auto
@@ -19,4 +18,4 @@ ports:
   1237/tcp: 1237
 map:
   - addon_config:rw
-image: "ghcr.io/trankhanhduy2929-beep/hass-ai-vision-addon-{arch}"
+image: "ghcr.io/trankhanhduy2929-beep/hass-ai-vision-addon"

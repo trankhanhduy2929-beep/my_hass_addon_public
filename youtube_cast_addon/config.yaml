@@ -1,20 +1,26 @@
-name: "YouTube Music Cinematic"
-description: "Trình phát nhạc YouTube cao cấp: Tự đề xuất, Infinite Scroll, Proxy Stream & Favorites"
-version: "1.20.22"
+name: "YouTube Music Lite"
+description: "Trình phát YouTube Music nhẹ, tối ưu điện thoại và relay ổn định tới loa Home Assistant"
+version: "2.3.0"
 slug: "youtube_cast_addon"
 arch:
-  - aarch64
   - amd64
-  - armhf
-  - armv7
+  - aarch64
 init: false
-panel_icon: "mdi:music-box-multiple"
-panel_title: "YT Music"
+panel_icon: "mdi:music-note"
+panel_title: "Music Lite"
+panel_admin: true
 ingress: true
 ingress_port: 2232
-hassio_role: manager
-hassio_api: true
+ingress_stream: true
 homeassistant_api: true
-
-
-image: "ghcr.io/trankhanhduy2929-beep/youtube_cast_addon-{arch}"
+watchdog: "http://[HOST]:[PORT:2232]/api/health"
+ports:
+  2232/tcp: 2232
+ports_description:
+  2232/tcp: "Audio relay cho loa trong mạng LAN"
+options:
+  media_base_url: ""
+schema:
+  media_base_url: str
+image: "ghcr.io/trankhanhduy2929-beep/youtube_cast_addon"
+url: "https://github.com/trankhanhduy2929-beep/my_hass_addon_public"
