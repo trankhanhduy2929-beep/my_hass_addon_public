@@ -1,4 +1,4 @@
-# Hướng dẫn HANET Connect Gateway 0.9.0
+# Hướng dẫn HANET Connect Gateway 0.9.3
 
 ## 1. Yêu cầu
 
@@ -23,6 +23,8 @@
 - `api_access_key`: khóa cho API cục bộ. Nếu bật cổng `9091`, nên dùng chuỗi ngẫu
   nhiên tối thiểu 24 ký tự.
 - `webhook_secret`: khóa riêng cho `POST /api/webhook`.
+- `ui_auth_enabled`: mặc định `true`, dùng làm trạng thái khóa khi tạo dữ liệu lần
+  đầu. Sau đó bật/tắt trực tiếp trong **Cài đặt > Bảo mật giao diện**.
 - `poll_interval`: chu kỳ đồng bộ đầy đủ, từ 15 đến 3600 giây.
 - `event_stream`: duy trì SSE; add-on tự fallback sang polling khi route không có.
 - `verify_tls`: xác minh chứng chỉ HTTPS, nên luôn bật.
@@ -31,25 +33,25 @@
 Port `9091` mặc định không được ánh xạ ra host. Giao diện sidebar sử dụng Ingress
 và không cần mở port.
 
-## 4. Mở khóa và đổi mật khẩu giao diện
+## 4. Mở giao diện và quản lý khóa mật khẩu
 
-Add-on có một mật khẩu giao diện riêng, không phải mật khẩu HANET và không liên
-quan tới custom integration.
+Lần đầu bấm **HANET Connect** trong sidebar, nhập mật khẩu mặc định được cung cấp
+riêng để mở dashboard. Sau khi đăng nhập nên đổi sang mật khẩu riêng.
 
-1. Mở **HANET Connect** từ sidebar.
-2. Nhập mật khẩu truy cập ban đầu được cung cấp riêng cùng bộ cài.
-3. Mở tab **Cài đặt**.
-4. Tại **Bảo mật giao diện**, chọn **Đổi mật khẩu**.
-5. Nhập mật khẩu hiện tại, mật khẩu mới và xác nhận mật khẩu mới.
-6. Mật khẩu mới phải có ít nhất 4 ký tự và tối đa 128 ký tự.
+1. Mở tab **Cài đặt > Bảo mật giao diện** để đổi mật khẩu.
+2. Mật khẩu mới phải có ít nhất 4 ký tự và tối đa 128 ký tự.
+3. Bấm **Tắt yêu cầu đăng nhập** nếu muốn những lần sau mở thẳng dashboard.
+4. Khi khóa đang tắt, bấm **Bật yêu cầu đăng nhập** để bật lại; mật khẩu đã đổi
+   vẫn được giữ.
 
 Sau khi đổi mật khẩu, tất cả session cũ bị thu hồi và trình duyệt hiện tại nhận
 session mới. Nút **Khóa ngay** hoặc biểu tượng đăng xuất trên thanh đầu trang sẽ
 đóng session hiện tại.
 
-Hash được lưu trong `/data/ui_auth.json`; mật khẩu rõ không được lưu. Nếu mất mật
-khẩu, dừng add-on, xóa file này trong vùng dữ liệu add-on rồi khởi động lại để
-khôi phục trạng thái ban đầu. Sau đó cần đổi mật khẩu ngay.
+Hash và trạng thái bật/tắt được lưu trong `/data/ui_auth.json`; mật khẩu rõ không
+được lưu. Nếu mất mật khẩu, dừng add-on, xóa file này trong vùng dữ liệu add-on
+rồi khởi động lại để khôi phục khóa mặc định được cung cấp riêng. Sau đó cần đổi
+mật khẩu ngay.
 
 ## 5. Sử dụng các màn hình
 
@@ -72,8 +74,9 @@ khôi phục trạng thái ban đầu. Sau đó cần đổi mật khẩu ngay.
 
 ### Danh tính
 
-- Gộp đầy đủ Face ID thành viên (`type=0`) và khách (`type=1`).
-- Hỗ trợ tạo, sửa, xóa và tải nhiều ảnh Face ID.
+- Tách riêng Face nhân viên (`type=0`) và Face khách (`type=1`) thành hai tab.
+- Hỗ trợ tạo, sửa, xóa và tải nhiều ảnh Face ID định dạng JPEG, PNG, WebP, GIF,
+  BMP, TIFF, HEIC, HEIF hoặc AVIF.
 - Có màn hình nhân viên, phòng ban, biển số và chấm công.
 
 ### Cài đặt

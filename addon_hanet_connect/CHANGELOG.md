@@ -1,5 +1,28 @@
 # Changelog
 
+## 0.9.3 - 2026-08-22
+
+- Rotate the built-in dashboard password hash without exposing the password in
+  the UI, source documentation or regression tests.
+- Migrate both previous built-in hash records to the new record and re-enable
+  the dashboard lock while preserving custom passwords and saved lock state.
+- Refresh the Ingress dashboard with a brighter, smoother Liquid Glass visual
+  system and accessible light color contrast.
+
+## 0.9.2 - 2026-08-22
+
+- Require the built-in dashboard password on first use, then allow the
+  authenticated user to change it or persistently disable/re-enable the lock.
+
+## 0.9.1 - 2026-08-22
+
+- Split employee FaceID and visitor FaceID into independent identity tabs.
+- Fix FaceID deletion with compatible identifier payload fallbacks and a
+  dedicated local delete route.
+- Accept JPEG, PNG, WebP, GIF, BMP, TIFF, HEIC, HEIF and AVIF uploads, converting
+  non-JPEG/PNG images to cloud-compatible JPEG through bundled FFmpeg.
+- Fix close and cancel controls in dialogs containing required fields.
+
 ## 0.9.0 - 2026-07-29
 
 - Add a separate dashboard password lock without coupling it to HANET Cloud or

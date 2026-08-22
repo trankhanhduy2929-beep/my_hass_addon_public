@@ -14,6 +14,9 @@ configuration:
   webhook_secret:
     name: Khoa webhook
     description: Khoa xac thuc cho webhook cong khai.
+  ui_auth_enabled:
+    name: Khoa mat khau ban dau
+    description: Bat khoa mat khau khi tao du lieu lan dau; sau do co the bat tat trong giao dien.
   poll_interval:
     name: Chu ky dong bo
     description: So giay giua hai lan cap nhat du lieu cloud.
