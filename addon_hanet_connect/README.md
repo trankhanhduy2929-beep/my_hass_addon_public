@@ -1,7 +1,14 @@
-# HANET Connect Gateway 0.9.3
+# HANET Connect Gateway 0.9.4
 
 Add-on quản lý hệ sinh thái HANET trực tiếp trong Home Assistant với giao diện
 Ingress tiếng Việt, khóa truy cập có thể bật/tắt và API cục bộ có xác thực.
+
+## Điểm mới trong 0.9.4
+
+- Sửa lỗi Face ID bị mất phòng ban sau khi thêm hoặc sửa.
+- Đồng bộ phòng ban qua API membership chính thức và đọc ngược membership khi tải danh sách.
+- Cho phép bỏ phòng ban khỏi nhân viên; thêm API cục bộ `PUT /api/people/{id}/department`.
+- Giữ catalog 100 endpoint nâng cao; đánh dấu CRUD biển số và thống kê chấm công là các hạng mục tiếp theo.
 
 ## Điểm mới trong 0.9.3
 

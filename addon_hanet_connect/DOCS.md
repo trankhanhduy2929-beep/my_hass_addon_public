@@ -1,4 +1,4 @@
-# Hướng dẫn HANET Connect Gateway 0.9.3
+# Hướng dẫn HANET Connect Gateway 0.9.4
 
 ## 1. Yêu cầu
 
@@ -101,6 +101,7 @@ Các endpoint chính:
 - `GET /api/catalog`: endpoint, setting và command đã phát hiện.
 - `GET /api/events?day=YYYY-MM-DD&limit=250`: lịch sử sự kiện.
 - `GET /api/people`, `/api/departments`, `/api/plates`: dữ liệu danh tính.
+- `PUT /api/people/{id}/department`: gán hoặc bỏ phòng ban của Face ID.
 - `GET /api/recordings?day=YYYY-MM-DD`: clip cloud trong ngày.
 - `POST /api/refresh`: đồng bộ ngay.
 - `POST /api/call`: gọi endpoint theo tên catalog.

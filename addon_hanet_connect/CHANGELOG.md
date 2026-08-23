@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.9.4 - 2026-08-23
+
+- Sửa lỗi Face ID bị mất phòng ban sau khi thêm hoặc cập nhật.
+- Đồng bộ membership qua `department/list-person`, `department/add-person` và
+  `department/remove-person`, có fallback payload cho các phiên bản HANET khác nhau.
+- Đọc ngược membership khi tải Face ID để phòng ban hiển thị đúng dù
+  `person/list` không trả metadata tổ chức.
+- Cho phép bỏ phòng ban khỏi nhân viên và thêm route
+  `PUT /api/people/{id}/department` cho automation.
+- Audit catalog 100 endpoint; ghi nhận CRUD biển số và thống kê chấm công nâng cao
+  là ưu tiên tiếp theo vì schema mutation chưa được xác minh trên thiết bị thật.
+
 ## 0.9.3 - 2026-08-22
 
 - Rotate the built-in dashboard password hash without exposing the password in
