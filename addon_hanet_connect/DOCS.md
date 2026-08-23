@@ -1,4 +1,4 @@
-# Hướng dẫn HANET Connect Gateway 0.9.4
+# Hướng dẫn HANET Connect Gateway 0.9.5
 
 ## 1. Yêu cầu
 
@@ -78,6 +78,10 @@ mật khẩu ngay.
 - Hỗ trợ tạo, sửa, xóa và tải nhiều ảnh Face ID định dạng JPEG, PNG, WebP, GIF,
   BMP, TIFF, HEIC, HEIF hoặc AVIF.
 - Có màn hình nhân viên, phòng ban, biển số và chấm công.
+- Với nhân viên, có thể đổi hoặc bỏ phòng ban ngay từ menu trên từng thẻ; add-on
+  đọc lại membership cloud trước khi báo thành công.
+- Xóa FaceID thử các schema `person_id`, `personID`, FaceID và UUID, đồng thời
+  xử lý trường hợp HANET trả HTTP 200 nhưng `returnCode` vẫn báo lỗi.
 
 ### Cài đặt
 

@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.9.5 - 2026-08-23
+
+- Sửa xóa FaceID khi HANET trả HTTP 200 nhưng `returnCode` báo lỗi; gateway tiếp
+  tục thử payload khác và chỉ xác nhận khi FaceID biến mất khỏi danh sách cloud.
+- Ưu tiên `personID` hơn `id` chung, bổ sung `faceID`, UUID và các biến thể
+  singular/plural để tương thích nhiều tenant mobile API.
+- Sửa đổi phòng ban bằng schema chính thức `departmentID`, `personIDs` và
+  `personID`; chấp nhận cloud cập nhật membership trễ trước khi thử fallback.
+- Thêm menu chọn phòng ban trực tiếp trên từng thẻ nhân viên trong danh sách.
+- Audit tài liệu Developer API chính thức: giữ catalog mobile hiện tại, chưa trộn
+  endpoint Partner API khác host/auth; ưu tiên tiếp theo là lọc chấm công theo
+  người/thời gian và thao tác phòng ban hàng loạt.
+
 ## 0.9.4 - 2026-08-23
 
 - Sửa lỗi Face ID bị mất phòng ban sau khi thêm hoặc cập nhật.
