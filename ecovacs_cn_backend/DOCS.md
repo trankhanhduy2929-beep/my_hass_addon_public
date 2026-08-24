@@ -91,10 +91,10 @@ cloud token đã lưu.
   Home trước. Khi form mã email xuất hiện, nhập mã hoặc bấm **Gửi lại mã**.
 - **Robot quốc tế chỉ có metadata:** class đó chưa được `deebot-client` nhận
   diện. Add-on không áp fallback China để tránh gửi lệnh sai thiết bị.
-- **Ecovacs MQTT `Operation timed out`:** dùng bản `1.3.1`; API đăng nhập không
+- **Ecovacs MQTT `Operation timed out`:** dùng bản `1.3.2`; API đăng nhập không
   chờ MQTT, tài khoản chuyển sang **Đang kết nối**, client retry nền mỗi 5 giây
   và subscription chưa hoàn tất được giữ lại qua reconnect.
-- **X1/X1 PRO/T10 OMNI timeout:** dùng bản `1.3.1`; mọi profile X1/T10 OMNI,
+- **X1/X1 PRO/T10 OMNI timeout:** dùng bản `1.3.2`; mọi profile X1/T10 OMNI,
   kể cả class lạ nhận diện bằng tên sản phẩm, đều dùng map-set không sinh chuỗi
   `getMapSubSet`. Profile suy luận và class bảo thủ cũng không gọi `getWorkMode`;
   chỉ X1 class `8onkgl`/`1vxt52` đã xác minh giữ capability này.
@@ -109,31 +109,31 @@ cloud token đã lưu.
 - **Tên phòng:** X1/T10 đọc `getMapSet_V2` giống app China mà không gọi
   `getMapSubSet`. Nếu firmware không trả tên thì có thể đặt thủ công trong
   Ingress; mặc định MQTT button dùng **Khu vực N**.
-- **Giặt giẻ không chạy:** bản `1.3.1` gửi `clean_V2` loại `washing` đúng giao
+- **Giặt giẻ không chạy:** bản `1.3.2` gửi `clean_V2` loại `washing` đúng giao
   thức DT10/X1 thay cho station action cũ.
-- **Không reset được vật tư camelCase:** bản `1.3.1` sửa MQTT action cho chổi
+- **Không reset được vật tư camelCase:** bản `1.3.2` sửa MQTT action cho chổi
   cạnh, giẻ lau tròn và bộ chăm sóc trạm.
 - **Chỉ thấy Khu vực N, không có đa giác:** firmware chỉ trả ID trong
   `getMapSet`. Nút khu vực vẫn dọn đúng phòng; add-on không gọi `getMapSubSet`
   để tránh tái phát timeout trên X1/T10 nội địa.
 - **Map không cập nhật:** kiểm tra `mqtt_map_enabled`, interval và giới hạn byte.
-- **Map vẫn đổi khi robot đã ở trạm:** dùng bản `1.3.1`; bản này dừng polling
+- **Map vẫn đổi khi robot đã ở trạm:** dùng bản `1.3.2`; bản này dừng polling
   position/trace và bỏ map event động sau cửa sổ cập nhật cuối 3 giây.
-- **Log `getNetInfo`/`getBorderSpin` timeout:** bản `1.3.1` không còn gọi hai
+- **Log `getNetInfo`/`getBorderSpin` timeout:** bản `1.3.2` không còn gọi hai
   nhóm này mỗi 120 giây. Setting mặc định làm mới mỗi 600 giây, còn network,
   OTA và tuổi thọ mỗi 1200 giây; lỗi cloud tạm thời không làm vacuum entity lỗi.
-- **MQTT gửi quá nhiều:** bản `1.3.1` gom event 350 ms, chỉ publish robot thay
+- **MQTT gửi quá nhiều:** bản `1.3.2` gom event 350 ms, chỉ publish robot thay
   đổi, cache Discovery theo cấu trúc và chỉ render SVG map khi MQTT/API cần.
-- **Log mạng lặp liên tục:** bản `1.3.1` chỉ giữ một warning cùng nội dung mỗi
+- **Log mạng lặp liên tục:** bản `1.3.2` chỉ giữ một warning cùng nội dung mỗi
   5 phút cho lỗi MQTT/command mạng lặp; reconnect vẫn chạy nền bình thường.
-- **Một robot lỗi làm polling dừng:** bản `1.3.1` cô lập lỗi refresh/map theo
+- **Một robot lỗi làm polling dừng:** bản `1.3.2` cô lập lỗi refresh/map theo
   từng robot và watchdog tự khởi động lại Ecovacs MQTT task bị dừng.
-- **`8bja83 not recognized`:** bản `1.3.1` đăng ký X1 OMNI nội địa trực tiếp
+- **`8bja83 not recognized`:** bản `1.3.2` đăng ký X1 OMNI nội địa trực tiếp
   trước lúc `deebot-client` phân loại và xóa negative cache cũ. Nếu log vẫn có
   logger `custom_components.ecovacs_cn`, Home Assistant còn chạy integration
   cũ; hãy xóa integration/thư mục custom component và restart Home Assistant.
 
 Credential của mọi tài khoản Ecovacs được mã hóa trong `/data`; tài khoản China
 cũ được migration tự động và giữ device ID. License key được mã hóa trong
-`/data/license`; MQTT credential được mã hóa riêng trong `/data/mqtt`; API token
-tùy chọn chỉ lưu hash. Không mở cổng `4545` trực tiếp ra Internet.
+`/data/license`; MQTT credential được mã hóa riêng trong `/data/mqtt`. Không mở
+cổng `4545` trực tiếp ra Internet.
