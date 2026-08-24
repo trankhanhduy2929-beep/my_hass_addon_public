@@ -1,7 +1,16 @@
-# HANET Connect Gateway 0.9.6
+# HANET Connect Gateway 0.9.7
 
 Add-on quản lý hệ sinh thái HANET trực tiếp trong Home Assistant với giao diện
-Ingress tiếng Việt, khóa truy cập có thể bật/tắt và API cục bộ có xác thực.
+Ingress tiếng Việt mở trực tiếp, còn API cục bộ ngoài Ingress vẫn có xác thực.
+
+## Điểm mới trong 0.9.7
+
+- Bỏ bước nhập mật khẩu dashboard riêng; nâng cấp xong mở thẳng từ Home Assistant
+  Ingress, trong khi cổng ngoài vẫn yêu cầu `X-HANET-Gateway-Key`.
+- Sửa payload `int64` khi cập nhật FaceID, tạo/sửa/xóa phòng ban và gán membership.
+- Cho phép cả khách lẫn nhân viên tạo, chọn, đổi và bỏ phòng ban.
+- Từ sự kiện có thể mở đúng clip theo `event_id` hoặc camera/thời gian gần nhất;
+  video tự tua đến thời điểm sự kiện.
 
 ## Điểm mới trong 0.9.6
 
@@ -61,18 +70,19 @@ Ingress tiếng Việt, khóa truy cập có thể bật/tắt và API cục b�
 3. Chọn **Check for updates**, sau đó cài **HANET Connect Gateway**.
 4. Trong tab **Configuration**, nhập tài khoản và mật khẩu HANET.
 5. Khởi động add-on và bật **Show in sidebar**.
-6. Mở **HANET Connect** từ sidebar và nhập mật khẩu mặc định được cung cấp riêng.
-7. Vào **Cài đặt > Bảo mật giao diện** để đổi mật khẩu hoặc tắt yêu cầu đăng nhập.
+6. Mở **HANET Connect** từ sidebar; dashboard hiển thị trực tiếp qua Ingress.
+7. Vào **Cài đặt** để quản lý License Key, camera và API nâng cao.
 
 Không cần ánh xạ cổng `9091` khi chỉ dùng giao diện Ingress. Chỉ bật cổng này khi
 một hệ thống trong mạng nội bộ cần gọi API hoặc webhook; không mở cổng trên router
 ra Internet.
 
-## Hai lớp đăng nhập độc lập
+## Xác thực
 
 - **Tài khoản HANET** nằm trong cấu hình add-on và dùng để gọi HANET Cloud.
-- **Mật khẩu giao diện** mặc định bật với mã ban đầu được cung cấp riêng, không
-  thay đổi tài khoản HANET và có thể tắt sau khi đã mở khóa.
+- Giao diện sidebar dựa vào Home Assistant Ingress và không yêu cầu mật khẩu
+  dashboard thứ hai.
+- API gọi trực tiếp qua cổng `9091` vẫn cần `X-HANET-Gateway-Key`.
 - Custom integration đăng nhập HANET bằng config entry riêng, không dùng session,
   mật khẩu giao diện hay API key của add-on.
 
@@ -82,12 +92,11 @@ ra Internet.
 - **Sự kiện**: lọc theo ngày, camera, loại nhận diện, nguồn và từ khóa.
 - **Ghi hình**: tìm clip cloud theo ngày/camera và xem trực tiếp trong dialog.
 - **Danh tính**: quản lý Face ID, nhân viên, phòng ban, biển số và chấm công.
-- **Cài đặt**: kiểm tra kết nối, đổi mật khẩu, bật/tắt yêu cầu đăng nhập, khóa giao
-  diện, quản lý License Key, bật RTSP và dùng API nâng cao.
+- **Cài đặt**: kiểm tra kết nối, quản lý License Key, bật RTSP và dùng API nâng cao.
 
 ## License rollout
 
-- Mặc định `license_required: false`, do đó cài/nâng cấp `0.9.6` không khóa các
+- Mặc định `license_required: false`, do đó cài/nâng cấp `0.9.7` không khóa các
   chức năng camera, FaceID, phòng ban, biển số hoặc chấm công hiện có.
 - Người dùng chưa có key sẽ thấy link tới License Center để nhận trial/mua gói.
 - Chỉ bật `license_required: true` sau khi database, PayOS webhook và verify
@@ -96,13 +105,12 @@ ra Internet.
 
 ## Bảo mật
 
-- Hash mật khẩu và trạng thái bật/tắt khóa được lưu tại `/data/ui_auth.json` với
-  quyền owner-only; mật khẩu rõ không được lưu.
+- Home Assistant Ingress bảo vệ giao diện sidebar; add-on không yêu cầu thêm mật
+  khẩu dashboard riêng từ bản `0.9.7`.
 - Token HANET được lưu riêng tại `/data/session.json` và không gửi tới trình duyệt.
 - Credential P2P chỉ tồn tại ngắn hạn trong bộ nhớ và được truyền tới worker qua
   `stdin`.
-- Khi bật khóa, session giao diện chỉ nằm trong bộ nhớ add-on; khởi động lại
-  add-on sẽ yêu cầu mở khóa lại.
-- Nếu vẫn dùng mật khẩu mặc định, nên đổi ngay sau lần đăng nhập đầu tiên.
+- Truy cập trực tiếp qua cổng ngoài vẫn bắt buộc API key; không mở cổng `9091`
+  trên router ra Internet.
 
 Xem `DOCS.md` để biết cấu hình chi tiết, API và xử lý sự cố.

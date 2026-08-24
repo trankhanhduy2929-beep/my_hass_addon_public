@@ -1,5 +1,5 @@
 name: HANET Connect Gateway
-version: "0.9.6"
+version: "0.9.7"
 slug: hanet_connect
 description: HANET camera, access control, FaceID, LPR and attendance gateway
 arch:
@@ -26,7 +26,7 @@ options:
   api_base_url: https://api-camera3.hanet.ai/v4
   api_access_key: ""
   webhook_secret: ""
-  ui_auth_enabled: true
+  ui_auth_enabled: false
   poll_interval: 30
   event_stream: true
   verify_tls: true

@@ -15,8 +15,8 @@ configuration:
     name: Khoa webhook
     description: Khoa xac thuc cho webhook cong khai.
   ui_auth_enabled:
-    name: Khoa mat khau ban dau
-    description: Bat khoa mat khau khi tao du lieu lan dau; sau do co the bat tat trong giao dien.
+    name: Khoa mat khau giao dien cu
+    description: Tuy chon tuong thich; ban 0.9.7 mo truc tiep qua Home Assistant Ingress.
   poll_interval:
     name: Chu ky dong bo
     description: So giay giua hai lan cap nhat du lieu cloud.

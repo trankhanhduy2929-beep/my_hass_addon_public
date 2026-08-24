@@ -1,4 +1,4 @@
-# Hướng dẫn HANET Connect Gateway 0.9.6
+# Hướng dẫn HANET Connect Gateway 0.9.7
 
 ## 1. Yêu cầu
 
@@ -23,15 +23,15 @@
 - `api_access_key`: khóa cho API cục bộ. Nếu bật cổng `9091`, nên dùng chuỗi ngẫu
   nhiên tối thiểu 24 ký tự.
 - `webhook_secret`: khóa riêng cho `POST /api/webhook`.
-- `ui_auth_enabled`: mặc định `true`, dùng làm trạng thái khóa khi tạo dữ liệu lần
-  đầu. Sau đó bật/tắt trực tiếp trong **Cài đặt > Bảo mật giao diện**.
+- `ui_auth_enabled`: tùy chọn tương thích cũ; bản `0.9.7` luôn mở trực tiếp qua
+  Home Assistant Ingress và không yêu cầu mật khẩu dashboard riêng.
 - `poll_interval`: chu kỳ đồng bộ đầy đủ, từ 15 đến 3600 giây.
 - `event_stream`: duy trì SSE; add-on tự fallback sang polling khi route không có.
 - `verify_tls`: xác minh chứng chỉ HTTPS, nên luôn bật.
 - `log_level`: `debug`, `info`, `warning` hoặc `error`.
 - `license_portal_url`: website đăng ký, mua và quản lý key; mặc định là
   `https://hanet-license-admin-vercel.vercel.app`.
-- `license_required`: mặc định `false`, vì vậy cập nhật lên `0.9.6` không khóa
+- `license_required`: mặc định `false`, vì vậy cập nhật lên `0.9.7` không khóa
   hoặc thay đổi các chức năng đang chạy. Chỉ bật sau khi portal production ổn định.
 - `license_offline_grace_hours`: số giờ tối đa tin kết quả verify đã ký khi portal
   tạm mất kết nối; mặc định 72 giờ và không bao giờ vượt ngày hết hạn của key.
@@ -39,25 +39,12 @@
 Port `9091` mặc định không được ánh xạ ra host. Giao diện sidebar sử dụng Ingress
 và không cần mở port.
 
-## 4. Mở giao diện và quản lý khóa mật khẩu
+## 4. Mở giao diện
 
-Lần đầu bấm **HANET Connect** trong sidebar, nhập mật khẩu mặc định được cung cấp
-riêng để mở dashboard. Sau khi đăng nhập nên đổi sang mật khẩu riêng.
-
-1. Mở tab **Cài đặt > Bảo mật giao diện** để đổi mật khẩu.
-2. Mật khẩu mới phải có ít nhất 4 ký tự và tối đa 128 ký tự.
-3. Bấm **Tắt yêu cầu đăng nhập** nếu muốn những lần sau mở thẳng dashboard.
-4. Khi khóa đang tắt, bấm **Bật yêu cầu đăng nhập** để bật lại; mật khẩu đã đổi
-   vẫn được giữ.
-
-Sau khi đổi mật khẩu, tất cả session cũ bị thu hồi và trình duyệt hiện tại nhận
-session mới. Nút **Khóa ngay** hoặc biểu tượng đăng xuất trên thanh đầu trang sẽ
-đóng session hiện tại.
-
-Hash và trạng thái bật/tắt được lưu trong `/data/ui_auth.json`; mật khẩu rõ không
-được lưu. Nếu mất mật khẩu, dừng add-on, xóa file này trong vùng dữ liệu add-on
-rồi khởi động lại để khôi phục khóa mặc định được cung cấp riêng. Sau đó cần đổi
-mật khẩu ngay.
+Bấm **HANET Connect** trong sidebar để mở dashboard trực tiếp. Giao diện dùng lớp
+xác thực Home Assistant Ingress, không còn màn hình nhập mật khẩu dashboard riêng.
+Nếu ánh xạ cổng `9091`, mọi API ngoài Ingress vẫn phải gửi
+`X-HANET-Gateway-Key`.
 
 ## 5. Kích hoạt License Key
 
@@ -188,7 +175,7 @@ Chạy đồng thời hai phần sẽ tạo hai phiên HANET Cloud và hai chu k
   installation key; mỗi account/installation chỉ được nhận một lần.
 - **Portal tạm lỗi nhưng key trước đó hợp lệ**: addon dùng cache đã ký trong giới
   hạn `license_offline_grace_hours`, nhưng dừng ngay khi key thực sự hết hạn.
-- **Key mới sai làm mất key cũ**: bản `0.9.6` tự khôi phục key cũ còn hợp lệ; tải
+- **Key mới sai làm mất key cũ**: bản `0.9.7` tự khôi phục key cũ còn hợp lệ; tải
   lại trạng thái License để kiểm tra key masked đang được giữ.
 
 ## 11. Giới hạn

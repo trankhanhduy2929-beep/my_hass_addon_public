@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.9.7 - 2026-08-24
+
+- Mở giao diện trực tiếp qua Home Assistant Ingress, không còn yêu cầu mật khẩu
+  dashboard riêng; dữ liệu khóa cũ cũng được tự chuyển sang trạng thái tắt.
+- Sửa lỗi `Invalid type: expected int64 but got string` khi cập nhật FaceID và
+  membership phòng ban bằng payload numeric cùng fallback schema có kiểm chứng.
+- Cho phép khách và nhân viên cùng tạo, chọn, đổi hoặc bỏ phòng ban; CRUD phòng
+  ban dùng payload tối thiểu `placeID`/`id` trước khi thử biến thể mobile cũ.
+- Nút **Xem clip cùng ngày** ưu tiên `event_id`, fallback theo camera/thời gian và
+  tự tua video tới thời điểm xảy ra sự kiện.
+
 ## 0.9.6 - 2026-08-24
 
 - Thêm License Center HANET tự động: trial 1 ngày, PayOS QR, webhook đối soát,
