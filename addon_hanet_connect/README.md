@@ -1,7 +1,17 @@
-# HANET Connect Gateway 0.9.5
+# HANET Connect Gateway 0.9.6
 
 Add-on quản lý hệ sinh thái HANET trực tiếp trong Home Assistant với giao diện
 Ingress tiếng Việt, khóa truy cập có thể bật/tắt và API cục bộ có xác thực.
+
+## Điểm mới trong 0.9.6
+
+- Thêm License Center HANET tại `https://hanet-license-admin-vercel.vercel.app`.
+- Tạo installation identity Ed25519 ổn định, xác minh response ký Ed25519 và
+  lưu License Key cục bộ bằng AES-GCM; không chứa PayOS/database/admin secret.
+- Có trial 1 ngày, link dashboard, nhập/kích hoạt key, cache offline 72 giờ và
+  tùy chọn `license_required` (mặc định `false` để không ảnh hưởng bản đang chạy).
+- Khi thử key thay thế không hợp lệ, addon giữ nguyên key cũ còn hiệu lực thay vì
+  làm gián đoạn gateway.
 
 ## Điểm mới trong 0.9.5
 
@@ -73,7 +83,16 @@ ra Internet.
 - **Ghi hình**: tìm clip cloud theo ngày/camera và xem trực tiếp trong dialog.
 - **Danh tính**: quản lý Face ID, nhân viên, phòng ban, biển số và chấm công.
 - **Cài đặt**: kiểm tra kết nối, đổi mật khẩu, bật/tắt yêu cầu đăng nhập, khóa giao
-  diện, bật RTSP và dùng API nâng cao.
+  diện, quản lý License Key, bật RTSP và dùng API nâng cao.
+
+## License rollout
+
+- Mặc định `license_required: false`, do đó cài/nâng cấp `0.9.6` không khóa các
+  chức năng camera, FaceID, phòng ban, biển số hoặc chấm công hiện có.
+- Người dùng chưa có key sẽ thấy link tới License Center để nhận trial/mua gói.
+- Chỉ bật `license_required: true` sau khi database, PayOS webhook và verify
+  production đã được kiểm tra đầy đủ.
+- Xem hướng dẫn backend/Vercel tại `../hanet-license-portal/README.md`.
 
 ## Bảo mật
 

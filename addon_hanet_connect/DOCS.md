@@ -1,4 +1,4 @@
-# Hướng dẫn HANET Connect Gateway 0.9.5
+# Hướng dẫn HANET Connect Gateway 0.9.6
 
 ## 1. Yêu cầu
 
@@ -29,6 +29,12 @@
 - `event_stream`: duy trì SSE; add-on tự fallback sang polling khi route không có.
 - `verify_tls`: xác minh chứng chỉ HTTPS, nên luôn bật.
 - `log_level`: `debug`, `info`, `warning` hoặc `error`.
+- `license_portal_url`: website đăng ký, mua và quản lý key; mặc định là
+  `https://hanet-license-admin-vercel.vercel.app`.
+- `license_required`: mặc định `false`, vì vậy cập nhật lên `0.9.6` không khóa
+  hoặc thay đổi các chức năng đang chạy. Chỉ bật sau khi portal production ổn định.
+- `license_offline_grace_hours`: số giờ tối đa tin kết quả verify đã ký khi portal
+  tạm mất kết nối; mặc định 72 giờ và không bao giờ vượt ngày hết hạn của key.
 
 Port `9091` mặc định không được ánh xạ ra host. Giao diện sidebar sử dụng Ingress
 và không cần mở port.
@@ -53,7 +59,32 @@ Hash và trạng thái bật/tắt được lưu trong `/data/ui_auth.json`; m�
 rồi khởi động lại để khôi phục khóa mặc định được cung cấp riêng. Sau đó cần đổi
 mật khẩu ngay.
 
-## 5. Sử dụng các màn hình
+## 5. Kích hoạt License Key
+
+1. Mở **Cài đặt > License addon** trong giao diện HANET Connect.
+2. Bấm **Mở website lấy license**. Link chỉ mang installation ID, public key và
+   phiên bản addon; không mang tài khoản HANET hoặc secret nào.
+3. Đăng ký/đăng nhập bằng email, có thể lưu thêm số điện thoại.
+4. Nhận trial miễn phí 1 ngày hoặc mua gói 1 tháng/vĩnh viễn qua PayOS.
+5. Copy key từ dashboard, dán vào addon và bấm **Kích hoạt / kiểm tra**.
+
+Nếu cần liên kết thủ công trên portal, nhập cả **Installation ID** và **Installation
+public key** hiển thị trong thẻ License; chỉ biết ID không đủ để chiếm installation.
+
+Nếu thử thay bằng một key sai trong khi key cũ vẫn còn hợp lệ, addon tự khôi phục
+key cũ và không làm mất quyền đang dùng. Nút **Xóa key trên máy** chỉ xóa key đã
+lưu; installation identity vẫn được giữ để không nhận trial lặp lại.
+
+Addon lưu private Ed25519 identity và License Key đã mã hóa AES-GCM trong
+`/data/license.json`. Addon chỉ có public signing key của portal; PayOS secret,
+Supabase service role, khóa mã hóa database và quyền admin không nằm trong image.
+
+Khi `license_required=false`, trạng thái license chỉ hiển thị để rollout/test và
+mọi API HANET hiện có tiếp tục chạy như trước. Khi bật `true`, các route nghiệp vụ
+bị chặn nếu không có license hợp lệ; route giao diện, trạng thái và kích hoạt vẫn
+truy cập được để người dùng nhập key.
+
+## 6. Sử dụng các màn hình
 
 ### Camera
 
@@ -90,7 +121,7 @@ mật khẩu ngay.
 - Bật/tắt RTSP và mở setting từng camera.
 - Mở **API nâng cao** để gọi endpoint theo catalog.
 
-## 6. API cục bộ
+## 7. API cục bộ
 
 Ngoài `/health` và webhook, request qua cổng mạng phải gửi:
 
@@ -113,11 +144,15 @@ Các endpoint chính:
 - `POST /api/devices/{id}/commands/{command}`: gửi command camera.
 - `GET /api/devices/{id}/image`: ảnh camera/sự kiện gần nhất.
 - `GET /api/ws`: WebSocket trạng thái và sự kiện.
+- `GET /api/license/status`: trạng thái license và link portal.
+- `POST /api/license/activate`: lưu và verify một License Key.
+- `POST /api/license/verify`: ép đối soát lại key đang lưu.
+- `DELETE /api/license`: xóa key cục bộ, không xóa installation identity.
 
 API dùng `X-HANET-Gateway-Key` không yêu cầu mật khẩu khóa giao diện. Điều này giữ
 API máy-máy độc lập với session của người dùng.
 
-## 7. Webhook
+## 8. Webhook
 
 Webhook chỉ nhận secret qua header để tránh secret xuất hiện trong URL và access
 log:
@@ -130,7 +165,7 @@ Content-Type: application/json
 
 Không dùng query string `?secret=...`.
 
-## 8. Custom integration
+## 9. Custom integration
 
 Custom integration đăng nhập HANET Cloud bằng config entry riêng và tự chạy TUTK
 P2P trong Home Assistant Core. Nó không cần cổng `9091`, API key, session hoặc mật
@@ -138,7 +173,7 @@ khẩu giao diện của add-on.
 
 Chạy đồng thời hai phần sẽ tạo hai phiên HANET Cloud và hai chu kỳ đồng bộ độc lập.
 
-## 9. Xử lý sự cố
+## 10. Xử lý sự cố
 
 - **Không mở được giao diện**: kiểm tra add-on đang chạy và mở từ sidebar Ingress.
 - **Sai mật khẩu nhiều lần**: chờ hết thời gian khóa tạm rồi thử lại.
@@ -149,8 +184,14 @@ Chạy đồng thời hai phần sẽ tạo hai phiên HANET Cloud và hai chu k
 - **SSE lỗi 404**: đây là trường hợp đã hỗ trợ; add-on chuyển sang cloud polling.
 - **RTSP bật nhưng không xem được**: firmware có thể chỉ bật dịch vụ trong LAN của
   camera; chức năng này không thay thế TUTK P2P.
+- **Không nhận được trial**: phải mở portal từ link trong addon để gửi cả public
+  installation key; mỗi account/installation chỉ được nhận một lần.
+- **Portal tạm lỗi nhưng key trước đó hợp lệ**: addon dùng cache đã ký trong giới
+  hạn `license_offline_grace_hours`, nhưng dừng ngay khi key thực sự hết hạn.
+- **Key mới sai làm mất key cũ**: bản `0.9.6` tự khôi phục key cũ còn hợp lệ; tải
+  lại trạng thái License để kiểm tra key masked đang được giữ.
 
-## 10. Giới hạn
+## 11. Giới hạn
 
 - HANET Mobile API là API nội bộ và có thể thay đổi không báo trước.
 - Âm thanh hai chiều chưa được đưa vào Home Assistant.

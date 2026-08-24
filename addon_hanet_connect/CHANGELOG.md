@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.9.6 - 2026-08-24
+
+- Thêm License Center HANET tự động: trial 1 ngày, PayOS QR, webhook đối soát,
+  cấp key tự động, dashboard khách hàng và admin lifecycle.
+- Add-on tạo installation identity Ed25519 riêng, proof-of-possession mỗi lần
+  verify, cache offline 72 giờ và lưu key local bằng AES-GCM.
+- Mặc định `license_required: false` để rollout không làm gián đoạn gateway;
+  có thể bật enforcement sau khi đã cấu hình portal.
+- Giữ license cũ còn hiệu lực nếu người dùng thử nhập một key thay thế không hợp
+  lệ; bổ sung option/translation và tài liệu rollout production.
+
 ## 0.9.5 - 2026-08-23
 
 - Sửa xóa FaceID khi HANET trả HTTP 200 nhưng `returnCode` báo lỗi; gateway tiếp
