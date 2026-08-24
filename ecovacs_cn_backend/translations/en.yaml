@@ -8,6 +8,12 @@ configuration:
   state_refresh_interval:
     name: State refresh interval
     description: Fallback seconds between complete robot state refresh requests.
+  settings_refresh_interval:
+    name: Settings refresh interval
+    description: Seconds between refreshes for robot settings that change less often.
+  diagnostic_refresh_interval:
+    name: Diagnostic refresh interval
+    description: Seconds between network, firmware and consumable diagnostic refreshes.
   mqtt_enabled:
     name: MQTT Discovery
     description: Create Home Assistant entities through the configured MQTT broker.
@@ -20,5 +26,8 @@ configuration:
   mqtt_map_max_bytes:
     name: Maximum MQTT map size
     description: Skip SVG maps above this byte limit to protect the broker and Home Assistant.
+  mqtt_batch_window_ms:
+    name: MQTT batch window
+    description: Milliseconds used to combine nearby robot events into one publish cycle.
 network:
   4545/tcp: Internal API port. Leave unmapped unless external access is required.

@@ -1,6 +1,6 @@
 # Ecovacs đa vùng Backend cho Home Assistant
 
-Ecovacs Backend `1.2.21` là add-on điều khiển robot từ nhiều tài khoản Ecovacs
+Ecovacs Backend `1.3.1` là add-on điều khiển robot từ nhiều tài khoản Ecovacs
 China và quốc tế cùng lúc, sau đó đưa entity vào Home Assistant trực tiếp bằng
 MQTT Discovery. Không cần cài custom component hoặc nhập cloud credential vào
 Home Assistant Core.
@@ -14,6 +14,7 @@ Ecovacs China/international cloud + MQTT
             │
             ▼
 Ecovacs Backend add-on :4545
+  ├─ kích hoạt bằng license key gắn Installation ID
   ├─ đăng nhập và lưu credential mã hóa
   ├─ nhận trạng thái robot từ Ecovacs MQTT
   ├─ đánh dấu map mới, chỉ dựng SVG khi cần
@@ -29,6 +30,20 @@ Home Assistant MQTT integration
 ```
 
 ## Tính năng
+
+### License và truy cập Ingress
+
+- Cài mới không còn yêu cầu mã khởi tạo, PIN hoặc mật khẩu quản trị.
+- Add-on hiển thị `Installation ID`, QR và liên kết tới portal cấp license.
+- Hỗ trợ trial 1 ngày miễn phí, gói 7 ngày 50.000đ và vĩnh viễn 200.000đ; key
+  chỉ dùng cho installation đã liên kết.
+- Domain portal được đóng sẵn trong add-on, không có ô nhập địa chỉ portal.
+- Phản hồi verify từ portal được ký Ed25519. Đổi URL sang máy chủ giả không thể
+  tự tạo phản hồi license hợp lệ.
+- License key được lưu AES-256-GCM trong `/data/license`; backend và MQTT chỉ
+  chạy khi key đang hợp lệ. Mất kết nối portal tạm thời có grace tối đa 72 giờ.
+- Ingress tự nhận phiên ngắn hạn. Home Assistant có thể dùng trực tiếp license
+  key hoặc API token riêng được tạo sau khi kích hoạt.
 
 ### Đăng nhập Ecovacs trong add-on
 
@@ -231,29 +246,30 @@ Các nút chỉ được tạo khi add-on xác nhận robot hỗ trợ capabilit
 
 ## Cài add-on local
 
-1. Giải nén `ecovacs_cn_addon-repository-v1.2.21.zip`.
+1. Giải nén `ecovacs_cn_addon-repository-v1.3.1.zip`.
 2. Chép nguyên thư mục `ecovacs_cn_backend` vào `/addons/`.
 3. Mở Add-on Store và chọn **Reload/Check for updates**.
 4. Chọn **Ecovacs China Backend** và nhấn **Install/Rebuild**.
-5. Kiểm tra trang thông tin phải hiển thị phiên bản `1.2.21`.
+5. Kiểm tra trang thông tin phải hiển thị phiên bản `1.3.1`.
 6. Khởi động add-on và bật **Show in sidebar** nếu muốn.
 
 Không chép riêng `addon_app` hoặc `protocol_components`. Docker build cần toàn bộ
 thư mục `ecovacs_cn_backend`.
 
-## Khởi tạo lần đầu
+## Kích hoạt lần đầu
 
 1. Mở giao diện **Ecovacs Backend** từ thanh bên Home Assistant.
-2. Nhập mã khởi tạo một lần do người cài đặt cung cấp.
-3. Đặt PIN quản trị 4 số hoặc mật khẩu dài hơn.
-4. Kiểm tra ô **MQTT Home Assistant** chuyển sang **Đã kết nối**.
+2. Quét QR hoặc bấm **Mở trang cấp license**.
+3. Đăng nhập portal bằng Google hoặc email, rồi liên kết đúng `Installation ID`.
+4. Nhận trial/mua gói, copy key và dán vào form **Kích hoạt license**.
+5. Sau khi key hợp lệ, cấu hình MQTT và tài khoản Ecovacs trong dashboard.
 
-Mã khởi tạo chỉ dùng cho installation chưa được thiết lập và bị vô hiệu sau khi
-đặt mật khẩu quản trị. Đây không phải mật khẩu khôi phục hoặc master password.
+Không có bước đặt PIN hoặc mật khẩu đăng nhập ban đầu. License key là điều kiện
+mở cloud backend và MQTT service.
 
 ## Đăng nhập tài khoản Ecovacs
 
-1. Đăng nhập quản trị add-on bằng mật khẩu đã đặt.
+1. Sau khi license hợp lệ, mở dashboard Ingress.
 2. Với tài khoản China, chọn **Ecovacs ID**, **Điện thoại** hoặc **SMS**.
 3. Với tài khoản quốc tế, chọn **Quốc tế**, nhập mã quốc gia ISO 2 ký tự nơi
    tài khoản đăng ký, Ecovacs ID/email và mật khẩu.
@@ -318,8 +334,9 @@ Không bật debug lâu dài vì log nhiều hơn và có thể tăng I/O.
 
 ## Bảo mật và dữ liệu
 
-- Mật khẩu quản trị được băm bằng scrypt.
-- Phiên bearer quản trị ngẫu nhiên, chỉ lưu HMAC hash và có thể thu hồi.
+- Không có mật khẩu/PIN quản trị bắt buộc; Ingress dùng token ngắn hạn tự cấp.
+- API token tùy chọn là giá trị ngẫu nhiên, chỉ lưu HMAC hash và có thể thu hồi.
+- License key được lưu mã hóa; phản hồi portal phải có chữ ký Ed25519 hợp lệ.
 - Credential Ecovacs được mã hóa AES-256-GCM trong `/data/secrets.enc`.
 - MQTT broker credential nhập trong Ingress được mã hóa riêng trong `/data/mqtt`.
 - Khóa mã hóa chỉ nằm trong `/data` của installation.
@@ -337,14 +354,14 @@ Docker image hoặc backup `/data`. Không mở trực tiếp cổng `4545` ra I
 - Dữ liệu add-on nằm trong `/data` và được Home Assistant backup cùng add-on.
 - Khi cập nhật local add-on, thay toàn bộ thư mục `ecovacs_cn_backend`, chọn
   **Reload** rồi **Rebuild**.
-- Không chọn xóa dữ liệu nếu muốn giữ tài khoản, mật khẩu quản trị và token.
+- Không chọn xóa dữ liệu nếu muốn giữ tài khoản, license key và API token.
 - Kiểm tra phiên bản trên trang add-on và dòng launcher trong log sau cập nhật.
 
 ## Xử lý lỗi
 
 ### Docker báo thiếu protocol file
 
-Phải dùng bản `1.2.21` và chép nguyên thư mục add-on. Trong thư mục phải có:
+Phải dùng bản `1.3.1` và chép nguyên thư mục add-on. Trong thư mục phải có:
 
 ```text
 ecovacs_cn_backend/
@@ -364,7 +381,7 @@ kiểm tra version rồi chọn **Rebuild**.
 
 ### `ModuleNotFoundError: addon_app`
 
-Kiểm tra đang dùng `1.2.21`. Bản này cài package trực tiếp vào Python
+Kiểm tra đang dùng `1.3.1`. Bản này cài package trực tiếp vào Python
 `site-packages`; Docker build sẽ tự import-test package và không còn phụ thuộc
 `PYTHONPATH` hoặc quyền đọc `/app`.
 
@@ -384,7 +401,7 @@ Kiểm tra đang dùng `1.2.21`. Bản này cài package trực tiếp vào Pyth
 
 ### Ecovacs MQTT báo `Operation timed out`
 
-- Bản `1.2.21` không chờ MQTT hoàn tất trong request đăng nhập và không tạo
+- Bản `1.3.1` không chờ MQTT hoàn tất trong request đăng nhập và không tạo
   handshake kiểm tra trùng, nên giao diện sẽ trả nhanh sau khi xác thực account.
 - MQTT client vẫn retry mỗi 5 giây theo thư viện Ecovacs. Subscription chưa gửi
   xong được giữ lại qua lần reconnect kế tiếp, không cần nhập lại tài khoản.
@@ -404,8 +421,8 @@ Kiểm tra đang dùng `1.2.21`. Bản này cài package trực tiếp vào Pyth
 ## Gói phát hành
 
 - Mọi bản build mới được lưu trong thư mục `ket_qua` ở root workspace.
-- `ecovacs_cn_addon-repository-v1.2.21.zip`: add-on repository/local build.
-- `SHA256SUMS-v1.2.21.txt`: checksum của archive add-on.
+- `ecovacs_cn_addon-repository-v1.3.1.zip`: add-on repository/local build.
+- `SHA256SUMS-v1.3.1.txt`: checksum của archive add-on.
 
 Xem thêm hướng dẫn vận hành ngắn trong `DOCS.md` và lịch sử thay đổi trong
 `CHANGELOG.md`.

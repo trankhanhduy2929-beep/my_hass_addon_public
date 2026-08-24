@@ -81,7 +81,7 @@ This table is generated automatically from the private release catalog after suc
 | HANET Connect Gateway | `0.9.5` | experimental | `amd64, aarch64` | [Open](addon_hanet_connect/README.md) |
 | AI Proxy Router | `1.14.0` | stable | `amd64, aarch64` | [Open](ai_proxy_router/README.md) |
 | Chấm Công ZKTeco | `2.0.5` | stable | `amd64, aarch64` | [Open](cham_cong_zkteco/README.md) |
-| Ecovacs China Backend | `1.2.21` | stable | `amd64, aarch64` | [Open](ecovacs_cn_backend/README.md) |
+| Ecovacs China Backend | `1.3.1` | stable | `amd64, aarch64` | [Open](ecovacs_cn_backend/README.md) |
 | Ecovacs Private Gateway | `2.1.0` | stable | `amd64, aarch64` | [Open](ecovacs_gateway/README.md) |
 | Hanet Camera Bridge | `2.5.2` | stable | `amd64, aarch64` | [Open](hanet_bridge/README.md) |
 | Hanet Camera Bridge Pro | `3.0.9` | stable | `amd64, aarch64` | [Open](hanet_bridge_pro/README.md) |

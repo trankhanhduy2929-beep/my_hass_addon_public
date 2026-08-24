@@ -8,14 +8,16 @@ Discovery. Không cần custom component.
 
 1. Cài/rebuild **Ecovacs China Backend**, sau đó khởi động add-on.
 2. Mở giao diện **Ingress** của add-on.
-3. Trong thẻ **Kết nối MQTT**, điền địa chỉ, cổng, tài khoản và mật khẩu broker.
-4. Bật **Dùng TLS** nếu broker yêu cầu TLS, thường là cổng `8883`.
-5. Bấm **Lưu và kết nối MQTT**; bridge sẽ kết nối lại ngay.
-6. Để trống địa chỉ nếu muốn dùng MQTT service của Supervisor.
-7. Thêm một hoặc nhiều tài khoản China bằng ID, điện thoại + mật khẩu hoặc SMS.
-8. Tài khoản quốc tế dùng tab **Quốc tế**, mã quốc gia ISO 2 ký tự và ID/email
+3. Quét QR/mở portal, nhận license và dán key vào add-on. Không cần PIN hoặc
+   mật khẩu quản trị ban đầu.
+4. Trong thẻ **Kết nối MQTT**, điền địa chỉ, cổng, tài khoản và mật khẩu broker.
+5. Bật **Dùng TLS** nếu broker yêu cầu TLS, thường là cổng `8883`.
+6. Bấm **Lưu và kết nối MQTT**; bridge sẽ kết nối lại ngay.
+7. Để trống địa chỉ nếu muốn dùng MQTT service của Supervisor.
+8. Thêm một hoặc nhiều tài khoản China bằng ID, điện thoại + mật khẩu hoặc SMS.
+9. Tài khoản quốc tế dùng tab **Quốc tế**, mã quốc gia ISO 2 ký tự và ID/email
    cùng mật khẩu Ecovacs.
-9. Với tài khoản Việt Nam, dùng `VN`. Nếu Ecovacs yêu cầu xác minh thiết bị mới,
+10. Với tài khoản Việt Nam, dùng `VN`. Nếu Ecovacs yêu cầu xác minh thiết bị mới,
    nhập mã được gửi tới email trong form xuất hiện ngay tại tab **Quốc tế**.
 
 Gmail được dùng như email Ecovacs, không phải Google OAuth. Nếu tài khoản chỉ
@@ -67,8 +69,8 @@ Home Assistant để không còn entity trùng.
 ## API nội bộ
 
 Cổng `4545` vẫn phục vụ Ingress UI và API quản trị, nhưng không cần ánh xạ ra
-host và Home Assistant không cần mã token để nhận entity. Phiên đăng nhập quản
-trị được add-on giữ nội bộ trong tab trình duyệt.
+host và Home Assistant không cần mã token để nhận entity. Ingress tự nhận phiên
+ngắn hạn; cài mới không có bước đăng nhập bằng PIN/mật khẩu.
 
 API quản trị có thể thêm tài khoản qua `POST /api/v1/account/login`, xóa riêng
 qua `DELETE /api/v1/accounts/{account_id}` và reconnect riêng qua
@@ -89,10 +91,10 @@ cloud token đã lưu.
   Home trước. Khi form mã email xuất hiện, nhập mã hoặc bấm **Gửi lại mã**.
 - **Robot quốc tế chỉ có metadata:** class đó chưa được `deebot-client` nhận
   diện. Add-on không áp fallback China để tránh gửi lệnh sai thiết bị.
-- **Ecovacs MQTT `Operation timed out`:** dùng bản `1.2.21`; API đăng nhập không
+- **Ecovacs MQTT `Operation timed out`:** dùng bản `1.3.1`; API đăng nhập không
   chờ MQTT, tài khoản chuyển sang **Đang kết nối**, client retry nền mỗi 5 giây
   và subscription chưa hoàn tất được giữ lại qua reconnect.
-- **X1/X1 PRO/T10 OMNI timeout:** dùng bản `1.2.21`; mọi profile X1/T10 OMNI,
+- **X1/X1 PRO/T10 OMNI timeout:** dùng bản `1.3.1`; mọi profile X1/T10 OMNI,
   kể cả class lạ nhận diện bằng tên sản phẩm, đều dùng map-set không sinh chuỗi
   `getMapSubSet`. Profile suy luận và class bảo thủ cũng không gọi `getWorkMode`;
   chỉ X1 class `8onkgl`/`1vxt52` đã xác minh giữ capability này.
@@ -107,31 +109,31 @@ cloud token đã lưu.
 - **Tên phòng:** X1/T10 đọc `getMapSet_V2` giống app China mà không gọi
   `getMapSubSet`. Nếu firmware không trả tên thì có thể đặt thủ công trong
   Ingress; mặc định MQTT button dùng **Khu vực N**.
-- **Giặt giẻ không chạy:** bản `1.2.21` gửi `clean_V2` loại `washing` đúng giao
+- **Giặt giẻ không chạy:** bản `1.3.1` gửi `clean_V2` loại `washing` đúng giao
   thức DT10/X1 thay cho station action cũ.
-- **Không reset được vật tư camelCase:** bản `1.2.21` sửa MQTT action cho chổi
+- **Không reset được vật tư camelCase:** bản `1.3.1` sửa MQTT action cho chổi
   cạnh, giẻ lau tròn và bộ chăm sóc trạm.
 - **Chỉ thấy Khu vực N, không có đa giác:** firmware chỉ trả ID trong
   `getMapSet`. Nút khu vực vẫn dọn đúng phòng; add-on không gọi `getMapSubSet`
   để tránh tái phát timeout trên X1/T10 nội địa.
 - **Map không cập nhật:** kiểm tra `mqtt_map_enabled`, interval và giới hạn byte.
-- **Map vẫn đổi khi robot đã ở trạm:** dùng bản `1.2.21`; bản này dừng polling
+- **Map vẫn đổi khi robot đã ở trạm:** dùng bản `1.3.1`; bản này dừng polling
   position/trace và bỏ map event động sau cửa sổ cập nhật cuối 3 giây.
-- **Log `getNetInfo`/`getBorderSpin` timeout:** bản `1.2.21` không còn gọi hai
+- **Log `getNetInfo`/`getBorderSpin` timeout:** bản `1.3.1` không còn gọi hai
   nhóm này mỗi 120 giây. Setting mặc định làm mới mỗi 600 giây, còn network,
   OTA và tuổi thọ mỗi 1200 giây; lỗi cloud tạm thời không làm vacuum entity lỗi.
-- **MQTT gửi quá nhiều:** bản `1.2.21` gom event 350 ms, chỉ publish robot thay
+- **MQTT gửi quá nhiều:** bản `1.3.1` gom event 350 ms, chỉ publish robot thay
   đổi, cache Discovery theo cấu trúc và chỉ render SVG map khi MQTT/API cần.
-- **Log mạng lặp liên tục:** bản `1.2.21` chỉ giữ một warning cùng nội dung mỗi
+- **Log mạng lặp liên tục:** bản `1.3.1` chỉ giữ một warning cùng nội dung mỗi
   5 phút cho lỗi MQTT/command mạng lặp; reconnect vẫn chạy nền bình thường.
-- **Một robot lỗi làm polling dừng:** bản `1.2.21` cô lập lỗi refresh/map theo
+- **Một robot lỗi làm polling dừng:** bản `1.3.1` cô lập lỗi refresh/map theo
   từng robot và watchdog tự khởi động lại Ecovacs MQTT task bị dừng.
-- **`8bja83 not recognized`:** bản `1.2.21` đăng ký X1 OMNI nội địa trực tiếp
+- **`8bja83 not recognized`:** bản `1.3.1` đăng ký X1 OMNI nội địa trực tiếp
   trước lúc `deebot-client` phân loại và xóa negative cache cũ. Nếu log vẫn có
   logger `custom_components.ecovacs_cn`, Home Assistant còn chạy integration
   cũ; hãy xóa integration/thư mục custom component và restart Home Assistant.
 
 Credential của mọi tài khoản Ecovacs được mã hóa trong `/data`; tài khoản China
-cũ được migration tự động và giữ device ID. Mật khẩu quản trị dùng scrypt;
-MQTT credential nhập trong Ingress được mã hóa riêng trong `/data/mqtt`; phiên
-bearer quản trị chỉ lưu hash. Không mở cổng `4545` trực tiếp ra Internet.
+cũ được migration tự động và giữ device ID. License key được mã hóa trong
+`/data/license`; MQTT credential được mã hóa riêng trong `/data/mqtt`; API token
+tùy chọn chỉ lưu hash. Không mở cổng `4545` trực tiếp ra Internet.
