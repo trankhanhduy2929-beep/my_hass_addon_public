@@ -1,7 +1,15 @@
-# HANET Connect Gateway 0.9.7
+# HANET Connect Gateway 0.9.8
 
 Add-on quản lý hệ sinh thái HANET trực tiếp trong Home Assistant với giao diện
 Ingress tiếng Việt mở trực tiếp, còn API cục bộ ngoài Ingress vẫn có xác thực.
+
+## Điểm mới trong 0.9.8
+
+- Sửa xóa FaceID khi endpoint mobile trả `404 Not Found`, có fallback tới API
+  `personID` chính thức bằng form-urlencoded và vẫn xác minh lại danh sách cloud.
+- Thử đúng cả ID dạng chuỗi và số cho phòng ban, khắc phục lỗi
+  `Invalid type: expected string but got number` mà không phá tenant cần `int64`.
+- Sửa tạo phòng ban, đổi phòng ban và thêm Face nhân viên/khách có chọn phòng ban.
 
 ## Điểm mới trong 0.9.7
 
@@ -96,7 +104,7 @@ ra Internet.
 
 ## License rollout
 
-- Mặc định `license_required: false`, do đó cài/nâng cấp `0.9.7` không khóa các
+- Mặc định `license_required: false`, do đó cài/nâng cấp `0.9.8` không khóa các
   chức năng camera, FaceID, phòng ban, biển số hoặc chấm công hiện có.
 - Người dùng chưa có key sẽ thấy link tới License Center để nhận trial/mua gói.
 - Chỉ bật `license_required: true` sau khi database, PayOS webhook và verify

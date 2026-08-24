@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.9.8 - 2026-08-24
+
+- Sửa xóa FaceID khi route mobile `/business/person/delete` trả 404: ưu tiên
+  `personID`, thử cả chuỗi/số, sau đó fallback form-urlencoded tới endpoint
+  `/person/removePersonByID` hoặc `/person/remove` trên cùng HANET host.
+- Không còn ép mọi `departmentID`, `personID` và `placeID` chuỗi thành JSON number;
+  từng mutation giờ thử cả kiểu số và chuỗi theo đúng lỗi schema cloud trả về.
+- Sửa tạo phòng ban, đổi phòng ban và thêm Face nhân viên/khách có chọn phòng ban
+  trên tenant báo `Invalid type: expected string but got number`.
+- Giữ xác minh read-after-write để chỉ báo thành công khi FaceID hoặc membership
+  thực sự thay đổi trên cloud.
+
 ## 0.9.7 - 2026-08-24
 
 - Mở giao diện trực tiếp qua Home Assistant Ingress, không còn yêu cầu mật khẩu
