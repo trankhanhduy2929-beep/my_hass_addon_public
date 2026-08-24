@@ -246,12 +246,18 @@ Các nút chỉ được tạo khi add-on xác nhận robot hỗ trợ capabilit
 
 ## Cài add-on local
 
-1. Giải nén `ecovacs_cn_addon-repository-v1.3.1.zip`.
-2. Chép nguyên thư mục `ecovacs_cn_backend` vào `/addons/`.
-3. Mở Add-on Store và chọn **Reload/Check for updates**.
-4. Chọn **Ecovacs China Backend** và nhấn **Install/Rebuild**.
-5. Kiểm tra trang thông tin phải hiển thị phiên bản `1.3.1`.
-6. Khởi động add-on và bật **Show in sidebar** nếu muốn.
+1. Mở **Home Assistant**.
+2. Vào **Settings → Add-ons → Add-on Store**.
+3. Chọnn **⋮** menu trên góc phải màn hình.
+4. Chọn **Repositories**.
+5. Add this repository:
+
+```text
+https://github.com/trankhanhduy2929-beep/my_hass_addon_public
+```
+5. Chọn **Ecovacs China Backend** và nhấn **Install**.
+6. Kiểm tra trang thông tin phải hiển thị phiên bản `1.3.1`.
+7. Khởi động add-on và bật **Show in sidebar** nếu muốn.
 
 Không chép riêng `addon_app` hoặc `protocol_components`. Docker build cần toàn bộ
 thư mục `ecovacs_cn_backend`.
