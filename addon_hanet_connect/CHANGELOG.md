@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.9.9 - 2026-08-24
+
+- Sửa thêm Face nhân viên/khách có chọn phòng ban trên tenant trả
+  `This field is required` dù ID đã gửi dạng chuỗi.
+- Sửa đổi phòng ban cho FaceID trên tenant trả
+  `Invalid type: expected string but got number` ở API JSON nội bộ.
+- Sau các fallback JSON cũ, gateway tự chuyển sang API form-urlencoded dùng
+  `token`, `departmentID` và `personIDs/personID`, thử cả route V4 và route
+  tương thích cùng host.
+- Đọc membership qua form API có phân trang tối đa 50 người/trang rồi vẫn giữ
+  read-after-write, nên không báo thành công giả và không thay đổi custom component.
+
 ## 0.9.8 - 2026-08-24
 
 - Sửa xóa FaceID khi route mobile `/business/person/delete` trả 404: ưu tiên

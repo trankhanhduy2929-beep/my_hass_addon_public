@@ -1,4 +1,4 @@
-# Hướng dẫn HANET Connect Gateway 0.9.8
+# Hướng dẫn HANET Connect Gateway 0.9.9
 
 ## 1. Yêu cầu
 
@@ -31,7 +31,7 @@
 - `log_level`: `debug`, `info`, `warning` hoặc `error`.
 - `license_portal_url`: website đăng ký, mua và quản lý key; mặc định là
   `https://hanet-license-admin-vercel.vercel.app`.
-- `license_required`: mặc định `false`, vì vậy cập nhật lên `0.9.8` không khóa
+- `license_required`: mặc định `false`, vì vậy cập nhật lên `0.9.9` không khóa
   hoặc thay đổi các chức năng đang chạy. Chỉ bật sau khi portal production ổn định.
 - `license_offline_grace_hours`: số giờ tối đa tin kết quả verify đã ký khi portal
   tạm mất kết nối; mặc định 72 giờ và không bao giờ vượt ngày hết hạn của key.
@@ -169,17 +169,19 @@ Chạy đồng thời hai phần sẽ tạo hai phiên HANET Cloud và hai chu k
 - **Không có camera**: đăng nhập lại ứng dụng HANET chính thức và kiểm tra quyền
   chia sẻ/địa điểm.
 - **SSE lỗi 404**: đây là trường hợp đã hỗ trợ; add-on chuyển sang cloud polling.
-- **Xóa FaceID báo 404**: bản `0.9.8` tự thử endpoint `personID` tương thích trên
+- **Xóa FaceID báo 404**: bản `0.9.9` tự thử endpoint `personID` tương thích trên
   cùng HANET host và chỉ báo thành công sau khi FaceID biến mất khỏi cloud.
-- **Phòng ban báo expected string/int64**: bản `0.9.8` tự thử cả ID dạng chuỗi và
-  số cho tạo phòng, gán/đổi/bỏ phòng và thêm Face có chọn phòng ban.
+- **Thêm Face chọn phòng báo `This field is required`**: bản `0.9.9` tự fallback
+  sang form-urlencoded có `token`, `departmentID` và `personIDs`.
+- **Đổi phòng báo expected string/int64**: bản `0.9.9` thử JSON chuỗi/số rồi
+  fallback form-urlencoded; thao tác bỏ phòng dùng `personID` đúng schema.
 - **RTSP bật nhưng không xem được**: firmware có thể chỉ bật dịch vụ trong LAN của
   camera; chức năng này không thay thế TUTK P2P.
 - **Không nhận được trial**: phải mở portal từ link trong addon để gửi cả public
   installation key; mỗi account/installation chỉ được nhận một lần.
 - **Portal tạm lỗi nhưng key trước đó hợp lệ**: addon dùng cache đã ký trong giới
   hạn `license_offline_grace_hours`, nhưng dừng ngay khi key thực sự hết hạn.
-- **Key mới sai làm mất key cũ**: bản `0.9.8` tự khôi phục key cũ còn hợp lệ; tải
+- **Key mới sai làm mất key cũ**: bản `0.9.9` tự khôi phục key cũ còn hợp lệ; tải
   lại trạng thái License để kiểm tra key masked đang được giữ.
 
 ## 11. Giới hạn
