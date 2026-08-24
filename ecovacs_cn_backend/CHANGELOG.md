@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.3.4 - 2026-08-24
+
+- Sửa lỗi add-on không khởi động trên Home Assistant khi Supervisor quản lý quyền
+  của mount `/data` và từ chối `chmod` trực tiếp thư mục gốc.
+- `SecurityStore` và `SecretStore` vẫn tạo file bí mật với quyền `0600`, nhưng
+  thao tác siết quyền thư mục mount thành best-effort để tương thích Supervisor.
+- Thêm regression test mô phỏng `PermissionError` khi chmod thư mục dữ liệu và
+  xác nhận Installation ID, encrypted store cùng recovery vẫn hoạt động.
+
 ## 1.3.3 - 2026-08-24
 
 - Sửa lỗi nâng cấp add-on làm mất nhận diện license: Installation ID được lưu

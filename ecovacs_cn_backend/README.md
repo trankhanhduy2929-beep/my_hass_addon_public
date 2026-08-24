@@ -1,6 +1,6 @@
 # Ecovacs đa vùng Backend cho Home Assistant
 
-Ecovacs Backend `1.3.3` là add-on điều khiển robot từ nhiều tài khoản Ecovacs
+Ecovacs Backend `1.3.4` là add-on điều khiển robot từ nhiều tài khoản Ecovacs
 China và quốc tế cùng lúc, sau đó đưa entity vào Home Assistant trực tiếp bằng
 MQTT Discovery. Không cần cài custom component hoặc nhập cloud credential vào
 Home Assistant Core.
@@ -269,11 +269,11 @@ Các nút chỉ được tạo khi add-on xác nhận robot hỗ trợ capabilit
 
 ## Cài thủ công từ ZIP
 
-1. Giải nén `ecovacs_cn_addon-repository-v1.3.3.zip`.
+1. Giải nén `ecovacs_cn_addon-repository-v1.3.4.zip`.
 2. Chép nguyên thư mục `ecovacs_cn_backend` vào `/addons/`.
 3. Mở Add-on Store và chọn **Reload/Check for updates**.
 4. Chọn **Ecovacs China Backend** và nhấn **Install/Rebuild**.
-5. Kiểm tra trang thông tin phải hiển thị phiên bản `1.3.3`.
+5. Kiểm tra trang thông tin phải hiển thị phiên bản `1.3.4`.
 6. Khởi động add-on và bật **Show in sidebar** nếu muốn.
 
 Không chép riêng `addon_app` hoặc `protocol_components`. Docker build cần toàn bộ
@@ -375,7 +375,7 @@ Docker image hoặc backup `/data`. Không mở trực tiếp cổng `4545` ra I
 ## Sao lưu và cập nhật
 
 - Dữ liệu add-on nằm trong `/data` và được Home Assistant backup cùng add-on.
-- Bản `1.3.3` lưu thêm Installation ID dự phòng và một bản license recovery mã
+- Bản `1.3.4` lưu thêm Installation ID dự phòng và một bản license recovery mã
   hóa ngoài thư mục license chính để tự nhận lại key sau restart/nâng cấp.
 - Khi cập nhật local add-on, thay toàn bộ thư mục `ecovacs_cn_backend`, chọn
   **Reload** rồi **Rebuild**.
@@ -386,17 +386,17 @@ Docker image hoặc backup `/data`. Không mở trực tiếp cổng `4545` ra I
 
 ### Nâng cấp xong bị hỏi license key lại
 
-- Cập nhật lên `1.3.3`; bản này giữ đồng thời `security.json`, Installation ID
+- Cập nhật lên `1.3.4`; bản này giữ đồng thời `security.json`, Installation ID
   dự phòng, encrypted backup và `/data/license_recovery`.
 - Nếu key của bản cũ vẫn còn trong `/data`, add-on tự nhận lại và không cần nhập.
-- Nếu `/data/license` đã bị xóa trước khi cài `1.3.3` và chưa từng có recovery,
+- Nếu `/data/license` đã bị xóa trước khi cài `1.3.4` và chưa từng có recovery,
   dữ liệu key không thể tái tạo từ hash; nhập lại key hiện tại một lần. Các lần
   nâng cấp sau sẽ tự nhận.
 - Không bấm **Uninstall** kèm xóa dữ liệu và không xóa thư mục `/data` của add-on.
 
 ### Docker báo thiếu protocol file
 
-Phải dùng bản `1.3.3` và chép nguyên thư mục add-on. Trong thư mục phải có:
+Phải dùng bản `1.3.4` và chép nguyên thư mục add-on. Trong thư mục phải có:
 
 ```text
 ecovacs_cn_backend/
@@ -416,7 +416,7 @@ kiểm tra version rồi chọn **Rebuild**.
 
 ### `ModuleNotFoundError: addon_app`
 
-Kiểm tra đang dùng `1.3.3`. Bản này cài package trực tiếp vào Python
+Kiểm tra đang dùng `1.3.4`. Bản này cài package trực tiếp vào Python
 `site-packages`; Docker build sẽ tự import-test package và không còn phụ thuộc
 `PYTHONPATH` hoặc quyền đọc `/app`.
 
@@ -436,7 +436,7 @@ Kiểm tra đang dùng `1.3.3`. Bản này cài package trực tiếp vào Pytho
 
 ### Ecovacs MQTT báo `Operation timed out`
 
-- Bản `1.3.3` không chờ MQTT hoàn tất trong request đăng nhập và không tạo
+- Bản `1.3.4` không chờ MQTT hoàn tất trong request đăng nhập và không tạo
   handshake kiểm tra trùng, nên giao diện sẽ trả nhanh sau khi xác thực account.
 - MQTT client vẫn retry mỗi 5 giây theo thư viện Ecovacs. Subscription chưa gửi
   xong được giữ lại qua lần reconnect kế tiếp, không cần nhập lại tài khoản.
@@ -456,8 +456,8 @@ Kiểm tra đang dùng `1.3.3`. Bản này cài package trực tiếp vào Pytho
 ## Gói phát hành
 
 - Mọi bản build mới được lưu trong thư mục `ket_qua` ở root workspace.
-- `ecovacs_cn_addon-repository-v1.3.3.zip`: add-on repository/local build.
-- `SHA256SUMS-v1.3.3.txt`: checksum của archive add-on.
+- `ecovacs_cn_addon-repository-v1.3.4.zip`: add-on repository/local build.
+- `SHA256SUMS-v1.3.4.txt`: checksum của archive add-on.
 
 Xem thêm hướng dẫn vận hành ngắn trong `DOCS.md` và lịch sử thay đổi trong
 `CHANGELOG.md`.
