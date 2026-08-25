@@ -1,5 +1,13 @@
 # Changelog
 
+## 4.1.0 - 2026-08-25
+
+- Bắt buộc nhập License Key hợp lệ trước khi truy cập hoặc sử dụng toàn bộ tính năng YouTube Pro; option `license_enforcement` cũ chỉ còn để tương thích cấu hình nâng cấp và không thể tắt khóa.
+- Giữ lại duy nhất các route cần cho health, giao diện kích hoạt, icon và API license; queue, playlist, Media Browser, Integration API, relay và playback đều trả `402 license_required` khi chưa active key.
+- Khi license hết hạn, bị thu hồi hoặc bị khóa, add-on dừng playback/cast đang chạy và xóa cache resolve/stream; worker kiểm tra nền định kỳ để không giữ phiên phát trái phép.
+- Làm lại màn hình kích hoạt toàn màn hình, không tải dữ liệu ứng dụng trước khi xác minh; polling license tự đóng audio/realtime khi trạng thái chuyển invalid.
+- Đồng bộ Portal/Worker 1.3.0: quick connect gọi thẳng Cloudflare Worker bằng một RPC gộp, có fallback Vercel, trạng thái loading/error rõ ràng và chống bấm lặp.
+
 ## 4.0.0 - 2026-08-25
 
 - Tách thành add-on độc lập **YouTube Pro**, không thay thế hoặc dùng chung slug với YouTube Music Lite.

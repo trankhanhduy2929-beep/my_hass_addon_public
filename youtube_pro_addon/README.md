@@ -1,4 +1,4 @@
-# YouTube Pro 4.0.0
+# YouTube Pro 4.1.0
 
 Add-on YouTube Pro cho Home Assistant, được tách riêng hoàn toàn khỏi YouTube Music Lite để có thể cài song song.
 
@@ -17,12 +17,12 @@ Add-on YouTube Pro cho Home Assistant, được tách riêng hoàn toàn khỏi 
 - Phát tới `media_player` Home Assistant qua audio relay có Range support.
 - Media Browser 3.2 native, tìm kiếm và điều khiển next/previous/repeat/shuffle.
 - Integration API dùng Bearer token riêng; API quản trị vẫn chỉ mở qua Home Assistant Ingress.
-- License tự động có activation token, kiểm tra định kỳ và offline grace; mặc định chưa cưỡng chế.
+- License tự động có activation token, kiểm tra định kỳ và offline grace; add-on khóa bắt buộc khi chưa có key hợp lệ.
 
 ## Cài add-on
 
 1. Chép thư mục `youtube_pro_addon` vào repository add-on local.
-2. Reload add-on store rồi cài **YouTube Pro 4.0.0**.
+2. Reload add-on store rồi cài **YouTube Pro 4.1.0**.
 3. Giữ port host `2032` nếu không có dịch vụ khác sử dụng cổng này.
 4. Khởi động add-on và mở Web UI.
 
@@ -52,10 +52,10 @@ Portal production đã được cấu hình mặc định:
 
 ```yaml
 license_server_url: "https://youtube-pro-license-portal.vercel.app"
-license_enforcement: false
+license_enforcement: true
 ```
 
-Chỉ bật `license_enforcement: true` sau khi installation đã kích hoạt thành công. Add-on không chứa PayOS secret, database secret, service token hoặc admin secret.
+`license_enforcement` được giữ lại để tương thích cấu hình cũ nhưng không còn tắt được enforcement. Add-on không chứa PayOS secret, database secret, service token hoặc admin secret.
 
 ## Lưu ý
 
