@@ -1,4 +1,4 @@
-# Hướng dẫn HANET Connect Gateway 0.9.9
+# Hướng dẫn HANET Connect Gateway 0.10.0
 
 ## 1. Yêu cầu
 
@@ -31,7 +31,7 @@
 - `log_level`: `debug`, `info`, `warning` hoặc `error`.
 - `license_portal_url`: website đăng ký, mua và quản lý key; mặc định là
   `https://hanet-license-admin-vercel.vercel.app`.
-- `license_required`: mặc định `false`, vì vậy cập nhật lên `0.9.9` không khóa
+- `license_required`: mặc định `false`, vì vậy cập nhật lên `0.10.0` không khóa
   hoặc thay đổi các chức năng đang chạy. Chỉ bật sau khi portal production ổn định.
 - `license_offline_grace_hours`: số giờ tối đa tin kết quả verify đã ký khi portal
   tạm mất kết nối; mặc định 72 giờ và không bao giờ vượt ngày hết hạn của key.
@@ -127,6 +127,9 @@ Các endpoint chính:
 - `GET /api/recordings?day=YYYY-MM-DD`: clip cloud trong ngày.
 - `POST /api/refresh`: đồng bộ ngay.
 - `POST /api/call`: gọi endpoint theo tên catalog.
+- Catalog nâng cao có `device_set_alert` (`POST /business/device/set-alert`) với
+  payload `device_id` và `settings`; gateway giữ kiểu ID theo APK và không tự
+  chuyển chuỗi số thành JSON number.
 - `PUT /api/devices/{id}/settings/{key}`: cập nhật setting.
 - `POST /api/devices/{id}/commands/{command}`: gửi command camera.
 - `GET /api/devices/{id}/image`: ảnh camera/sự kiện gần nhất.
@@ -169,19 +172,28 @@ Chạy đồng thời hai phần sẽ tạo hai phiên HANET Cloud và hai chu k
 - **Không có camera**: đăng nhập lại ứng dụng HANET chính thức và kiểm tra quyền
   chia sẻ/địa điểm.
 - **SSE lỗi 404**: đây là trường hợp đã hỗ trợ; add-on chuyển sang cloud polling.
-- **Xóa FaceID báo 404**: bản `0.9.9` tự thử endpoint `personID` tương thích trên
+- **Xóa FaceID báo 404**: bản `0.10.0` gửi `person_id` đúng Android 4.1.21 trước,
+  sau đó mới thử alias/method/form tương thích trên
   cùng HANET host và chỉ báo thành công sau khi FaceID biến mất khỏi cloud.
-- **Thêm Face chọn phòng báo `This field is required`**: bản `0.9.9` tự fallback
-  sang form-urlencoded có `token`, `departmentID` và `personIDs`.
-- **Đổi phòng báo expected string/int64**: bản `0.9.9` thử JSON chuỗi/số rồi
+- **Thêm Face chọn phòng báo `This field is required`**: bản `0.10.0` gửi multipart
+  đúng APK, sau đó mới tách bước tạo Face và gán membership nếu tenant từ chối
+  field phòng ban.
+- **Đổi phòng báo expected string/int64**: bản `0.10.0` thử JSON snake_case
+  số/chuỗi rồi
   fallback form-urlencoded; thao tác bỏ phòng dùng `personID` đúng schema.
+- **Đổi phòng vẫn báo lỗi dù profile đã lưu**: bản `0.10.0` ưu tiên
+  `person/update` khi có đủ tên/profile, xác minh cả phòng mới lẫn phòng cũ rồi
+  chỉ dùng membership fallback nếu cần.
+- **Tạo Face thành công nhưng giao diện báo lỗi**: một số tenant trả response
+  thành công không có ID; gateway giữ kết quả create nếu request APK đã nhận
+  `department_id`, tránh báo thất bại giả.
 - **RTSP bật nhưng không xem được**: firmware có thể chỉ bật dịch vụ trong LAN của
   camera; chức năng này không thay thế TUTK P2P.
 - **Không nhận được trial**: phải mở portal từ link trong addon để gửi cả public
   installation key; mỗi account/installation chỉ được nhận một lần.
 - **Portal tạm lỗi nhưng key trước đó hợp lệ**: addon dùng cache đã ký trong giới
   hạn `license_offline_grace_hours`, nhưng dừng ngay khi key thực sự hết hạn.
-- **Key mới sai làm mất key cũ**: bản `0.9.9` tự khôi phục key cũ còn hợp lệ; tải
+- **Key mới sai làm mất key cũ**: bản `0.10.0` tự khôi phục key cũ còn hợp lệ; tải
   lại trạng thái License để kiểm tra key masked đang được giữ.
 
 ## 11. Giới hạn

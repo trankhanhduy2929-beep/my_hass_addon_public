@@ -16,7 +16,7 @@ configuration:
     description: Secret accepted by the public webhook endpoint.
   ui_auth_enabled:
     name: Legacy dashboard lock
-    description: Compatibility option; version 0.9.9 opens directly through Home Assistant Ingress.
+    description: Compatibility option; version 0.10.0 opens directly through Home Assistant Ingress.
   poll_interval:
     name: Poll interval
     description: Seconds between cloud state updates.

@@ -1,5 +1,31 @@
 # Changelog
 
+## 0.10.0 - 2026-08-24
+
+- Phân tích lại XAPK HANET Connect Android `4.1.21` build `770` và đối chiếu
+  trực tiếp contract FaceID, phòng ban, video, sự kiện và chấm công.
+- Ưu tiên payload snake_case đúng app: xóa `person_id` dạng chuỗi; tạo FaceID
+  multipart đầy đủ; update dùng `department_id` int64; membership dùng
+  `department_id` + `person_ids` CSV.
+- Giữ fallback có giới hạn cho tenant trả `expected string/int64`, binder lỗi,
+  thiếu field hoặc 404; form-urlencoded chỉ chạy sau payload 4.1.21 và mọi
+  mutation vẫn được đọc lại cloud để xác nhận/rollback.
+- Sửa fallback không chạy khi HANET trả HTTP 500 kèm `returnMessage`, ưu tiên
+  `person.person_id` trong row membership lồng nhau và không báo lỗi giả sau khi
+  create FaceID thành công nhưng response không có mã người.
+- Đổi phòng có đủ profile sẽ thử `person/update` đúng APK trước, xác minh phòng
+  mới và phòng cũ rồi mới dùng membership; thêm endpoint nâng cao
+  `device_set_alert` và sửa route đăng ký thành `/auth/register` theo AOT.
+- Sửa parser clip lồng nhau kế thừa `event_id`/`timestamp` group cha, bỏ `count`
+  khỏi tổng phân trang và không mặc định ghi đè `type`/`sex` khi client cũ bỏ
+  trống.
+- Thêm gửi yêu cầu **Xuất báo cáo chấm công** theo `place_id`, `day_from`,
+  `day_to`, `export_type`; catalog nâng lên 102 endpoint.
+- Bổ sung regression test cho envelope lỗi HTTP, ID membership lồng nhau, profile
+  update, create không trả ID và schema `device_set_alert`.
+- Không thay đổi custom component, camera/P2P, Ingress, đăng nhập HANET hoặc
+  License Center; `license_required` tiếp tục mặc định `false`.
+
 ## 0.9.9 - 2026-08-24
 
 - Sửa thêm Face nhân viên/khách có chọn phòng ban trên tenant trả

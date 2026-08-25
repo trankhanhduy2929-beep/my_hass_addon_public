@@ -1,7 +1,24 @@
-# HANET Connect Gateway 0.9.9
+# HANET Connect Gateway 0.10.0
 
 Add-on quản lý hệ sinh thái HANET trực tiếp trong Home Assistant với giao diện
 Ingress tiếng Việt mở trực tiếp, còn API cục bộ ngoài Ingress vẫn có xác thực.
+
+## Điểm mới trong 0.10.0
+
+- Đối chiếu lại toàn bộ API từ HANET Connect Android `4.1.21` build `770`.
+- Sửa tận gốc xóa FaceID, tạo Face có phòng ban, đổi/bỏ phòng ban cho cả khách
+  và nhân viên bằng payload APK trước, fallback schema/form sau và xác minh cloud.
+- Không ghi đè loại/giới tính khi client cũ không gửi; sửa phân trang FaceID và
+  membership trên response có `count` theo trang.
+- Click sự kiện mở clip đúng thời điểm hơn, kể cả response video có nhiều lớp
+  `entries`; player tự tua tới thời điểm nhận diện.
+- Thêm nút **Xuất báo cáo** trong màn hình chấm công; catalog hiện có 102 endpoint.
+- Đối chiếu thêm `device_set_alert` và sửa route đăng ký `/auth/register` theo
+  đúng AOT; thao tác xóa tài khoản `/profile/delete` không đưa vào UI/catalog
+  để tránh side effect không thể hoàn tác.
+- Không thay đổi camera/P2P, Ingress, HANET login, license hoặc custom component.
+
+Chi tiết contract và SHA-256 APK nằm trong `APK_4.1.21_ANALYSIS.md` ở source dự án.
 
 ## Điểm mới trong 0.9.9
 
@@ -114,7 +131,7 @@ ra Internet.
 
 ## License rollout
 
-- Mặc định `license_required: false`, do đó cài/nâng cấp `0.9.9` không khóa các
+- Mặc định `license_required: false`, do đó cài/nâng cấp `0.10.0` không khóa các
   chức năng camera, FaceID, phòng ban, biển số hoặc chấm công hiện có.
 - Người dùng chưa có key sẽ thấy link tới License Center để nhận trial/mua gói.
 - Chỉ bật `license_required: true` sau khi database, PayOS webhook và verify
