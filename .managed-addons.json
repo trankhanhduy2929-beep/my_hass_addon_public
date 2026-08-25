@@ -12,6 +12,7 @@
     "picoclaw",
     "rtsp_face_bridge",
     "voice-action-bridge-vi-lite",
-    "youtube_cast_addon"
+    "youtube_cast_addon",
+    "youtube_pro_addon"
   ]
 }

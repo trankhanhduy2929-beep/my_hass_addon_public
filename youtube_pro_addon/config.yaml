@@ -1,0 +1,35 @@
+name: "YouTube Pro"
+description: "YouTube Pro cho Home Assistant với Media Browser, tìm kiếm và giao diện premium"
+version: "4.0.0"
+slug: "youtube_pro_addon"
+arch:
+  - amd64
+  - aarch64
+init: false
+panel_icon: "mdi:youtube"
+panel_title: "YouTube Pro"
+panel_admin: true
+ingress: true
+ingress_port: 2032
+ingress_stream: true
+homeassistant_api: true
+hassio_api: true
+watchdog: "http://[HOST]:[PORT:2032]/api/health"
+ports:
+  2032/tcp: 2032
+ports_description:
+  2032/tcp: "Audio relay YouTube Pro cho loa trong mạng LAN"
+options:
+  media_base_url: ""
+  pot_provider_enabled: false
+  pot_provider_url: "http://homeassistant.local:4416"
+  license_server_url: "https://youtube-pro-license-portal.vercel.app"
+  license_enforcement: false
+schema:
+  media_base_url: str
+  pot_provider_enabled: bool
+  pot_provider_url: str
+  license_server_url: str
+  license_enforcement: bool
+image: "ghcr.io/trankhanhduy2929-beep/youtube_pro_addon"
+url: "https://github.com/trankhanhduy2929-beep/my_hass_addon_public"
