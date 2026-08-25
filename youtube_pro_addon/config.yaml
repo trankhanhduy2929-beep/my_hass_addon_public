@@ -1,6 +1,6 @@
 name: "YouTube Pro"
-description: "YouTube Pro cho Home Assistant với Media Browser, tìm kiếm và giao diện premium"
-version: "4.2.0"
+description: "YouTube Music + Video với Cast, AirPlay/HomePod và Media Browser"
+version: "5.0.0"
 slug: "youtube_pro_addon"
 arch:
   - amd64
@@ -18,7 +18,7 @@ watchdog: "http://[HOST]:[PORT:2032]/api/health"
 ports:
   2032/tcp: 2032
 ports_description:
-  2032/tcp: "Audio relay YouTube Pro cho loa trong mạng LAN"
+  2032/tcp: "Media relay YouTube Pro cho Cast/AirPlay và trình phát video"
 options:
   media_base_url: ""
   pot_provider_enabled: false

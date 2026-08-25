@@ -1,5 +1,14 @@
 # Changelog
 
+## 5.0.0 - 2026-08-25
+
+- Tự phát hiện địa chỉ LAN qua Supervisor; bỏ nhu cầu nhập IP Home Assistant cho relay.
+- Tự quét và phân loại `media_player` Cast, Apple TV, AirPlay và HomePod từ state/registry của Home Assistant.
+- Thêm resolver video độc lập, cache video riêng và progressive MP4 relay có Range support.
+- Thêm tab **YouTube Video** với tìm kiếm, chủ đề khám phá, thumbnail grid, watch view và related navigation.
+- Cast TV nhận video; HomePod/AirPlay tự chuyển audio fallback để không gửi video không tương thích tới loa chỉ có âm thanh.
+- Giữ nguyên license enforcement, nhạc, playlist, queue, timer, Media Browser 3.2 và Integration API.
+
 ## 4.2.0 - 2026-08-25
 
 - Bỏ hoàn toàn nhu cầu cấu hình `license_server_url`; add-on dùng endpoint production tích hợp sẵn và chỉ cho phép override qua biến môi trường khi debug.
