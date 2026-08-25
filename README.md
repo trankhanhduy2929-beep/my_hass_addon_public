@@ -90,7 +90,7 @@ This table is generated automatically from the private release catalog after suc
 | HA Camera Face ID | `2.2.0` | stable | `amd64, aarch64` | [Open](rtsp_face_bridge/README.md) |
 | Voice Action Bridge VI Lite | `1.0.4` | stable | `amd64, aarch64` | [Open](voice-action-bridge-vi-lite/README.md) |
 | YouTube Music Lite | `2.4.0` | stable | `amd64, aarch64` | [Open](youtube_cast_addon/README.md) |
-| YouTube Pro | `4.1.0` | stable | `amd64, aarch64` | [Open](youtube_pro_addon/README.md) |
+| YouTube Pro | `4.2.0` | stable | `amd64, aarch64` | [Open](youtube_pro_addon/README.md) |
 
 <!-- AUTO-ADDON-CATALOG:END -->
 

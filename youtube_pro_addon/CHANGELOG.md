@@ -1,5 +1,13 @@
 # Changelog
 
+## 4.2.0 - 2026-08-25
+
+- Bỏ hoàn toàn nhu cầu cấu hình `license_server_url`; add-on dùng endpoint production tích hợp sẵn và chỉ cho phép override qua biến môi trường khi debug.
+- Đổi link kết nối sang URL fragment, không gửi claim token trong HTTP request hoặc log Vercel.
+- Luồng **Kích hoạt tự động** đăng ký installation trực tiếp Cloudflare Worker, portal liên kết tài khoản một lần và add-on tự nhận activation token bằng installation ID + secret.
+- Rút polling sau khi người dùng quay lại add-on xuống khoảng 1,25 giây; giữ polling nền 30 giây và offline grace an toàn.
+- Giữ nguyên enforcement, playback, Media Browser 3.2, queue, playlist, timer và Integration API hiện có.
+
 ## 4.1.0 - 2026-08-25
 
 - Bắt buộc nhập License Key hợp lệ trước khi truy cập hoặc sử dụng toàn bộ tính năng YouTube Pro; option `license_enforcement` cũ chỉ còn để tương thích cấu hình nâng cấp và không thể tắt khóa.
