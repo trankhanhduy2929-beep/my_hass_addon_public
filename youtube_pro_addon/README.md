@@ -22,11 +22,18 @@ Add-on YouTube Pro cho Home Assistant, được tách riêng hoàn toàn khỏi 
 - License tự động có activation token, kiểm tra định kỳ và offline grace; add-on khóa bắt buộc khi chưa có key hợp lệ.
 
 ## Cài add-on
+1. Mở **Home Assistant**.
+2. Chọn **Settings → Add-ons → Add-on Store**.
+3. Chọn **⋮** menu góc trên bên phải.
+4. Chọn **Repositories**.
+5. Add link:
 
-1. Chép thư mục `youtube_pro_addon` vào repository add-on local.
-2. Reload add-on store rồi cài **YouTube Pro 5.0.1**.
-3. Giữ port host `2032` nếu không có dịch vụ khác sử dụng cổng này. Không cần điền `media_base_url` trong cấu hình thông thường.
-4. Khởi động add-on và mở Web UI.
+```text
+https://github.com/trankhanhduy2929-beep/my_hass_addon_public
+```
+
+6. Reload add-on store rồi cài **YouTube Pro**.
+7. Khởi động add-on và mở Web UI.
 
 `media_base_url` chỉ là override tùy chọn cho mạng đặc biệt; mặc định add-on tự phát hiện địa chỉ LAN:
 
@@ -36,7 +43,7 @@ media_base_url: "http://192.168.1.20:2032"
 
 ## Cài custom integration
 
-1. Chép `projects/youtube_pro/custom_components/youtube_pro` vào `/config/custom_components/youtube_pro`.
+1. Chép `https://github.com/trankhanhduy2929-beep/youtube_pro_integration_homeassistant` vào hacs, tìm và tải về Youtube Pro
 2. Khởi động lại Home Assistant.
 3. Trong add-on, mở **Hẹn giờ → Home Assistant integration** và sao chép token.
 4. Thêm integration **YouTube Pro** với URL `http://homeassistant.local:2032` hoặc IP Home Assistant cùng cổng `2032`.
