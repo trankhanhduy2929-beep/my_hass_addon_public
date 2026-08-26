@@ -1,5 +1,12 @@
 # Changelog
 
+## 5.0.1 - 2026-08-25
+
+- Tối ưu phát nhạc trên trình duyệt: bỏ lượt probe mạng dư trước khi phát, để audio bắt đầu ngay khi relay nhận được dữ liệu đầu tiên.
+- Relay audio nhả chunk nhỏ hơn và tắt buffering trung gian; không cần chờ tải hết bài hát.
+- Tăng prefetch sáu kết quả đầu và tách cache browser/loa để thao tác bấm phát phản hồi nhanh mà Cast vẫn được xác minh đầy đủ.
+- Giữ nguyên đường phát Cast/AirPlay/HomePod và toàn bộ đường Video.
+
 ## 5.0.0 - 2026-08-25
 
 - Tự phát hiện địa chỉ LAN qua Supervisor; bỏ nhu cầu nhập IP Home Assistant cho relay.

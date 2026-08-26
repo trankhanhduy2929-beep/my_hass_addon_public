@@ -1,4 +1,4 @@
-# YouTube Pro 5.0.0
+# YouTube Pro 5.0.1
 
 Add-on YouTube Pro cho Home Assistant, được tách riêng hoàn toàn khỏi YouTube Music Lite để có thể cài song song.
 
@@ -24,7 +24,7 @@ Add-on YouTube Pro cho Home Assistant, được tách riêng hoàn toàn khỏi 
 ## Cài add-on
 
 1. Chép thư mục `youtube_pro_addon` vào repository add-on local.
-2. Reload add-on store rồi cài **YouTube Pro 5.0.0**.
+2. Reload add-on store rồi cài **YouTube Pro 5.0.1**.
 3. Giữ port host `2032` nếu không có dịch vụ khác sử dụng cổng này. Không cần điền `media_base_url` trong cấu hình thông thường.
 4. Khởi động add-on và mở Web UI.
 
@@ -50,7 +50,7 @@ Các service:
 
 ## License
 
-Add-on 5.0.0 tự kết nối tới License API/Portal production đã tích hợp sẵn; không cần và không có option `license_server_url` trong Home Assistant. Bấm **Kích hoạt tự động**, đăng nhập một lần trên trang mở ra, rồi quay lại add-on; add-on tự nhận quyền qua installation secret, không cần copy/dán key.
+Add-on 5.0.1 tự kết nối tới License API/Portal production đã tích hợp sẵn; không cần và không có option `license_server_url` trong Home Assistant. Bấm **Kích hoạt tự động**, đăng nhập một lần trên trang mở ra, rồi quay lại add-on; add-on tự nhận quyền qua installation secret, không cần copy/dán key.
 
 URL activation dùng fragment bảo mật (`#token=...`) nên claim token không đi vào request HTTP hoặc log máy chủ. Nhập License Key thủ công vẫn có trong mục thu gọn để dự phòng. `license_enforcement` chỉ còn để tương thích cấu hình cũ và không thể tắt khóa.
 
