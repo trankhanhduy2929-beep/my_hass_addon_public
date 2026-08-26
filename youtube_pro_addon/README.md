@@ -43,7 +43,7 @@ media_base_url: "http://192.168.1.20:2032"
 
 ## Cài custom integration
 
-1. Chép `https://github.com/trankhanhduy2929-beep/youtube_pro_integration_homeassistant` vào hacs, tìm và tải về Youtube Pro
+1. Chép `https://github.com/trankhanhduy2929-beep/youtube_pro_integration_homeassistant` vào hacs chọn loại **Integration**, tìm và tải về Youtube Pro
 2. Khởi động lại Home Assistant.
 3. Trong add-on, mở **Hẹn giờ → Home Assistant integration** và sao chép token.
 4. Thêm integration **YouTube Pro** với URL `http://homeassistant.local:2032` hoặc IP Home Assistant cùng cổng `2032`.
