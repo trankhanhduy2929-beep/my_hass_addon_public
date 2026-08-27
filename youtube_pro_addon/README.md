@@ -1,4 +1,4 @@
-# YouTube Pro 5.0.1
+# YouTube Pro 5.1.0
 
 Add-on YouTube Pro cho Home Assistant, được tách riêng hoàn toàn khỏi YouTube Music Lite để có thể cài song song.
 
@@ -10,10 +10,12 @@ Add-on YouTube Pro cho Home Assistant, được tách riêng hoàn toàn khỏi 
 - License Key: `YTP-XXXXX-XXXXX-XXXXX-XXXXX`
 - Dữ liệu add-on, integration token, license installation và localStorage không dùng chung với bản Lite.
 
-## Tính năng giữ nguyên
+## Tính năng
 
 - Giao diện Ingress phong cách YouTube Music và YouTube Video, tối ưu desktop và mobile.
 - Tìm kiếm, playlist, hàng chờ, lịch sử, yêu thích, hẹn giờ và phát trên điện thoại.
+- **Queue Pro** cho phép chọn **Phát tiếp theo** hoặc **Thêm cuối**, quản lý đúng phiên phát của loa đang chọn, đổi thứ tự, xóa từng bài, xóa các bài tiếp theo, phát ngẫu nhiên và lưu hàng chờ thành playlist.
+- **Smart Radio** tạo đài phát từ bài hát hoặc video hiện tại, lọc bài trùng với phiên phát/lịch sử và tự bổ sung đề xuất khi danh sách sắp hết.
 - Tự lấy địa chỉ LAN của Home Assistant qua Supervisor; người dùng không phải nhập IP Hass.
 - Tự phát tới Cast/Google Cast qua `media_player`, đồng thời nhận diện Apple TV/AirPlay/HomePod.
 - Video dùng progressive MP4 relay có Range support; HomePod/AirPlay tự dùng audio fallback.
@@ -22,18 +24,11 @@ Add-on YouTube Pro cho Home Assistant, được tách riêng hoàn toàn khỏi 
 - License tự động có activation token, kiểm tra định kỳ và offline grace; add-on khóa bắt buộc khi chưa có key hợp lệ.
 
 ## Cài add-on
-1. Mở **Home Assistant**.
-2. Chọn **Settings → Add-ons → Add-on Store**.
-3. Chọn **⋮** menu góc trên bên phải.
-4. Chọn **Repositories**.
-5. Add link:
 
-```text
-https://github.com/trankhanhduy2929-beep/my_hass_addon_public
-```
-
-6. Reload add-on store rồi cài **YouTube Pro**.
-7. Khởi động add-on và mở Web UI.
+1. Chép thư mục `youtube_pro_addon` vào repository add-on local.
+2. Reload add-on store rồi cài **YouTube Pro 5.1.0**.
+3. Giữ port host `2032` nếu không có dịch vụ khác sử dụng cổng này. Không cần điền `media_base_url` trong cấu hình thông thường.
+4. Khởi động add-on và mở Web UI.
 
 `media_base_url` chỉ là override tùy chọn cho mạng đặc biệt; mặc định add-on tự phát hiện địa chỉ LAN:
 
@@ -43,21 +38,24 @@ media_base_url: "http://192.168.1.20:2032"
 
 ## Cài custom integration
 
-1. Chép `https://github.com/trankhanhduy2929-beep/youtube_pro_integration_homeassistant` vào hacs chọn loại **Integration**, tìm và tải về Youtube Pro
+1. Chép `projects/youtube_pro/custom_components/youtube_pro` vào `/config/custom_components/youtube_pro`.
 2. Khởi động lại Home Assistant.
 3. Trong add-on, mở **Hẹn giờ → Home Assistant integration** và sao chép token.
-4. Thêm integration **YouTube Pro** với URL `http://homeassistant.local:2032` hoặc IP Home Assistant cùng cổng `2032`.
+4. Thêm integration **YouTube Pro**, giữ URL là `auto` (khuyến nghị), dán token và chọn loa mặc định. Integration tự dò add-on qua Supervisor/DNS nội bộ; chỉ nhập URL thủ công khi mạng có cấu hình đặc biệt.
 
 Các service:
 
 - `youtube_pro.play`
 - `youtube_pro.play_playlist`
 - `youtube_pro.enqueue`
+- `youtube_pro.start_radio`
 - `youtube_pro.set_timer`
+
+Service `youtube_pro.enqueue` nhận `entity_id` tùy chọn và `position: next|end`. Service `youtube_pro.start_radio` tạo đài phát cho đúng `media_player`, hỗ trợ audio/video và chế độ thay thế hoặc nối cuối hàng chờ.
 
 ## License
 
-Add-on 5.0.1 tự kết nối tới License API/Portal production đã tích hợp sẵn; không cần và không có option `license_server_url` trong Home Assistant. Bấm **Kích hoạt tự động**, đăng nhập một lần trên trang mở ra, rồi quay lại add-on; add-on tự nhận quyền qua installation secret, không cần copy/dán key.
+Add-on 5.1.0 tự kết nối tới License API/Portal production đã tích hợp sẵn; không cần và không có option `license_server_url` trong Home Assistant. Bấm **Kích hoạt tự động**, đăng nhập một lần trên trang mở ra, rồi quay lại add-on; add-on tự nhận quyền qua installation secret, không cần copy/dán key.
 
 URL activation dùng fragment bảo mật (`#token=...`) nên claim token không đi vào request HTTP hoặc log máy chủ. Nhập License Key thủ công vẫn có trong mục thu gọn để dự phòng. `license_enforcement` chỉ còn để tương thích cấu hình cũ và không thể tắt khóa.
 
@@ -68,4 +66,5 @@ Add-on không chứa PayOS secret, database secret, service token hoặc admin s
 - Bản Lite tại `ket_qua/youtube_cast_addon` không bị sửa.
 - Bản Pro và Lite có thể chạy đồng thời trên `2032` và `2232`.
 - HomePod cần được Home Assistant nhận diện qua Apple TV/AirPlay integration; add-on không lưu pairing credential và không quảng bá mDNS trực tiếp.
+- Smart Radio 5.1.0 không dùng Google OAuth và không đồng bộ tài khoản YouTube; playlist lưu cục bộ trong add-on như các phiên bản trước.
 - Chưa tuyên bố kiểm thử phát thực tế trên loa Cast/HomePod nếu chưa có thiết bị tương ứng trong môi trường chạy.

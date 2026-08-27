@@ -1,10 +1,21 @@
 # Changelog
 
-## 5.0.1 - 2026-08-25
+## 5.1.0 - 2026-08-27
+
+- Thêm **Queue Pro**: phát tiếp theo, thêm cuối hàng chờ, đổi thứ tự, xóa, xáo trộn và lưu hàng chờ thành playlist.
+- Queue theo phiên phát giữ nguyên bài hiện tại, tự chuyển về hàng chờ chung khi phiên đã dừng và giới hạn an toàn 300 bài.
+- Thêm **Smart Radio** cho audio/video: tạo đề xuất từ bài gốc, loại bài trùng với phiên/lịch sử, tự refill khi sắp hết và chống race khi phiên bị thay thế.
+- Thêm service/API `youtube_pro.start_radio`, mở rộng `youtube_pro.enqueue` với `position` và `entity_id`.
+- Media Browser lấy đúng queue của loa đích; giao diện mobile gọn hơn khi có nhiều thao tác trên một bài.
+- Giữ nguyên license enforcement, Cast/AirPlay/HomePod, video, Media Browser và các API cũ.
+
+## 5.0.1 - 2026-08-26
 
 - Tối ưu phát nhạc trên trình duyệt: bỏ lượt probe mạng dư trước khi phát, để audio bắt đầu ngay khi relay nhận được dữ liệu đầu tiên.
 - Relay audio nhả chunk nhỏ hơn và tắt buffering trung gian; không cần chờ tải hết bài hát.
 - Tăng prefetch sáu kết quả đầu và tách cache browser/loa để thao tác bấm phát phản hồi nhanh mà Cast vẫn được xác minh đầy đủ.
+- Mở rộng Integration API cho tìm kiếm, resolve, play và enqueue video bằng trường `media_kind` tùy chọn; audio vẫn là mặc định để không phá client cũ.
+- Trả thêm danh mục `video_discovery` cho custom integration YouTube Pro 5.0.1 và tự hạ video xuống audio khi đích phát chỉ hỗ trợ âm thanh.
 - Giữ nguyên đường phát Cast/AirPlay/HomePod và toàn bộ đường Video.
 
 ## 5.0.0 - 2026-08-25
