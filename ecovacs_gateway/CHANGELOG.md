@@ -1,5 +1,27 @@
 # Changelog
 
+## 2.1.3 - 2026-08-28
+
+- Đổi màn hình license thành luồng liên kết tự động cho Ecovacs APK Mod trên Home
+  Assistant; người dùng không cần chép Installation ID hoặc public key.
+- Giữ lại nhập key và thông tin kỹ thuật để xử lý trường hợp nâng cao, không đổi
+  protocol Ecovacs, MQTT hoặc cơ chế license hiện có.
+
+## 2.1.2 - 2026-08-28
+
+- Loại bỏ mật khẩu quản trị local; ingress tự mở session và dùng license làm
+  cổng quyền duy nhất.
+- Trước activation chỉ hiển thị panel license; key hợp lệ mở toàn bộ gateway,
+  dashboard, MQTT và command.
+- Xóa hai option license khỏi config, tích hợp cố định portal APK Mod và giữ
+  nguyên protocol Ecovacs/MQTT.
+
+## 2.1.1 - 2026-08-27
+
+- Tách portal license, D1 gateway và cặp khóa ký riêng cho bản Ecovacs APK Mod.
+- Giữ nguyên protocol Ecovacs, MQTT Discovery và toàn bộ chức năng gateway của
+  bản 2.1.0.
+
 ## 2.1.0 - 2026-08-04
 
 - Thêm sensor/binary_sensor telemetry lồng nhau, action button, room select/button.

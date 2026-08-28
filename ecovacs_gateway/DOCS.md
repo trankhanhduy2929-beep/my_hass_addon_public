@@ -1,4 +1,4 @@
-# Cài đặt Ecovacs Private Gateway 2.1.0
+# Cài đặt Ecovacs Private Gateway – APK Mod 2.1.3
 
 ## Yêu cầu
 
@@ -10,12 +10,32 @@
 
 1. Chép `ecovacs_gateway` vào thư mục local add-ons.
 2. Refresh Add-on Store, cài và start add-on.
-3. Mở Web UI, đăng nhập bằng mật khẩu khởi tạo và đổi sang mật khẩu riêng.
-4. Nhập tài khoản Ecovacs. Credential được lưu mã hóa trong `/data`.
+3. Mở Web UI; không có mật khẩu quản trị local. Bấm **Liên kết thiết bị & kích
+   hoạt** để chuyển thẳng tới portal APK Mod; portal tự nhận thiết bị, hoặc nhập
+   key có sẵn.
+4. Sau khi license hợp lệ, nhập tài khoản Ecovacs. Credential được lưu mã hóa
+   trong `/data`.
 5. Nhập hostname/IP broker, port, username, password và TLS trong mục
    **Home Assistant MQTT trực tiếp**.
 6. Giữ discovery prefix `homeassistant` nếu MQTT integration dùng mặc định.
 7. Sau khi trạng thái HA MQTT là `connected`, robot và entity tự xuất hiện.
+
+## License tự động
+
+Mục **License Ecovacs APK Mod** trong Web UI tạo installation identity ổn định và
+link tới portal Vercel riêng. Đăng ký/đăng nhập bằng email trên portal; thiết bị
+được tự liên kết nên không cần điền Installation ID hoặc public key. Nhận trial
+miễn phí 1 ngày hoặc mua gói 1 tháng/vĩnh viễn qua PayOS VietQR. Khi PayOS xác
+nhận, portal tự cấp key; copy key về addon và bấm **Kiểm tra lại**.
+
+License là bắt buộc và là cổng quyền duy nhất của add-on: trước activation chỉ
+hiện panel license; sau activation key hợp lệ dashboard, cloud, MQTT và command
+được mở toàn bộ. URL portal đã tích hợp cố định trong add-on, không có option
+license URL trong cấu hình Home Assistant. Addon chỉ chứa public signing key;
+PayOS secret, Cloudflare D1 gateway secret, private
+signing key và admin secret không bao giờ được đưa vào addon. Giữ nguyên `/data`
+khi nâng cấp để không đổi identity. Hướng dẫn deploy Worker, D1, Vercel và PayOS
+nằm tại `../../license_portal/README.md`.
 
 Với Mosquitto add-on chuẩn, hostname nội bộ thường là `core-mosquitto` và port
 không TLS là `1883`. Không nhập `mqtt://` hoặc đường dẫn URL trong ô hostname.
@@ -23,7 +43,7 @@ không TLS là `1883`. Không nhập `mqtt://` hoặc đường dẫn URL trong 
 ## Nâng cấp từ bản có custom component
 
 1. Không uninstall add-on để giữ `/data`.
-2. Nâng add-on lên `2.1.0` và restart.
+2. Nâng add-on lên `2.1.3` và restart.
 3. Xóa config entry `ecovacs_cn_mod` trong **Devices & services**.
 4. Xóa `/config/custom_components/ecovacs_cn_mod`, restart Home Assistant.
 5. Cấu hình MQTT broker trong Web UI add-on.
