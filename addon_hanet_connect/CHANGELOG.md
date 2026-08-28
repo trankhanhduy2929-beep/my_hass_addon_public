@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.10.3 - 2026-08-28
+
+- Sửa lỗi `device/set-user-config` gửi sai content type khiến camera trả HTTP 200
+  nhưng không lưu username/password RTSP; request giờ khớp APK Android 4.1.21:
+  `application/x-www-form-urlencoded`, `device_id` và `config` JSON string.
+- Không còn chấp nhận password bị che như bằng chứng read-after-write; URL chỉ được
+  cập nhật khi cloud trả lại đúng credential, tránh báo thành công giả.
+- Nếu camera không xác nhận thay đổi, add-on xóa credential cache cũ và giao diện
+  tự tải lại cấu hình cloud thực tế, không giữ username/password hoặc URL vừa nhập.
+- Giữ nguyên RTSP enable, P2P, FaceID, phòng ban, clip, license, HANET login và
+  custom component.
+
 ## 0.10.2 - 2026-08-28
 
 - Add per-camera RTSP username/password editing using the exact Android 4.1.21

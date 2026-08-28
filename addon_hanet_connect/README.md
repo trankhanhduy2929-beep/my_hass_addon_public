@@ -1,7 +1,17 @@
-# HANET Connect Gateway 0.10.2
+# HANET Connect Gateway 0.10.3
 
 Add-on quản lý hệ sinh thái HANET trực tiếp trong Home Assistant với giao diện
 Ingress tiếng Việt mở trực tiếp, còn API cục bộ ngoài Ingress vẫn có xác thực.
+
+## Điểm mới trong 0.10.3
+
+- Sửa lỗi camera nhận HTTP 200 nhưng không lưu username/password RTSP: endpoint
+  `device/set-user-config` giờ gửi đúng `application/x-www-form-urlencoded` như
+  APK Android `4.1.21`, với `config` là chuỗi JSON.
+- Không còn coi password bị cloud che (`********`) là đã lưu; addon chỉ cập nhật
+  URL sau khi đọc lại được giá trị xác nhận, tránh hiển thị thay đổi giả.
+- Khi lưu thất bại hoặc camera chưa xác nhận, credential cache cũ bị xóa và card
+  RTSP tự tải lại trạng thái cloud thực tế thay vì giữ URL vừa nhập.
 
 ## Điểm mới trong 0.10.2
 
@@ -11,7 +21,8 @@ Ingress tiếng Việt mở trực tiếp, còn API cục bộ ngoài Ingress v�
   `rtsp://<IP>:554/user:<username>;pwd:<password>` và có nút **Copy URL** để thêm
   nhanh vào đầu ghi/NVR; credential có ký tự đặc biệt được percent-encode.
 - Đọc IP LAN, trạng thái RTSP và user config từ nhiều envelope/key alias của cloud,
-  sau đó đọc lại camera để xác nhận thay đổi; response che password vẫn được xử lý.
+  sau đó đọc lại camera để xác nhận thay đổi; password bị che sẽ không được coi là
+  bằng chứng đã lưu.
 - Username, password và URL RTSP không xuất hiện trong snapshot, WebSocket hoặc API
   setting chung; request đang tải bị hủy khi đóng dialog để không giữ URL nhạy cảm.
 - Giữ nguyên công tắc RTSP cũ, camera P2P/TUTK, FaceID, phòng ban, clip, license,
@@ -160,7 +171,7 @@ ra Internet.
 
 ## License rollout
 
-- Bản `0.10.2` bắt buộc license; các option `license_required`,
+- Bản `0.10.3` bắt buộc license; các option `license_required`,
   `license_portal_url`, `license_offline_grace_hours` và khóa dashboard không còn
   xuất hiện trong cấu hình người dùng.
 - Khi mở lần đầu, add-on tự mở License Center đúng installation; người dùng đăng ký
