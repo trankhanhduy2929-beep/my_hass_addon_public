@@ -1,5 +1,14 @@
 # Changelog
 
+## 5.2.1 - 2026-08-28
+
+- Sửa lỗi mở lại add-on bị kẹt ở màn hình kiểm tra key dù license vẫn còn hợp lệ.
+- Nạp trạng thái license hợp lệ đã cache ngay khi render trang; kiểm tra server tiếp tục chạy nền và không chặn giao diện.
+- Giữ lại offline grace có giới hạn; license không được duy trì vô thời hạn khi server không thể xác minh hoặc đã hết grace.
+- Tự sao lưu và khôi phục activation token để không mất liên kết installation khi file token chính bị thiếu.
+- Thêm khóa chống validation đồng thời, bảo đảm refresh thủ công vẫn có thể nhận trạng thái thu hồi từ server.
+- Giữ nguyên playback, Cast/AirPlay/HomePod, video, queue, Media Browser, custom integration và các API hiện có.
+
 ## 5.2.0 - 2026-08-27
 
 - Thêm **Mix cá nhân local-first** với hồ sơ nghe riêng, xếp hạng theo lịch sử/thích/không thích và cache có thể làm mới.
