@@ -1,4 +1,4 @@
-# Hướng dẫn HANET Connect Gateway 0.10.3
+# Hướng dẫn HANET Connect Gateway 0.10.5
 
 ## 1. Yêu cầu
 

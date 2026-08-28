@@ -1,17 +1,25 @@
-# HANET Connect Gateway 0.10.3
+# HANET Connect Gateway 0.10.5
 
 Add-on quản lý hệ sinh thái HANET trực tiếp trong Home Assistant với giao diện
 Ingress tiếng Việt mở trực tiếp, còn API cục bộ ngoài Ingress vẫn có xác thực.
 
-## Điểm mới trong 0.10.3
+## Điểm mới trong 0.10.5
 
-- Sửa lỗi camera nhận HTTP 200 nhưng không lưu username/password RTSP: endpoint
-  `device/set-user-config` giờ gửi đúng `application/x-www-form-urlencoded` như
-  APK Android `4.1.21`, với `config` là chuỗi JSON.
-- Không còn coi password bị cloud che (`********`) là đã lưu; addon chỉ cập nhật
-  URL sau khi đọc lại được giá trị xác nhận, tránh hiển thị thay đổi giả.
-- Khi lưu thất bại hoặc camera chưa xác nhận, credential cache cũ bị xóa và card
-  RTSP tự tải lại trạng thái cloud thực tế thay vì giữ URL vừa nhập.
+- License lifetime đã xác minh mở thẳng dashboard ngay khi khởi động; bản mới
+  không hiện lại trang nhập key chỉ vì cache đang được xác minh online nền.
+- Cache license chỉ được dùng trong offline grace 72 giờ và vẫn chặn đúng key
+  hết hạn, bị khóa hoặc bị thu hồi.
+- Readback RTSP chờ lâu hơn cho camera/cloud cập nhật trễ; credential vừa gửi
+  được giữ an toàn và hiển thị trạng thái `pending_verification` thay vì bị mất.
+
+## Điểm mới trong 0.10.4
+
+- Sửa lỗi lưu RTSP: chỉ gửi các trường thật sự thay đổi, không gọi nhầm endpoint
+  bật/tắt khi người dùng chỉ đổi username/password.
+- Giữ đúng payload APK Android `4.1.21` (`application/x-www-form-urlencoded` và
+  `config` JSON string); xử lý đúng readback password bị HANET che.
+- License đã lưu dùng cache hợp lệ ngay khi khởi động; xác minh online chạy nền,
+  không hiện lại form nhập key trong lúc mạng chậm và UI có cache-busting.
 
 ## Điểm mới trong 0.10.2
 
@@ -171,7 +179,7 @@ ra Internet.
 
 ## License rollout
 
-- Bản `0.10.3` bắt buộc license; các option `license_required`,
+- Bản `0.10.5` bắt buộc license; các option `license_required`,
   `license_portal_url`, `license_offline_grace_hours` và khóa dashboard không còn
   xuất hiện trong cấu hình người dùng.
 - Khi mở lần đầu, add-on tự mở License Center đúng installation; người dùng đăng ký

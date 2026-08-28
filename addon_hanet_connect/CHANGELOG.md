@@ -1,5 +1,26 @@
 # Changelog
 
+## 0.10.5 - 2026-08-28
+
+- Không chặn giao diện khi license lifetime đã được xác minh trước đó nhưng
+  cache đang ở chế độ offline; xác minh License Center tiếp tục chạy nền trong
+  giới hạn offline grace 72 giờ.
+- Giữ đúng license đã ký trong cache và chỉ yêu cầu kích hoạt lại khi key hết hạn,
+  bị thu hồi hoặc vượt thời gian offline grace.
+- Tăng thời gian chờ readback RTSP cho camera đồng bộ chậm; nếu HANET đã nhận
+  mutation nhưng chưa trả cấu hình mới, add-on giữ credential vừa nhập ở trạng
+  thái `pending_verification` thay vì xóa và báo lỗi giả.
+- Giữ nguyên FaceID, phòng ban, clip, P2P, đăng nhập HANET và custom component.
+
+## 0.10.4 - 2026-08-28
+
+- Sửa luồng lưu RTSP: chỉ gửi các trường thay đổi, không bật/tắt RTSP ngoài ý
+  muốn khi đổi credential và không gửi mutation rỗng.
+- Giữ payload `device/set-user-config` tương thích APK Android `4.1.21`; readback
+  password dạng `********` được xử lý đúng sau khi server đã nhận mutation.
+- License key đã lưu dùng cache hợp lệ ngay khi mở add-on; xác minh online chạy nền
+  và không hiện form nhập key trong thời gian chờ xác minh tạm thời.
+
 ## 0.10.3 - 2026-08-28
 
 - Sửa lỗi `device/set-user-config` gửi sai content type khiến camera trả HTTP 200
