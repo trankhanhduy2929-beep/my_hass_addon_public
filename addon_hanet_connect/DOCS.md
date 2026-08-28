@@ -1,4 +1,4 @@
-# Hướng dẫn HANET Connect Gateway 0.10.1
+# Hướng dẫn HANET Connect Gateway 0.10.2
 
 ## 1. Yêu cầu
 
@@ -73,7 +73,18 @@ thời gian đó, nhưng không vượt quá ngày hết hạn của license.
 
 - Thẻ tổng quan cho biết số camera online/offline, RTSP và lần đồng bộ gần nhất.
 - Nhấn camera để mở điều khiển PTZ, zoom, còi báo động và setting.
-- Công tắc RTSP chỉ thay đổi setting firmware qua HANET Cloud.
+- Trong tab **Cài đặt** của camera, phần **Thông tin RTSP cho đầu ghi** cho phép bật
+  dịch vụ, đổi username/password và tải lại thông tin từ HANET Cloud.
+- Nhập username và password rồi bấm **Lưu cấu hình RTSP**. Nếu chỉ đổi username,
+  có thể để trống password khi add-on vẫn đọc được mật khẩu hiện tại; nếu cloud
+  chỉ trả mật khẩu dạng che, cần nhập lại password để tạo URL.
+- Sau khi camera xác nhận, bấm **Copy URL** và dán vào đầu ghi/NVR. Định dạng là
+  `rtsp://<IP-camera>:554/user:<username>;pwd:<password>`; ký tự đặc biệt trong
+  credential được percent-encode.
+- RTSP là kết nối LAN riêng của camera: đầu ghi phải truy cập được IP camera qua
+  cùng LAN/VLAN và cổng TCP `554`. Tính năng này không thay thế luồng P2P/TUTK.
+- URL chứa thông tin đăng nhập; chỉ lưu trong đầu ghi tin cậy và không chia sẻ ra
+  Internet.
 
 ### Sự kiện
 
@@ -101,7 +112,7 @@ thời gian đó, nhưng không vượt quá ngày hết hạn của license.
 
 - Xem trạng thái HANET Cloud, số địa điểm/camera và cổng add-on.
 - Đổi mật khẩu hoặc khóa giao diện.
-- Bật/tắt RTSP và mở setting từng camera.
+- Bật/tắt RTSP, mở cấu hình username/password và copy URL từng camera.
 - Mở **API nâng cao** để gọi endpoint theo catalog.
 
 ## 7. API cục bộ
@@ -127,6 +138,10 @@ Các endpoint chính:
   payload `device_id` và `settings`; gateway giữ kiểu ID theo APK và không tự
   chuyển chuỗi số thành JSON number.
 - `PUT /api/devices/{id}/settings/{key}`: cập nhật setting.
+- `GET /api/devices/{id}/rtsp`: đọc trạng thái, IP, username và URL RTSP qua API
+  đã xác thực; response luôn có `Cache-Control: no-store`.
+- `PUT /api/devices/{id}/rtsp`: bật/tắt hoặc lưu `username`, `password`; payload
+  cũ chỉ có `{ "enabled": true }` vẫn được giữ tương thích.
 - `POST /api/devices/{id}/commands/{command}`: gửi command camera.
 - `GET /api/devices/{id}/image`: ảnh camera/sự kiện gần nhất.
 - `GET /api/ws`: WebSocket trạng thái và sự kiện.
@@ -184,8 +199,11 @@ Chạy đồng thời hai phần sẽ tạo hai phiên HANET Cloud và hai chu k
 - **Tạo Face thành công nhưng giao diện báo lỗi**: một số tenant trả response
   thành công không có ID; gateway giữ kết quả create nếu request APK đã nhận
   `department_id`, tránh báo thất bại giả.
-- **RTSP bật nhưng không xem được**: firmware có thể chỉ bật dịch vụ trong LAN của
-  camera; chức năng này không thay thế TUTK P2P.
+- **RTSP bật nhưng không xem được**: kiểm tra IP hiển thị trong URL, camera và đầu
+  ghi có cùng LAN/VLAN, không bị chặn cổng `554`, và username/password trên đầu ghi
+  khớp cấu hình vừa lưu. RTSP không đi qua HANET Cloud và không thay thế TUTK P2P.
+- **Không có URL để copy**: cloud chưa trả IP LAN hoặc đang che password mà add-on
+  chưa có bản rõ; tải lại cấu hình, nhập lại password rồi lưu để camera xác nhận.
 - **Không nhận được trial**: phải mở portal từ link trong addon để gửi cả public
   installation key; mỗi account/installation chỉ được nhận một lần.
 - **Portal tạm lỗi nhưng key trước đó hợp lệ**: add-on dùng cache đã ký tối đa 72 giờ,

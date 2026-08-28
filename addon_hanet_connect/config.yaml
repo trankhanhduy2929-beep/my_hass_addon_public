@@ -1,5 +1,5 @@
 name: HANET Connect Gateway
-version: "0.10.1"
+version: "0.10.2"
 slug: hanet_connect
 description: HANET camera, access control, FaceID, LPR and attendance gateway
 arch:

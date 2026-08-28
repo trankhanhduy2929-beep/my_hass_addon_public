@@ -1,5 +1,20 @@
 # Changelog
 
+## 0.10.2 - 2026-08-28
+
+- Add per-camera RTSP username/password editing using the exact Android 4.1.21
+  `device/set-user-config` JSON-string payload and read-after-write verification.
+- Show the complete legacy camera URL with percent-encoded credentials and a Copy
+  button for NVR/DVR setup, plus explicit LAN/VLAN and TCP port 554 guidance.
+- Add authenticated GET/PUT RTSP endpoints while preserving the legacy
+  `{ "enabled": true }` toggle response and the existing HANET P2P live transport.
+- Keep RTSP credentials outside public device state; redact camelCase, nested and
+  JSON-encoded RTSP secrets/URLs from snapshots, WebSocket and generic APIs.
+- Abort in-flight RTSP requests when the camera dialog closes so sensitive URLs do
+  not repopulate the browser cache after the user leaves the screen.
+- Leave FaceID, departments, recordings, licensing, HANET login and the custom
+  component unchanged.
+
 ## 0.10.1 - 2026-08-28
 
 - Bắt buộc License Key trước khi mở dashboard hoặc sử dụng API nghiệp vụ; bỏ các

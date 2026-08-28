@@ -1,7 +1,21 @@
-# HANET Connect Gateway 0.10.1
+# HANET Connect Gateway 0.10.2
 
 Add-on quản lý hệ sinh thái HANET trực tiếp trong Home Assistant với giao diện
 Ingress tiếng Việt mở trực tiếp, còn API cục bộ ngoài Ingress vẫn có xác thực.
+
+## Điểm mới trong 0.10.2
+
+- Cho phép đổi riêng **RTSP username** và **RTSP password** cho từng camera bằng
+  đúng contract `device/set-user-config` của HANET Connect Android `4.1.21`.
+- Hiển thị URL hoàn chỉnh theo định dạng firmware
+  `rtsp://<IP>:554/user:<username>;pwd:<password>` và có nút **Copy URL** để thêm
+  nhanh vào đầu ghi/NVR; credential có ký tự đặc biệt được percent-encode.
+- Đọc IP LAN, trạng thái RTSP và user config từ nhiều envelope/key alias của cloud,
+  sau đó đọc lại camera để xác nhận thay đổi; response che password vẫn được xử lý.
+- Username, password và URL RTSP không xuất hiện trong snapshot, WebSocket hoặc API
+  setting chung; request đang tải bị hủy khi đóng dialog để không giữ URL nhạy cảm.
+- Giữ nguyên công tắc RTSP cũ, camera P2P/TUTK, FaceID, phòng ban, clip, license,
+  đăng nhập HANET và custom component.
 
 ## Điểm mới trong 0.10.1
 
@@ -105,7 +119,8 @@ Chi tiết contract và SHA-256 APK nằm trong `APK_4.1.21_ANALYSIS.md` ở sou
 - Điều khiển PTZ, preset, zoom, còi báo động, cửa và các command được hỗ trợ.
 - Quản lý Face ID thành viên/khách, thêm từng ảnh hoặc nhập nhiều ảnh.
 - Quản lý nhân viên, phòng ban, biển số và dữ liệu chấm công.
-- Bật/tắt RTSP, LED, IR, WDR, ghi hình, thông báo và setting theo model camera.
+- Bật/tắt RTSP, đổi username/password, copy URL cho đầu ghi và quản lý LED, IR,
+  WDR, ghi hình, thông báo cùng setting theo model camera.
 - Đồng bộ sự kiện qua SSE; tự chuyển sang cloud polling khi SSE không khả dụng.
 - WebSocket nội bộ cập nhật dashboard mà không phải tải lại trang.
 - API nâng cao cho toàn bộ catalog endpoint đã reverse engineering.
@@ -140,11 +155,12 @@ ra Internet.
 - **Sự kiện**: lọc theo ngày, camera, loại nhận diện, nguồn và từ khóa.
 - **Ghi hình**: tìm clip cloud theo ngày/camera và xem trực tiếp trong dialog.
 - **Danh tính**: quản lý Face ID, nhân viên, phòng ban, biển số và chấm công.
-- **Cài đặt**: kiểm tra kết nối, quản lý License Key, bật RTSP và dùng API nâng cao.
+- **Cài đặt**: kiểm tra kết nối, quản lý License Key, cấu hình/copy URL RTSP và dùng
+  API nâng cao.
 
 ## License rollout
 
-- Bản `0.10.1` bắt buộc license; các option `license_required`,
+- Bản `0.10.2` bắt buộc license; các option `license_required`,
   `license_portal_url`, `license_offline_grace_hours` và khóa dashboard không còn
   xuất hiện trong cấu hình người dùng.
 - Khi mở lần đầu, add-on tự mở License Center đúng installation; người dùng đăng ký
@@ -160,6 +176,8 @@ ra Internet.
 - Token HANET được lưu riêng tại `/data/session.json` và không gửi tới trình duyệt.
 - Credential P2P chỉ tồn tại ngắn hạn trong bộ nhớ và được truyền tới worker qua
   `stdin`.
+- Credential RTSP chỉ được đọc qua API riêng đã xác thực để tạo URL theo yêu cầu;
+  không được lưu trong Options, snapshot, WebSocket hoặc API setting chung.
 - Truy cập trực tiếp qua cổng ngoài vẫn bắt buộc API key; không mở cổng `9091`
   trên router ra Internet.
 
