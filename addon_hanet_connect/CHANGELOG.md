@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.10.1 - 2026-08-28
+
+- Bắt buộc License Key trước khi mở dashboard hoặc sử dụng API nghiệp vụ; bỏ các
+  option người dùng có thể dùng để tắt enforcement hoặc đổi portal production.
+- Thêm activation gate toàn màn hình với link `/activate` tự gắn installation ID,
+  public key, `client_type=addon` và phiên bản add-on.
+- Tự mở License Center khi installation chưa có key; hỗ trợ copy ID, dán key,
+  kiểm tra lại và tự quay về gate khi license hết hạn, bị khóa hoặc bị thu hồi.
+- Giữ nguyên xác minh chữ ký Ed25519, proof-of-possession, mã hóa key local,
+  cache offline 72 giờ và khả năng dùng chung một key cho addon/custom component.
+- Không thay đổi luồng camera, P2P, FaceID, phòng ban, clip, HANET login hoặc
+  custom component.
+
 ## 0.10.0 - 2026-08-24
 
 - Phân tích lại XAPK HANET Connect Android `4.1.21` build `770` và đối chiếu

@@ -14,9 +14,6 @@ configuration:
   webhook_secret:
     name: Khoa webhook
     description: Khoa xac thuc cho webhook cong khai.
-  ui_auth_enabled:
-    name: Khoa mat khau giao dien cu
-    description: Tuy chon tuong thich; ban 0.10.0 mo truc tiep qua Home Assistant Ingress.
   poll_interval:
     name: Chu ky dong bo
     description: So giay giua hai lan cap nhat du lieu cloud.
@@ -29,14 +26,5 @@ configuration:
   log_level:
     name: Muc log
     description: Muc chi tiet cua log gateway.
-  license_portal_url:
-    name: Website license
-    description: Dia chi portal de dang ky, mua va quan ly License Key.
-  license_required:
-    name: Bat buoc license
-    description: Chi bat sau khi portal production da duoc kiem tra on dinh.
-  license_offline_grace_hours:
-    name: Thoi gian license ngoai tuyen
-    description: So gio toi da dung ket qua xac minh da ky khi server tam thoi mat ket noi.
 network:
   9091/tcp: Truy cap gateway va webhook co xac thuc.

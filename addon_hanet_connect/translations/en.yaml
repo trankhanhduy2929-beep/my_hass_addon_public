@@ -14,9 +14,6 @@ configuration:
   webhook_secret:
     name: Webhook secret
     description: Secret accepted by the public webhook endpoint.
-  ui_auth_enabled:
-    name: Legacy dashboard lock
-    description: Compatibility option; version 0.10.0 opens directly through Home Assistant Ingress.
   poll_interval:
     name: Poll interval
     description: Seconds between cloud state updates.
@@ -29,14 +26,5 @@ configuration:
   log_level:
     name: Log level
     description: Gateway logging verbosity.
-  license_portal_url:
-    name: License website
-    description: Portal URL used to register, purchase, and manage License Keys.
-  license_required:
-    name: Require a license
-    description: Enable only after the production portal has been fully verified.
-  license_offline_grace_hours:
-    name: Offline license grace
-    description: Maximum hours to trust a signed cached verification while the server is unavailable.
 network:
   9091/tcp: Authenticated gateway and webhook access.

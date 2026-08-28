@@ -1,5 +1,5 @@
 name: HANET Connect Gateway
-version: "0.10.0"
+version: "0.10.1"
 slug: hanet_connect
 description: HANET camera, access control, FaceID, LPR and attendance gateway
 arch:
@@ -26,27 +26,19 @@ options:
   api_base_url: https://api-camera3.hanet.ai/v4
   api_access_key: ""
   webhook_secret: ""
-  ui_auth_enabled: false
   poll_interval: 30
   event_stream: true
   verify_tls: true
   log_level: info
-  license_portal_url: https://hanet-license-admin-vercel.vercel.app
-  license_required: false
-  license_offline_grace_hours: 72
 schema:
   username: str
   password: password
   api_base_url: url
   api_access_key: password?
   webhook_secret: password?
-  ui_auth_enabled: bool
   poll_interval: int(15,3600)
   event_stream: bool
   verify_tls: bool
   log_level: list(debug|info|warning|error)
-  license_portal_url: url
-  license_required: bool
-  license_offline_grace_hours: int(1,720)
 image: "ghcr.io/trankhanhduy2929-beep/addon_hanet_connect"
 url: "https://github.com/trankhanhduy2929-beep/my_hass_addon_public"

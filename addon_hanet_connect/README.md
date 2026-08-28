@@ -1,7 +1,21 @@
-# HANET Connect Gateway 0.10.0
+# HANET Connect Gateway 0.10.1
 
 Add-on quản lý hệ sinh thái HANET trực tiếp trong Home Assistant với giao diện
 Ingress tiếng Việt mở trực tiếp, còn API cục bộ ngoài Ingress vẫn có xác thực.
+
+## Điểm mới trong 0.10.1
+
+- Bắt buộc kích hoạt License Key trước khi mở dashboard hoặc gọi API nghiệp vụ;
+  không còn tùy chọn tắt enforcement trong cấu hình add-on.
+- Khi mở add-on chưa có key, màn hình activation tự tạo link
+  `https://hanet-license-admin-vercel.vercel.app/activate` kèm installation ID,
+  public key, loại client và phiên bản; portal có thể tự liên kết đúng installation.
+- Có nút mở portal tự động, sao chép installation ID, dán key và kích hoạt ngay;
+  khi key hết hạn, bị khóa hoặc bị thu hồi, giao diện tự quay về màn hình activation.
+- Website license và thời gian cache offline được nhúng cố định; người dùng không
+  cần nhập URL portal, license flag hay mật khẩu dashboard trong Options.
+- Giữ nguyên xác minh Ed25519, proof-of-possession, AES-GCM và slot dùng chung cho
+  addon/custom component; PayOS, Supabase và admin secret không nằm trong add-on.
 
 ## Điểm mới trong 0.10.0
 
@@ -16,7 +30,7 @@ Ingress tiếng Việt mở trực tiếp, còn API cục bộ ngoài Ingress v�
 - Đối chiếu thêm `device_set_alert` và sửa route đăng ký `/auth/register` theo
   đúng AOT; thao tác xóa tài khoản `/profile/delete` không đưa vào UI/catalog
   để tránh side effect không thể hoàn tác.
-- Không thay đổi camera/P2P, Ingress, HANET login, license hoặc custom component.
+- Không thay đổi camera/P2P, Ingress, HANET login hoặc custom component.
 
 Chi tiết contract và SHA-256 APK nằm trong `APK_4.1.21_ANALYSIS.md` ở source dự án.
 
@@ -52,8 +66,7 @@ Chi tiết contract và SHA-256 APK nằm trong `APK_4.1.21_ANALYSIS.md` ở sou
 - Thêm License Center HANET tại `https://hanet-license-admin-vercel.vercel.app`.
 - Tạo installation identity Ed25519 ổn định, xác minh response ký Ed25519 và
   lưu License Key cục bộ bằng AES-GCM; không chứa PayOS/database/admin secret.
-- Có trial 1 ngày, link dashboard, nhập/kích hoạt key, cache offline 72 giờ và
-  tùy chọn `license_required` (mặc định `false` để không ảnh hưởng bản đang chạy).
+- Có trial 1 ngày, link dashboard, nhập/kích hoạt key và cache offline 72 giờ.
 - Khi thử key thay thế không hợp lệ, addon giữ nguyên key cũ còn hiệu lực thay vì
   làm gián đoạn gateway.
 
@@ -131,11 +144,13 @@ ra Internet.
 
 ## License rollout
 
-- Mặc định `license_required: false`, do đó cài/nâng cấp `0.10.0` không khóa các
-  chức năng camera, FaceID, phòng ban, biển số hoặc chấm công hiện có.
-- Người dùng chưa có key sẽ thấy link tới License Center để nhận trial/mua gói.
-- Chỉ bật `license_required: true` sau khi database, PayOS webhook và verify
-  production đã được kiểm tra đầy đủ.
+- Bản `0.10.1` bắt buộc license; các option `license_required`,
+  `license_portal_url`, `license_offline_grace_hours` và khóa dashboard không còn
+  xuất hiện trong cấu hình người dùng.
+- Khi mở lần đầu, add-on tự mở License Center đúng installation; người dùng đăng ký
+  hoặc đăng nhập, nhận trial/mua gói, copy key và dán lại vào màn hình activation.
+- Chỉ route health, static UI và activation/verify được mở trước khi có key; camera,
+  FaceID, phòng ban, biển số, chấm công, clip và WebSocket chỉ mở sau verify thành công.
 - Xem hướng dẫn backend/Vercel tại `../hanet-license-portal/README.md`.
 
 ## Bảo mật
