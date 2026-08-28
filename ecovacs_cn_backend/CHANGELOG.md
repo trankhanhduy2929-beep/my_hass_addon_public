@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.3.5 - 2026-08-28
+
+- Làm nút **Mở trang nhận license** lớn, nổi bật và dễ bấm hơn trên cả desktop
+  lẫn điện thoại trong giao diện kích hoạt ban đầu.
+- Link và QR gửi sẵn Installation ID cùng phiên bản add-on sang portal; sau đăng
+  nhập portal tự claim đúng cài đặt, không yêu cầu người dùng copy hoặc nhập ID.
+- Portal hiển thị xác nhận **Đã liên kết tự động**, chỉ hiện bộ chọn khi tài khoản
+  thực sự có nhiều add-on và hướng người dùng thẳng tới trial/gói thanh toán.
+
 ## 1.3.4 - 2026-08-24
 
 - Sửa lỗi add-on không khởi động trên Home Assistant khi Supervisor quản lý quyền
