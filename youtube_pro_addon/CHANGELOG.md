@@ -1,5 +1,15 @@
 # Changelog
 
+## 5.2.0 - 2026-08-27
+
+- Thêm **Mix cá nhân local-first** với hồ sơ nghe riêng, xếp hạng theo lịch sử/thích/không thích và cache có thể làm mới.
+- Thêm phản hồi đề xuất trong player và dialog chi tiết: thích, không thích, ẩn bài, ẩn kênh và hoàn tác.
+- Thêm service/API `play_personal_mix`, `listener_feedback`; Smart Radio nhận `profile_id`.
+- Media Browser 3.2 thêm mục **Mix cá nhân**.
+- Bỏ hoàn toàn luồng đăng nhập Google/Google OAuth khỏi giao diện; portal license chỉ dùng email/mật khẩu.
+- Ẩn giao diện nhập YouTube cookie để người dùng không phải đăng nhập tài khoản Google; backend tương thích cũ vẫn được giữ an toàn.
+- Giữ nguyên playback, Cast/AirPlay/HomePod, video, queue, license và API cũ.
+
 ## 5.1.0 - 2026-08-27
 
 - Thêm **Queue Pro**: phát tiếp theo, thêm cuối hàng chờ, đổi thứ tự, xóa, xáo trộn và lưu hàng chờ thành playlist.
