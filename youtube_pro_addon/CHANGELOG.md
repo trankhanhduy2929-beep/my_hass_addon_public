@@ -1,5 +1,13 @@
 # Changelog
 
+## 5.3.0 - 2026-08-29
+
+- Thêm menu **Nhạc cá nhân** riêng cạnh Trang chủ và chuyển toàn bộ Mix cá nhân, Hồ sơ nghe cùng thao tác tạo/đổi tên/xóa hồ sơ sang trang này.
+- Làm gọn Trang chủ để tập trung vào tìm kiếm, khám phá và phát nhạc thông thường.
+- Chỉ tạo Mix khi người dùng mở tab Nhạc cá nhân; vẫn nạp nhẹ hồ sơ nghe để giữ nguyên phản hồi thích/không thích trong player.
+- Giữ nguyên ID giao diện, API, dữ liệu hồ sơ local-first, playback, Cast/AirPlay/HomePod, video, queue, license và custom integration hiện có.
+- Tối ưu thanh điều hướng mobile cho sáu menu, gồm nhãn rút gọn trên màn hình rất hẹp.
+
 ## 5.2.1 - 2026-08-28
 
 - Sửa lỗi mở lại add-on bị kẹt ở màn hình kiểm tra key dù license vẫn còn hợp lệ.
