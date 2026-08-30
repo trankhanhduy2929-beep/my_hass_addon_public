@@ -1,5 +1,11 @@
 # Changelog
 
+## 5.3.1 - 2026-08-30
+
+- Cho phép tài khoản Home Assistant không phải quản trị mở panel YouTube Pro bằng cách tắt giới hạn `panel_admin`.
+- Giữ nguyên Home Assistant Ingress và không thêm `auth_api` hoặc quyền Supervisor mới; các request vẫn phải đi qua phiên đăng nhập Home Assistant.
+- Giữ nguyên playback, Cast/AirPlay/HomePod, video, Mix cá nhân, Media Browser, license và custom integration.
+
 ## 5.3.0 - 2026-08-29
 
 - Thêm menu **Nhạc cá nhân** riêng cạnh Trang chủ và chuyển toàn bộ Mix cá nhân, Hồ sơ nghe cùng thao tác tạo/đổi tên/xóa hồ sơ sang trang này.
