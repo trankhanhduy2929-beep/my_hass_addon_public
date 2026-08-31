@@ -1,5 +1,5 @@
 name: HA Camera Face ID
-version: 2.2.0
+version: 2.4.0
 slug: rtsp_face_bridge
 description: Chọn camera entity từ Home Assistant, nhận diện khuôn mặt local bằng InsightFace và phát sự kiện MQTT.
 arch:
@@ -11,13 +11,13 @@ init: false
 homeassistant_api: true
 ingress: true
 ingress_port: 6868
+panel_admin: true
 panel_icon: mdi:face-recognition
-ports:
-  6868/tcp: 6868
-ports_description:
-  6868/tcp: HA Camera Face ID Web UI
-webui: http://[HOST]:[PORT:6868]
-options: {}
-schema: {}
+options:
+  license_portal_url: "https://camera-face-id-license.vercel.app"
+  license_signing_public_key: "FXqFNkeMm/mvFf9qfiI0u/N/FUj5m9bzxjiY9GGuamM="
+schema:
+  license_portal_url: str
+  license_signing_public_key: str
 image: "ghcr.io/trankhanhduy2929-beep/rtsp_face_bridge"
 url: "https://github.com/trankhanhduy2929-beep/my_hass_addon_public"

@@ -19,7 +19,9 @@ Home Assistant local add-on lấy trực tiếp các entity `camera.*` đã có 
 - Dashboard polling nhẹ mỗi `3 giây`, tự thêm event mới và cập nhật trạng thái camera/AI/MQTT mà không reload trang.
 - Lịch sử có tra cứu AJAX theo khoảng ngày, camera, tên người, người lạ/đã biết và match tối thiểu; có phân trang và tự làm mới trang đầu.
 - Cleanup chạy nền theo lịch cấu hình, hiển thị lần chạy gần nhất/kế tiếp và số event/ảnh đã dọn.
-- Port Web UI `6868`; mật khẩu khởi tạo không được hiển thị trong tài liệu hoặc giao diện.
+- License tự động qua portal Vercel/PayOS, ràng buộc theo installation và có cache offline đã ký; không phải copy/paste key.
+- Web UI chỉ mở qua Home Assistant Ingress, không publish port `6868` ra host và không dùng mật khẩu riêng của add-on.
+- Khi license chưa hợp lệ, chỉ trang kích hoạt được hiển thị; camera, Face ID, lịch sử, cài đặt và API nội bộ đều bị khóa.
 
 ## Cài đặt
 
@@ -28,9 +30,11 @@ Home Assistant local add-on lấy trực tiếp các entity `camera.*` đã có 
 3. Chọn menu ba chấm và bấm **Check for updates**.
 4. Cài đặt hoặc cập nhật **HA Camera Face ID**.
 5. Restart addon để Home Assistant cấp `SUPERVISOR_TOKEN` theo quyền `homeassistant_api: true`.
-6. Mở Web UI và đăng nhập bằng mật khẩu khởi tạo riêng của addon; đổi ngay trong **Cài đặt** nếu cần.
+6. Mở Web UI bằng nút **Open Web UI** trong Home Assistant. Add-on không yêu cầu mật khẩu cục bộ.
+7. Nếu installation chưa có license, add-on chỉ hiện trang **Kích hoạt HA Camera Face ID**. Bấm **Mở portal kích hoạt / mua license**, đăng nhập/đăng ký và chọn trial 1 ngày hoặc gói mua.
+8. Sau khi portal cấp quyền, add-on tự nhận license trong tối đa 30 giây và mở giao diện bên trong; không cần nhập URL, Installation ID hoặc key.
 
-Lần chạy đầu InsightFace tải model `buffalo_sc` vào `/data/insightface`. Dữ liệu khuôn mặt, embedding cache, lịch sử, MQTT và mật khẩu Web UI vẫn được giữ qua các lần cập nhật.
+Lần chạy đầu InsightFace tải model `buffalo_sc` vào `/data/insightface`. Dữ liệu khuôn mặt, embedding cache, lịch sử và MQTT vẫn được giữ qua các lần cập nhật. Khi nâng cấp lên `2.4.0`, hash mật khẩu Web UI cũ được xóa khỏi `/data/config.json`; các dữ liệu camera/Face ID khác không bị thay đổi.
 
 ## Preset NUC6CAYH
 
@@ -65,6 +69,18 @@ Nút **Test ảnh camera** yêu cầu Home Assistant trả về một ảnh hợ
 
 Nút **Test Face ID** lấy ảnh hiện tại và chạy ngay InsightFace. Kết quả sẽ cho biết model chưa sẵn sàng, không thấy mặt, mặt bị lọc do score/kích thước, nhận ra tên hoặc đang là `Unknown`. Muốn phân biệt tên, cần thêm ảnh mẫu trong mục **Người**.
 
+## License
+
+- Khi chưa có license hợp lệ, camera worker nền dừng lấy ảnh và toàn bộ trang/API nội bộ trả về cổng kích hoạt hoặc lỗi `license_required`.
+- Chỉ `/activate`, thao tác kiểm tra/nhập key tại trang kích hoạt, trạng thái license đã rút gọn, static asset và health check được truy cập trước khi active.
+- Sau khi license hợp lệ, dashboard, camera, thư viện khuôn mặt, lịch sử, MQTT, model và nút **Test Face ID** hoạt động như trước.
+- Mỗi add-on tự tạo một Ed25519 installation identity trong `/data/license_identity.json`; không chia sẻ hoặc sao chép file này.
+- Add-on chỉ gửi License Key, installation ID/public key và chữ ký chứng minh quyền sở hữu installation tới portal.
+- Add-on không chứa PayOS secret, D1 secret, private signing key hoặc admin secret.
+- Phản hồi server được ký Ed25519 bằng public key cấu hình trong add-on; key không phải secret nhưng phải khớp private key trên portal. Khi mất mạng chỉ cache đã ký mới được dùng, mặc định tối đa `72` giờ và không vượt hạn license.
+
+Nếu deploy portal bằng URL khác `https://camera-face-id-license.vercel.app`, đổi `license_portal_url` trong tab **Configuration** của add-on hoặc trong phần License của Web UI. Khi xoay private signing key trên Vercel, cập nhật public key tương ứng trong tab **Configuration** của add-on rồi kiểm tra lại license.
+
 ## Nâng cấp từ bản RTSP-only
 
 Bản `2.0.x` xóa URL RTSP đã lưu, tắt các camera cũ và đánh dấu `migration_required` để không tiếp tục giữ mật khẩu camera trong `/data/config.json`. Vào **Sửa**, chọn entity Home Assistant tương ứng và bật lại nhận diện. Thư viện khuôn mặt và lịch sử không bị xóa.
@@ -73,7 +89,11 @@ Addon tự dùng `access_token` xoay vòng của từng camera entity để gọ
 
 Từ bản `2.0.2`, addon giữ quyền tối thiểu `homeassistant_api: true`; không yêu cầu quyền quản lý Supervisor. Bản `2.1.0` tự chuyển cấu hình cũ sang preset NUC6CAYH, giữ nguyên camera entity, người đã học và lịch sử.
 
-Bản `2.2.0` bổ sung dashboard realtime, tra cứu lịch sử không reload và lịch cleanup cấu hình được. Mật khẩu khởi tạo vẫn chỉ được kiểm tra bằng hash một chiều và không xuất hiện trong README, giao diện, test hoặc log.
+Bản `2.2.0` bổ sung dashboard realtime, tra cứu lịch sử không reload và lịch cleanup cấu hình được.
+
+Bản `2.3.2` giữ nguyên license tự động và các chức năng camera, đồng thời cho phép Docker build chịu lệch giờ repository tối đa 3 ngày mà không tắt kiểm tra chữ ký hoặc hạn dùng APT.
+
+Bản `2.4.0` loại bỏ hoàn toàn login/mật khẩu Web UI cục bộ, xóa hash cũ khi migrate, chỉ cho truy cập qua Home Assistant Ingress và khóa mọi giao diện/API nội bộ cho đến khi license hợp lệ.
 
 ## Realtime và tra cứu
 
@@ -108,9 +128,9 @@ rtsp_face_bridge/<camera_id>/image
 rtsp_face_bridge/<camera_id>/face
 ```
 
-## Đổi mật khẩu
+## Truy cập Web UI
 
-Vào **Cài đặt → Đổi mật khẩu addon**. Mật khẩu chỉ được lưu dạng hash; giá trị khởi tạo không được in trong README, giao diện hoặc log.
+Add-on không còn màn hình login hoặc mật khẩu riêng. Truy cập bằng Home Assistant Ingress; manifest không map port `6868` ra host và panel được giới hạn cho tài khoản quản trị Home Assistant. License gate vẫn được kiểm tra độc lập trên mọi route nội bộ.
 
 ## Dữ liệu persistent
 
@@ -120,6 +140,7 @@ Vào **Cài đặt → Đổi mật khẩu addon**. Mật khẩu chỉ được 
 /data/events/
 /data/faces/
 /data/insightface/
+/data/license_identity.json
 ```
 
 ## Lưu ý model
