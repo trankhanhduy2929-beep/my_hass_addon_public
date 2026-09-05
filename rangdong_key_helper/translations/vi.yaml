@@ -1,0 +1,10 @@
+configuration:
+  android_host:
+    name: IP điện thoại Android
+    description: IP LAN mặc định trong Wireless debugging. Bạn cũng có thể nhập trực tiếp trên trang Ingress.
+  adb_port:
+    name: Cổng kết nối ADB
+    description: Cổng kết nối Wireless debugging, không phải cổng ghép đôi tạm thời.
+  package_name:
+    name: Tên gói Android
+    description: Giữ com.rd.smart trừ khi ứng dụng Rạng Đông đã cài dùng tên gói khác.

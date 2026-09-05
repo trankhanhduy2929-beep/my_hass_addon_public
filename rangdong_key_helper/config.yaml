@@ -1,0 +1,21 @@
+name: Rạng Đông Key Helper
+version: "0.3.1"
+slug: rangdong_key_helper
+description: Đăng nhập Rạng Đông lấy local key tự động và quản lý License Key
+url: "https://github.com/trankhanhduy2929-beep/my_hass_addon_public"
+image: "ghcr.io/trankhanhduy2929-beep/rangdong_key_helper"
+arch:
+  - amd64
+  - aarch64
+homeassistant: "2026.8.0"
+boot: manual
+stage: experimental
+ingress: true
+panel_icon: mdi:key-wireless
+panel_title: Khóa Rạng Đông
+homeassistant_api: true
+options: {}
+schema:
+  android_host: str?
+  adb_port: port?
+  package_name: str?

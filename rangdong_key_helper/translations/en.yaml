@@ -1,0 +1,10 @@
+configuration:
+  android_host:
+    name: Android phone IP
+    description: Default LAN IP shown by Android Wireless debugging. It can also be entered in the Ingress page.
+  adb_port:
+    name: ADB connection port
+    description: Default Wireless debugging connection port, not the temporary pairing port.
+  package_name:
+    name: Android package
+    description: Keep com.rd.smart unless the installed Rạng Đông app uses another package name.
