@@ -15,6 +15,21 @@ Nếu repository đã có sẵn, chỉ cần cập nhật add-on lên bản mớ
 
 ## License
 
+Cần cập nhật custom Rạng Đông Smart lên **0.3.2 hoặc mới hơn** cùng add-on.
+Chỉ license hợp lệ trên đúng Home Assistant mới cho phép đăng nhập lấy key và
+xem danh sách key. Hết hạn thì các chức năng này bị khóa; nhận gói trả phí hoặc
+vĩnh viễn tại website rồi kích hoạt để tiếp tục. Khóa/thu hồi từ admin được cập
+nhật trong tối đa 5 phút khi có mạng. Khi cần xác minh lại mà server không truy
+cập được, add-on tạm khóa; đây không phải mất license và không cần mua lại.
+
+Mỗi license có một suất add-on và một suất custom trên cùng định danh Home
+Assistant. Cài mới ở máy khác sẽ bị từ chối; khi đổi máy hợp lệ, liên hệ người
+bán để reset. Không chia sẻ bản sao lưu chứa định danh Home Assistant.
+
+Device ID và local key được hiển thị đầy đủ, có nút **Sao chép** từng giá trị,
+chỉ dành cho quản trị viên Home Assistant qua Ingress. Không gửi ảnh chụp chứa
+key cho người khác. Key đã sao chép không thể thu hồi bằng việc khóa license.
+
 Mở giao diện add-on và nhập License Key đã nhận tại website license. Dùng cùng
 một key cho một add-on và một custom integration trên cùng Home Assistant.
 
