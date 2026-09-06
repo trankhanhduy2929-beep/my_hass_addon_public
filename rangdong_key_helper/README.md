@@ -7,7 +7,7 @@ Add-on Home Assistant để đăng nhập tài khoản Rạng Đông và chuyể
 
 1. Trong Home Assistant vào **Cài đặt → Add-ons → Add-on Store**.
 2. Chọn menu ba chấm → **Repositories**.
-3. Thêm repository add-on của chủ dự án.
+3. Thêm repository add-on của chủ dự án. https://github.com/trankhanhduy2929-beep/my_hass_addon_public
 4. Mở **Rạng Đông Key Helper** → **Install** → **Start**.
 5. Bật **Show in sidebar** để mở giao diện add-on.
 
