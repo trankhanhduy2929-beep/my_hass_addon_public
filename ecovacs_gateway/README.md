@@ -1,4 +1,4 @@
-# Ecovacs Private Gateway – APK Mod 2.1.4
+# Ecovacs Private Gateway – APK Mod 2.1.5
 
 Add-on đa thiết bị cho Ecovacs, xuất trực tiếp Home Assistant MQTT Discovery.
 Không cần cài custom component.
@@ -50,7 +50,7 @@ xóa hostname broker rồi lưu. Port `7890` không cần map ra LAN.
 Xem hướng dẫn đầy đủ tại `DOCS.md` và kiến trúc tại
 `../../docs/ADDON_ARCHITECTURE.md`.
 
-## Nâng cấp 2.1.4
+## Nâng cấp 2.1.4 và 2.1.5
 
 Ghi đè source, rebuild/restart; không uninstall hoặc xóa `/data`. Bản này bỏ
 đăng nhập chính thức, SMS, IOT sạch và nhập portal token; chỉ giữ APK Mod đầy đủ.
@@ -61,3 +61,8 @@ Không tự chuyển credential cũ sang cloud khác; license và MQTT vẫn đ�
 Email, tên đăng nhập và số điện thoại được giữ nguyên như trên APK Mod (chỉ bỏ
 khoảng trắng đầu/cuối). Đổi tài khoản phải nhập lại mật khẩu. Khi đổi tài khoản
 hoặc mật khẩu, addon xóa app token cũ để tránh đăng nhập nhầm người dùng.
+
+2.1.5 xác minh đăng nhập thực tế bằng credential của chủ tài khoản: 2 robot từ
+`GetGlobalDeviceList` xuất hiện thành công. `GetDeviceList` chỉ là endpoint phụ;
+nó trả HTML/xml nên không còn làm hỏng khởi động. Portal `fail` và session hết
+hạn vẫn được báo lỗi.

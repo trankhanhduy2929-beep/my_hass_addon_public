@@ -1,5 +1,15 @@
 # Changelog
 
+## 2.1.5 - 2026-09-14
+
+- Đăng nhập APK Mod với tài khoản của anh đã xác nhận: RSA password, auth code,
+  IOT/OAuth và `GetGlobalDeviceList` trả về 2 robot thật.
+- `GetDeviceList` được coi là nguồn phụ; nếu cloud APK Mod trả dữ liệu không hợp
+  lệ, addon vẫn dùng `GetGlobalDeviceList` và tiếp tục đăng ký robot.
+- Portal `icouser.net` được kiểm tra host HTTPS; thông báo JSON lỗi nêu rõ bước
+  và HTTP status, không in token, tài khoản, DID hay payload cloud.
+- License, installation identity, MQTT, realtime, bản đồ và lệnh robot giữ nguyên.
+
 ## 2.1.4 - 2026-09-14
 
 - Chỉ giữ đăng nhập APK Mod đầy đủ; bỏ cloud chính thức, chế độ IOT sạch,

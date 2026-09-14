@@ -1,4 +1,4 @@
-# Cài đặt Ecovacs Private Gateway – APK Mod 2.1.4
+# Cài đặt Ecovacs Private Gateway – APK Mod 2.1.5
 
 ## Yêu cầu
 
@@ -42,7 +42,7 @@ nằm tại `../../license_portal/README.md`.
 Với Mosquitto add-on chuẩn, hostname nội bộ thường là `core-mosquitto` và port
 không TLS là `1883`. Không nhập `mqtt://` hoặc đường dẫn URL trong ô hostname.
 
-## Nâng cấp từ 2.1.3 lên 2.1.4
+## Nâng cấp từ 2.1.3 lên 2.1.5
 
 Giữ nguyên `/data`, ghi đè source, rebuild và restart. Không uninstall add-on.
 Cấu hình APK Mod đầy đủ cũ tiếp tục tự kết nối. Các luồng khác đã bị xóa; nếu
@@ -54,14 +54,17 @@ Mật khẩu để trống chỉ được giữ cho cùng tài khoản APK Mod �
 phải nhập lại mật khẩu; đổi tài khoản/mật khẩu sẽ loại cache app token cũ.
 
 Lỗi `1003` kèm trace `loginCheckMobile` ở bản cũ là phản hồi từ nhánh chính thức.
-Bản này không còn gọi nhánh đó. Nếu cloud APK Mod vẫn từ chối, thông báo sẽ ghi
-rõ cloud APK Mod và mã lỗi; kiểm tra đăng nhập trên APK Mod với cùng tài khoản.
-Không gửi mật khẩu hoặc token trong log hỗ trợ.
+Bản 2.1.4 không còn gọi nhánh đó và credential của chủ tài khoản đã đăng nhập
+APK Mod thành công. Lỗi `portal returned invalid JSON` là do `users/user.do`
+trả HTML/xml, không phải mật khẩu sai; 2.1.5 dùng `appsvr/app.do` làm nguồn
+robot chính, không bỏ qua portal `fail` hay session hết hạn. Nếu cloud vẫn trả
+mã từ chối, thông báo nêu rõ cloud APK Mod, bước và mã lỗi nhưng không in credential,
+token hoặc dữ liệu thô.
 
 ## Nâng cấp từ bản có custom component
 
 1. Không uninstall add-on để giữ `/data`.
-2. Nâng add-on lên `2.1.4` và restart.
+2. Nâng add-on lên `2.1.5` và restart.
 3. Xóa config entry `ecovacs_cn_mod` trong **Devices & services**.
 4. Xóa `/config/custom_components/ecovacs_cn_mod`, restart Home Assistant.
 5. Cấu hình MQTT broker trong Web UI add-on.

@@ -1,5 +1,5 @@
 name: Ecovacs Private Gateway
-version: 2.1.4
+version: 2.1.5
 slug: ecovacs_private_gateway
 description: Realtime multi-device Ecovacs gateway with direct MQTT Discovery
 arch:
