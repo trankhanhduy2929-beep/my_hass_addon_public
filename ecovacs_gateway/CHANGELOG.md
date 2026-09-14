@@ -1,5 +1,16 @@
 # Changelog
 
+## 2.1.4 - 2026-09-14
+
+- Chỉ giữ đăng nhập APK Mod đầy đủ; bỏ cloud chính thức, chế độ IOT sạch,
+  SMS và nhập portal token ở cả UI lẫn backend.
+- Gửi đúng tài khoản APK Mod qua `user/login`, không ép thành số Trung Quốc;
+  giữ RSA password, auth code và chuỗi IOT/OAuth hiện có.
+- Cấu hình APK Mod đã lưu tự kết nối lại. Cấu hình thuộc luồng cũ yêu cầu nhập
+  lại tài khoản/mật khẩu một lần, không tự gửi credential cũ sang cloud mod.
+- Xóa cache app token khi đổi tài khoản/mật khẩu; giữ license, MQTT, bản đồ
+  và điều khiển robot. Thông báo lỗi xác thực không chứa credential.
+
 ## 2.1.3 - 2026-08-28
 
 - Đổi màn hình license thành luồng liên kết tự động cho Ecovacs APK Mod trên Home

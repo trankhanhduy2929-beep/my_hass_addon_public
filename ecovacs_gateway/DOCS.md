@@ -1,9 +1,9 @@
-# Cài đặt Ecovacs Private Gateway – APK Mod 2.1.3
+# Cài đặt Ecovacs Private Gateway – APK Mod 2.1.4
 
 ## Yêu cầu
 
 - Home Assistant có MQTT integration và một broker truy cập được từ add-on;
-- tài khoản Ecovacs phù hợp với cloud Trung Quốc/chế độ đã chọn;
+- tài khoản đăng nhập được trên Ecovacs APK Mod, không dùng app gốc;
 - không cần HACS hoặc custom component.
 
 ## Cài mới
@@ -13,8 +13,10 @@
 3. Mở Web UI; không có mật khẩu quản trị local. Bấm **Liên kết thiết bị & kích
    hoạt** để chuyển thẳng tới portal APK Mod; portal tự nhận thiết bị, hoặc nhập
    key có sẵn.
-4. Sau khi license hợp lệ, nhập tài khoản Ecovacs. Credential được lưu mã hóa
-   trong `/data`.
+4. Sau khi license hợp lệ, nhập tài khoản/mật khẩu **APK Mod**, xác nhận dùng
+   cloud APK Mod rồi bấm **Lưu mã hóa và kết nối**. Giữ nguyên email, tên đăng
+   nhập hoặc số điện thoại như trên APK Mod; không cần mã quốc gia hay chọn
+   cloud. Credential được lưu mã hóa trong `/data`.
 5. Nhập hostname/IP broker, port, username, password và TLS trong mục
    **Home Assistant MQTT trực tiếp**.
 6. Giữ discovery prefix `homeassistant` nếu MQTT integration dùng mặc định.
@@ -40,10 +42,26 @@ nằm tại `../../license_portal/README.md`.
 Với Mosquitto add-on chuẩn, hostname nội bộ thường là `core-mosquitto` và port
 không TLS là `1883`. Không nhập `mqtt://` hoặc đường dẫn URL trong ô hostname.
 
+## Nâng cấp từ 2.1.3 lên 2.1.4
+
+Giữ nguyên `/data`, ghi đè source, rebuild và restart. Không uninstall add-on.
+Cấu hình APK Mod đầy đủ cũ tiếp tục tự kết nối. Các luồng khác đã bị xóa; nếu
+addon yêu cầu thiết lập lại, nhập tài khoản/mật khẩu đang dùng trên APK Mod và
+đánh dấu xác nhận cloud bên thứ ba một lần. Không cần chọn máy chủ, nhập mã
+quốc gia hay lấy portal token. License, MQTT và cấu hình realtime vẫn được giữ.
+
+Mật khẩu để trống chỉ được giữ cho cùng tài khoản APK Mod đã lưu. Đổi tài khoản
+phải nhập lại mật khẩu; đổi tài khoản/mật khẩu sẽ loại cache app token cũ.
+
+Lỗi `1003` kèm trace `loginCheckMobile` ở bản cũ là phản hồi từ nhánh chính thức.
+Bản này không còn gọi nhánh đó. Nếu cloud APK Mod vẫn từ chối, thông báo sẽ ghi
+rõ cloud APK Mod và mã lỗi; kiểm tra đăng nhập trên APK Mod với cùng tài khoản.
+Không gửi mật khẩu hoặc token trong log hỗ trợ.
+
 ## Nâng cấp từ bản có custom component
 
 1. Không uninstall add-on để giữ `/data`.
-2. Nâng add-on lên `2.1.3` và restart.
+2. Nâng add-on lên `2.1.4` và restart.
 3. Xóa config entry `ecovacs_cn_mod` trong **Devices & services**.
 4. Xóa `/config/custom_components/ecovacs_cn_mod`, restart Home Assistant.
 5. Cấu hình MQTT broker trong Web UI add-on.
