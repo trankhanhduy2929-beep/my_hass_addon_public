@@ -1,6 +1,6 @@
 name: "YouTube Pro"
 description: "YouTube Music + Video với Cast, AirPlay/HomePod và Media Browser"
-version: "5.3.2"
+version: "5.3.3"
 slug: "youtube_pro_addon"
 arch:
   - amd64
@@ -24,10 +24,14 @@ options:
   pot_provider_enabled: false
   pot_provider_url: "http://homeassistant.local:4416"
   license_enforcement: true
+  audio_prefer_m4a: true
+  audio_max_bitrate_kbps: 0
 schema:
   media_base_url: str
   pot_provider_enabled: bool
   pot_provider_url: str
   license_enforcement: bool
+  audio_prefer_m4a: bool
+  audio_max_bitrate_kbps: int
 image: "ghcr.io/trankhanhduy2929-beep/youtube_pro_addon"
 url: "https://github.com/trankhanhduy2929-beep/my_hass_addon_public"

@@ -1,5 +1,13 @@
 # Changelog
 
+## 5.3.3 - 2026-09-16
+
+- **Relay tự phục hồi giữa stream**: nếu kết nối googlevideo đứt hoặc timeout giữa bài, relay tự mở lại kết nối với `Range: bytes=<offset>-` để phát tiếp thay vì dừng loa; có refresh stream khi gặp 401/403/410 và giới hạn số lần nối lại.
+- **Tự phát hiện buffering kéo dài trên Google Cast**: sau khi direct phát thành công, add-on theo dõi `media_position`; nếu loa buffering liên tục mà vị trí không tiến thì tự cooldown `direct` và chuyển sang `relay`.
+- **Tùy chọn codec/bitrate audio**: thêm `audio_prefer_m4a` (mặc định `true`) và `audio_max_bitrate_kbps` (mặc định `0` = không giới hạn) để ưu tiên AAC/m4a ổn định cho Cast và giới hạn bitrate khi cần.
+- Thêm `parse_range_bounds` để tính đúng offset khi client dùng `Range` (kể cả suffix range) và khi nối lại.
+- Giữ nguyên playback, video, queue, Mix cá nhân, license, Media Browser và custom integration.
+
 ## 5.3.2 - 2026-09-16
 
 - Sửa lỗi loa Google Cast bị giật/buffering khi phát.
