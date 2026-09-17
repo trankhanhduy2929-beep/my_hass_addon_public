@@ -1,6 +1,6 @@
 name: "YouTube Pro"
 description: "YouTube Music + Video với Cast, AirPlay/HomePod và Media Browser"
-version: "5.3.4"
+version: "5.4.0"
 slug: "youtube_pro_addon"
 arch:
   - amd64
@@ -27,6 +27,9 @@ options:
   audio_prefer_m4a: true
   audio_max_bitrate_kbps: 0
   resume_after_interruption: true
+  auto_skip_failed: true
+  sleep_fade: true
+  video_max_height: 720
 schema:
   media_base_url: str
   pot_provider_enabled: bool
@@ -35,5 +38,8 @@ schema:
   audio_prefer_m4a: bool
   audio_max_bitrate_kbps: int
   resume_after_interruption: bool
+  auto_skip_failed: bool
+  sleep_fade: bool
+  video_max_height: int
 image: "ghcr.io/trankhanhduy2929-beep/youtube_pro_addon"
 url: "https://github.com/trankhanhduy2929-beep/my_hass_addon_public"
