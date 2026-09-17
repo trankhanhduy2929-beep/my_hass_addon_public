@@ -28,7 +28,7 @@ Add-on YouTube Pro cho Home Assistant, được tách riêng hoàn toàn khỏi 
 
 ## Cài add-on
 
-1. Thêm repository add-on `https://github.com/trankhanhduy2929-beep/my_hass_addon_public` trong Home Assistant (Settings → Add-ons → Add-on Store → ⋮ → Repositories).
+1. Chép thư mục `youtube_pro_addon` vào repository add-on local.
 2. Reload add-on store rồi cài **YouTube Pro 5.4.0**.
 3. Giữ port host `2032` nếu không có dịch vụ khác sử dụng cổng này. Không cần điền `media_base_url` trong cấu hình thông thường.
 4. Khởi động add-on và mở Web UI.
@@ -63,7 +63,7 @@ Panel YouTube Pro được mở cho mọi tài khoản Home Assistant đã đăn
 
 ## Cài custom integration
 
-1. Cài custom integration `youtube_pro` từ `https://github.com/trankhanhduy2929-beep/youtube_pro_integration_homeassistant` (HACS hoặc thủ công) vào `/config/custom_components/youtube_pro`.
+1. Chép `projects/youtube_pro/custom_components/youtube_pro` vào `/config/custom_components/youtube_pro`.
 2. Khởi động lại Home Assistant.
 3. Trong add-on, mở **Hẹn giờ → Home Assistant integration** và sao chép token.
 4. Thêm integration **YouTube Pro**, giữ URL là `auto` (khuyến nghị), dán token và chọn loa mặc định. Integration tự dò add-on qua Supervisor/DNS nội bộ; chỉ nhập URL thủ công khi mạng có cấu hình đặc biệt.
@@ -76,8 +76,6 @@ Các service:
 - `youtube_pro.start_radio`
 - `youtube_pro.play_personal_mix`
 - `youtube_pro.listener_feedback`
-- `youtube_pro.pause`
-- `youtube_pro.resume`
 - `youtube_pro.set_timer`
 
 Service `youtube_pro.enqueue` nhận `entity_id` tùy chọn và `position: next|end`. Service `youtube_pro.start_radio` tạo đài phát cho đúng `media_player`, hỗ trợ audio/video và chế độ thay thế hoặc nối cuối hàng chờ.
