@@ -1,6 +1,6 @@
 name: "YouTube Pro"
 description: "YouTube Music + Video với Cast, AirPlay/HomePod, nhiều loa cùng lúc và Media Browser"
-version: "5.8.0"
+version: "5.9.0"
 slug: "youtube_pro_addon"
 arch:
   - amd64

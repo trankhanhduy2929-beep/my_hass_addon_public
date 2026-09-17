@@ -1,5 +1,13 @@
 # Changelog
 
+## 5.9.0 - 2026-09-17
+
+- **Mỗi bài hai nút Nghe / Xem**: mỗi dòng bài hát có nút **♪ Nghe** (chỉ tiếng, dùng luồng audio) và **▶ Xem** (mở video, phát trên trình duyệt hoặc truyền tới Cast/TV); nút Nghe phát tới thiết bị đang chọn như trước.
+- **Ẩn thiết bị**: loa/TV đang `unavailable`/`unknown` tự ẩn khỏi danh sách chọn và tự hiện lại khi kết nối; mỗi loa trong dialog “Phát ra nhiều loa” có nút ẩn/hiện thủ công, kèm nút “Hiện loa đã ẩn (N)”; danh sách ẩn được lưu trên trình duyệt.
+- **Giữ trạng thái khi rời trang/mở lại**: danh sách kết quả tìm kiếm, tab đang mở, bài đang nghe và video gần nhất được lưu cục bộ (localStorage, hết hạn sau 7 ngày) và khôi phục khi mở lại add-on; bài/video được nạp ở trạng thái sẵn sàng (không tự phát tiếng) kèm vị trí đã lưu.
+- **Ổn định nhóm loa**: “Dừng nhóm” gỡ hẳn nhóm và phiên của các loa; khi một loa lỗi trong lúc chuyển bài, các loa còn lại vẫn phát và vai trò loa dẫn nhóm được chuyển sang loa phát được; lỗi khi thêm một loa vào nhóm không ảnh hưởng các loa khác.
+- Giữ nguyên playback, queue, khôi phục phiên, remux video, phụ đề, SponsorBlock, Mix cá nhân, lyrics, thống kê, license, Media Browser và tính năng cũ.
+
 ## 5.8.0 - 2026-09-17
 
 - **Phát ra nhiều loa cùng lúc**: chọn nhiều loa/TV và phát chung một hàng chờ; loa đầu làm leader, các loa còn lại chia sẻ chung luồng đã resolve (một lần lấy luồng cho cả nhóm). Endpoint `/api/playback/group/start`, `/api/playback/group/join`, `/api/playback/group/leave`.
