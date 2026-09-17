@@ -1,5 +1,15 @@
 # Changelog
 
+## 5.8.0 - 2026-09-17
+
+- **Phát ra nhiều loa cùng lúc**: chọn nhiều loa/TV và phát chung một hàng chờ; loa đầu làm leader, các loa còn lại chia sẻ chung luồng đã resolve (một lần lấy luồng cho cả nhóm). Endpoint `/api/playback/group/start`, `/api/playback/group/join`, `/api/playback/group/leave`.
+- **Đang phát mà tích thêm loa**: loa mới tự vào đúng bài, đúng vị trí đang phát; bỏ tích dừng đúng loa đó, các loa còn lại tiếp tục. Loa dẫn nhóm tự được chuyển khi loa cũ rời nhóm.
+- **Tự chuyển bài cho cả nhóm**: khi một loa hết bài, backend chuyển bài cho toàn nhóm (kể cả khi đã đóng trình duyệt), dùng lại đúng luồng đã lấy; bài trước/sau và đổi chế độ phát áp dụng cho cả nhóm qua `/api/playback/control` với `group_id`.
+- **Âm lượng từng loa**: mỗi loa đã tích có thanh trượt âm lượng riêng (Cast và DLNA giữ mức riêng, không ép chung).
+- **Giao diện nhóm**: dialog “Phát ra nhiều loa” trong thanh phát, hiển thị trạng thái nhóm và số loa; đồng bộ nhóm qua `/api/status` mục `playback_groups` và sự kiện SSE `groups` nên card ở trình duyệt khác thấy đúng nhóm.
+- **Home Assistant/Assist**: `/api/integration/play` và `/api/integration/play-playlist` nhận danh sách `entities` để phát ra nhiều loa trong một lệnh.
+- Giữ nguyên playback, queue, khôi phục phiên, remux video, phụ đề, SponsorBlock, Mix cá nhân, lyrics, thống kê, license, Media Browser và tính năng cũ.
+
 ## 5.7.0 - 2026-09-17
 
 - **Bật video phân giải cao theo thiết bị**: `video_high_resolution` mặc định `true` cho trình duyệt và thiết bị Cast phát được video; AirPlay/Apple TV/HomePod giữ progressive/audio. Remux tự tạm tắt 6 giờ nếu ffmpeg lỗi liên tiếp (`REMUX_FAILURE_THRESHOLD=3`), trạng thái hiển thị trong `/api/status` mục `remux`; cache video tách theo chính sách thiết bị.
