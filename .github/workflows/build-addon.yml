@@ -1,0 +1,134 @@
+name: Build YouTube Pro Add-on
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/build-addon.yml"
+      - "youtube_pro_addon/**"
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/build-addon.yml"
+      - "youtube_pro_addon/**"
+  workflow_dispatch:
+
+concurrency:
+  group: youtube-pro-addon-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  prepare:
+    name: Prepare images
+    runs-on: ubuntu-latest
+    outputs:
+      architectures: ${{ steps.info.outputs.architectures }}
+      build_matrix: ${{ steps.matrix.outputs.matrix }}
+      description: ${{ steps.normalize.outputs.description }}
+      image_name: ${{ steps.normalize.outputs.image_name }}
+      name: ${{ steps.normalize.outputs.name }}
+      registry_prefix: ${{ steps.normalize.outputs.registry_prefix }}
+      url: ${{ steps.normalize.outputs.url }}
+      version: ${{ steps.normalize.outputs.version }}
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Read add-on metadata
+        id: info
+        uses: home-assistant/actions/helpers/info@a7c616ce81ccda50150bf1595786c71b1883fabb
+        with:
+          path: ./youtube_pro_addon
+
+      - name: Normalize image metadata
+        id: normalize
+        env:
+          RAW_DESCRIPTION: ${{ steps.info.outputs.description }}
+          RAW_IMAGE: ${{ steps.info.outputs.image }}
+          RAW_NAME: ${{ steps.info.outputs.name }}
+          RAW_URL: ${{ steps.info.outputs.url }}
+          RAW_VERSION: ${{ steps.info.outputs.version }}
+        run: |
+          description="$(jq -r . <<< "$RAW_DESCRIPTION")"
+          image="$(jq -r . <<< "$RAW_IMAGE")"
+          name="$(jq -r . <<< "$RAW_NAME")"
+          url="$(jq -r . <<< "$RAW_URL")"
+          version="$(jq -r . <<< "$RAW_VERSION")"
+          echo "description=${description}" >> "$GITHUB_OUTPUT"
+          echo "image_name=${image##*/}" >> "$GITHUB_OUTPUT"
+          echo "name=${name}" >> "$GITHUB_OUTPUT"
+          echo "registry_prefix=${image%/*}" >> "$GITHUB_OUTPUT"
+          echo "url=${url}" >> "$GITHUB_OUTPUT"
+          echo "version=${version}" >> "$GITHUB_OUTPUT"
+
+      - name: Prepare multi-architecture matrix
+        id: matrix
+        uses: home-assistant/builder/actions/prepare-multi-arch-matrix@4de35182ce1e329181bffcbcc84d33db5e2c7e10 # 2026.06.0
+        with:
+          architectures: ${{ steps.info.outputs.architectures }}
+          image-name: ${{ steps.normalize.outputs.image_name }}
+          registry-prefix: ${{ steps.normalize.outputs.registry_prefix }}
+
+  build:
+    name: Build ${{ matrix.arch }} image
+    needs: prepare
+    runs-on: ${{ matrix.os }}
+    permissions:
+      contents: read
+      id-token: write
+      packages: write
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.prepare.outputs.build_matrix) }}
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Build add-on image
+        uses: home-assistant/builder/actions/build-image@4de35182ce1e329181bffcbcc84d33db5e2c7e10 # 2026.06.0
+        with:
+          arch: ${{ matrix.arch }}
+          container-registry-password: ${{ secrets.GITHUB_TOKEN }}
+          context: ./youtube_pro_addon
+          image: ${{ matrix.image }}
+          image-tags: |
+            ${{ needs.prepare.outputs.version }}
+            latest
+          labels: |
+            io.hass.type=addon
+            io.hass.name=${{ needs.prepare.outputs.name }}
+            io.hass.description=${{ needs.prepare.outputs.description }}
+            io.hass.url=${{ needs.prepare.outputs.url }}
+          push: ${{ github.event_name != 'pull_request' }}
+          version: ${{ needs.prepare.outputs.version }}
+
+  manifest:
+    name: Publish multi-architecture manifest
+    needs:
+      - prepare
+      - build
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      packages: write
+    steps:
+      - name: Publish image manifest
+        uses: home-assistant/builder/actions/publish-multi-arch-manifest@4de35182ce1e329181bffcbcc84d33db5e2c7e10 # 2026.06.0
+        with:
+          architectures: ${{ needs.prepare.outputs.architectures }}
+          container-registry-password: ${{ secrets.GITHUB_TOKEN }}
+          image-name: ${{ needs.prepare.outputs.image_name }}
+          image-tags: |
+            ${{ needs.prepare.outputs.version }}
+            latest
+          registry-prefix: ${{ needs.prepare.outputs.registry_prefix }}
