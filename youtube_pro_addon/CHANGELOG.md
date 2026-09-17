@@ -1,5 +1,15 @@
 # Changelog
 
+## 5.3.2 - 2026-09-16
+
+- Sửa lỗi loa Google Cast bị giật/buffering khi phát.
+- Nguyên nhân: googlevideo throttle rất mạnh (chỉ còn khoảng 32KB/s) với full GET không kèm `Range`, còn `Range` bất kỳ (kể cả `bytes=0-`) thì không bị throttle.
+- Relay media nay tự thêm `Range: bytes=0-` khi client (đặc biệt là Google Cast) không gửi Range, rồi vẫn trả `200` với `Content-Length` đầy đủ cho trình phát; throughput thực đo tăng từ ~0.03 MB/s lên hơn 35 MB/s.
+- Giữ nguyên việc chuyển tiếp `Range`/`206` khi client chủ động yêu cầu Range.
+- Thiết bị Google Cast mặc định ưu tiên transport `relay` để hưởng cơ chế chống throttle; `direct` vẫn là dự phòng và preference cũ được reset một lần qua generation mới.
+- Tăng thread gunicorn từ 8 lên 16 để SSE và nhiều phiên relay không tranh chấp worker.
+- Giữ nguyên playback, video, queue, Mix cá nhân, license, Media Browser và custom integration.
+
 ## 5.3.1 - 2026-08-30
 
 - Cho phép tài khoản Home Assistant không phải quản trị mở panel YouTube Pro bằng cách tắt giới hạn `panel_admin`.
