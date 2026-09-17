@@ -1,5 +1,12 @@
 # Changelog
 
+## 5.7.0 - 2026-09-17
+
+- **Bật video phân giải cao theo thiết bị**: `video_high_resolution` mặc định `true` cho trình duyệt và thiết bị Cast phát được video; AirPlay/Apple TV/HomePod giữ progressive/audio. Remux tự tạm tắt 6 giờ nếu ffmpeg lỗi liên tiếp (`REMUX_FAILURE_THRESHOLD=3`), trạng thái hiển thị trong `/api/status` mục `remux`; cache video tách theo chính sách thiết bị.
+- **Phụ đề cho YouTube Video**: endpoint `/api/video/subtitles` lấy phụ đề (ưu tiên tiếng Việt rồi tiếng Anh, cache 24h), hiển thị lớp phụ đề trên trình phát kèm nút bật/tắt; tùy chọn `video_subtitles`.
+- **SponsorBlock**: endpoint `/api/video/sponsorblock` lấy đoạn tài trợ từ sponsor.ajay.app và tự tua qua khi phát trên trình duyệt; tùy chọn `sponsorblock` và `sponsorblock_categories`.
+- Giữ nguyên playback, queue, khôi phục phiên, bàn giao thiết bị, Mix cá nhân, lyrics, thống kê, license, Media Browser và tính năng cũ.
+
 ## 5.6.0 - 2026-09-17
 
 - **Khôi phục phiên phát sau restart/mất mạng**: vị trí đang phát được lưu định kỳ xuống đĩa; khi add-on khởi động lại, phiên dở được giữ lại kèm vị trí và tự phát tiếp khi loa rảnh đúng bài/đúng chỗ, không giành loa đang dùng cho TTS/automation khác. Có banner “Tiếp tục phát” và API `/api/playback/resume`; tùy chọn `restore_playback`.
