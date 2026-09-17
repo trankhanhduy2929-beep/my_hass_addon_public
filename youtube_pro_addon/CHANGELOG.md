@@ -1,5 +1,14 @@
 # Changelog
 
+## 5.3.4 - 2026-09-16
+
+- **Tự phát tiếp sau khi bị ngắt ngang**: khi một automation/TTS/thông báo khác chiếm loa, add-on giữ nguyên phiên phát và tự phát tiếp đúng bài, tua lại đúng vị trí sau khi loa rảnh.
+- Phát hiện ngắt ngang bằng cách so `media_content_id` với stream của mình, kèm theo dõi trạng thái loa trở về `idle`; worker nền kiểm tra mỗi 2 giây.
+- Chỉ phát tiếp khi chưa bấm Stop trong add-on; bấm Stop sẽ hủy chờ. Khi loa bị tắt (`off`/`unavailable`) coi như dừng.
+- Giới hạn số lần phát tiếp (`INTERRUPTION_RESUME_MAX=5`) để tránh lặp vô hạn; hết `INTERRUPTION_MAX_HOLD` (30 phút) thì bỏ chờ.
+- Thêm tùy chọn `resume_after_interruption` (mặc định `true`) để tắt hành vi này.
+- Không thay đổi playback, video, queue, Mix cá nhân, license, Media Browser và custom integration.
+
 ## 5.3.3 - 2026-09-16
 
 - **Relay tự phục hồi giữa stream**: nếu kết nối googlevideo đứt hoặc timeout giữa bài, relay tự mở lại kết nối với `Range: bytes=<offset>-` để phát tiếp thay vì dừng loa; có refresh stream khi gặp 401/403/410 và giới hạn số lần nối lại.

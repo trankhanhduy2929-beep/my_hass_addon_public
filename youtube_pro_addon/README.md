@@ -1,4 +1,4 @@
-# YouTube Pro 5.3.3
+# YouTube Pro 5.3.4
 
 Add-on YouTube Pro cho Home Assistant, được tách riêng hoàn toàn khỏi YouTube Music Lite để có thể cài song song.
 
@@ -29,7 +29,7 @@ Add-on YouTube Pro cho Home Assistant, được tách riêng hoàn toàn khỏi 
 ## Cài add-on
 
 1. Chép thư mục `youtube_pro_addon` vào repository add-on local.
-2. Reload add-on store rồi cài **YouTube Pro 5.3.3**.
+2. Reload add-on store rồi cài **YouTube Pro 5.3.4**.
 3. Giữ port host `2032` nếu không có dịch vụ khác sử dụng cổng này. Không cần điền `media_base_url` trong cấu hình thông thường.
 4. Khởi động add-on và mở Web UI.
 
@@ -43,6 +43,7 @@ media_base_url: "http://192.168.1.20:2032"
 
 - `audio_prefer_m4a` (mặc định `true`): ưu tiên định dạng AAC/m4a, ổn định nhất cho Google Cast và AirPlay/HomePod.
 - `audio_max_bitrate_kbps` (mặc định `0`): giới hạn bitrate audio tối đa, `0` là không giới hạn. Ví dụ `128` để tiết kiệm băng thông.
+- `resume_after_interruption` (mặc định `true`): khi TTS/thông báo/automation khác ngắt ngang, add-on tự phát tiếp bài đang nghe đúng vị trí sau khi loa rảnh; bấm **Stop** trong add-on sẽ hủy chờ.
 
 Add-on tự phát hiện và bỏ qua nếu một định dạng không khớp; nó vẫn có danh sách dự phòng nên không làm hỏng khả năng phát.
 
@@ -71,7 +72,7 @@ Service `youtube_pro.enqueue` nhận `entity_id` tùy chọn và `position: next
 
 ## License
 
-Add-on 5.3.3 tự kết nối tới License API/Portal production đã tích hợp sẵn; không cần và không có option `license_server_url` trong Home Assistant. Bấm **Kích hoạt tự động**, đăng nhập bằng email trên trang mở ra, rồi quay lại add-on; add-on tự nhận quyền qua installation secret, không cần copy/dán key và không dùng tài khoản Google.
+Add-on 5.3.4 tự kết nối tới License API/Portal production đã tích hợp sẵn; không cần và không có option `license_server_url` trong Home Assistant. Bấm **Kích hoạt tự động**, đăng nhập bằng email trên trang mở ra, rồi quay lại add-on; add-on tự nhận quyền qua installation secret, không cần copy/dán key và không dùng tài khoản Google.
 
 Khi mở lại add-on, license hợp lệ đã lưu được nạp ngay từ dữ liệu cục bộ trong thời gian offline grace; việc kiểm tra server chạy nền nên không còn làm kẹt màn hình kiểm tra key. Activation token có bản sao dự phòng riêng để tự khôi phục nếu file chính bị thiếu. Nếu server xác nhận key bị thu hồi hoặc hết offline grace, add-on vẫn khóa đúng theo chính sách license.
 
