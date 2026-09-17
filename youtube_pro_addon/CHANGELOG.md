@@ -1,19 +1,5 @@
 # Changelog
 
-## 5.4.0 - 2026-09-16
-
-- **Lyrics đồng bộ**: endpoint `/api/lyrics` lấy lời từ lrclib.net (cache 24h) và hiển thị trong dialog chi tiết, tự highlight theo vị trí phát.
-- **Import playlist từ link**: `/api/playlists/import-url` nhập tối đa 500 bài từ link YouTube/YT Music công khai; thêm ô nhập trong tab Thư viện.
-- **Export/Import playlist JSON**: `/api/playlists/export` và `/api/playlists/import` (chế độ merge/replace).
-- **Thống kê nghe**: `/api/stats` tổng hợp lượt nghe theo bài/kênh từ hồ sơ nghe local-first, có panel trong tab Thư viện.
-- **Auto-skip bài lỗi**: khi resolve/cast lỗi, tự chuyển bài kế tiếp (tối đa `AUTO_SKIP_MAX_FAILURES`), tùy chọn `auto_skip_failed`.
-- **Watchdog playback**: `playback_watchdog_worker` phát hiện vị trí đứng yên khi loa báo `playing` và tự phát tiếp.
-- **Khôi phục âm lượng sau ngắt quãng**: lưu volume trước khi bị TTS/automation chiếm loa và khôi phục khi phát tiếp.
-- **Sleep timer fade-out**: giảm dần âm lượng trong 20 giây cuối rồi mới dừng, khôi phục âm lượng gốc sau khi tắt.
-- **Chất lượng video cấu hình**: option `video_max_height` (mặc định 720).
-- **PWA + phím tắt**: manifest để cài như app; Space play/pause, `n`/`p` chuyển bài, `←`/`→` tua, `/` tìm kiếm.
-- Giữ nguyên playback, queue, Mix cá nhân, license, Media Browser và tính năng cũ.
-
 ## 5.3.4 - 2026-09-16
 
 - **Tự phát tiếp sau khi bị ngắt ngang**: khi một automation/TTS/thông báo khác chiếm loa, add-on giữ nguyên phiên phát và tự phát tiếp đúng bài, tua lại đúng vị trí sau khi loa rảnh.

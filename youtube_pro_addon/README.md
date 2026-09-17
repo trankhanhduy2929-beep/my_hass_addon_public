@@ -1,4 +1,4 @@
-# YouTube Pro 5.4.0
+# YouTube Pro 5.3.4.
 
 Add-on YouTube Pro cho Home Assistant, được tách riêng hoàn toàn khỏi YouTube Music Lite để có thể cài song song.
 
@@ -28,8 +28,8 @@ Add-on YouTube Pro cho Home Assistant, được tách riêng hoàn toàn khỏi 
 
 ## Cài add-on
 
-1. Thêm repository add-on `https://github.com/trankhanhduy2929-beep/my_hass_addon_public` trong Home Assistant (Settings → Add-ons → Add-on Store → ⋮ → Repositories).
-2. Reload add-on store rồi cài **YouTube Pro 5.4.0**.
+1. Chép thư mục `youtube_pro_addon` vào repository add-on local.
+2. Reload add-on store rồi cài **YouTube Pro 5.3.4**.
 3. Giữ port host `2032` nếu không có dịch vụ khác sử dụng cổng này. Không cần điền `media_base_url` trong cấu hình thông thường.
 4. Khởi động add-on và mở Web UI.
 
@@ -44,16 +44,6 @@ media_base_url: "http://192.168.1.20:2032"
 - `audio_prefer_m4a` (mặc định `true`): ưu tiên định dạng AAC/m4a, ổn định nhất cho Google Cast và AirPlay/HomePod.
 - `audio_max_bitrate_kbps` (mặc định `0`): giới hạn bitrate audio tối đa, `0` là không giới hạn. Ví dụ `128` để tiết kiệm băng thông.
 - `resume_after_interruption` (mặc định `true`): khi TTS/thông báo/automation khác ngắt ngang, add-on tự phát tiếp bài đang nghe đúng vị trí sau khi loa rảnh; bấm **Stop** trong add-on sẽ hủy chờ.
-- `auto_skip_failed` (mặc định `true`): tự bỏ qua bài khi resolve/cast lỗi lặp lại.
-- `sleep_fade` (mặc định `true`): giảm dần âm lượng trước khi sleep timer dừng nhạc.
-- `video_max_height` (mặc định `720`): giới hạn chiều cao video tối đa.
-
-### Nhập playlist và thống kê
-
-- Tab **Thư viện** có ô dán link playlist/album YouTube để nhập tối đa 500 bài (không cần đăng nhập Google).
-- Playlist có thể export/import JSON qua API `/api/playlists/export`, `/api/playlists/import`.
-- Panel **Nghe nhiều** tổng hợp lượt nghe theo bài/kênh từ dữ liệu local-first.
-- Dialog chi tiết bài có phần **Lời bài hát** với highlight theo vị trí phát (nguồn lrclib.net).
 
 Add-on tự phát hiện và bỏ qua nếu một định dạng không khớp; nó vẫn có danh sách dự phòng nên không làm hỏng khả năng phát.
 
@@ -63,7 +53,7 @@ Panel YouTube Pro được mở cho mọi tài khoản Home Assistant đã đăn
 
 ## Cài custom integration
 
-1. Cài custom integration `youtube_pro` từ `https://github.com/trankhanhduy2929-beep/youtube_pro_integration_homeassistant` (HACS hoặc thủ công) vào `/config/custom_components/youtube_pro`.
+1. Chép `projects/youtube_pro/custom_components/youtube_pro` vào `/config/custom_components/youtube_pro`.
 2. Khởi động lại Home Assistant.
 3. Trong add-on, mở **Hẹn giờ → Home Assistant integration** và sao chép token.
 4. Thêm integration **YouTube Pro**, giữ URL là `auto` (khuyến nghị), dán token và chọn loa mặc định. Integration tự dò add-on qua Supervisor/DNS nội bộ; chỉ nhập URL thủ công khi mạng có cấu hình đặc biệt.
@@ -76,15 +66,13 @@ Các service:
 - `youtube_pro.start_radio`
 - `youtube_pro.play_personal_mix`
 - `youtube_pro.listener_feedback`
-- `youtube_pro.pause`
-- `youtube_pro.resume`
 - `youtube_pro.set_timer`
 
 Service `youtube_pro.enqueue` nhận `entity_id` tùy chọn và `position: next|end`. Service `youtube_pro.start_radio` tạo đài phát cho đúng `media_player`, hỗ trợ audio/video và chế độ thay thế hoặc nối cuối hàng chờ.
 
 ## License
 
-Add-on 5.4.0 tự kết nối tới License API/Portal production đã tích hợp sẵn; không cần và không có option `license_server_url` trong Home Assistant. Bấm **Kích hoạt tự động**, đăng nhập bằng email trên trang mở ra, rồi quay lại add-on; add-on tự nhận quyền qua installation secret, không cần copy/dán key và không dùng tài khoản Google.
+Add-on 5.3.4 tự kết nối tới License API/Portal production đã tích hợp sẵn; không cần và không có option `license_server_url` trong Home Assistant. Bấm **Kích hoạt tự động**, đăng nhập bằng email trên trang mở ra, rồi quay lại add-on; add-on tự nhận quyền qua installation secret, không cần copy/dán key và không dùng tài khoản Google.
 
 Khi mở lại add-on, license hợp lệ đã lưu được nạp ngay từ dữ liệu cục bộ trong thời gian offline grace; việc kiểm tra server chạy nền nên không còn làm kẹt màn hình kiểm tra key. Activation token có bản sao dự phòng riêng để tự khôi phục nếu file chính bị thiếu. Nếu server xác nhận key bị thu hồi hoặc hết offline grace, add-on vẫn khóa đúng theo chính sách license.
 
