@@ -1,5 +1,13 @@
 # Changelog
 
+## 5.5.0 - 2026-09-17
+
+- **Lọc và sắp xếp kết quả tìm kiếm**: thanh công cụ trên danh sách kết quả cho phép lọc nhanh bài ngắn (<4 phút) hay dài (≥4 phút) và sắp xếp theo tên A→Z hoặc thời lượng; lựa chọn được lưu lại cho lần sau.
+- **Chọn chất lượng video**: trình chọn 360p–2160p trong tab YouTube Video gửi `height` tới `/api/video/resolve` và `/api/video/cast`; cache video tách theo độ phân giải nên đổi chất lượng không lẫn stream cũ.
+- **Kéo thả sắp xếp hàng chờ**: các bài trong tab Hàng chờ có thể kéo-thả để đổi thứ tự, dùng chung endpoint `/api/queue/items` với nút lên/xuống hiện có.
+- **Banner lỗi phát nhạc**: khi phiên phát chuyển `error`, một banner nổi hiển thị lỗi kèm nút Thử lại, Bỏ qua (sang bài kế) và Đóng; tự ẩn khi phát lại bình thường.
+- Giữ nguyên playback, queue, Mix cá nhân, lyrics, thống kê, license, Media Browser và tính năng cũ.
+
 ## 5.4.0 - 2026-09-16
 
 - **Lyrics đồng bộ**: endpoint `/api/lyrics` lấy lời từ lrclib.net (cache 24h) và hiển thị trong dialog chi tiết, tự highlight theo vị trí phát.
