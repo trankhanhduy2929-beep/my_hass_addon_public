@@ -1,5 +1,13 @@
 # Changelog
 
+## 5.6.0 - 2026-09-17
+
+- **Khôi phục phiên phát sau restart/mất mạng**: vị trí đang phát được lưu định kỳ xuống đĩa; khi add-on khởi động lại, phiên dở được giữ lại kèm vị trí và tự phát tiếp khi loa rảnh đúng bài/đúng chỗ, không giành loa đang dùng cho TTS/automation khác. Có banner “Tiếp tục phát” và API `/api/playback/resume`; tùy chọn `restore_playback`.
+- **Bàn giao phiên giữa trình duyệt và loa/TV**: nút *Phát ra loa/TV* và *Phát trên máy này* chuyển bài đang nghe kèm đúng vị trí; chỉ dừng thiết bị cũ sau khi thiết bị mới phát thành công nên không bị mất nhạc hoặc phát trùng. `/api/cast` và `/api/video/cast` nhận `start_position` và tua ngay sau khi cast.
+- **Chất lượng video trung thực**: độ phân giải hiển thị là mức format thực tế (không lặp lại mức yêu cầu), trần độ phân giải được tôn trọng và giữ nguyên khi gia hạn stream; UI báo rõ khi nguồn chỉ có mức thấp hơn.
+- **Video độ phân giải cao (thử nghiệm, tắt mặc định)**: tùy chọn `video_high_resolution` cho phép ghép luồng hình/tiếng tách rời thành MP4 phân mảnh bằng ffmpeg (stream copy, có giới hạn đồng thời), phục vụ qua `/api/media-remux/<token>`; tự hạ cấp progressive/audio khi thiếu ffmpeg hoặc không tương thích. Cần kiểm thử trên thiết bị thật trước khi bật.
+- Giữ nguyên playback, queue, Mix cá nhân, lyrics, thống kê, license, Media Browser và tính năng cũ.
+
 ## 5.5.0 - 2026-09-17
 
 - **Lọc và sắp xếp kết quả tìm kiếm**: thanh công cụ trên danh sách kết quả cho phép lọc nhanh bài ngắn (<4 phút) hay dài (≥4 phút) và sắp xếp theo tên A→Z hoặc thời lượng; lựa chọn được lưu lại cho lần sau.
