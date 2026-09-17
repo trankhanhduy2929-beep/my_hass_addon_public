@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+    <meta name="theme-color" content="#080808">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>YouTube Pro</title>
+    <link rel="icon" href="icon.png?v={{ version }}">
+    <link rel="manifest" href="static/manifest.webmanifest?v={{ version }}">
+    <link rel="apple-touch-icon" href="icon.png?v={{ version }}">
+    <script>
+        (() => {
+            try {
+                const saved = localStorage.getItem('youtubeProTheme');
+                const theme = saved || 'dark';
+                document.documentElement.dataset.theme = theme;
+                document.querySelector('meta[name="theme-color"]').content = theme === 'light' ? '#f6f6f6' : '#080808';
+            } catch (_) {
+                document.documentElement.dataset.theme = 'dark';
+            }
+        })();
+    </script>
+    <link rel="stylesheet" href="static/style.css?v={{ version }}">
+</head>
+<body class="{{ 'license-active' if license_bootstrap and license_bootstrap.get('valid') else 'license-pending' }}">
+    <div class="ambient ambient-one" aria-hidden="true"></div>
+    <div class="ambient ambient-two" aria-hidden="true"></div>
+
+    <section id="licenseGate" class="license-gate" aria-labelledby="licenseGateTitle">
+        <article class="license-gate-card">
+            <div class="license-gate-brand">
+                <span class="license-gate-logo"><img src="icon.png?v={{ version }}" alt=""></span>
+                <div><strong>YouTube Pro</strong><small>License Access · v{{ version }}</small></div>
+            </div>
+            <div class="license-gate-status-row">
+                <span class="license-gate-pulse" aria-hidden="true"></span>
+                <strong id="licenseGateStatus">Đang kiểm tra license</strong>
+            </div>
+            <h1 id="licenseGateTitle">Một chạm để mở khóa<br><em>YouTube Pro.</em></h1>
+            <p id="licenseGateDescription">Mở trang kích hoạt, đăng nhập hoặc đăng ký bằng email. Add-on tự nhận license an toàn; không dùng tài khoản Google.</p>
+            <div class="license-gate-actions">
+                <a id="licenseGatePortalLink" class="wide-button hidden" href="#" target="_blank" rel="noopener noreferrer">Kích hoạt tự động</a>
+                <button id="licenseGateRefresh" class="wide-button subtle" type="button">Kiểm tra lại</button>
+            </div>
+            <div class="license-gate-steps">
+                <span><b>1</b>Mở trang kích hoạt</span>
+                <span><b>2</b>Đăng nhập hoặc đăng ký</span>
+                <span><b>3</b>Add-on tự mở khóa</span>
+            </div>
+            <details class="license-manual"><summary>Nhập key thủ công</summary><form id="licenseGateForm" class="license-gate-form" data-license-form><label for="licenseGateKey">License Key</label><div class="license-gate-input-row"><input id="licenseGateKey" data-license-key type="text" inputmode="text" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="YTP-XXXXX-XXXXX-XXXXX-XXXXX" maxlength="32" required><button data-license-submit type="submit"><span>Kích hoạt</span><i aria-hidden="true"></i></button></div></form></details>
+            <small id="licenseGateInstallation">Installation: đang khởi tạo…</small>
+        </article>
+    </section>
+
+    <script id="licenseBootstrap" type="application/json">{{ license_bootstrap|tojson }}</script>
+
+    <div class="app-shell">
+        <aside class="sidebar">
+            <div class="brand brand-desktop">
+                <span class="brand-mark"><img src="icon.png?v={{ version }}" alt=""></span>
+                <div><strong>YouTube</strong><small>Pro · v{{ version }}</small></div>
+            </div>
+
+            <nav class="bottom-nav" aria-label="Điều hướng">
+                <button class="active" type="button" data-tab="home"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10.6 12 4l8 6.6V20h-5v-6H9v6H4v-9.4Z"/></svg><span>Trang chủ</span></button>
+                <button type="button" data-tab="personal"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.2 14 9l5.8 2-5.8 2-2 5.8-2-5.8-5.8-2L10 9l2-5.8Zm6.5 12.1.9 2.3 2.3.9-2.3.9-.9 2.3-.9-2.3-2.3-.9 2.3-.9.9-2.3Z"/></svg><span>Nhạc cá nhân</span></button>
+                <button type="button" data-tab="video"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3h11A2.5 2.5 0 0 1 20 5.5v13a2.5 2.5 0 0 1-2.5 2.5h-11A2.5 2.5 0 0 1 4 18.5v-13ZM9.3 8.1v7.8l6.5-3.9-6.5-3.9Z"/></svg><span>Video</span></button>
+                <button type="button" data-tab="queue"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h11v2H4V6Zm0 5h11v2H4v-2Zm0 5h7v2H4v-2Zm13-4 4 3-4 3v-6Z"/></svg><span>Hàng chờ</span></button>
+                <button type="button" data-tab="library"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h2v16H5V4Zm4 0h2v16H9V4Zm4.4 1.2 2-.6 4.4 14.2-2 .6-4.4-14.2Z"/></svg><span>Thư viện</span></button>
+                <button type="button" data-tab="timer"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2Zm1 11H7v-2h4V6h2v7Z"/></svg><span>Hẹn giờ</span></button>
+            </nav>
+
+            <div class="sidebar-card"><span class="live-dot"></span><div><strong>Media Browser 3.2</strong><small>Duyệt và phát ngay trong Home Assistant</small></div></div>
+        </aside>
+
+        <div class="app-main">
+            <header class="topbar">
+                <div class="brand brand-mobile">
+                    <span class="brand-mark"><img src="icon.png?v={{ version }}" alt=""></span>
+                    <div><strong>YouTube Pro</strong><small>v{{ version }}</small></div>
+                </div>
+
+                <form id="searchForm" class="search-bar">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m20.7 19.3-4.2-4.2a7.5 7.5 0 1 0-1.4 1.4l4.2 4.2 1.4-1.4ZM5 10.5a5.5 5.5 0 1 1 11 0 5.5 5.5 0 0 1-11 0Z"/></svg>
+                    <input id="searchInput" type="search" enterkeyhint="search" autocomplete="off" placeholder="Tìm bài hát, nghệ sĩ, album...">
+                    <kbd>/</kbd>
+                    <button type="submit" aria-label="Tìm kiếm"><span>Tìm kiếm</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6 1.4-1.4 7.4 7.4-7.4 7.4L9 18Z"/></svg></button>
+                </form>
+
+                <div class="topbar-actions">
+                    <label class="device-picker"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5h14v11H3V5Zm2 2v7h10V7H5Zm14 2h2v10H7v-2h12V9Z"/></svg><span>Phát trên</span><select id="deviceSelect" aria-label="Thiết bị phát"><option value="browser">Điện thoại này</option></select></label>
+                    <button id="themeToggle" class="theme-toggle" type="button" aria-label="Đổi giao diện" title="Đổi giao diện">☀</button>
+                </div>
+            </header>
+
+            <main class="content">
+                <section id="viewHome" class="view active" data-view="home">
+                    <article class="home-hero">
+                        <div class="hero-copy">
+                            <span class="eyebrow"><span></span>Âm nhạc của bạn</span>
+                            <h1>Nghe điều bạn thích.<br><em>Ngay lúc này.</em></h1>
+                            <p id="searchStatus">Chọn một bài để bắt đầu</p>
+                            <div class="hero-actions">
+                                <button class="hero-primary quick-search" type="button" data-query="nhạc Việt thịnh hành"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m8 5 11 7-11 7V5Z"/></svg>Phát nhạc thịnh hành</button>
+                                <button id="refreshSearch" class="hero-secondary" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.7 6.3A8 8 0 1 0 20 12h-2a6 6 0 1 1-1.8-4.3L13 11h8V3l-3.3 3.3Z"/></svg>Làm mới</button>
+                            </div>
+                        </div>
+                        <div class="hero-art" aria-hidden="true"><div class="hero-disc"><img src="icon.png?v={{ version }}" alt=""></div><span class="note note-one">♪</span><span class="note note-two">♫</span></div>
+                    </article>
+
+                    <div class="quick-searches" aria-label="Tìm nhanh">
+                        <button class="quick-search" type="button" data-query="nhạc chill buổi tối">Chill buổi tối</button>
+                        <button class="quick-search" type="button" data-query="lofi focus music">Tập trung</button>
+                        <button class="quick-search" type="button" data-query="acoustic Việt Nam">Acoustic</button>
+                        <button class="quick-search" type="button" data-query="nhạc workout remix">Tập luyện</button>
+                        <button class="quick-search" type="button" data-query="nhạc nhẹ thư giãn">Thư giãn</button>
+                    </div>
+
+                    <section id="featuredSection" class="content-section hidden">
+                        <div class="section-head"><div><span class="section-kicker">Dành cho bạn</span><h2>Tuyển chọn nổi bật</h2></div><span class="swipe-hint">Vuốt để xem <b>→</b></span></div>
+                        <div id="featuredResults" class="album-rail"></div>
+                    </section>
+
+                    <section class="content-section track-section">
+                        <div class="section-head"><div><span class="section-kicker">Khám phá thêm</span><h2>Bài hát dành cho bạn</h2></div></div>
+                        <div id="resultList" class="track-list" aria-live="polite"></div>
+                        <div id="loadMoreSentinel" class="load-sentinel hidden" role="status" aria-live="polite"><span class="load-spinner" aria-hidden="true"></span><span id="loadMoreLabel">Cuộn xuống để tải thêm</span></div>
+                        <button id="loadMore" class="wide-button subtle hidden" type="button">Tải thêm</button>
+                    </section>
+                </section>
+
+                <section id="viewPersonal" class="view" data-view="personal">
+                    <div class="view-banner personal-banner"><div class="view-banner-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.2 14 9l5.8 2-5.8 2-2 5.8-2-5.8-5.8-2L10 9l2-5.8Zm6.5 12.1.9 2.3 2.3.9-2.3.9-.9 2.3-.9-2.3-2.3-.9 2.3-.9.9-2.3Z"/></svg></div><div><span class="section-kicker">Không gian riêng</span><h1>Nhạc cá nhân</h1><p>Mix riêng theo lịch sử nghe và phản hồi của bạn.</p><small>Dữ liệu được lưu cục bộ trong add-on · không cần Google</small></div></div>
+
+                    <section id="personalMixSection" class="content-section personal-mix-section">
+                        <div class="section-head personal-mix-head">
+                            <div><span class="section-kicker">Học theo gu của bạn</span><h2>Mix cá nhân</h2></div>
+                            <span id="personalMixStatus" class="swipe-hint">Đang chuẩn bị…</span>
+                        </div>
+                        <div class="personal-mix-toolbar">
+                            <label class="profile-picker"><span>Hồ sơ nghe</span><select id="listenerProfileSelect" aria-label="Chọn hồ sơ nghe"><option value="default">Mặc định</option></select></label>
+                            <div class="profile-actions">
+                                <button id="createListenerProfile" class="text-button" type="button">+ Hồ sơ</button>
+                                <button id="renameListenerProfile" class="text-button" type="button">Đổi tên</button>
+                                <button id="deleteListenerProfile" class="text-button danger" type="button">Xóa</button>
+                            </div>
+                            <span id="listenerProfileSummary" class="profile-summary">Dữ liệu nghe lưu cục bộ trong add-on</span>
+                        </div>
+                        <div class="personal-mix-actions">
+                            <button id="playPersonalMix" class="hero-primary compact" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m8 5 11 7-11 7V5Z"/></svg>Phát Mix này</button>
+                            <button id="refreshPersonalMix" class="hero-secondary compact" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.7 6.3A8 8 0 1 0 20 12h-2a6 6 0 1 1-1.8-4.3L13 11h8V3l-3.3 3.3Z"/></svg>Làm mới đề xuất</button>
+                            <small>Không cần đăng nhập Google hoặc Google OAuth · hồ sơ chỉ lưu trên installation này.</small>
+                        </div>
+                        <div id="personalMixList" class="track-list personal-mix-list" aria-live="polite"></div>
+                    </section>
+                </section>
+
+                <section id="viewVideo" class="view" data-view="video">
+                    <article class="video-hero">
+                        <div class="video-hero-copy">
+                            <span class="eyebrow"><span></span>YouTube Video</span>
+                            <h1>Xem điều bạn thích.<br><em>Không bỏ lỡ khoảnh khắc.</em></h1>
+                            <p>Khám phá video, xem ngay trong add-on hoặc truyền tới màn hình Cast. HomePod sẽ tự chuyển sang âm thanh.</p>
+                        </div>
+                        <div class="video-hero-mark" aria-hidden="true"><span>▶</span><i></i><i></i><i></i></div>
+                    </article>
+
+                    <form id="videoSearchForm" class="video-search-bar">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m20.7 19.3-4.2-4.2a7.5 7.5 0 1 0-1.4 1.4l4.2 4.2 1.4-1.4ZM5 10.5a5.5 5.5 0 1 1 11 0 5.5 5.5 0 0 1-11 0Z"/></svg>
+                        <input id="videoSearchInput" type="search" autocomplete="off" placeholder="Tìm video, kênh, chủ đề...">
+                        <button type="submit"><span>Tìm video</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6 1.4-1.4 7.4 7.4-7.4 7.4L9 18Z"/></svg></button>
+                    </form>
+
+                    <div id="videoDiscovery" class="video-chips" aria-label="Chủ đề video"></div>
+
+                    <section id="videoWatch" class="video-watch hidden" aria-live="polite">
+                        <div class="watch-head"><button id="closeVideoWatch" class="text-button" type="button">← Quay lại danh sách</button><span id="videoWatchStatus">Sẵn sàng</span></div>
+                        <div class="watch-layout">
+                            <div class="watch-player-wrap"><video id="videoPlayer" controls playsinline preload="metadata"></video><div id="videoPlayerEmpty" class="watch-player-empty"><span>▶</span><strong>Chọn một video để bắt đầu</strong><small>Phát trên thiết bị đang chọn</small></div></div>
+                            <aside class="watch-info"><div class="watch-kicker">Đang xem</div><h2 id="videoWatchTitle">Chưa chọn video</h2><div class="watch-meta"><span id="videoWatchChannel">—</span><span id="videoWatchViews">— lượt xem</span></div><p id="videoWatchDescription">Chọn video từ danh sách để xem thông tin.</p><div class="watch-actions"><button id="videoWatchPlay" class="wide-button" type="button">Phát lại</button><button id="videoWatchQueue" class="wide-button subtle" type="button">Thêm cuối</button><button id="videoWatchNext" class="wide-button subtle" type="button">Phát tiếp</button><button id="videoWatchRadio" class="wide-button subtle" type="button">Tạo đài phát</button><a id="videoWatchOpen" class="wide-button subtle" target="_blank" rel="noopener noreferrer">Mở YouTube</a></div><div class="watch-related"><strong>Tiếp theo</strong><div id="videoRelated"></div></div></aside>
+                        </div>
+                    </section>
+
+                    <section class="content-section video-results-section">
+                        <div class="section-head"><div><span class="section-kicker">Dành cho bạn</span><h2 id="videoResultsTitle">Video nổi bật</h2></div><span id="videoSearchStatus" class="swipe-hint">Đang chuẩn bị...</span></div>
+                        <div id="videoResults" class="video-grid" aria-live="polite"></div>
+                        <div id="videoLoadMoreSentinel" class="load-sentinel hidden" role="status"><span class="load-spinner" aria-hidden="true"></span><span id="videoLoadMoreLabel">Cuộn xuống để tải thêm</span></div>
+                        <button id="videoLoadMore" class="wide-button subtle hidden" type="button">Tải thêm video</button>
+                    </section>
+                </section>
+
+                <section id="viewQueue" class="view" data-view="queue">
+                    <div class="view-banner queue-banner"><div class="view-banner-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h11v2H4V6Zm0 5h11v2H4v-2Zm0 5h7v2H4v-2Zm13-4 4 3-4 3v-6Z"/></svg></div><div><span class="section-kicker">Tiếp theo</span><h1>Hàng chờ</h1><p><span id="queueCount">0</span> bài · phát liên tục trên thiết bị đang chọn</p><small id="queueScope">Hàng chờ chung cho trình duyệt và phiên phát mới</small></div><div class="queue-toolbar"><button id="shuffleQueue" class="text-button" type="button">Ngẫu nhiên</button><button id="saveQueue" class="text-button" type="button">Lưu playlist</button><button id="clearQueue" class="text-button danger" type="button">Xóa tất cả</button></div></div>
+                    <section id="queueCurrent" class="queue-current hidden"></section>
+                    <div id="queueList" class="track-list elevated-list"></div>
+                </section>
+
+                <section id="viewLibrary" class="view" data-view="library">
+                    <div class="view-banner library-banner"><div class="view-banner-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h2v16H5V4Zm4 0h2v16H9V4Zm4.4 1.2 2-.6 4.4 14.2-2 .6-4.4-14.2Z"/></svg></div><div><span class="section-kicker">Bộ sưu tập</span><h1>Thư viện</h1><p><span id="playlistCount">0</span> playlist · <span id="historyCount">0</span> bài đã nghe</p></div><button id="createPlaylist" class="hero-primary compact" type="button">+ Playlist mới</button></div>
+                    <section class="library-card"><div id="playlistTabs" class="chips"></div><div id="playlistToolbar" class="library-toolbar hidden"><div><span class="section-kicker">Playlist</span><strong id="playlistTitle"></strong></div><button id="deletePlaylist" class="text-button danger" type="button">Xóa playlist</button></div><div id="playlistItems" class="track-list"></div></section>
+                    <section class="library-card"><div class="library-toolbar"><div><span class="section-kicker">Nhập từ YouTube</span><strong>Dán link playlist hoặc album</strong></div></div><div class="import-row"><input id="playlistImportUrl" type="url" placeholder="https://www.youtube.com/playlist?list=..." autocomplete="off" spellcheck="false"><button id="playlistImportButton" class="wide-button" type="button">Nhập playlist</button></div><small class="import-hint">Nhập tối đa 500 bài từ link công khai, không cần đăng nhập Google.</small></section>
+                    <section class="content-section history-section"><div class="section-head compact"><div><span class="section-kicker">Hoạt động</span><h2>Nghe gần đây</h2></div><button id="clearHistory" class="text-button danger" type="button">Xóa lịch sử</button></div><div id="historyList" class="track-list compact-list"></div></section>
+                    <section class="content-section stats-section"><div class="section-head compact"><div><span class="section-kicker">Thống kê</span><h2>Nghe nhiều</h2></div><button id="refreshStats" class="text-button" type="button">Làm mới</button></div><p id="statsSummary" class="section-subtitle">Chưa có dữ liệu nghe.</p><div id="statsChannels" class="chips"></div><div id="statsTracks" class="track-list compact-list"></div></section>
+                </section>
+
+                <section id="viewTimer" class="view" data-view="timer">
+                    <div class="view-banner timer-banner"><div class="view-banner-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2Zm1 11H7v-2h4V6h2v7Z"/></svg></div><div><span class="section-kicker">Tự động hóa</span><h1>Hẹn giờ</h1><p>Tắt nhạc hoặc phát playlist đúng lịch</p></div></div>
+                    <div class="settings-grid">
+                        <article class="panel sleep-panel"><div class="panel-title"><div><span class="panel-icon">☾</span><strong>Sleep timer</strong></div><span id="sleepStatus">Chưa bật</span></div><p>Thư giãn cùng âm nhạc, add-on sẽ tự dừng đúng giờ.</p><div class="quick-grid" id="sleepButtons"><button type="button" data-minutes="15">15<span>phút</span></button><button type="button" data-minutes="30">30<span>phút</span></button><button type="button" data-minutes="60">60<span>phút</span></button><button type="button" data-minutes="90">90<span>phút</span></button></div><button id="cancelSleep" class="wide-button subtle" type="button">Hủy sleep timer</button></article>
+                        <form id="timerForm" class="panel form-grid"><div class="panel-title"><div><span class="panel-icon">◷</span><strong>Lịch phát</strong></div><span>Mỗi ngày</span></div><label>Thời gian<input id="timerTime" type="time" required></label><label>Thiết bị<select id="timerDevice" required></select></label><label>Hành động<select id="timerType"><option value="play">Phát playlist</option><option value="stop">Dừng nhạc</option></select></label><label id="timerPlaylistWrap">Playlist<select id="timerPlaylist"></select></label><label id="timerDurationWrap">Tự dừng sau (phút)<input id="timerDuration" type="number" min="0" max="720" value="0"></label><fieldset><legend>Ngày chạy · bỏ trống để chạy mỗi ngày</legend><div class="day-grid"><label><input type="checkbox" name="timerDay" value="0"><span>T2</span></label><label><input type="checkbox" name="timerDay" value="1"><span>T3</span></label><label><input type="checkbox" name="timerDay" value="2"><span>T4</span></label><label><input type="checkbox" name="timerDay" value="3"><span>T5</span></label><label><input type="checkbox" name="timerDay" value="4"><span>T6</span></label><label><input type="checkbox" name="timerDay" value="5"><span>T7</span></label><label><input type="checkbox" name="timerDay" value="6"><span>CN</span></label></div></fieldset><label class="check-row"><input id="timerRandom" type="checkbox" checked><span>Phát playlist ngẫu nhiên</span></label><button class="wide-button" type="submit">Lưu lịch phát</button></form>
+                    </div>
+                    <div id="timerList" class="card-list"></div>
+                    <div class="settings-grid technical-grid">
+                        <article class="panel license-panel" id="licensePanel"><div class="panel-title"><div><span class="panel-icon">✓</span><strong>License YouTube Pro</strong></div><span id="licenseStatus">Đang kiểm tra</span></div><p id="licenseDescription">License được nhận và kiểm tra tự động theo installation này.</p><div class="license-link-row"><a id="licensePortalLink" class="wide-button subtle hidden" href="#" target="_blank" rel="noopener noreferrer">Kích hoạt tự động</a><button id="refreshLicense" class="wide-button subtle" type="button">Kiểm tra lại</button></div><details class="license-manual"><summary>Nhập key thủ công</summary><form id="licenseForm" class="license-form" data-license-form><label>License Key<input id="licenseKey" data-license-key type="text" inputmode="text" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="YTP-XXXXX-XXXXX-XXXXX-XXXXX" maxlength="32"></label><button class="wide-button" data-license-submit type="submit"><span>Kích hoạt key</span><i aria-hidden="true"></i></button></form></details><button id="deactivateLicense" class="wide-button subtle danger hidden" type="button">Hủy activation trên máy này</button><small id="licenseInstallation">Installation: —</small></article>
+                        <article class="panel privacy-panel"><div class="panel-title"><div><span class="panel-icon">◎</span><strong>Riêng tư cục bộ</strong></div><span>Không Google</span></div><p>Nghe nhạc, xem video và cá nhân hóa mà không cần đăng nhập Google hoặc Google OAuth.</p><ul class="privacy-list"><li>Hồ sơ nghe và phản hồi chỉ lưu trong installation.</li><li>Không đồng bộ lịch sử, playlist hoặc tài khoản YouTube.</li><li>Có thể tạo nhiều hồ sơ riêng cho từng người trong nhà.</li></ul></article>
+                        <article class="panel integration-panel"><div class="panel-title"><div><span class="panel-icon">HA</span><strong>Home Assistant</strong></div><span id="integrationTokenStatus">Đang kiểm tra</span></div><p>Token chỉ mở <code>/api/integration/*</code>, bao gồm Media Browser 3.2. API quản trị vẫn chỉ qua Ingress.</p><div class="integration-token-row"><input id="integrationToken" type="password" readonly autocomplete="off" spellcheck="false" aria-label="Integration token"><button id="toggleIntegrationToken" class="icon-button" type="button" aria-label="Hiện token" title="Hiện token">◉</button></div><div class="integration-actions"><button id="copyIntegrationToken" class="wide-button" type="button">Sao chép token</button><button id="rotateIntegrationToken" class="wide-button subtle danger" type="button">Tạo token mới</button></div><small>Khi rotate token, custom integration sẽ yêu cầu re-auth. Token không có trong status, backup hoặc log.</small></article>
+                    </div>
+                    <article class="panel status-panel"><div class="panel-title"><div><span class="panel-icon">⌁</span><strong>Trạng thái hệ thống</strong></div><span>Chẩn đoán</span></div><pre id="systemStatus">Chưa kiểm tra</pre><div class="inline-actions"><button id="refreshStatus" class="wide-button subtle" type="button">Kiểm tra lại</button><button id="resetCastProfile" class="wide-button subtle danger" type="button">Quên profile loa</button></div></article>
+                </section>
+            </main>
+        </div>
+    </div>
+
+    <dialog id="detailsDialog" class="details-dialog"><article class="details-card"><div class="details-head"><div><span class="section-kicker">Thông tin bài hát</span><h2 id="detailsTitle">Đang tải...</h2><small id="detailsStatus">YouTube</small></div><button id="closeDetails" class="icon-button" type="button" aria-label="Đóng">×</button></div><div class="details-summary"><img id="detailsImage" alt="" loading="lazy"><div><span>Kênh</span><strong id="detailsChannel">—</strong><span id="detailsDuration">—</span></div></div><dl class="details-grid"><div><dt>Lượt xem</dt><dd id="detailsViews">—</dd></div><div><dt>Lượt thích</dt><dd id="detailsLikes">—</dd></div><div><dt>Ngày đăng</dt><dd id="detailsDate">—</dd></div></dl><div class="details-description"><strong>Mô tả</strong><p id="detailsDescription">Đang tải chi tiết...</p></div><div class="details-feedback" data-feedback-controls><span>Điều chỉnh đề xuất</span><button type="button" data-feedback-action="like">♡ Thích</button><button type="button" data-feedback-action="dislike">Không thích</button><button type="button" data-feedback-action="block_track">Ẩn bài</button><button type="button" data-feedback-action="block_channel">Ẩn kênh</button></div><div class="details-lyrics" id="detailsLyricsWrap"><strong>Lời bài hát</strong><div id="detailsLyrics" class="lyrics-body">Chưa có lời.</div></div><div class="details-actions"><a id="detailsOpenVideo" class="wide-button subtle" target="_blank" rel="noopener noreferrer">Mở trên YouTube</a><button id="detailsPlay" class="wide-button" type="button">Phát bài này</button><button id="detailsNext" class="wide-button subtle" type="button">Phát tiếp</button><button id="detailsRadio" class="wide-button subtle" type="button">Tạo đài phát</button></div></article></dialog>
+
+    <aside id="player" class="player hidden" aria-live="polite">
+        <div id="playerInfo" class="player-info"><div class="player-artwork-wrap"><img id="playerImage" alt="" loading="lazy"><span class="player-equalizer"><i></i><i></i><i></i></span></div><div class="player-copy"><strong id="playerTitle">Chưa chọn bài</strong><span id="playerDevice">Điện thoại này</span></div><button id="playerDetails" class="icon-button player-secondary" type="button" aria-label="Xem thông tin video">i</button><button id="favoriteCurrent" class="icon-button player-secondary" type="button" aria-label="Thêm vào yêu thích">♡</button><button id="togglePlayer" class="icon-button player-toggle" type="button" aria-controls="playerBody" aria-expanded="true" aria-label="Thu gọn trình phát">⌄</button></div>
+        <div id="playerBody" class="player-body"><audio id="audioPlayer" controls preload="metadata" playsinline></audio><div id="remoteProgress" class="remote-progress hidden"><div class="remote-time-row"><span id="remoteElapsed">0:00</span><small id="remoteProgressHint">Đang chờ trạng thái loa...</small><span id="remoteDuration">—</span></div><input id="remoteSeek" type="range" min="0" max="1" step="0.1" value="0" disabled aria-label="Tua bài hát trên loa"></div><div id="remoteControls" class="remote-controls hidden"><div class="remote-button-row"><button type="button" data-control="previous" aria-label="Bài trước" title="Bài trước"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 5h2v14H6V5Zm3.5 7 8.5 6V6l-8.5 6Z"/></svg></button><button type="button" data-control="pause" aria-label="Tạm dừng" title="Tạm dừng"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 5h4v14H7V5Zm6 0h4v14h-4V5Z"/></svg></button><button type="button" data-control="play" class="remote-primary" aria-label="Tiếp tục phát" title="Tiếp tục phát"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m8 5 11 7-11 7V5Z"/></svg></button><button type="button" data-control="stop" class="danger" aria-label="Dừng loa" title="Dừng loa"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6h12v12H6V6Z"/></svg></button></div><label class="remote-volume"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4Zm11.5 3a3.5 3.5 0 0 0-1.5-2.87v5.74A3.5 3.5 0 0 0 15.5 12Zm-1.5-7.1v2.06a6 6 0 0 1 0 10.08v2.06a8 8 0 0 0 0-14.2Z"/></svg><span>Âm lượng</span><input id="remoteVolume" type="range" min="0" max="1" step="0.02" value="0.5" aria-label="Âm lượng loa"></label></div><div class="player-command-row"><div class="playback-modes" aria-label="Chế độ phát"><button id="shuffleToggle" type="button" aria-pressed="false" title="Bật phát ngẫu nhiên">⇄</button><button id="repeatToggle" type="button" aria-pressed="false" title="Lặp lại: tắt">↻</button></div><div class="player-actions"><button id="previousTrack" type="button" aria-label="Bài trước">‹</button><span id="playerMessage">Sẵn sàng</span><button id="nextTrack" type="button" aria-label="Bài tiếp theo">›</button></div></div></div>
+        <div id="playerFeedback" class="player-feedback" aria-label="Phản hồi đề xuất"><span>Gu của bạn</span><button id="likeCurrent" type="button" data-feedback-action="like" aria-pressed="false" title="Thích bài này">♡ Thích</button><button id="dislikeCurrent" type="button" data-feedback-action="dislike" aria-pressed="false" title="Ít thích bài này">Không thích</button><button id="blockTrackCurrent" type="button" data-feedback-action="block_track" aria-pressed="false" title="Ẩn bài này">Ẩn bài</button><button id="blockChannelCurrent" type="button" data-feedback-action="block_channel" aria-pressed="false" title="Ẩn kênh này">Ẩn kênh</button><button id="undoFeedback" class="hidden" type="button">Hoàn tác</button></div>
+    </aside>
+
+    <div id="toast" class="toast" role="status"></div>
+    <script src="static/app.js?v={{ version }}"></script>
+</body>
+</html>

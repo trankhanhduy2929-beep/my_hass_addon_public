@@ -1,0 +1,18 @@
+{
+  "name": "YouTube Pro",
+  "short_name": "YouTube Pro",
+  "description": "YouTube Music + Video với Cast, AirPlay/HomePod và Media Browser",
+  "start_url": ".",
+  "scope": ".",
+  "display": "standalone",
+  "background_color": "#080808",
+  "theme_color": "#080808",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "any",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}
