@@ -1,5 +1,11 @@
 # Changelog
 
+## 5.11.2 - 2026-09-18
+
+- **Sửa mục Top 100/album không phát được**: bảng xếp hạng Top 100 là album, không phải bài hát; giờ bấm vào mở đúng danh sách bài (`/api/zing/link`) rồi chọn bài, thay vì resolve nhầm thành một bài. `item_type` được nhận diện và giữ trong `sanitize_track` (kể cả track cũ chưa có trường này).
+- **Album badge + không prefetch nhầm**: hàng album hiện nhãn “Album”, không resolve nền khi hover/focus; nút nghe ghi rõ “Mở danh sách bài”.
+- **Nhận diện Zing MP3 chuẩn**: thay icon tự vẽ bằng asset `static/zing-logo.svg` và chỉnh palette Zing (tím `#9b4de0`/`#8d22c3`, nền `#170f23`/`#34224f`) trên banner, chips và mục điều hướng.
+
 ## 5.11.1 - 2026-09-17
 
 - **Sửa tìm kiếm ở tab Zing**: thanh tìm kiếm chung trên đầu trước đây luôn tìm trên YouTube; giờ theo đúng tab đang mở (Zing → Zing MP3, Video → YouTube Video, còn lại → YouTube Music).
