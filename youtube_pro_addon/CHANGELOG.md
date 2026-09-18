@@ -1,5 +1,14 @@
 # Changelog
 
+## 5.12.0 - 2026-09-18
+
+- **Gỡ “Không gian riêng / Nhạc cá nhân học theo gu”**: bỏ tab Nhạc cá nhân, Mix cá nhân, hồ sơ nghe và các nút thích/không thích/ẩn bài/kênh. Các API cũ (`/api/personal-mix`, `/api/preferences*` và bản `/api/integration/*`) trả `410 feature_removed` với thông báo rõ; dữ liệu hồ sơ cũ vẫn được giữ trên đĩa, không ghi thêm và không xoá.
+- **Thêm nhạc vào playlist riêng**: mỗi bài có nút **Thêm vào playlist** (và nút tương tự trong hộp chi tiết) mở hộp chọn playlist hiện có hoặc tạo playlist mới rồi thêm ngay; báo “Đã có bài này” nếu trùng.
+- **Thống kê “Nghe nhiều”** chuyển sang đếm lượt nghe toàn cục từ lịch sử (`play_stats`) thay vì dựa vào hồ sơ gu; vẫn hiển thị top bài/kênh trong Thư viện.
+- **Smart Radio** vẫn hoạt động theo bài gốc + lịch sử (không còn chấm điểm theo gu).
+- **Thu gọn menu**: bỏ tab Nhạc cá nhân, sắp xếp lại điều hướng còn 6 mục: Trang chủ → Zing → Video → Hàng chờ → Thư viện → Hẹn giờ; bảng điều khiển mobile chỉnh lại theo 6 mục.
+- Giữ nguyên playback YouTube/Zing, nhóm loa, remux video, phụ đề, SponsorBlock, hàng chờ, playlist, hẹn giờ và khôi phục phiên.
+
 ## 5.11.2 - 2026-09-18
 
 - **Sửa mục Top 100/album không phát được**: bảng xếp hạng Top 100 là album, không phải bài hát; giờ bấm vào mở đúng danh sách bài (`/api/zing/link`) rồi chọn bài, thay vì resolve nhầm thành một bài. `item_type` được nhận diện và giữ trong `sanitize_track` (kể cả track cũ chưa có trường này).
