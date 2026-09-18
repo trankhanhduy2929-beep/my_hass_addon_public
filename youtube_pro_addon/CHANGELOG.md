@@ -1,5 +1,11 @@
 # Changelog
 
+## 5.11.1 - 2026-09-17
+
+- **Sửa tìm kiếm ở tab Zing**: thanh tìm kiếm chung trên đầu trước đây luôn tìm trên YouTube; giờ theo đúng tab đang mở (Zing → Zing MP3, Video → YouTube Video, còn lại → YouTube Music).
+- **Tab Zing báo rõ khi trống/lỗi**: danh sách kết quả/khám phá luôn hiện thông báo phù hợp (chưa có nhạc, danh sách trống hoặc lỗi kết nối Zing) thay vì trống trơn; tự cuộn tới kết quả sau khi tìm.
+- Placeholder thanh tìm kiếm đổi theo nguồn (Zing MP3 trên tab Zing).
+
 ## 5.11.0 - 2026-09-17
 
 - **Tab Zing MP3 độc lập, không cần dán link**: bỏ ô nhập link; tab Zing mở ra đã có sẵn danh sách nhạc (Zing Chart ở phần kết quả, Top 100 và Nhạc mới ở khu khám phá) và ô tìm kiếm riêng như tab YouTube.
