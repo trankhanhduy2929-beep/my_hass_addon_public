@@ -1,6 +1,6 @@
 name: "YouTube Pro"
 description: "YouTube Music + Video, Zing MP3, Cast/AirPlay, nhiều loa cùng lúc và Media Browser"
-version: "5.10.0"
+version: "5.11.0"
 slug: "youtube_pro_addon"
 arch:
   - amd64

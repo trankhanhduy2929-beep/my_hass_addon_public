@@ -1,4 +1,4 @@
-# YouTube Pro 5.10.0
+# YouTube Pro 5.11.0
 
 Add-on YouTube Pro cho Home Assistant, được tách riêng hoàn toàn khỏi YouTube Music Lite để có thể cài song song.
 
@@ -25,7 +25,7 @@ Add-on YouTube Pro cho Home Assistant, được tách riêng hoàn toàn khỏi 
 - **Mỗi bài hai nút Nghe / Xem**: nút **Nghe** phát chỉ tiếng, nút **Xem** mở video trên trình duyệt hoặc truyền tới Cast/TV.
 - **Ẩn thiết bị**: loa mất kết nối tự ẩn và tự hiện lại khi kết nối; có nút ẩn/hiện thủ công cho từng loa, lưu trên trình duyệt.
 - **Giữ trạng thái**: danh sách tìm kiếm, tab đang mở, bài đang nghe và video gần nhất được khôi phục khi mở lại add-on, kèm vị trí đã lưu.
-- **Tab Zing MP3**: menu riêng để tìm bài hát, dán link bài/album Zing MP3 và phát qua add-on. Chỉ hỗ trợ bản công khai miễn phí (thường 128kbps); bài chỉ có luồng VIP sẽ báo rõ, không mở khóa DRM.
+- **Tab Zing MP3**: menu riêng để tìm bài hát hoặc chọn từ danh sách nổi bật (Zing Chart, Top 100, Nhạc mới) rồi phát qua add-on. Chỉ hỗ trợ bản công khai miễn phí (thường 128kbps); bài chỉ có luồng VIP sẽ báo rõ, không mở khóa DRM.
 - Video dùng progressive MP4 relay có Range support; HomePod/AirPlay tự dùng audio fallback.
 - Media Browser 3.2 native, thêm mục **Mix cá nhân**, tìm kiếm và điều khiển next/previous/repeat/shuffle.
 - Integration API dùng Bearer token riêng; API quản trị vẫn chỉ mở qua Home Assistant Ingress.
@@ -34,7 +34,7 @@ Add-on YouTube Pro cho Home Assistant, được tách riêng hoàn toàn khỏi 
 ## Cài add-on
 
 1. Chép thư mục `youtube_pro_addon` vào repository add-on local.
-2. Reload add-on store rồi cài **YouTube Pro 5.10.0**.
+2. Reload add-on store rồi cài **YouTube Pro 5.11.0**.
 3. Giữ port host `2032` nếu không có dịch vụ khác sử dụng cổng này. Không cần điền `media_base_url` trong cấu hình thông thường.
 4. Khởi động add-on và mở Web UI.
 
@@ -92,7 +92,7 @@ Service `youtube_pro.enqueue` nhận `entity_id` tùy chọn và `position: next
 
 ## License
 
-Add-on 5.10.0 tự kết nối tới License API/Portal production đã tích hợp sẵn; không cần và không có option `license_server_url` trong Home Assistant. Bấm **Kích hoạt tự động**, đăng nhập bằng email trên trang mở ra, rồi quay lại add-on; add-on tự nhận quyền qua installation secret, không cần copy/dán key và không dùng tài khoản Google.
+Add-on 5.11.0 tự kết nối tới License API/Portal production đã tích hợp sẵn; không cần và không có option `license_server_url` trong Home Assistant. Bấm **Kích hoạt tự động**, đăng nhập bằng email trên trang mở ra, rồi quay lại add-on; add-on tự nhận quyền qua installation secret, không cần copy/dán key và không dùng tài khoản Google.
 
 Khi mở lại add-on, license hợp lệ đã lưu được nạp ngay từ dữ liệu cục bộ trong thời gian offline grace; việc kiểm tra server chạy nền nên không còn làm kẹt màn hình kiểm tra key. Activation token có bản sao dự phòng riêng để tự khôi phục nếu file chính bị thiếu. Nếu server xác nhận key bị thu hồi hoặc hết offline grace, add-on vẫn khóa đúng theo chính sách license.
 

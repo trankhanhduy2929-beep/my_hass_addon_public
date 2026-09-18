@@ -1,5 +1,11 @@
 # Changelog
 
+## 5.11.0 - 2026-09-17
+
+- **Tab Zing MP3 độc lập, không cần dán link**: bỏ ô nhập link; tab Zing mở ra đã có sẵn danh sách nhạc (Zing Chart ở phần kết quả, Top 100 và Nhạc mới ở khu khám phá) và ô tìm kiếm riêng như tab YouTube.
+- **Chips tìm nhanh**: thêm các nút gợi ý (Sơn Tùng M-TP, Top nhạc trẻ, US-UK hits, Remix Việt, Ballad Việt, Chill) bấm là tìm ngay trên Zing.
+- Giữ nguyên nguồn Zing công khai miễn phí, nhóm loa, remux video, phụ đề, SponsorBlock và tính năng cũ.
+
 ## 5.10.0 - 2026-09-17
 
 - **Tab Zing MP3**: thêm menu riêng “Zing” để tìm bài hát, dán link bài/album và phát qua add-on như nguồn YouTube (dùng chung trình phát, hàng chờ, bàn giao loa, nhóm loa và lịch sử).
