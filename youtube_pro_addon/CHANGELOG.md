@@ -1,5 +1,14 @@
 # Changelog
 
+## 5.10.0 - 2026-09-17
+
+- **Tab Zing MP3**: thêm menu riêng “Zing” để tìm bài hát, dán link bài/album và phát qua add-on như nguồn YouTube (dùng chung trình phát, hàng chờ, bàn giao loa, nhóm loa và lịch sử).
+- **Tìm kiếm Zing MP3**: ô tìm kiếm riêng cùng khu “Zing MP3 nổi bật” (Top 100, Nhạc mới, Zing Chart), danh sách kết quả dùng lại giao diện bài hát (ẩn nút Xem video vì là nguồn nhạc).
+- **Phát nhạc công khai miễn phí**: backend `zing_client.py` gọi API công khai của Zing (chữ ký request theo thuật toán hiện hành) để lấy luồng mp3 128kbps và tiếp sóng qua relay `/api/media/<token>`; bài chỉ có luồng VIP sẽ báo rõ và không phát, không mở khóa DRM.
+- **Dán link Zing**: nhập link bài hát hoặc album/playlist Zing để lấy danh sách bài (`/api/zing/link`).
+- **Hợp nhất nguồn nhạc**: bài Zing có `source: zing`, đi qua đúng luồng sanitize/queue/playlist/history; host luồng Zing được thêm vào allowlist relay.
+- Giữ nguyên playback, nhóm loa, remux video, phụ đề, SponsorBlock, Mix cá nhân, lyrics, thống kê, license và Media Browser.
+
 ## 5.9.0 - 2026-09-17
 
 - **Mỗi bài hai nút Nghe / Xem**: mỗi dòng bài hát có nút **♪ Nghe** (chỉ tiếng, dùng luồng audio) và **▶ Xem** (mở video, phát trên trình duyệt hoặc truyền tới Cast/TV); nút Nghe phát tới thiết bị đang chọn như trước.
