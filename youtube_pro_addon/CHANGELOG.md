@@ -1,5 +1,12 @@
 # Changelog
 
+## 5.13.0 - 2026-09-18
+
+- **Sửa nút “Tạo đài phát”**: `create_radio` còn truyền thừa tham số hồ sơ cho `generate_radio_tracks` (đã gỡ ở 5.12.0) khiến `/api/radio` trả 502; đã bỏ tham số thừa và thêm test hồi quy cho endpoint.
+- **Hình trong hình (Picture-in-Picture)**: nút “Hình trong hình” trong trình phát video mở/đóng cửa sổ PiP khi phát video trên trình duyệt, tự đổi nhãn và cập nhật trạng thái khi vào/ra PiP.
+- **Nghe tiếp khi tắt màn hình / chuyển app**: giữ Media Session `playing` khi ẩn trang, không tạm dừng, đồng bộ lại vị trí khi quay lại; lưu trạng thái bài/video khi rời trang (`pagehide`) để mở lại là tiếp tục. Nhạc trên loa vẫn do add-on phát tiếp (server-side).
+- Giữ nguyên các tính năng 5.12.0 (playlist riêng, gỡ hồ sơ gu, menu 6 mục) và nền tảng YouTube/Zing, nhóm loa, remux, phụ đề, SponsorBlock.
+
 ## 5.12.0 - 2026-09-18
 
 - **Gỡ “Không gian riêng / Nhạc cá nhân học theo gu”**: bỏ tab Nhạc cá nhân, Mix cá nhân, hồ sơ nghe và các nút thích/không thích/ẩn bài/kênh. Các API cũ (`/api/personal-mix`, `/api/preferences*` và bản `/api/integration/*`) trả `410 feature_removed` với thông báo rõ; dữ liệu hồ sơ cũ vẫn được giữ trên đĩa, không ghi thêm và không xoá.
