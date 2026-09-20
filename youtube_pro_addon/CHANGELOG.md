@@ -1,5 +1,13 @@
 # Changelog
 
+## 5.14.0 - 2026-09-18
+
+- **Khu vực đầu trang thành “đang phát” có hoạt ảnh như app nhạc**: thay hero “Âm nhạc của bạn” bằng mâm đĩa than — đĩa quay khi phát và dừng khi tạm dừng, tay cần hạ xuống đọc đĩa, kèm equalizer động và ảnh bìa bài hát.
+- **Lời bài hát ngay cạnh**: hero hiển thị lời (ưu tiên lời đồng bộ) bên phải, tự tô sáng theo vị trí phát và tự cuộn trong khung; ẩn khi bài không có lời; hoạt động cả YouTube lẫn Zing.
+- **Điều khiển đầy đủ trên hero**: bài trước, phát/tạm dừng, bài kế, phát ngẫu nhiên, lặp lại, thanh tua và âm lượng; điều khiển cả trình duyệt lẫn loa đang chọn, đồng bộ trạng thái với thanh phát dưới.
+- **Tối ưu không gian**: hero gọn, cân đối trên desktop và tự xếp dọc, không tràn ngang trên điện thoại.
+- Giữ nguyên các tính năng 5.13.0 (Tạo đài phát, PiP, nghe nền) và nền tảng YouTube/Zing, nhóm loa, queue, playlist, phụ đề, SponsorBlock.
+
 ## 5.13.0 - 2026-09-18
 
 - **Sửa nút “Tạo đài phát”**: `create_radio` còn truyền thừa tham số hồ sơ cho `generate_radio_tracks` (đã gỡ ở 5.12.0) khiến `/api/radio` trả 502; đã bỏ tham số thừa và thêm test hồi quy cho endpoint.
