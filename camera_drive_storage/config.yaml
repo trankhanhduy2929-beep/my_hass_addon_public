@@ -1,5 +1,5 @@
 name: Camera Drive Storage
-version: "0.9.3"
+version: "0.9.4"
 slug: camera_drive_storage
 description: >-
   Record RTSP/ONVIF cameras (continuous or on motion) and upload segments to
