@@ -23,7 +23,8 @@ No YAML editing needed. Config is stored in `/data/runtime_config.json`
 - **Cameras** — add/edit/delete cameras (RTSP URL, mode, motion source,
   ONVIF creds, sensitivity).
 - **Google Drive** — enter OAuth client + authorize, see account/quota.
-- **Settings** — global mode, segment length, retention, MQTT broker.
+- **Settings** — global mode, segment length, storage destinations
+  (Drive / local HA / mounted NAS), MQTT broker.
 
 ## Google auth (in-UI, easiest path)
 
@@ -111,8 +112,11 @@ RTSP ──► ffmpeg segment muxer ──► /data/spool/<cam>/<Y>/<M>/<D>/seg.
                                         │  motion? keep only overlapping segments
                                         ▼
                                    upload queue ──► Drive /<root>/<cam>/<Y>/<M>/<D>/
+                                        │           local /media/…/<cam>/<Y>/<M>/<D>/
+                                        │           NAS  /media/<name>/…/<cam>/…
                                         ▼
-                        retention (drive_keep_days / drive_max_gb)
+                        Drive retention (drive_keep_days / drive_max_gb)
+                        local/NAS archives kept until removed manually
 ```
 
 ## Motion detection
@@ -136,12 +140,34 @@ Per camera `motion_source`:
 Add a `generic`/`onvif` camera in HA pointing at the same RTSP URL. This
 add-on records; it does not replace `camera.*` entities.
 
+## Storage destinations (Drive, local HA, NAS)
+
+Each clip can be delivered to any combination of targets, chosen per clip when
+it is queued. A source clip is removed from the spool only after **every**
+selected target has a durable receipt.
+
+- **Google Drive** — cloud archive (unchanged; default target).
+- **Local HA** — a dedicated folder under `/media` (default
+  `/media/camera_drive_storage`), optionally under `/share`.
+- **NAS** — a mounted NFS/CIFS share. Home Assistant mounts network storage
+  itself: **Settings → System → Storage → Add network storage**, choose usage
+  **Media** (appears at `/media/<name>`) or **Share** (`/share/<name>`), then
+  point the add-on at a dedicated subfolder (e.g. `/media/nas_name/camera_drive_storage`).
+  The add-on never mounts the NAS and never stores NAS credentials.
+
+The add-on refuses a NAS path that is not a subdirectory of a mounted NFS/CIFS
+share, so a disconnected share can never silently fall back to HA storage.
+Local and NAS archives are **not** auto-pruned: they are kept until you remove
+them. A low-space reserve (256 MiB) pauses new copies and keeps recordings in
+the spool instead of deleting them. `keep_days` remains a legacy spool setting,
+not an archive retention policy.
+
 ## Cloud playback & themes
 
-The **Xem lại** tab replays clips already stored on Google Drive like a vendor
-app: pick a camera, pick a day, then play a clip in the browser (HTTP Range
-streaming) or download it. Dark/light themes are available from the workspace
-bar toggle and follow the system preference by default.
+The **Xem lại** tab replays stored clips like a vendor app: choose a source
+(Google Drive, local HA, NAS), a camera and a day, then play a clip in the
+browser (HTTP Range streaming) or download it. Dark/light themes are available
+from the workspace bar toggle and follow the system preference by default.
 
 ## Recording pipeline notes
 
@@ -176,7 +202,8 @@ another installation needs an admin reset.
 
 1. Open the **License** tab and follow the portal link.
 2. Register with email + password (phone optional).
-3. Claim the 24-hour trial (email verification required) or buy a plan:
+3. Claim the 24-hour trial (one per account and installation, starting at
+   first activation) or buy a plan:
    weekly 50,000 VND or lifetime 200,000 VND, paid by PayOS QR.
 4. The key appears in the dashboard once PayOS confirms payment.
 5. Paste the `CC-...` key into the add-on and activate.
@@ -190,15 +217,16 @@ credentials never enter the add-on.
 
 ## Test status
 
-174 add-on tests passed with real FFmpeg available (otherwise 2 tests skip),
-including tests that exercise the compiled runtime. Ruff, Pyright and JavaScript
-syntax checks pass. Browser tests cover License and existing dashboard/Drive
-forms on mobile and desktop. License/PayOS/Drive network responses are mocked in
-tests; a separate production smoke run validated activation, lock/unlock, reset
-and PayOS checkout creation against the live portal. No real transfer and no
-production Home Assistant upgrade was performed. Runtime recorder, motion,
-uploader, Drive and MQTT implementation is preserved relative to the stable
-input copy.
+287 add-on tests pass (2 skip without FFmpeg). Coverage includes multi-target
+storage delivery/retry, filesystem path and mount safety, local/NAS playback
+ranges and resource cleanup, plus the compiled runtime. Ruff, Pyright and
+JavaScript syntax checks pass. Browser tests cover the storage settings, License
+and existing dashboard/Drive forms on mobile and desktop. License/PayOS/Drive
+network responses are mocked in tests; a separate production smoke run validated
+activation, lock/unlock, reset and PayOS checkout creation against the live
+portal. No real transfer, NAS mount or production Home Assistant upgrade was
+performed. Runtime recorder, motion, uploader, Drive and MQTT implementation is
+preserved relative to the stable input copy.
 
 The published image contains compiled first-party modules and no first-party
 `.py` source; base-image and third-party Python remains. A determined operator
