@@ -3,6 +3,7 @@
   "addons": [
     "addon_hanet_connect",
     "ai_proxy_router",
+    "camera_drive_storage",
     "cham_cong_zkteco",
     "ecovacs_cn_backend",
     "ecovacs_gateway",

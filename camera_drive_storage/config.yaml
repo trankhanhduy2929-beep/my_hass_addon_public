@@ -1,0 +1,27 @@
+name: Camera Drive Storage
+version: "0.9.1"
+slug: camera_drive_storage
+description: >-
+  Record RTSP/ONVIF cameras (continuous or on motion) and upload segments to
+  Google Drive. Home Assistant stays the live-view layer; this add-on is the
+  cloud recorder.
+arch:
+  - amd64
+  - aarch64
+init: false
+startup: services
+ingress: true
+ingress_port: 1012
+ingress_entry: /
+ingress_stream: false
+panel_icon: mdi:video-vault
+panel_title: Camera Storage
+panel_admin: true
+host_network: false
+map:
+  - share:rw
+ports: {}
+options: {}
+schema: {}
+image: "ghcr.io/trankhanhduy2929-beep/camera_drive_storage"
+url: "https://github.com/trankhanhduy2929-beep/my_hass_addon_public"
