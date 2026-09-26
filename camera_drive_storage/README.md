@@ -158,26 +158,42 @@ add-on records; it does not replace `camera.*` entities.
   the first upload it reports `retention_state=waiting_for_first_upload`
   instead of a folder-lookup error.
 
-## License (0.9.0)
+## License activation
 
-The License tab displays activation status, the actual plan expiration, the
-signed offline lease deadline, and the configured portal link. One key is bound
-to one add-on installation. Trial lasts 24 hours, weekly costs 50,000 VND, and
-lifetime costs 200,000 VND. Payment and server credentials never enter the add-on.
+This is an enforced release (`ENFORCE=True`). The add-on requires an activated
+License Key before it starts new recording. Existing uploads, the web UI, the
+local buffer and MQTT stay available, so already-recorded clips are not lost.
 
-This source defaults to compatibility mode until the operator deploys a dedicated
-portal and configures its URL/public key. It does not force existing users offline.
-See `LICENSE_DEPLOY_VI.md` in the repository root before producing a licensed build.
-In that build, expiry/revocation stops new recording safely; pending uploads and
-UI remain available. Valid signed leases survive connection failures for up to
-72 hours, never beyond the actual license expiration. Keep `/data/license_identity.json`
-in private backups; do not delete it during updates or distribute it to users.
+One key activates exactly one add-on installation (Home Assistant). Moving to
+another installation needs an admin reset.
+
+1. Open the **License** tab and follow the portal link.
+2. Register with email + password (phone optional).
+3. Claim the 24-hour trial (email verification required) or buy a plan:
+   weekly 50,000 VND or lifetime 200,000 VND, paid by PayOS QR.
+4. The key appears in the dashboard once PayOS confirms payment.
+5. Paste the `CC-...` key into the add-on and activate.
+
+The portal signs a short-lived lease. Without a network connection the add-on
+keeps working on the verified lease for up to 72 hours, never past the plan
+expiration. Expiry or revocation stops new recording safely; activation resumes
+it without restarting Home Assistant. Keep `/data/license_identity.json` in
+private backups; do not delete it during updates or share it. Payment and server
+credentials never enter the add-on.
 
 ## Test status
 
-163 add-on tests passed with real FFmpeg available (otherwise 2 tests skip).
-Ruff, Pyright and JavaScript syntax checks pass. Browser tests cover License and
-existing dashboard/Drive forms on mobile and desktop. Drive/PayOS/license network
-responses are mocked; no real payment or Home Assistant production upgrade was
-performed. Runtime recorder, motion, uploader, Drive and MQTT implementation
-files are preserved relative to the stable input copy.
+174 add-on tests passed with real FFmpeg available (otherwise 2 tests skip),
+including tests that exercise the compiled runtime. Ruff, Pyright and JavaScript
+syntax checks pass. Browser tests cover License and existing dashboard/Drive
+forms on mobile and desktop. License/PayOS/Drive network responses are mocked in
+tests; a separate production smoke run validated activation, lock/unlock, reset
+and PayOS checkout creation against the live portal. No real transfer and no
+production Home Assistant upgrade was performed. Runtime recorder, motion,
+uploader, Drive and MQTT implementation is preserved relative to the stable
+input copy.
+
+The published image contains compiled first-party modules and no first-party
+`.py` source; base-image and third-party Python remains. A determined operator
+with root on the Home Assistant host can still reverse engineer native code, so
+this is not absolute copy protection.
