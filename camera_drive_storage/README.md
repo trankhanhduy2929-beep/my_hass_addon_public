@@ -136,6 +136,13 @@ Per camera `motion_source`:
 Add a `generic`/`onvif` camera in HA pointing at the same RTSP URL. This
 add-on records; it does not replace `camera.*` entities.
 
+## Cloud playback & themes
+
+The **Xem lại** tab replays clips already stored on Google Drive like a vendor
+app: pick a camera, pick a day, then play a clip in the browser (HTTP Range
+streaming) or download it. Dark/light themes are available from the workspace
+bar toggle and follow the system preference by default.
+
 ## Recording pipeline notes
 
 - A segment is uploaded only after it is **closed** (after
