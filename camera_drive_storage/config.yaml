@@ -1,5 +1,5 @@
 name: Camera Drive Storage
-version: "0.9.6"
+version: "0.10.0"
 slug: camera_drive_storage
 description: >-
   Record RTSP/ONVIF cameras (continuous or on motion) and save each clip to
@@ -13,7 +13,7 @@ startup: services
 ingress: true
 ingress_port: 1012
 ingress_entry: /
-ingress_stream: false
+ingress_stream: true
 panel_icon: mdi:video-vault
 panel_title: Camera Storage
 panel_admin: true

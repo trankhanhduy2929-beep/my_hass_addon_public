@@ -216,9 +216,10 @@ clips because `drive.file` only shows files created by the current client.
 
 ## License activation
 
-This is an enforced release (`ENFORCE=True`). The add-on requires an activated
-License Key before it starts new recording. Existing uploads, the web UI, the
-local buffer and MQTT stay available, so already-recorded clips are not lost.
+Recording and saving to **Local HA / NAS are free and need no license**. A
+License Key only unlocks uploads to **Google Drive** (`ENFORCE=True` gates the
+Drive target, not recording). Without a license, clips are still recorded and
+delivered to local/NAS; Drive clips wait as `waiting_license` until activation.
 
 One key activates exactly one add-on installation (Home Assistant). Moving to
 another installation needs an admin reset.
@@ -233,14 +234,15 @@ another installation needs an admin reset.
 
 The portal signs a short-lived lease. Without a network connection the add-on
 keeps working on the verified lease for up to 72 hours, never past the plan
-expiration. Expiry or revocation stops new recording safely; activation resumes
-it without restarting Home Assistant. Keep `/data/license_identity.json` in
+expiration. Expiry or revocation stops Drive uploads (local/NAS recording keeps
+running); activation resumes Drive without restarting Home Assistant. Keep
+`/data/license_identity.json` in
 private backups; do not delete it during updates or share it. Payment and server
 credentials never enter the add-on.
 
 ## Test status
 
-339 add-on tests pass (2 skip without FFmpeg). Coverage includes multi-target
+342 add-on tests pass (2 skip without FFmpeg). Coverage includes multi-target
 storage delivery/retry, filesystem path and mount safety, local/NAS playback
 ranges and resource cleanup, plus the compiled runtime. Ruff, Pyright and
 JavaScript syntax checks pass. Browser tests cover the storage settings, License
