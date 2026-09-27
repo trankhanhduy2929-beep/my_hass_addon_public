@@ -175,9 +175,11 @@ from the workspace bar toggle and follow the system preference by default.
 **not** by itself mean the OAuth connection was lost. The add-on now keeps the
 Google `reason` and shows it:
 
-- `rateLimitExceeded` / `userRateLimitExceeded` — transient. The add-on backs
-  off and retries automatically (shared cooldown across upload, playback and
-  retention); clips stay queued.
+- `rateLimitExceeded` / `userRateLimitExceeded` — transient. The add-on paces
+  requests and backs off with escalating cooldowns across upload, playback and
+  retention; clips stay queued. Quick mode shares rclone's OAuth client, whose
+  Google quota is global — switch to **Custom** (your own Google Cloud project)
+  if this recurs.
 - `insufficientPermissions` / `insufficientFilePermissions` /
   `appNotAuthorizedToFile` — a permission or sharing issue. Review the Drive
   account/scopes; other files keep working.
@@ -191,6 +193,18 @@ Google `reason` and shows it:
 Unconfirmed clips are never deleted; they stay in the spool and retry. Do not
 disconnect OAuth just because of a 403. Changing the OAuth client can hide older
 clips because `drive.file` only shows files created by the current client.
+
+## Clip size and Drive cleanup
+
+- `video_codec=libx264` re-encodes; `video_bitrate_kbps` (0 = CRF auto),
+  `scale_width` (downscales, e.g. 1280) and `audio_bitrate_kbps` shrink clips.
+  With `copy` the stream is passed through unchanged.
+- Drive cleanup: `drive_keep_days` deletes clips older than N days (by recording
+  time from the folder/date and `_HHMMSS` filename). `drive_max_gb` deletes the
+  oldest managed clips until under the cap.
+- Trash does **not** free Drive quota. Set `drive_delete_permanently` to delete
+  managed clips for real; `drive_free_mb` keeps that much headroom and only helps
+  when permanent deletion is enabled. Only the add-on's own clip tree is touched.
 
 ## Recording pipeline notes
 
@@ -242,7 +256,7 @@ credentials never enter the add-on.
 
 ## Test status
 
-342 add-on tests pass (2 skip without FFmpeg). Coverage includes multi-target
+410 add-on tests pass. Coverage includes multi-target
 storage delivery/retry, filesystem path and mount safety, local/NAS playback
 ranges and resource cleanup, plus the compiled runtime. Ruff, Pyright and
 JavaScript syntax checks pass. Browser tests cover the storage settings, License
