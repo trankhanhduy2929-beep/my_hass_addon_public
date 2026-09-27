@@ -169,6 +169,29 @@ The **Xem lại** tab replays stored clips like a vendor app: choose a source
 browser (HTTP Range streaming) or download it. Dark/light themes are available
 from the workspace bar toggle and follow the system preference by default.
 
+## Drive HTTP 403 troubleshooting
+
+`Drive folder lookup failed (HTTP 403)` means Google refused a request; it does
+**not** by itself mean the OAuth connection was lost. The add-on now keeps the
+Google `reason` and shows it:
+
+- `rateLimitExceeded` / `userRateLimitExceeded` — transient. The add-on backs
+  off and retries automatically (shared cooldown across upload, playback and
+  retention); clips stay queued.
+- `insufficientPermissions` / `insufficientFilePermissions` /
+  `appNotAuthorizedToFile` — a permission or sharing issue. Review the Drive
+  account/scopes; other files keep working.
+- `domainPolicy` / `SERVICE_DISABLED` / `accessNotConfigured` /
+  `ACCESS_TOKEN_SCOPE_INSUFFICIENT` — project or admin configuration. Enable the
+  Drive API and check the OAuth client/scopes in Google Cloud.
+- `storageQuotaExceeded` — the Drive account is full.
+- `invalid_grant` — the authorization was revoked or expired (Custom OAuth in
+  "Testing" expires the refresh token after ~7 days). Re-authorize Drive.
+
+Unconfirmed clips are never deleted; they stay in the spool and retry. Do not
+disconnect OAuth just because of a 403. Changing the OAuth client can hide older
+clips because `drive.file` only shows files created by the current client.
+
 ## Recording pipeline notes
 
 - A segment is uploaded only after it is **closed** (after
@@ -217,7 +240,7 @@ credentials never enter the add-on.
 
 ## Test status
 
-287 add-on tests pass (2 skip without FFmpeg). Coverage includes multi-target
+339 add-on tests pass (2 skip without FFmpeg). Coverage includes multi-target
 storage delivery/retry, filesystem path and mount safety, local/NAS playback
 ranges and resource cleanup, plus the compiled runtime. Ruff, Pyright and
 JavaScript syntax checks pass. Browser tests cover the storage settings, License
