@@ -1,273 +1,171 @@
 # Camera Drive Storage (add-on)
 
-Record RTSP/ONVIF cameras continuously or on motion, upload to Google Drive,
-all configured from a built-in web UI (Home Assistant Ingress panel). MQTT
-auto-discovery exposes entities to Home Assistant.
+Ghi hình camera RTSP/ONVIF liên tục hoặc theo chuyển động, lưu vào Google
+Drive, thư mục media Home Assistant, hoặc NAS đã gắn — điều khiển hoàn toàn
+bằng giao diện web trong bảng điều khiển Home Assistant. Xem lại clip đã lưu
+ngay trong trình duyệt.
 
-## Install
+## Add-on làm gì
 
-1. Copy this folder to `/addons/camera_drive_storage/` on the HA host.
-2. Settings → Add-ons → Add-on Store → ⋮ → Check for updates → install
+- Ghi RTSP/ONVIF theo chế độ **liên tục** hoặc **theo chuyển động** (ONVIF
+  event hoặc phân tích hình ảnh).
+- Mỗi clip được chuyển đến một hoặc nhiều đích: **Google Drive**, **Local
+  HA** (thư mục media), **NAS đã gắn**.
+- Xem lại clip trên Drive / Local / NAS theo ngày và camera, phát trực tiếp
+  trong trình duyệt hoặc tải xuống.
+- Phát hiện thực thể tự động qua MQTT: cảm biến chuyển động, đang ghi, clip
+  cuối, số clip đã tải lên.
+
+## Cài đặt
+
+1. Sao chép thư mục `camera_drive_storage` vào `/addons/` trên máy Home
+   Assistant.
+2. **Settings → Add-ons → Add-on Store → ⋮ → Check for updates** → cài
    "Camera Drive Storage".
-3. Start. Open the panel from the sidebar (icon `mdi:video-vault`).
+3. Start add-on. Mở panel "Camera Storage" từ thanh bên (icon
+   `mdi:cctv`).
 
-## Configure in the UI
+## Bắt đầu nhanh — checklist
 
-No YAML editing needed. Config is stored in `/data/runtime_config.json`
-(written by the UI). Tabs:
+1. Mở tab **Camera** → thêm camera (xem mục URL bên dưới) → lưu.
+2. Tab **Nơi lưu** → bật đích lưu muốn dùng: Drive / Local HA / NAS → lưu.
+3. Nếu chọn **Google Drive**: tab **Gói Drive** → nhập key (hoặc dùng thử
+   24 giờ) → tab **Nơi lưu** → bấm **Kết nối Google Drive** → cho phép
+   truy cập.
+4. Quay lại tab **Tổng quan**: camera chuyển `Đang ghi`, số clip đã lên đích
+   tăng dần. Tab **Xem lại** để phát clip.
 
-- **Status** — Tổng quan dashboard (cards: đang ghi, clip hoàn tất, chờ tải,
-  đã lên Drive) + per-camera table: `state`, `segments_completed`, `pending`,
-  `upload_state` (waiting_drive/idle/uploading/error), `uploaded`,
-  `last_record_error`, `last_upload_error`, `last_upload_at`.
-- **Cameras** — add/edit/delete cameras (RTSP URL, mode, motion source,
-  ONVIF creds, sensitivity).
-- **Google Drive** — enter OAuth client + authorize, see account/quota.
-- **Settings** — global mode, segment length, storage destinations
-  (Drive / local HA / mounted NAS), MQTT broker.
+## URL camera và tài khoản
 
-## Google auth (in-UI, easiest path)
+Add-on cần **đường RTSP** (hoặc **ONVIF service URL**) của camera. Lấy từ
+tài liệu hãng, ứng dụng cấu hình camera, hoặc dùng mẫu sẵn có.
 
-The **Google Drive** tab defaults to **Quick mode**, which uses rclone's
-shared Google OAuth client — you do **not** create a Google Cloud project
-and do **not** paste any client_id/secret or token.
+- Trong tab **Camera** chọn **Thêm camera theo hãng** — chọn hãng, nhập IP /
+  user / pass / kênh, add-on tự dựng đúng dạng URL.
+- Hoặc dán tay một URL quen thuộc, ví dụ:
+  `rtsp://192.168.1.10:554/...`, `onvif://192.168.1.10:80/onvif/device_service`.
+- Nếu form có ô **username/password riêng**, nhập vào đó — **không** chèn
+  mật khẩu vào URL (và không để mật khẩu lộ trong ảnh chụp màn hình khi hỏi
+  hỗ trợ).
+- Mật khẩu có ký tự đặc biệt sẽ được mã hóa an toàn khi cần.
+- Camera chỉ có ONVIF: add-on tự lấy link RTSP bên trong, không cần nhập
+  tay.
 
-1. Open the **Google Drive** tab → **Open Google consent page**.
-2. Allow access. The browser then fails to load
-   `http://127.0.0.1:53682/...` (expected — that server is not reachable).
-3. Copy the full URL from the address bar.
-4. Paste it into **Redirected URL or code** → **Exchange for token**. Done.
+## Kết nối Google Drive
 
-Scope `drive.file` — the add-on only sees files it creates.
+Không cần tạo Google Cloud project, không cần client_id/secret, không dán
+mã xác thực.
 
-> Note: Google is retiring rclone's shared client during 2026. If Quick mode
-> stops working, switch the dropdown to **Custom**, create your own OAuth
-> client ("Web application", enable Drive API, add redirect
-> `http://localhost`), and paste client_id + secret. The code-paste flow is
-> unchanged.
+1. Tab **Nơi lưu** → bấm **Kết nối Google Drive**.
+2. Trình duyệt mở trang cấp quyền của Google — đăng nhập tài khoản muốn
+   dùng và **Cho phép**.
+3. Google chuyển về **camera portal** (trang trung gian do add-on cung cấp),
+   portal chuyển tiếp kết quả về add-on của bạn.
+4. Quay lại tab **Nơi lưu**: tài khoản và hạn mức hiện ra, thư mục lưu mặc
+   định `HomeAssistantCameras` sẽ được tạo khi clip đầu tiên tải lên.
 
-The manual code-paste flow (instead of a callback URL) is used because HA
-Ingress is not reachable by Google's OAuth callback servers.
+Quyền `drive.file`: add-on chỉ nhìn thấy các file do chính nó tạo trong
+Drive của bạn. Token OAuth chỉ nằm trong add-on trên máy Home Assistant —
+không lưu ở portal, không gửi đi nơi khác.
 
-## Add camera by brand (templates)
+Nút **Ngắt kết nối** xoá token và dừng tải lên Drive; clip vẫn ghi và vẫn
+đi đến các đích Local/NAS.
 
-Cameras tab → **Thêm camera theo hãng**: chọn hãng, nhập IP / user / pass /
-channel / stream, add-on tự dựng URL đúng mẫu gốc:
+## Nơi lưu clip — Drive, Local HA, NAS
 
-| Hãng | URL sinh ra |
+Mỗi clip được chuyển đến mọi đích đã bật trong tab **Nơi lưu** (Drive,
+Local HA & NAS).
+
+- **Google Drive** — cần license hợp lệ và đã kết nối OAuth.
+- **Local HA** — mặc định lưu trong `/media/camera_drive_storage`. Truy cập
+  qua **Media → camera_drive_storage** hoặc Samba/Studio Code.
+- **NAS đã gắn** — chọn đường dẫn con trong một share NFS/CIFS do Home
+  Assistant tự mount: **Settings → System → Storage → Add network
+  storage**, chọn kiểu **Media** (thấy dưới `/media/<tên>`) hoặc **Share**
+  (dưới `/share/<tên>`), rồi nhập đường đó vào ô NAS của add-on, ví dụ
+  `/media/nas_name/camera_drive_storage`. Add-on không tự mount NAS và
+  không giữ credential NAS.
+
+Clip nguồn chỉ bị xoá khỏi bộ đệm tạm sau khi **mọi** đích đã xác nhận nhận
+được file. Nếu một đích hỏng (NAS mất kết nối, Drive hết quota, v.v.) clip
+vẫn ở bộ đệm và thử lại — không mất dữ liệu.
+
+**Lưu ý quan trọng:** Local HA và NAS là **kho lưu trữ** — add-on không tự
+xoá. Bạn tự dọn khi muốn. Chỉ Drive có chính sách tự xoá (xem dưới).
+
+## Dọn dẹp Google Drive
+
+Ba cài đặt trong tab **Cài đặt** quyết định khi nào Drive được dọn:
+
+- **Giữ bao nhiêu ngày** — xoá clip cũ hơn N ngày.
+- **Giới hạn dung lượng** — xoá clip cũ nhất cho tới khi dưới mức đặt.
+- **Xoá vĩnh viễn** — xoá thẳng, bỏ qua Thùng rác Drive.
+
+> **Cảnh báo:** nếu không bật **Xoá vĩnh viễn**, file bị xoá chỉ vào
+> **Thùng rác Google Drive** và **vẫn chiếm quota** cho tới khi bạn tự dọn
+> thùng rác hoặc Drive tự xoá sau 30 ngày. Bật tuỳ chọn này nếu muốn add-on
+> giải phóng dung lượng thật.
+
+Add-on chỉ xoá các clip do chính nó tạo trong thư mục gốc, không đụng file
+khác của bạn.
+
+## License
+
+- **Local HA và NAS miễn phí**, không cần license — add-on vẫn ghi và lưu
+  đầy đủ.
+- **Google Drive** là đích trả phí; cần License Key để bật upload.
+- **Dùng thử 24 giờ** một lần duy nhất cho mỗi tài khoản + mỗi cài đặt,
+  bắt đầu từ lúc kích hoạt.
+- Gói trả phí: **50.000đ/tuần** hoặc **200.000đ vĩnh viễn**.
+
+Kích hoạt:
+
+1. Tab **Gói Drive** → bấm **Mua / quản lý license** → mở portal.
+2. Đăng ký bằng email + mật khẩu.
+3. Claim **Dùng thử 24 giờ** hoặc thanh toán PayOS QR cho gói tuần /
+   vĩnh viễn.
+4. Sau khi portal xác nhận, key `CC-…` hiện trong dashboard.
+5. Dán key vào ô **License Key** trong add-on → **Kích hoạt**.
+
+Một key gắn với **một** cài đặt Home Assistant; chuyển sang máy khác cần
+admin reset. Khi license hết hạn hoặc bị thu hồi: ghi hình và lưu Local/NAS
+vẫn chạy, clip chờ upload Drive giữ nguyên trong bộ đệm và sẽ tải lên khi
+kích hoạt lại. Kích hoạt lại không cần restart Home Assistant.
+
+## Troubleshooting
+
+| Triệu chứng | Nút / nơi xử lý |
 |---|---|
-| Dahua / IMOU | `rtsp://user:pass@host:554/cam/realmonitor?channel=1&subtype=0` |
-| Hikvision | `rtsp://user:pass@host:554/h264/ch01/main/av_stream` |
-| EZVIZ | `rtsp://admin:CODE@host:554/h264/ch1/main/av_stream` |
-| Hanet | `rtsp://host:554/user:hanet;pwd:pass` |
-| ONVIF | `onvif://user:pass@host:80/onvif/device_service` |
-| Manual | tự nhập URL bất kỳ |
+| Không kết nối được Google Drive, báo phiên hết hạn | Tab **Nơi lưu** → **Kết nối Google Drive** lại |
+| Drive hiển thị tài khoản nhưng clip chưa lên | Tab **Tổng quan** → xem cột trạng thái tải lên; clip vẫn ở bộ đệm, chờ hoặc thử lại — đừng ngắt kết nối |
+| Drive báo hạn mức / quá nhiều yêu cầu | Đợi — add-on tự giãn nhịp và thử lại; nếu kéo dài, kiểm tra quota Drive của tài khoản |
+| Drive báo hết dung lượng | Dọn Drive hoặc bật **Giới hạn dung lượng** + **Xoá vĩnh viễn** trong **Cài đặt** |
+| Google bắt đăng nhập lại / quyền đã bị thu hồi | Tab **Nơi lưu** → **Kết nối Google Drive** lại |
+| Clip chờ license | Tab **Gói Drive** → nhập key hợp lệ hoặc dùng thử |
+| NAS không ghi được / báo đường dẫn không hợp lệ | Kiểm tra share đã được HA mount trong **Settings → System → Storage**, đường dẫn NAS phải nằm trong share đó |
+| Add-on tạm dừng ghi vì bộ đệm đầy | Giải phóng dung lượng đĩa hoặc chờ các đích nhận clip rồi ghi tiếp |
+| Camera báo lỗi / không thấy clip mới | Tab **Camera** → **Test kết nối** xem lỗi cụ thể (sai URL, sai mật khẩu, camera offline) |
+| Xem lại không ra clip | Tab **Xem lại** → chọn đúng nguồn (Drive / Local / NAS) và tháng có dữ liệu |
+| Muốn xoá liên kết Google | Tab **Nơi lưu** → **Ngắt kết nối** |
 
-Credentials được percent-encode an toàn; ONVIF chỉ cần bấm Authorize/Resolve
-sau đó. Template ở `app/web.py:TEMPLATES` — thêm hãng mới chỉ cần thêm 1 dict.
+## Bảo mật & riêng tư
 
-## Supported stream URL formats
+- Clip camera chỉ đi từ Home Assistant **thẳng** đến Google Drive, Local
+  HA, hoặc NAS — không qua trung gian.
+- Portal kết nối Google chỉ **chuyển tiếp phiên OAuth** giữa Google và
+  add-on của bạn; token OAuth và video không lưu trên portal.
+- Portal license chỉ kiểm tra trạng thái key — không nhận nội dung video,
+  không nhận credential camera.
+- Thông tin thanh toán (PayOS) xử lý ngoài add-on, không đi vào add-on.
 
-Paste any of these into **Cameras → Bulk import**:
+## Gỡ cài đặt
 
-| Brand / form | Example shape |
-|---|---|
-| Dahua / IMOU / EZVIZ (main) | `rtsp://user:pass@host:554/cam/realmonitor?channel=1&subtype=0` |
-| Hikvision / Ezviz | `rtsp://user:pass@host:554/h264/ch01/main/av_stream` |
-| Hanet | `rtsp://host:554/user:user;pwd:pass` (kept verbatim) |
-| ONVIF only | `onvif://user:pass@host:80/onvif/device_service` |
+Trước khi gỡ add-on:
 
-ONVIF-only cameras are resolved to RTSP automatically via
-`GetCapabilities → GetProfiles → GetStreamUri` (button **Resolve ONVIF→RTSP**
-in the camera card). Credentials inside the URL are extracted automatically.
-
-### Bulk import
-
-Tools → Cameras tab → **Bulk import**. Accepts YAML:
-
-```yaml
-streams:
-  nhaduoi:
-    - rtsp://admin:pass@192.168.5.111:554/cam/realmonitor?channel=1&subtype=0
-  aotom:
-    - onvif://admin:pass@192.168.5.159:80/onvif/device_service
-```
-
-or one line per camera `name: rtsp://...`. Existing names are updated.
-
-## Camera test & live view
-
-- **Cameras** tab → **Test kết nối** runs `ffprobe` against the RTSP URL and
-  reports codec / resolution / fps, or the exact error. **Snapshot** grabs a
-  single JPEG frame.
-- **Live** tab is opt-in per camera (max 2 concurrent MJPEG streams, fps
-  1/2/5, width 480/640/960) so it never starves HA. Streams pause when the
-  browser tab is hidden and auto-stop after 120s (`/api/camera/stream/cancel`
-  for instant stop).
-
-## Flow
-
-```
-RTSP ──► ffmpeg segment muxer ──► /data/spool/<cam>/<Y>/<M>/<D>/seg.mp4
-                                        │  motion? keep only overlapping segments
-                                        ▼
-                                   upload queue ──► Drive /<root>/<cam>/<Y>/<M>/<D>/
-                                        │           local /media/…/<cam>/<Y>/<M>/<D>/
-                                        │           NAS  /media/<name>/…/<cam>/…
-                                        ▼
-                        Drive retention (drive_keep_days / drive_max_gb)
-                        local/NAS archives kept until removed manually
-```
-
-## Motion detection
-
-Per camera `motion_source`:
-
-- `onvif` — PullPoint subscription (needs ONVIF URL + credentials)
-- `scene` — ffmpeg `select=gt(scene,TH)` on 2fps grayscale (no OpenCV)
-- `auto` — tries ONVIF, falls back to scene
-
-## MQTT entities (auto-discovery)
-
-- `binary_sensor.cam_<name>_motion`
-- `binary_sensor.cam_<name>_recording`
-- `sensor.cam_<name>_last_clip`
-- `sensor.cam_<name>_uploaded`
-- `sensor.cam_<name>_upload_errors`
-
-## Live view
-
-Add a `generic`/`onvif` camera in HA pointing at the same RTSP URL. This
-add-on records; it does not replace `camera.*` entities.
-
-## Storage destinations (Drive, local HA, NAS)
-
-Each clip can be delivered to any combination of targets, chosen per clip when
-it is queued. A source clip is removed from the spool only after **every**
-selected target has a durable receipt.
-
-- **Google Drive** — cloud archive (unchanged; default target).
-- **Local HA** — a dedicated folder under `/media` (default
-  `/media/camera_drive_storage`), optionally under `/share`.
-- **NAS** — a mounted NFS/CIFS share. Home Assistant mounts network storage
-  itself: **Settings → System → Storage → Add network storage**, choose usage
-  **Media** (appears at `/media/<name>`) or **Share** (`/share/<name>`), then
-  point the add-on at a dedicated subfolder (e.g. `/media/nas_name/camera_drive_storage`).
-  The add-on never mounts the NAS and never stores NAS credentials.
-
-The add-on refuses a NAS path that is not a subdirectory of a mounted NFS/CIFS
-share, so a disconnected share can never silently fall back to HA storage.
-Local and NAS archives are **not** auto-pruned: they are kept until you remove
-them. A low-space reserve (256 MiB) pauses new copies and keeps recordings in
-the spool instead of deleting them. `keep_days` remains a legacy spool setting,
-not an archive retention policy.
-
-## Cloud playback & themes
-
-The **Xem lại** tab replays stored clips like a vendor app: choose a source
-(Google Drive, local HA, NAS), a camera and a day, then play a clip in the
-browser (HTTP Range streaming) or download it. Dark/light themes are available
-from the workspace bar toggle and follow the system preference by default.
-
-## Drive HTTP 403 troubleshooting
-
-`Drive folder lookup failed (HTTP 403)` means Google refused a request; it does
-**not** by itself mean the OAuth connection was lost. The add-on now keeps the
-Google `reason` and shows it:
-
-- `rateLimitExceeded` / `userRateLimitExceeded` — transient. The add-on paces
-  requests and backs off with escalating cooldowns across upload, playback and
-  retention; clips stay queued. Quick mode shares rclone's OAuth client, whose
-  Google quota is global — switch to **Custom** (your own Google Cloud project)
-  if this recurs.
-- `insufficientPermissions` / `insufficientFilePermissions` /
-  `appNotAuthorizedToFile` — a permission or sharing issue. Review the Drive
-  account/scopes; other files keep working.
-- `domainPolicy` / `SERVICE_DISABLED` / `accessNotConfigured` /
-  `ACCESS_TOKEN_SCOPE_INSUFFICIENT` — project or admin configuration. Enable the
-  Drive API and check the OAuth client/scopes in Google Cloud.
-- `storageQuotaExceeded` — the Drive account is full.
-- `invalid_grant` — the authorization was revoked or expired (Custom OAuth in
-  "Testing" expires the refresh token after ~7 days). Re-authorize Drive.
-
-Unconfirmed clips are never deleted; they stay in the spool and retry. Do not
-disconnect OAuth just because of a 403. Changing the OAuth client can hide older
-clips because `drive.file` only shows files created by the current client.
-
-## Clip size and Drive cleanup
-
-- `video_codec=libx264` re-encodes; `video_bitrate_kbps` (0 = CRF auto),
-  `scale_width` (downscales, e.g. 1280) and `audio_bitrate_kbps` shrink clips.
-  With `copy` the stream is passed through unchanged.
-- Drive cleanup: `drive_keep_days` deletes clips older than N days (by recording
-  time from the folder/date and `_HHMMSS` filename). `drive_max_gb` deletes the
-  oldest managed clips until under the cap.
-- Trash does **not** free Drive quota. Set `drive_delete_permanently` to delete
-  managed clips for real; `drive_free_mb` keeps that much headroom and only helps
-  when permanent deletion is enabled. Only the add-on's own clip tree is touched.
-
-## Recording pipeline notes
-
-- A segment is uploaded only after it is **closed** (after
-  `segment_seconds`, plus keyframe delay), and only when Drive credentials
-  are present. Before that, status shows `waiting_drive`/`pending`.
-- **A successful "Test kết nối" does not mean clips are being uploaded.**
-  Watch `state` = `recording`, `segments_completed` and `uploaded` in Status.
-- Credentials are added to the RTSP URL automatically (Hanet `user:…;pwd:…`
-  kept verbatim). ONVIF-only cameras resolve to RTSP in the recorder, with
-  retry/backoff, so the UI is never blocked.
-- Invalid configuration (e.g. `upload_workers: 0`, duplicate camera names,
-  bad range) is rejected with a safe 400 instead of silently disabling
-  recording/upload.
-- Local buffer never deletes segments that have not been confirmed on Drive;
-  recording pauses (`paused_buffer_full`) when the buffer limit or disk space
-  is reached.
-- `upload_errors` counts each clip once (not once per retry). A clean FFmpeg
-  exit returns `state` to `connecting`, not `error`.
-- Drive retention reuses the root folder already created by uploads; before
-  the first upload it reports `retention_state=waiting_for_first_upload`
-  instead of a folder-lookup error.
-
-## License activation
-
-Recording and saving to **Local HA / NAS are free and need no license**. A
-License Key only unlocks uploads to **Google Drive** (`ENFORCE=True` gates the
-Drive target, not recording). Without a license, clips are still recorded and
-delivered to local/NAS; Drive clips wait as `waiting_license` until activation.
-
-One key activates exactly one add-on installation (Home Assistant). Moving to
-another installation needs an admin reset.
-
-1. Open the **License** tab and follow the portal link.
-2. Register with email + password (phone optional).
-3. Claim the 24-hour trial (one per account and installation, starting at
-   first activation) or buy a plan:
-   weekly 50,000 VND or lifetime 200,000 VND, paid by PayOS QR.
-4. The key appears in the dashboard once PayOS confirms payment.
-5. Paste the `CC-...` key into the add-on and activate.
-
-The portal signs a short-lived lease. Without a network connection the add-on
-keeps working on the verified lease for up to 72 hours, never past the plan
-expiration. Expiry or revocation stops Drive uploads (local/NAS recording keeps
-running); activation resumes Drive without restarting Home Assistant. Keep
-`/data/license_identity.json` in
-private backups; do not delete it during updates or share it. Payment and server
-credentials never enter the add-on.
-
-## Test status
-
-410 add-on tests pass. Coverage includes multi-target
-storage delivery/retry, filesystem path and mount safety, local/NAS playback
-ranges and resource cleanup, plus the compiled runtime. Ruff, Pyright and
-JavaScript syntax checks pass. Browser tests cover the storage settings, License
-and existing dashboard/Drive forms on mobile and desktop. License/PayOS/Drive
-network responses are mocked in tests; a separate production smoke run validated
-activation, lock/unlock, reset and PayOS checkout creation against the live
-portal. No real transfer, NAS mount or production Home Assistant upgrade was
-performed. Runtime recorder, motion, uploader, Drive and MQTT implementation is
-preserved relative to the stable input copy.
-
-The published image contains compiled first-party modules and no first-party
-`.py` source; base-image and third-party Python remains. A determined operator
-with root on the Home Assistant host can still reverse engineer native code, so
-this is not absolute copy protection.
+- Clip đã lên Drive / Local / NAS **giữ nguyên** — chỉ dữ liệu nội bộ của
+  add-on (bộ đệm tạm, token OAuth, license key, cấu hình) bị xoá.
+- Nếu muốn giữ định danh license cho lần cài lại, lưu key `CC-…` ra ngoài
+  trước.
+- Ngắt kết nối Google trong tab **Nơi lưu** trước khi gỡ nếu muốn thu hồi
+  token OAuth ngay lập tức; hoặc vào tài khoản Google → Bảo mật → ứng
+  dụng bên thứ ba để thu hồi tay.
