@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.10.6 - 2026-10-01
+
+- Chặn thao tác khi thân request JSON hỏng: trả 400 thay vì tự bỏ phòng ban.
+- Giới hạn tổng dung lượng multipart (16 MiB, tối đa 64 part) để không lách
+  giới hạn bằng nhiều part nhỏ.
+- WebSocket đóng khi session giao diện bị thu hồi hoặc hết hạn.
+- Không replay sự kiện cũ khi lịch sử vượt ngưỡng dedup; giữ đúng loại sự kiện
+  và không rò dữ liệu tài khoản HANET cũ.
+- Xác minh lại chữ ký/binding cache license khi nạp offline và bắt `InvalidTag`.
+- Ổn định pipeline media: drain stderr, dọn phiên an toàn, timeout khung hình,
+  tự thử H264/HEVC.
+- Giữ nguyên giao diện, FaceID, phòng ban, clip, P2P và custom component.
+
 ## 0.10.5 - 2026-08-28
 
 - Không chặn giao diện khi license lifetime đã được xác minh trước đó nhưng
