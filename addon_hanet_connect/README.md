@@ -1,7 +1,15 @@
-# HANET Connect Gateway 0.10.5
+# HANET Connect Gateway 0.10.7
 
 Add-on quản lý hệ sinh thái HANET trực tiếp trong Home Assistant với giao diện
 Ingress tiếng Việt mở trực tiếp, còn API cục bộ ngoài Ingress vẫn có xác thực.
+
+## Điểm mới trong 0.10.7: tải clip
+
+- Mở một clip trong **Ghi hình**, rồi bấm **Tải clip** dưới trình phát; clip mở
+  từ **Sự kiện** có cùng nút tải.
+- Tệp `.mp4` có tên an toàn gồm camera và thời gian. Nút báo bận khi đang xử lý;
+  nếu tải lỗi, xem thông báo rồi bấm lại để thử.
+- Tải qua gateway với cùng xác thực và license hiện có, không đổi luồng phát video.
 
 ## Điểm mới trong 0.10.5
 

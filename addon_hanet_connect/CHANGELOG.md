@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.10.7 - 2026-10-02
+
+- Thêm nút **Tải clip** dưới trình phát ghi hình, dùng chung cho clip mở từ sự kiện.
+- Tải tệp `.mp4` với tên an toàn gồm camera và thời gian.
+- Giữ nguyên xác thực/license qua gateway; hiển thị trạng thái bận và thông báo
+  lỗi để thử lại.
+- Không thay đổi luồng phát video.
+
 ## 0.10.6 - 2026-10-01
 
 - Chặn thao tác khi thân request JSON hỏng: trả 400 thay vì tự bỏ phòng ban.
