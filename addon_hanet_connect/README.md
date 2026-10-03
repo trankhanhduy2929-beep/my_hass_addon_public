@@ -1,7 +1,19 @@
-# HANET Connect Gateway 0.10.7
+# HANET Connect Gateway 0.11.0
 
 Add-on quản lý hệ sinh thái HANET trực tiếp trong Home Assistant với giao diện
 Ingress tiếng Việt mở trực tiếp, còn API cục bộ ngoài Ingress vẫn có xác thực.
+
+## Điểm mới trong 0.11.0: giao diện mới
+
+- Toàn bộ dashboard được dựng lại bằng một bộ CSS thống nhất: sidebar chức năng
+  trên desktop, thanh điều hướng dưới trên mobile, thẻ và danh sách cùng nhịp.
+- Nút và ô nhập cao 44px, dễ bấm trên điện thoại; nội dung dài xuống dòng gọn,
+  không tràn ngang màn hình; bảng chấm công cuộn ngang và giữ cột tên ở đầu.
+- Khi có dữ liệu mới qua realtime, màn hình không còn làm mất nội dung đang
+  nhập, tiêu điểm bàn phím hay trạng thái đang tải/lỗi.
+- Đóng hộp thoại sẽ dừng video và hủy tải clip đang chờ; phiên hết hạn hoặc
+  license mất hiệu lực đóng mọi hộp thoại đang mở.
+- Không đổi tính năng, API, payload, license hay custom component.
 
 ## Điểm mới trong 0.10.7: tải clip
 

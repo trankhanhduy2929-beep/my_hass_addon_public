@@ -1,5 +1,20 @@
 # Changelog
 
+## 0.11.0 - 2026-10-03
+
+- Nâng cấp toàn diện giao diện add-on: một bộ CSS duy nhất, sidebar chức năng
+  trên desktop và thanh dưới trên mobile, nút/ô nhập cao 44px, thẻ cùng nhịp và
+  bảng chấm công cuộn ngang có cột ghim.
+- Giữ nguyên toàn bộ chức năng: camera, sự kiện, ghi hình, tải clip, FaceID,
+  phòng ban, biển số, chấm công, RTSP, license và console API.
+- Giữ nội dung đang nhập và tiêu điểm khi realtime cập nhật; phản hồi cũ không
+  còn ghi đè hộp thoại đã đóng hoặc form vừa mở lại.
+- Đóng hộp thoại sẽ dừng video và hủy tải clip đang chờ; phiên hết hạn hoặc
+  license mất hiệu lực đóng mọi hộp thoại.
+- Sửa lỗi hiển thị: trạng thái tải không còn làm nhảy bố cục, nút phụ có nền rê
+  rõ hơn, license không còn kẹt trạng thái "đang kiểm tra".
+- Không thay đổi backend, API, payload, license hay custom component.
+
 ## 0.10.7 - 2026-10-02
 
 - Thêm nút **Tải clip** dưới trình phát ghi hình, dùng chung cho clip mở từ sự kiện.
