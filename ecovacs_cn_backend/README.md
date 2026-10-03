@@ -1,6 +1,6 @@
 # Ecovacs đa vùng Backend cho Home Assistant
 
-Ecovacs Backend `1.3.5` là add-on điều khiển robot từ nhiều tài khoản Ecovacs
+Ecovacs Backend `1.3.6` là add-on điều khiển robot từ nhiều tài khoản Ecovacs
 China và quốc tế cùng lúc, sau đó đưa entity vào Home Assistant trực tiếp bằng
 MQTT Discovery. Không cần cài custom component hoặc nhập cloud credential vào
 Home Assistant Core.
@@ -134,13 +134,20 @@ Tùy capability robot thực tế cung cấp, add-on có thể tạo qua MQTT Di
 - Khi robot di chuyển, event map từ Ecovacs chỉ đánh dấu revision mới. SVG được
   dựng lười khi MQTT hoặc API thật sự cần và chỉ phát bản mới nhất theo giới hạn
   `mqtt_map_min_interval`.
-- Add-on chỉ theo dõi vị trí/đường đi khi robot đang `cleaning` hoặc `returning`.
-  Khi robot dừng, tạm dừng hoặc đã về trạm, add-on lấy một bản đồ cuối trong 3
-  giây rồi bỏ các event vị trí rung nhẹ, tránh MQTT image cập nhật liên tục.
+- Add-on hỏi vị trí/đường đi khi robot đang `cleaning` hoặc `returning`, và giữ
+  thêm 15 giây sau khi dừng để nhận đủ bản đồ cuối. Vị trí thực sự thay đổi hoặc
+  đường đi đến muộn vẫn được nhận; chỉ lọc rung dưới 5 cm/10° khi robot ở trạm.
 - Event bản đồ tĩnh như mảnh nền, map info và khu vực vẫn được xử lý ở trạng
   thái docked nên đổi bản đồ/phòng không bị bỏ sót.
-- Fallback 5 giây chỉ yêu cầu vị trí và đường đi động khi robot đang hoạt động,
-  không tải lại các mảnh nền tĩnh; MQTT map mặc định phát tối đa mỗi 5 giây.
+- Fallback vị trí/đường đi mặc định 3 giây. Khi `onMajorMap` báo nền thay đổi,
+  add-on yêu cầu checksum mới để thư viện chỉ tải các mảnh khác; đồng thời có
+  kiểm tra nền/metadata mỗi 30 giây khi hoạt động để phục hồi push bị lỡ.
+- Nền raster, đường đi và robot dùng chung góc xoay. Icon robot/trạm là SVG
+  sắc nét, có hướng quay thật; robot không còn bị ép vào mép nền cũ.
+- MQTT map mặc định phát tối đa mỗi 2 giây. Khi nâng cấp, Home Assistant giữ
+  cấu hình cũ: có thể đặt `map_refresh_interval: 3` và
+  `mqtt_map_min_interval: 2` trong Configuration để dùng nhịp mới. Đây vẫn là
+  dữ liệu qua Ecovacs cloud, không cam kết độ trễ giống hệt ứng dụng hãng.
 
 ### Realtime và tải Home Assistant
 
@@ -270,11 +277,11 @@ Các nút chỉ được tạo khi add-on xác nhận robot hỗ trợ capabilit
 
 ## Cài thủ công từ ZIP
 
-1. Giải nén `ecovacs_cn_addon-repository-v1.3.5.zip`.
+1. Giải nén `ecovacs_cn_addon-repository-v1.3.6.zip`.
 2. Chép nguyên thư mục `ecovacs_cn_backend` vào `/addons/`.
 3. Mở Add-on Store và chọn **Reload/Check for updates**.
 4. Chọn **Ecovacs China Backend** và nhấn **Install/Rebuild**.
-5. Kiểm tra trang thông tin phải hiển thị phiên bản `1.3.5`.
+5. Kiểm tra trang thông tin phải hiển thị phiên bản `1.3.6`.
 6. Khởi động add-on và bật **Show in sidebar** nếu muốn.
 
 Không chép riêng `addon_app` hoặc `protocol_components`. Docker build cần toàn bộ
@@ -333,7 +340,8 @@ Add-on mặc định ưu tiên tải nhẹ:
 - reconnect broker theo exponential backoff tối đa 300 giây và reset về 2 giây
   sau khi từng kết nối thành công;
 - map chỉ publish bản mới nhất theo interval và giới hạn byte;
-- map động fallback 5 giây, state lõi 120 giây, setting 600 giây và chẩn đoán
+- map động fallback 3 giây, nền/metadata 30 giây khi hoạt động, state lõi
+  120 giây, setting 600 giây và chẩn đoán
   1200 giây;
 - bản đồ và trạng thái được cache, không tạo tiến trình phụ;
 - Ingress poll 15 giây, dừng khi tab ẩn và không tạo request refresh chồng nhau;
@@ -345,13 +353,13 @@ Options:
 | Option | Mặc định | Phạm vi | Công dụng |
 | --- | ---: | ---: | --- |
 | `log_level` | `info` | debug–error | Mức log của backend |
-| `map_refresh_interval` | `5` giây | 3–60 | Fallback hỏi vị trí và đường đi khi robot hoạt động |
+| `map_refresh_interval` | `3` giây | 3–60 | Hỏi vị trí/đường đi, phục hồi thông báo nền bị lỡ |
 | `state_refresh_interval` | `120` giây | 15–300 | Fallback trạng thái hoạt động cốt lõi |
 | `settings_refresh_interval` | `600` giây | 300–1800 | Làm mới setting ít thay đổi như `border_spin` |
 | `diagnostic_refresh_interval` | `1200` giây | 900–3600 | Làm mới IP/Wi-Fi, OTA, tuổi thọ và tổng thống kê |
 | `mqtt_enabled` | `true` | true/false | Bật MQTT Discovery bridge |
 | `mqtt_map_enabled` | `true` | true/false | Publish ảnh SVG qua MQTT Image |
-| `mqtt_map_min_interval` | `5` giây | 1–60 | Khoảng cách tối thiểu giữa hai map publish |
+| `mqtt_map_min_interval` | `2` giây | 1–60 | Khoảng cách tối thiểu giữa hai map publish |
 | `mqtt_map_max_bytes` | `2000000` | 64000–10000000 | Bỏ qua map quá lớn để bảo vệ broker/Core |
 | `mqtt_batch_window_ms` | `350` ms | 100–2000 | Gom event gần nhau thành một lần publish |
 
@@ -458,8 +466,8 @@ Kiểm tra đang dùng `1.3.5`. Bản này cài package trực tiếp vào Pytho
 ## Gói phát hành
 
 - Mọi bản build mới được lưu trong thư mục `ket_qua` ở root workspace.
-- `ecovacs_cn_addon-repository-v1.3.5.zip`: add-on repository/local build.
-- `SHA256SUMS-v1.3.5.txt`: checksum của archive add-on.
+- `ecovacs_cn_addon-repository-v1.3.6.zip`: add-on repository/local build.
+- `SHA256SUMS-v1.3.6.txt`: checksum của archive add-on.
 
 Xem thêm hướng dẫn vận hành ngắn trong `DOCS.md` và lịch sử thay đổi trong
 `CHANGELOG.md`.

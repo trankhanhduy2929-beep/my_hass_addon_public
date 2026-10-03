@@ -40,12 +40,14 @@ Home Assistant để không còn entity trùng.
   khiển.
 - Vacuum entity giữ state hợp lệ cuối cùng khi cloud phát `error`; sau restart
   dùng `idle` cho tới khi nhận state mới. Sensor **Lỗi** vẫn báo mã lỗi thật.
-- Map SVG dùng topic riêng, mặc định tối đa một lần mỗi 5 giây và tối đa 2 MB.
-- Fallback map mỗi 5 giây chỉ hỏi vị trí/đường đi; map tĩnh tiếp tục nhận qua
-  event và full refresh, tránh tải lại dữ liệu nền không cần thiết.
+- Map SVG dùng topic riêng, mặc định tối đa một lần mỗi 2 giây và tối đa 2 MB.
+- Fallback vị trí/đường đi mỗi 3 giây. Thông báo nền đổi kích hoạt kiểm tra
+  checksum để chỉ tải mảnh thay đổi; nền/metadata được kiểm tra thêm mỗi 30
+  giây khi robot hoạt động để phục hồi push bị lỡ.
 - Position/trace chỉ được hỏi khi robot đang dọn hoặc đang về trạm. Khi robot
-  chuyển sang idle/docked/paused, add-on giữ tối đa 3 giây cho bản đồ cuối rồi
-  chặn event động lặp; event map tĩnh vẫn cập nhật bình thường.
+  chuyển sang idle/docked/paused, add-on giữ thêm 15 giây cho bản đồ cuối.
+  Event vị trí/đường đi đến muộn vẫn được nhận; chỉ lọc rung dưới 5 cm/10°
+  khi đã ở trạm. Nền raster và icon robot dùng cùng góc xoay, icon có hướng thật.
 - Broker lỗi chỉ làm MQTT bridge reconnect theo backoff; API Ingress, watchdog
   và cloud controller tiếp tục chạy.
 - Đăng nhập Ecovacs trả ngay sau khi credential được xác thực; kết nối MQTT
@@ -60,11 +62,11 @@ Home Assistant để không còn entity trùng.
 | Option | Mặc định | Ý nghĩa |
 | --- | ---: | --- |
 | `log_level` | `info` | Mức log của add-on |
-| `map_refresh_interval` | `5` | Fallback hỏi vị trí và đường đi từ Ecovacs |
+| `map_refresh_interval` | `3` | Fallback hỏi vị trí/đường đi từ Ecovacs |
 | `state_refresh_interval` | `120` | Fallback yêu cầu full state |
 | `mqtt_enabled` | `true` | Bật MQTT Discovery |
 | `mqtt_map_enabled` | `true` | Publish SVG qua MQTT Image |
-| `mqtt_map_min_interval` | `5` | Giới hạn tần suất map |
+| `mqtt_map_min_interval` | `2` | Giới hạn tần suất map |
 | `mqtt_map_max_bytes` | `2000000` | Bỏ qua map vượt kích thước này |
 
 ## API nội bộ
@@ -121,8 +123,12 @@ cloud token đã lưu.
   `getMapSet`. Nút khu vực vẫn dọn đúng phòng; add-on không gọi `getMapSubSet`
   để tránh tái phát timeout trên X1/T10 nội địa.
 - **Map không cập nhật:** kiểm tra `mqtt_map_enabled`, interval và giới hạn byte.
-- **Map vẫn đổi khi robot đã ở trạm:** dùng bản `1.3.5`; bản này dừng polling
-  position/trace và bỏ map event động sau cửa sổ cập nhật cuối 3 giây.
+- **Map chậm/lệch so với app:** nâng lên `1.3.6`; bản này sửa cập nhật nền,
+  góc xoay raster và nhận vị trí đến muộn. Cấu hình từ bản cũ vẫn được giữ:
+  đặt `map_refresh_interval: 3`, `mqtt_map_min_interval: 2` nếu muốn nhịp mới.
+  Độ trễ thực tế vẫn phụ thuộc Ecovacs cloud/MQTT và firmware.
+- **Map vẫn đổi khi robot đã ở trạm:** sau 15 giây add-on ngừng hỏi định kỳ
+  position/trace, chỉ nhận thay đổi thực sự từ cloud và lọc rung nhỏ.
 - **Log `getNetInfo`/`getBorderSpin` timeout:** bản `1.3.5` không còn gọi hai
   nhóm này mỗi 120 giây. Setting mặc định làm mới mỗi 600 giây, còn network,
   OTA và tuổi thọ mỗi 1200 giây; lỗi cloud tạm thời không làm vacuum entity lỗi.

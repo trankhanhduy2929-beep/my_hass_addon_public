@@ -1,5 +1,5 @@
 name: Ecovacs China Backend
-version: 1.3.5
+version: 1.3.6
 slug: ecovacs_cn_backend
 description: Secure multi-account Ecovacs China/international cloud and MQTT backend
 url: "https://github.com/trankhanhduy2929-beep/my_hass_addon_public"
@@ -23,13 +23,13 @@ ports_description:
   4545/tcp: API nội bộ; chỉ ánh xạ ra host khi thật sự cần
 options:
   log_level: info
-  map_refresh_interval: 5
+  map_refresh_interval: 3
   state_refresh_interval: 120
   settings_refresh_interval: 600
   diagnostic_refresh_interval: 1200
   mqtt_enabled: true
   mqtt_map_enabled: true
-  mqtt_map_min_interval: 5
+  mqtt_map_min_interval: 2
   mqtt_map_max_bytes: 2000000
   mqtt_batch_window_ms: 350
 schema:

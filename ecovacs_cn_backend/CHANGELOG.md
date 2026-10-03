@@ -1,5 +1,22 @@
 # Changelog
 
+## 1.3.6 - 2026-10-03
+
+- Sửa bỏ sót nền bản đồ khi `onMajorMap` chỉ gửi checksum: yêu cầu major map
+  theo hàng đợi có giới hạn nhịp, chỉ tải mảnh thay đổi, retry khi chưa nhận
+  phản hồi; kiểm tra thêm nền/metadata mỗi 30 giây khi robot hoạt động.
+- Nhận vị trí trước khi state chuyển sang cleaning, tọa độ/đường đi đến muộn
+  sau khi dừng và giữ đủ vị trí trạm khi cloud chỉ gửi robot. Chỉ lọc rung nhỏ
+  khi docked; kéo dài cửa sổ lấy bản đồ cuối từ 3 lên 15 giây.
+- Sửa nền raster không xoay cùng robot/đường đi; không còn ép tọa độ robot
+  vào mép ảnh cũ, tránh robot nhảy sai vị trí khi vùng nền đang mở rộng.
+- Thay chấm xanh và pin vàng bằng icon robot/trạm SVG; robot có lidar, chỉ
+  hướng theo góc thật, hiển thị trên trạm và không tải ảnh bên ngoài.
+- Mặc định fallback vị trí/đường đi 3 giây, MQTT image 2 giây; giữ nguyên các
+  tùy chọn đã lưu, không thay đổi license hoặc luồng kích hoạt.
+- Thêm kiểm thử hồi quy cho đồng bộ, góc xoay 0/90/180/270°, cache nền xóa,
+  dữ liệu vị trí thiếu trạm, sự kiện đến muộn và giới hạn tải MQTT.
+
 ## 1.3.5 - 2026-08-28
 
 - Làm nút **Mở trang nhận license** lớn, nổi bật và dễ bấm hơn trên cả desktop
