@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.12.0 - 2026-10-03
+
+- Tách **Ghi hình** thành hai nguồn: **Cloud** (mặc định, giữ nguyên) và
+  **Thẻ SD** đọc trực tiếp qua P2P. Chọn camera để đọc thẻ; camera cần online.
+- Clip thẻ SD hiển thị ngày/giờ camera, có nút phát và **Tải clip** như cloud;
+  tệp tải về là `.mp4` chỉ video, tên bắt đầu `HANET-SD-`.
+- Nếu camera/SDK không trả đủ mốc kết thúc hoặc thời lượng clip, add-on báo rõ
+  mã lỗi tiếng Việt (ví dụ chưa xác minh được thời lượng) thay vì trả clip dở.
+- Giới hạn an toàn: clip SD tối đa 600 giây, huỷ tải khi đóng hộp thoại, không
+  lưu tệp tạm và không đổi luồng cloud.
+
 ## 0.11.0 - 2026-10-03
 
 - Nâng cấp toàn diện giao diện add-on: một bộ CSS duy nhất, sidebar chức năng

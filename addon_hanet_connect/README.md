@@ -1,7 +1,17 @@
-# HANET Connect Gateway 0.11.0
+# HANET Connect Gateway 0.12.0
 
 Add-on quản lý hệ sinh thái HANET trực tiếp trong Home Assistant với giao diện
 Ingress tiếng Việt mở trực tiếp, còn API cục bộ ngoài Ingress vẫn có xác thực.
+
+## Điểm mới trong 0.12.0: tách nguồn Cloud và Thẻ SD
+
+- Trong **Ghi hình** có hai tab nguồn: **Cloud** (mặc định) và **Thẻ SD**.
+- Tab **Thẻ SD** đọc danh sách ghi hình trực tiếp từ thẻ nhớ qua P2P. Chọn một
+  camera đang online; nếu chưa chọn camera, add-on không kết nối.
+- Mở clip thẻ SD để phát thử và **Tải clip** về máy (`HANET-SD-*.mp4`, chỉ video).
+- Clip thẻ SD có thể cần chờ bằng thời lượng clip. Khi camera/SDK không xác minh
+  được mốc kết thúc hoặc thời lượng, add-on báo rõ mã lỗi thay vì trả tệp dở.
+- Giới hạn: clip SD tối đa 600 giây; cloud giữ nguyên toàn bộ hành vi cũ.
 
 ## Điểm mới trong 0.11.0: giao diện mới
 
