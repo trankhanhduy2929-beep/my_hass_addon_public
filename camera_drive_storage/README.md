@@ -65,11 +65,13 @@ mã xác thực.
    định `HomeAssistantCameras` sẽ được tạo khi clip đầu tiên tải lên.
 
 Quyền `drive.file`: add-on chỉ nhìn thấy các file do chính nó tạo trong
-Drive của bạn. Token OAuth chỉ nằm trong add-on trên máy Home Assistant —
-không lưu ở portal, không gửi đi nơi khác.
+Drive của bạn. Refresh token được lưu trong add-on trên máy Home Assistant;
+portal chỉ trung gian bước kết nối/làm mới và không lưu token lâu dài.
 
-Nút **Ngắt kết nối** xoá token và dừng tải lên Drive; clip vẫn ghi và vẫn
-đi đến các đích Local/NAS.
+Nút **Ngắt kết nối** xoá thông tin xác thực khỏi add-on và dừng tải lên
+Drive; clip vẫn ghi và vẫn đi đến các đích Local/NAS. Ngắt kết nối **không**
+thu hồi quyền tại Google — muốn thu hồi, vào
+https://myaccount.google.com/connections.
 
 ## Nơi lưu clip — Drive, Local HA, NAS
 
@@ -166,6 +168,6 @@ Trước khi gỡ add-on:
   add-on (bộ đệm tạm, token OAuth, license key, cấu hình) bị xoá.
 - Nếu muốn giữ định danh license cho lần cài lại, lưu key `CC-…` ra ngoài
   trước.
-- Ngắt kết nối Google trong tab **Nơi lưu** trước khi gỡ nếu muốn thu hồi
-  token OAuth ngay lập tức; hoặc vào tài khoản Google → Bảo mật → ứng
-  dụng bên thứ ba để thu hồi tay.
+- Ngắt kết nối Google trong tab **Nơi lưu** trước khi gỡ để xoá thông tin
+  xác thực khỏi add-on. Để thu hồi quyền truy cập tại Google, vào
+  https://myaccount.google.com/connections.
