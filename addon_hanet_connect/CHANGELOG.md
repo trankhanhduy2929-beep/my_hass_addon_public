@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.12.1 - 2026-10-04
+
+- Sửa lỗi worker SD tự abort khi Python đóng pipeline (giữ stdin mở lúc đọc),
+  khiến mọi danh sách SD báo `sd_worker_failed` dù camera trả dữ liệu hợp lệ.
+- Không còn coi phản hồi IOCTRL độ dài 0 là lỗi; danh sách SD kết thúc đúng khi
+  gặp `}` kể cả khi có CRLF/khoảng trắng/NUL phía sau.
+- Giữ nguyên mã chẩn đoán an toàn (kết quả SDK, IOCTRL, mã trả về tiến trình) và
+  báo tiếng Việt cụ thể thay vì gom hết về `sd_worker_failed`.
+- Cloud, PTZ, live, FaceID, license và custom component giữ nguyên.
+
 ## 0.12.0 - 2026-10-03
 
 - Tách **Ghi hình** thành hai nguồn: **Cloud** (mặc định, giữ nguyên) và

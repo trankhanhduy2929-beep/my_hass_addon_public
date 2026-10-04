@@ -1,7 +1,16 @@
-# HANET Connect Gateway 0.12.0
+# HANET Connect Gateway 0.12.1
 
 Add-on quản lý hệ sinh thái HANET trực tiếp trong Home Assistant với giao diện
 Ingress tiếng Việt mở trực tiếp, còn API cục bộ ngoài Ingress vẫn có xác thực.
+
+## Điểm mới trong 0.12.1: sửa đọc danh sách Thẻ SD
+
+- Sửa tiến trình P2P SD bị dừng sớm khi đóng đường ống, nguyên nhân khiến thao
+  tác đọc danh sách SD báo `sd_worker_failed` dù camera đã trả dữ liệu hợp lệ.
+- Danh sách SD kết thúc đúng chuẩn khi gặp `}` kể cả khi có ký tự xuống dòng hoặc
+  NUL phía sau; phản hồi điều khiển rỗng không còn bị coi là lỗi.
+- Khi vẫn lỗi, add-on hiển thị nguyên nhân cụ thể (quyền camera, ngắt kết nối,
+  hết thời gian chờ…) kèm mã SDK an toàn trong log, không lộ thông tin bí mật.
 
 ## Điểm mới trong 0.12.0: tách nguồn Cloud và Thẻ SD
 
