@@ -1,11 +1,16 @@
 # Changelog
 
+## 0.12.5 - 2026-10-04
+
+- Hoàn tác dung sai của 0.12.4: clip thẻ SD không còn được coi là hoàn tất khi
+  mới tới giây `N-1`. Log thật cho thấy camera gửi đủ mốc tới đúng thời lượng
+  (`position=143 duration=143`), nên điều kiện đúng là đạt `>= N` như trước.
+  Bản 0.12.4 có thể cắt cụt phần cuối clip.
+- Ghi nhật ký rõ bước chuyển MP4: `HANET SD transcode: stage=start bytes=…` và
+  `stage=done bytes=… elapsed_ms=…`, cùng mã trả về FFmpeg khi chuyển mã lỗi.
+
 ## 0.12.4 - 2026-10-04
 
-- Sửa điều kiện kết thúc clip thẻ SD: timestamp khung hình chỉ tới giây
-  `0..N-1`, nên yêu cầu `>= N` khiến mọi clip chờ tới hết thời gian rồi báo
-  `sd_incomplete`/`sd_timing_unavailable`. Nay chấp nhận khi đạt giây cuối
-  `N-1` (vẫn kiểm tra khung hình chính, giới hạn thời lượng và dung lượng).
 - Worker phát `P2P_SD_PROGRESS` mỗi 5 giây và ngay trước khi dừng: số khung hình,
   số byte, vị trí, tổng thời lượng, số khung có mốc thời gian và lý do dừng.
 - Lỗi đọc clip thẻ SD giờ trả kèm chẩn đoán `stage=capture` và `progress`, log
