@@ -1,7 +1,19 @@
-# HANET Connect Gateway 0.12.1
+# HANET Connect Gateway 0.12.2
 
 Add-on quản lý hệ sinh thái HANET trực tiếp trong Home Assistant với giao diện
 Ingress tiếng Việt mở trực tiếp, còn API cục bộ ngoài Ingress vẫn có xác thực.
+
+## Điểm mới trong 0.12.2: sửa phát lại clip Thẻ SD (`.hat`)
+
+- Camera HANET lưu một số ghi hình Thẻ SD dưới dạng `.hat`
+  (ví dụ `112-2026-10-04-12-21-16.hat`). Bản cũ từ chối tên này và báo lỗi
+  `sd_invalid_file` khi bấm phát hoặc **Tải clip**.
+- Worker SD giờ chỉ yêu cầu tên có prefix ngày-giờ camera hợp lệ và vẫn giữ mọi
+  kiểm tra an toàn (không traversal, không ký tự điều khiển, tối đa 255 byte),
+  nên `.hat`, `.HAT`, `.mp4` hoặc tên không phần mở rộng đều phát được.
+- Danh sách Thẻ SD đã đọc được (bản 0.12.1) nay tải/phát được đúng tệp mà camera
+  trả về, giữ nguyên tên camera yêu cầu khi gọi SDK.
+- Cloud, live, PTZ, FaceID, license và custom component giữ nguyên.
 
 ## Điểm mới trong 0.12.1: sửa đọc danh sách Thẻ SD
 

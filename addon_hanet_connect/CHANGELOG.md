@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.12.2 - 2026-10-04
+
+- Sửa lỗi phát hành lại clip **Thẻ SD**: một số camera HANET lưu tệp với phần mở
+  rộng `.hat` (dạng `112-YYYY-MM-DD-HH-MM-SS.hat`). Worker trước đây dùng
+  `fullmatch` chỉ nhận `.mp4/.h264/.hevc` nên từ chối tên hợp lệ và trả
+  `sd_invalid_file` (worker returncode 2).
+- Chuyển kiểm tra tên clip sang `match` prefix timestamp; vẫn giữ toàn bộ ràng buộc
+  an toàn: không traversal, không ký tự điều khiển, không khoảng trắng đầu/cuối, tối
+  đa 255 byte, tên có ngày-giờ camera hợp lệ.
+- Danh sách và tải clip Thẻ SD giờ chấp nhận tên không có phần mở rộng hoặc có
+  phần mở rộng bất kỳ (`.hat`, `.HAT`, `.mp4`, …) mà vẫn giữ đúng tên camera yêu
+  cầu khi gọi SDK.
+- Cloud, live, PTZ, FaceID, license, custom component giữ nguyên.
+
 ## 0.12.1 - 2026-10-04
 
 - Sửa lỗi worker SD tự abort khi Python đóng pipeline (giữ stdin mở lúc đọc),
