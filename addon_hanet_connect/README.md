@@ -1,7 +1,17 @@
-# HANET Connect Gateway 0.12.5
+# HANET Connect Gateway 0.12.6
 
 Add-on quản lý hệ sinh thái HANET trực tiếp trong Home Assistant với giao diện
 Ingress tiếng Việt mở trực tiếp, còn API cục bộ ngoài Ingress vẫn có xác thực.
+
+## Điểm mới trong 0.12.6: lỗi ảnh sự kiện và phân biệt lỗi cổng truy cập
+
+- Ảnh sự kiện/thumbnail không còn trả 500 kèm traceback khi HANET CDN chậm hoặc
+  mất kết nối; nay báo `media_timeout` hoặc `media_unavailable`.
+- Thông báo clip Thẻ SD phân biệt lỗi từ cổng truy cập Home Assistant với lỗi
+  từ add-on, kèm hướng xử lý.
+- Clip thẻ SD đã đọc và chuyển MP4 thành công; log ghi rõ frames, vị trí, thời
+  lượng, dung lượng và thời gian xử lý.
+- Camera, sự kiện, ghi hình, FaceID, RTSP, license và custom component giữ nguyên.
 
 ## Điểm mới trong 0.12.5: hoàn tác cắt cụt clip Thẻ SD, thêm log chuyển MP4
 

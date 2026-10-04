@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.12.6 - 2026-10-04
+
+- Sửa lỗi `/api/media` (ảnh sự kiện, thumbnail) trả 500 kèm traceback khi
+  HANET CDN không trả dữ liệu: nay trả mã rõ `media_timeout` (504) hoặc
+  `media_unavailable` (502) và ghi log cảnh báo, không còn
+  `Unhandled gateway request error`.
+- Hộp thoại clip Thẻ SD phân biệt lỗi do **cổng truy cập Home Assistant**
+  (Ingress) chặn với lỗi do add-on trả về, nói rõ nên thử lại hay mở add-on
+  trực tiếp.
+- Clip thẻ SD đã chạy được: log `HANET SD request outcome=success` kèm
+  `HANET SD capture` (frames/position/stamps/duration) và
+  `HANET SD transcode` (bytes/elapsed).
+
 ## 0.12.5 - 2026-10-04
 
 - Hoàn tác dung sai của 0.12.4: clip thẻ SD không còn được coi là hoàn tất khi
