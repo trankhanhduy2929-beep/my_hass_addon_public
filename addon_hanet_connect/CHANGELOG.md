@@ -1,5 +1,29 @@
 # Changelog
 
+## 0.12.3 - 2026-10-04
+
+- Sửa lỗi mọi lỗi phát lại Thẻ SD hiển thị là `request_failed`: UI nay giữ mã
+  tiếng Việt theo loại lỗi (mất mạng, HTTP lỗi, hết thời gian chờ, chuyển mã
+  MP4, camera từ chối, thiếu dữ liệu…) và hiển thị HTTP cùng bước
+  `listing/capture/credentials/transcode` an toàn.
+- Nút **Tải clip** tự đổi thành **Thử lại** khi chuẩn bị SD thất bại; trạng thái
+  tải cho biết đang chờ camera, không còn kẹt nút bị khóa sau lỗi.
+- Bổ sung deadline nhất quán 12 phút cho cả lượt mở/phát clip SD và tăng thêm 30
+  giây margin so với ngân sách backend, tránh hết thời gian chờ phía trước.
+- Backend SD dùng một deadline bao trọn các bước kiểm tra công cụ, lấy danh sách,
+  chờ lượt camera, lấy thông tin P2P, nhận video và chuyển MP4; lỗi quá thời hạn
+  trả `sd_timeout` thay vì để request chạy vô hạn.
+- Sửa khóa thẻ SD: camera cùng một camera chờ trước, không còn chiếm slot
+  camera khác; các request khác vẫn đi song song nhưng không bị starvation.
+- Sửa browser abort không khiến backend dừng tiến trình SD: route video SD theo
+  dõi client disconnect và cancel handler, giải phóng worker/slot; log chẩn đoán
+  an toàn ghi `operation/code/http_status/elapsed_ms`, không ghi device ID, file,
+  token hay thông tin cloud.
+- Sửa spawn FFmpeg lỗi hoặc credential P2P thất bại làm request SD chết không
+  có mã rõ; giờ báo `sd_transcode_failed` hoặc `p2p_credentials_unavailable`
+  với stage trong log.
+- Cloud, live, PTZ, FaceID, license, custom component giữ nguyên.
+
 ## 0.12.2 - 2026-10-04
 
 - Sửa lỗi phát hành lại clip **Thẻ SD**: một số camera HANET lưu tệp với phần mở

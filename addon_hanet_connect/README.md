@@ -1,7 +1,23 @@
-# HANET Connect Gateway 0.12.2
+# HANET Connect Gateway 0.12.3
 
 Add-on quản lý hệ sinh thái HANET trực tiếp trong Home Assistant với giao diện
 Ingress tiếng Việt mở trực tiếp, còn API cục bộ ngoài Ingress vẫn có xác thực.
+
+## Điểm mới trong 0.12.3: chẩn đoán và thử lại clip Thẻ SD
+
+- Lỗi phát lại Thẻ SD không còn gom về `request_failed`; UI hiển thị đúng loại
+  lỗi: mất kết nối, HTTP lỗi, camera từ chối, thiếu thông tin kết nối P2P, quá
+  thời gian chờ, chưa nhận đủ dữ liệu, lỗi chuyển MP4, kèm HTTP và bước xử lý.
+- Nút **Tải clip** đổi thành **Thử lại** khi chuẩn bị clip thất bại; đóng/mở hộp
+  thoại hoặc chuyển camera hủy request cũ và bắt đầu request mới.
+- Backend SD dùng một deadline bao trọn kiểm tra FFmpeg, lấy danh sách, chờ lượt
+  camera, lấy thông tin P2P, nhận dữ liệu video và chuyển mã MP4.
+- Trình duyệt đóng hộp thoại hoặc tab sẽ ngắt request và route video phát hiện
+  disconnect, cancel handler, dừng tiến trình P2P, giải phóng slot camera để
+  không còn request “ma” chiếm tài nguyên.
+- Chờ phát lại SD cùng camera được xếp hàng trước khi dùng slot camera khác,
+  tránh một camera bị chính request của nó chặn các camera còn lại.
+- Camera, sự kiện, ghi hình, FaceID, RTSP, license và custom component giữ nguyên.
 
 ## Điểm mới trong 0.12.2: sửa phát lại clip Thẻ SD (`.hat`)
 
