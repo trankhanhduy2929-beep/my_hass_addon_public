@@ -1,5 +1,5 @@
 name: HANET Connect Gateway
-version: "0.12.6"
+version: "0.12.7"
 slug: hanet_connect
 description: HANET camera, access control, FaceID, LPR and attendance gateway
 arch:
@@ -8,7 +8,7 @@ arch:
 startup: application
 boot: auto
 init: false
-stage: experimental
+stage: stable
 ingress: true
 ingress_port: 9091
 ingress_stream: true

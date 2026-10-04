@@ -1,7 +1,16 @@
-# HANET Connect Gateway 0.12.6
+# HANET Connect Gateway 0.12.7
 
 Add-on quản lý hệ sinh thái HANET trực tiếp trong Home Assistant với giao diện
 Ingress tiếng Việt mở trực tiếp, còn API cục bộ ngoài Ingress vẫn có xác thực.
+
+## Điểm mới trong 0.12.7: add-on chính thức, log độ phân giải và fps
+
+- Add-on chuyển từ trạng thái thử nghiệm (`experimental`) sang **chính thức**
+  (`stable`).
+- `HANET SD transcode` ghi thêm `resolution=…x… fps=…` để biết clip chậm do độ
+  phân giải hay do tần số khung hình thấp.
+- Clip thẻ SD đã đọc và trả 200 với dung lượng thật.
+- Camera, sự kiện, ghi hình, FaceID, RTSP, license và custom component giữ nguyên.
 
 ## Điểm mới trong 0.12.6: lỗi ảnh sự kiện và phân biệt lỗi cổng truy cập
 

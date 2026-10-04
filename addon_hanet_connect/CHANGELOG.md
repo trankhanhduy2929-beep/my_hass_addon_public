@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.12.7 - 2026-10-04
+
+- Add-on chính thức: `config.yaml` đổi `stage` từ `experimental` sang `stable`.
+- Log chuyển MP4 giờ ghi thêm `resolution` và `fps` của clip kết quả, để xác
+  định chính xác clip chậm do độ phân giải hay do tần số khung hình thấp.
+- Clip thẻ SD đọc đủ (`capture` đạt đúng `position=duration`) và trả 200 với
+  dung lượng thật; thời gian chờ chia rõ: đọc camera, chuyển MP4, rồi tải.
+
 ## 0.12.6 - 2026-10-04
 
 - Sửa lỗi `/api/media` (ảnh sự kiện, thumbnail) trả 500 kèm traceback khi
