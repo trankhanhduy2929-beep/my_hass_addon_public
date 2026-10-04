@@ -1,5 +1,28 @@
 # Changelog
 
+## 0.13.0 - 2026-10-04
+
+- **Clip thẻ SD phát dần (progressive streaming).** Trước đây add-on chờ đọc
+  xong toàn bộ clip từ camera rồi mới chuyển MP4 và trả một tệp duy nhất, nên phải
+  chờ ~45 giây với clip 3-4 phút. Nay worker → FFmpeg → trình duyệt chạy song
+  song: MP4 dạng fragment được trả ngay khi có dữ liệu. Đo với FFmpeg thật: byte
+  MP4 đầu tiên xuất hiện sau 0,44 giây, tương ứng 5% dữ liệu camera.
+- Log mới: `HANET SD stream: outcome=first_byte elapsed_ms=…`,
+  `HANET SD transcode: stage=start mode=stream`, `HANET SD capture`/
+  `HANET SD stream incomplete` giữ nguyên thông tin frames/position/stamps.
+- Giữ nguyên kiểm tra chặt trước khi phát: FFmpeg/thư viện P2P, camera có clip
+  trong ngày đã chọn, thời lượng hợp lệ và `<= 600s`. Các lỗi này vẫn trả JSON
+  với mã tiếng Việt như cũ. Sau khi đã phát thì lỗi giữa chừng được ghi log
+  `HANET SD stream aborted` (không còn là 500).
+- Trình duyệt đóng hộp thoại hoặc đổi tab: route phát hiện ngắt kết nối (kể cả
+  `ConnectionResetError` khi ghi) và hủy pipeline, giải phóng worker/FFmpeg/slot.
+- Giao diện: đang phát thì hiển thị `Đang tải clip thẻ SD…`; nếu video lỗi, hiển
+  thị hướng dẫn bấm **Tải clip** để xem nguyên nhân chi tiết hoặc kiểm tra log.
+  Nút **Tải clip** vẫn tải tệp MP4 đầy đủ với thông báo lỗi cụ thể.
+- Hạn chế: vì phát dần nên tua tới vùng chưa tải trong clip dài có thể không
+  hoạt động ngay; muốn chắc chắn hãy dùng **Tải clip**. Cloud/live/PTZ/FaceID/
+  license/custom component giữ nguyên.
+
 ## 0.12.7 - 2026-10-04
 
 - Add-on chính thức: `config.yaml` đổi `stage` từ `experimental` sang `stable`.

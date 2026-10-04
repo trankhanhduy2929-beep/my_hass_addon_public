@@ -1,7 +1,22 @@
-# HANET Connect Gateway 0.12.7
+# HANET Connect Gateway 0.13.0
 
 Add-on quản lý hệ sinh thái HANET trực tiếp trong Home Assistant với giao diện
 Ingress tiếng Việt mở trực tiếp, còn API cục bộ ngoài Ingress vẫn có xác thực.
+
+## Điểm mới trong 0.13.0: clip Thẻ SD phát dần
+
+- Trước đây phải chờ đọc hết clip từ camera rồi mới chuyển MP4, mất ~45 giây với
+  clip 3-4 phút. Nay worker, FFmpeg và trình duyệt chạy song song nên video bắt
+  đầu phát gần như ngay (đo với FFmpeg thật: byte MP4 đầu tiên sau 0,44 giây).
+- Vẫn kiểm tra chặt trước khi phát: đủ FFmpeg/thư viện P2P, clip thuộc đúng camera
+  và ngày đã chọn, thời lượng hợp lệ và không quá 600 giây. Lỗi ở bước này trả mã
+  tiếng Việt như cũ.
+- Đóng hộp thoại hoặc đổi tab sẽ hủy pipeline, giải phóng tiến trình đọc thẻ.
+- Nếu video lỗi giữa chừng, hộp thoại hướng dẫn bấm **Tải clip** để xem nguyên
+  nhân cụ thể; nút này vẫn tải tệp MP4 đầy đủ.
+- Hạn chế: đang phát dần nên tua tới vùng chưa tải trong clip dài có thể không
+  phản hồi ngay; hãy dùng **Tải clip** nếu cần xem chính xác.
+- Camera, sự kiện, ghi hình, FaceID, RTSP, license và custom component giữ nguyên.
 
 ## Điểm mới trong 0.12.7: add-on chính thức, log độ phân giải và fps
 

@@ -78,7 +78,7 @@ This table is generated automatically from the private release catalog after suc
 
 | Add-on | Version | Stage | Architectures | Documentation |
 |---|---:|---|---|---|
-| HANET Connect Gateway | `0.12.7` | stable | `amd64, aarch64` | [Open](addon_hanet_connect/README.md) |
+| HANET Connect Gateway | `0.13.0` | stable | `amd64, aarch64` | [Open](addon_hanet_connect/README.md) |
 | AI Proxy Router | `1.14.0` | stable | `amd64, aarch64` | [Open](ai_proxy_router/README.md) |
 | Camera Drive Storage | `0.11.1` | stable | `amd64, aarch64` | [Open](camera_drive_storage/README.md) |
 | Chấm Công ZKTeco | `2.0.5` | stable | `amd64, aarch64` | [Open](cham_cong_zkteco/README.md) |
