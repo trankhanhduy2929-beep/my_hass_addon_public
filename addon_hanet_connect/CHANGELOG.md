@@ -1,5 +1,21 @@
 # Changelog
 
+## 0.12.4 - 2026-10-04
+
+- Sửa điều kiện kết thúc clip thẻ SD: timestamp khung hình chỉ tới giây
+  `0..N-1`, nên yêu cầu `>= N` khiến mọi clip chờ tới hết thời gian rồi báo
+  `sd_incomplete`/`sd_timing_unavailable`. Nay chấp nhận khi đạt giây cuối
+  `N-1` (vẫn kiểm tra khung hình chính, giới hạn thời lượng và dung lượng).
+- Worker phát `P2P_SD_PROGRESS` mỗi 5 giây và ngay trước khi dừng: số khung hình,
+  số byte, vị trí, tổng thời lượng, số khung có mốc thời gian và lý do dừng.
+- Lỗi đọc clip thẻ SD giờ trả kèm chẩn đoán `stage=capture` và `progress`, log
+  `HANET SD failure` ghi rõ `frames/position/stamps/reason`, UI hiển thị số khung
+  hình, vị trí/thời lượng và cảnh báo khi camera không gửi mốc thời gian.
+- Nhật ký thành công ghi `HANET SD capture` với frames/position/stamps/duration.
+- Hộp thoại SD ghi rõ camera phát lại theo thời lượng thật nên có thể mất vài
+  phút, tránh tưởng treo.
+- Cloud, live, PTZ, FaceID, license, custom component giữ nguyên.
+
 ## 0.12.3 - 2026-10-04
 
 - Sửa lỗi mọi lỗi phát lại Thẻ SD hiển thị là `request_failed`: UI nay giữ mã

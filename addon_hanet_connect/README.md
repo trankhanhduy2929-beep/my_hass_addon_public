@@ -1,7 +1,17 @@
-# HANET Connect Gateway 0.12.3
+# HANET Connect Gateway 0.12.4
 
 Add-on quản lý hệ sinh thái HANET trực tiếp trong Home Assistant với giao diện
 Ingress tiếng Việt mở trực tiếp, còn API cục bộ ngoài Ingress vẫn có xác thực.
+
+## Điểm mới trong 0.12.4: sửa điều kiện kết thúc clip Thẻ SD
+
+- Timestamp khung hình thẻ SD chỉ chạy tới giây `N-1` cho clip `N` giây; bản
+  cũ chờ tới `N` nên clip nào cũng treo tới hết thời gian rồi báo lỗi.
+- Worker báo tiến độ mỗi 5 giây; khi lỗi, log có `frames`, `position`, `stamps`
+  và lý do dừng, còn hộp thoại hiển thị số khung hình và vị trí/thời lượng.
+- Nếu camera không gửi mốc thời gian từng khung hình, thông báo nói rõ điều đó
+  thay vì báo chung chung.
+- Camera, sự kiện, ghi hình, FaceID, RTSP, license và custom component giữ nguyên.
 
 ## Điểm mới trong 0.12.3: chẩn đoán và thử lại clip Thẻ SD
 
