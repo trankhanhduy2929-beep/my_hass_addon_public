@@ -1,5 +1,23 @@
 # Changelog
 
+## 0.13.1 - 2026-10-05
+
+- Sửa lỗi `worker_stopped` khiến clip Thẻ SD không phát được (HTTP 502) trong
+  0.13.0: backend đóng stdin của worker ngay sau khi gửi lệnh, mà worker hiểu
+  đóng stdin là báo hủy từ phía add-on nên dừng giữa chừng. Nay stdin chỉ đóng sau
+  khi relay truyền hết dữ liệu camera sang FFmpeg.
+- Xác minh bằng tiến trình worker thật: đóng stdin sớm làm worker dừng ngay
+  (`returncode 2`), giữ stdin mở thì tiến trình vẫn chạy.
+- Xác minh luồng phát dần bằng FFmpeg thật: byte MP4 đầu tiên sau 0,46 giây,
+  tệp có fragment `moof` thật và giải mã được tới cuối.
+- Sửa hàng đợi truyền: dùng `FIRST_COMPLETED` nên khối MP4 đã sẵn sàng được gửi
+  ngay thay vì chờ mỗi vòng 250 ms.
+- Đóng generator khi bị hủy giữa lúc chờ ghi, và chờ dọn reader/watcher/pump trong
+  lúc xử lý hủy lặp lại; không còn để sót tiến trình khi đóng hộp thoại.
+- Clip rỗng hoặc lỗi sau khi đã gửi header sẽ báo lỗi bằng cách ngắt luồng thay
+  vì trả 200 như thể clip hoàn chỉnh.
+- Cloud/live/PTZ/FaceID/license/custom component giữ nguyên.
+
 ## 0.13.0 - 2026-10-04
 
 - **Clip thẻ SD phát dần (progressive streaming).** Trước đây add-on chờ đọc

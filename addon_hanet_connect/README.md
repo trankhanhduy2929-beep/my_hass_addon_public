@@ -1,7 +1,17 @@
-# HANET Connect Gateway 0.13.0
+# HANET Connect Gateway 0.13.1
 
 Add-on quản lý hệ sinh thái HANET trực tiếp trong Home Assistant với giao diện
 Ingress tiếng Việt mở trực tiếp, còn API cục bộ ngoài Ingress vẫn có xác thực.
+
+## Điểm mới trong 0.13.1: sửa lỗi clip Thẻ SD không phát được
+
+- Sửa lỗi `worker_stopped` (HTTP 502) của bản 0.13.0: add-on đóng stdin của
+  tiến trình đọc thẻ quá sớm, tiến trình hiểu đó là yêu cầu hủy nên dừng giữa
+  chừng. Nay chỉ đóng sau khi truyền hết dữ liệu sang bộ chuyển mã.
+- Khối video có sẵn được gửi ngay thay vì chờ mỗi vòng 250 ms.
+- Clip rỗng hoặc hỏng giữa chừng báo lỗi rõ ràng, không còn trả 200 như thể
+  clip hoàn chỉnh.
+- Camera, sự kiện, ghi hình, FaceID, RTSP, license và custom component giữ nguyên.
 
 ## Điểm mới trong 0.13.0: clip Thẻ SD phát dần
 
