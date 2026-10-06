@@ -20,6 +20,7 @@ Home Assistant local add-on lấy trực tiếp các entity `camera.*` đã có 
 - Lịch sử có tra cứu AJAX theo khoảng ngày, camera, tên người, người lạ/đã biết và match tối thiểu; có phân trang và tự làm mới trang đầu.
 - Cleanup chạy nền theo lịch cấu hình, hiển thị lần chạy gần nhất/kế tiếp và số event/ảnh đã dọn.
 - License tự động qua portal Vercel/PayOS, ràng buộc theo installation và có cache offline đã ký; không phải copy/paste key.
+- Kiểm tra license gọi thẳng Cloudflare Worker (`license_api_url`, mặc định `https://camera-face-id-d1-gateway.trankhanhduy2929.workers.dev`) để portal Vercel không tốn CPU; có thể xoá option này để quay lại kiểm tra qua portal.
 - Web UI chỉ mở qua Home Assistant Ingress, không publish port `6868` ra host và không dùng mật khẩu riêng của add-on.
 - Khi license chưa hợp lệ, chỉ trang kích hoạt được hiển thị; camera, Face ID, lịch sử, cài đặt và API nội bộ đều bị khóa.
 
