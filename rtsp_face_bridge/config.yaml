@@ -1,5 +1,5 @@
 name: HA Camera Face ID
-version: 2.4.0
+version: 2.5.0
 slug: rtsp_face_bridge
 description: Chọn camera entity từ Home Assistant, nhận diện khuôn mặt local bằng InsightFace và phát sự kiện MQTT.
 arch:

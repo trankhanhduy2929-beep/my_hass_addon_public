@@ -32,7 +32,7 @@ Home Assistant local add-on lấy trực tiếp các entity `camera.*` đã có 
 5. Restart addon để Home Assistant cấp `SUPERVISOR_TOKEN` theo quyền `homeassistant_api: true`.
 6. Mở Web UI bằng nút **Open Web UI** trong Home Assistant. Add-on không yêu cầu mật khẩu cục bộ.
 7. Nếu installation chưa có license, add-on chỉ hiện trang **Kích hoạt HA Camera Face ID**. Bấm **Mở portal kích hoạt / mua license**, đăng nhập/đăng ký và chọn trial 1 ngày hoặc gói mua.
-8. Sau khi portal cấp quyền, add-on tự nhận license trong tối đa 30 giây và mở giao diện bên trong; không cần nhập URL, Installation ID hoặc key.
+8. Sau khi portal cấp quyền, add-on tự nhận license theo lịch giãn dần khi chưa active (30 giây → 1 → 2 → 5 → 10 → 15 phút) và mỗi 24 giờ khi đã active, hoặc bấm "Kiểm tra lại" để nhận ngay; sau đó mở giao diện bên trong, không cần nhập URL, Installation ID hoặc key.
 
 Lần chạy đầu InsightFace tải model `buffalo_sc` vào `/data/insightface`. Dữ liệu khuôn mặt, embedding cache, lịch sử và MQTT vẫn được giữ qua các lần cập nhật. Khi nâng cấp lên `2.4.0`, hash mật khẩu Web UI cũ được xóa khỏi `/data/config.json`; các dữ liệu camera/Face ID khác không bị thay đổi.
 
