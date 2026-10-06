@@ -1,5 +1,20 @@
 # Changelog
 
+## 0.13.2 - 2026-10-05
+
+- Giảm tần suất gọi License Center (Vercel) từ ~16 lần/giờ xuống ~4 lần/ngày cho
+  mỗi bản cài add-on:
+  - vòng kiểm tra nền: 15 phút → 6 giờ;
+  - giao diện không còn ép kiểm tra mỗi 5 phút, chỉ đọc trạng thái đã cache,
+    kiểm tra lại mỗi 60 phút;
+  - nút **Đồng bộ** (`POST /api/refresh`) không còn kèm một lượt verify license.
+  Các nút kích hoạt/Kiểm tra giấy phép vẫn đối chiếu trực tiếp như trước.
+- Cache entitlement vẫn có hiệu lực tới 72 giờ, và cửa sổ "đang online" nay khớp
+  chu kỳ làm mới 6 giờ, nên giảm gọi mạng không làm mất quyền hay đổi trạng thái
+  giả tạo.
+- Chống burst: hai lượt verify liên tiếp cách nhau dưới 60 giây chỉ gửi một request.
+- Cloud/live/PTZ/FaceID/SD card/license/custom component giữ nguyên chức năng.
+
 ## 0.13.1 - 2026-10-05
 
 - Sửa lỗi `worker_stopped` khiến clip Thẻ SD không phát được (HTTP 502) trong

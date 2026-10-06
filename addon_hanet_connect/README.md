@@ -1,7 +1,17 @@
-# HANET Connect Gateway 0.13.1
+# HANET Connect Gateway 0.13.2
 
 Add-on quản lý hệ sinh thái HANET trực tiếp trong Home Assistant với giao diện
 Ingress tiếng Việt mở trực tiếp, còn API cục bộ ngoài Ingress vẫn có xác thực.
+
+## Điểm mới trong 0.13.2: giảm tần suất gọi License Center
+
+- Kiểm tra giấy phép nền chạy mỗi 6 giờ thay vì mỗi 15 phút; giao diện chỉ đọc
+  trạng thái đã cache và làm mới mỗi 60 phút.
+- Nút **Đồng bộ** không còn kèm một lượt verify giấy phép. Nút kích hoạt và
+  **Kiểm tra** vẫn đối chiếu trực tiếp.
+- Hai lượt verify liên tiếp trong vòng 60 giây chỉ gửi một request.
+- Quyền dùng vẫn dựa trên cache đã ký, hiệu lực tối đa 72 giờ, nên giảm gọi mạng
+  không làm mất chức năng.
 
 ## Điểm mới trong 0.13.1: sửa lỗi clip Thẻ SD không phát được
 
