@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.13.3 - 2026-10-06
+
+- Khi popup kích hoạt không mở trong Home Assistant Ingress, giữ màn nhập key
+  và hướng dẫn bấm liên kết mở ngoài; không điều hướng iframe vào portal.
+- Giữ nguyên cache license, chu kỳ verify 6 giờ, monitoring giao diện 1 giờ
+  và các chức năng camera hiện có.
+
 ## 0.13.2 - 2026-10-05
 
 - Giảm tần suất gọi License Center (Vercel) từ ~16 lần/giờ xuống ~4 lần/ngày cho
