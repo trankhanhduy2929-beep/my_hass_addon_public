@@ -1,5 +1,12 @@
 # Changelog
 
+## 5.15.0 - 2026-10-10
+
+- **Sửa “phát tiếp sau khi bị chen ngang” phát lại từ đầu**: khi có thông báo/TTS chiếm loa, add-on lấy `media_position` của nội dung đang phát (thường là 0 của bản tin) và lưu làm vị trí cần tiếp tục. Nay giữ đúng vị trí của bài mình (suy từ stream đang cast hoặc `last_position` đã lưu), nên loa phát tiếp **đúng chỗ bị dừng**, không quay về đầu.
+- **Lịch phát dừng đúng lúc + ngẫu nhiên**: lịch “Phát playlist” không còn `repeat all` (hết playlist là **tự dừng**, không phát vòng mãi); khi bật phát ngẫu nhiên sẽ **chọn bài mở đầu ngẫu nhiên** và xáo thứ tự. Tùy chọn “Phát playlist ngẫu nhiên” chỉ hiện khi hành động là Phát (ẩn khi chọn Dừng).
+- **Zing MP3 chỉ còn bài phát miễn phí**: lọc theo `streamingStatus` (2 = chỉ VIP) ngay ở `search`, khám phá Top 100/Nhạc mới/Zing Chart và danh sách album; chỉ giữ bài nghe được miễn phí. Bản VIP không còn hiện để bấm, hết tình trạng “bấm không phát được”.
+- Kiểm thử: 157 test pytest (thêm test vị trí gián đoạn, repeat off + random start, lọc VIP) và smoke Playwright (hero đĩa than + lời, đổi hướng tìm kiếm theo tab, nhãn album, hiện/ẩn ô ngẫu nhiên) không lỗi JavaScript.
+
 ## 5.14.0 - 2026-09-18
 
 - **Khu vực đầu trang thành “đang phát” có hoạt ảnh như app nhạc**: thay hero “Âm nhạc của bạn” bằng mâm đĩa than — đĩa quay khi phát và dừng khi tạm dừng, tay cần hạ xuống đọc đĩa, kèm equalizer động và ảnh bìa bài hát.
