@@ -1,5 +1,13 @@
 # Changelog
 
+## 5.16.0 - 2026-10-10
+
+- Bỏ khối “Nhập từ YouTube / Dán link playlist hoặc album” trong Thư viện, xóa handler và CSS không còn dùng; giữ API nhập link và dữ liệu playlist hiện có.
+- Thư viện gọn hơn: header nhỏ hơn, tab playlist có số bài, tổng số playlist/bài, tên dài được xử lý ở màn hẹp và hướng dẫn khi playlist trống.
+- Tab playlist hỗ trợ bàn phím trái/phải, Home/End và focus rõ ràng. Chọn playlist không làm đổi chip lọc ở Trang chủ hay chip thống kê.
+- Khi tải playlist lỗi hoặc dữ liệu không hợp lệ, giữ danh sách đã tải và hiển thị nút Thử lại. Xóa bài/playlist báo lỗi và trả focus về control còn dùng được.
+- Kiểm thử: 159 test backend; Playwright trên server loopback, dữ liệu giả kiểm tra tạo/lưu/xóa playlist bằng API thật, YouTube/Zing, phát browser và gửi lệnh tới loa giả lập; sáng/tối ở 375/768/1440px không tràn ngang. Chưa kiểm tra trên HA/loa thật.
+
 ## 5.15.0 - 2026-10-10
 
 - **Sửa “phát tiếp sau khi bị chen ngang” phát lại từ đầu**: khi có thông báo/TTS chiếm loa, add-on lấy `media_position` của nội dung đang phát (thường là 0 của bản tin) và lưu làm vị trí cần tiếp tục. Nay giữ đúng vị trí của bài mình (suy từ stream đang cast hoặc `last_position` đã lưu), nên loa phát tiếp **đúng chỗ bị dừng**, không quay về đầu.
