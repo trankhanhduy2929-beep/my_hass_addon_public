@@ -52,10 +52,10 @@ media_base_url: "http://192.168.1.20:2032"
 
 - `audio_prefer_m4a` (mặc định `true`): ưu tiên định dạng AAC/m4a, ổn định nhất cho Google Cast và AirPlay/HomePod.
 - `audio_max_bitrate_kbps` (mặc định `0`): giới hạn bitrate audio tối đa, `0` là không giới hạn. Ví dụ `128` để tiết kiệm băng thông.
-- `resume_after_interruption` (mặc định `true`): khi TTS/thông báo/automation khác ngắt ngang, add-on tự phát tiếp bài đang nghe đúng vị trí sau khi loa rảnh; bấm **Stop** trong add-on sẽ hủy chờ.
 - `auto_skip_failed` (mặc định `true`): tự bỏ qua bài khi resolve/cast lỗi lặp lại.
+- Khi TTS/thông báo/automation khác chiếm loa, add-on **buông loa**: dừng phiên và không tự phát tiếp (tránh bật/tắt liên tục hoặc phát lại từ đầu). Bấm **Phát** để nghe lại.
 - `sleep_fade` (mặc định `true`): giảm dần âm lượng trước khi sleep timer dừng nhạc.
-- `restore_playback` (mặc định `true`): giữ phiên phát dở khi add-on khởi động lại và tự phát tiếp đúng vị trí khi loa rảnh; không giành loa đang bận.
+- `restore_playback` (mặc định `true`): giữ phiên phát dở khi add-on khởi động lại và hiện nút **Tiếp tục phát** để bạn tự khôi phục đúng vị trí; không tự giành loa.
 - `video_max_height` (mặc định `720`): giới hạn chiều cao video tối đa cho trình chọn chất lượng.
 - `video_high_resolution` (mặc định `true`): độ phân giải 1080p/1440p/2160p được ghép từ luồng hình và tiếng tách rời bằng ffmpeg (stream copy). Chỉ áp dụng cho trình duyệt và thiết bị Cast phát được video; AirPlay/Apple TV giữ progressive/audio. Tự tạm tắt 6 giờ nếu ffmpeg lỗi liên tiếp và tự hạ cấp khi không tương thích.
 - `video_subtitles` (mặc định `true`): tải phụ đề (ưu tiên tiếng Việt, rồi tiếng Anh) cho tab YouTube Video và hiển thị trên trình phát; cache 24 giờ.

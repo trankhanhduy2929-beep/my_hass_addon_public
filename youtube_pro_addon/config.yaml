@@ -1,6 +1,6 @@
 name: "YouTube Pro"
 description: "YouTube Music + Video, Zing MP3, Cast/AirPlay, nhiều loa cùng lúc và Media Browser"
-version: "5.16.0"
+version: "5.17.0"
 slug: "youtube_pro_addon"
 arch:
   - amd64
@@ -26,7 +26,6 @@ options:
   license_enforcement: true
   audio_prefer_m4a: true
   audio_max_bitrate_kbps: 0
-  resume_after_interruption: true
   auto_skip_failed: true
   sleep_fade: true
   restore_playback: true
@@ -42,7 +41,6 @@ schema:
   license_enforcement: bool
   audio_prefer_m4a: bool
   audio_max_bitrate_kbps: int
-  resume_after_interruption: bool
   auto_skip_failed: bool
   sleep_fade: bool
   restore_playback: bool

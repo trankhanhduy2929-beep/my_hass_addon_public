@@ -1,5 +1,13 @@
 # Changelog
 
+## 5.17.0 - 2026-10-14
+
+- **Bỏ tự phát tiếp sau khi bị chen ngang**: gỡ toàn bộ cơ chế `resume_after_interruption` (worker, hàng chờ gián đoạn, tự phát lại sau TTS/automation). Khi nguồn khác chiếm loa, add-on **buông loa**: dừng phiên, giữ vị trí, không tự phát tiếp — hết tình trạng bật/tắt liên tục hoặc phát lại từ đầu. Đã gỡ tùy chọn `resume_after_interruption` khỏi `config.yaml`.
+- **Watchdog đứng luồng có giới hạn**: khi luồng không tiến triển, add-on chỉ thử phát lại tối đa 2 lần rồi dừng hẳn (trước đây có thể lặp vô hạn qua cơ chế gián đoạn).
+- **Sửa phát qua loa DLNA/UPnP**: nhận diện `dlna_dmr`/UPnP thành `kind: "dlna"`, ưu tiên transport `relay` và media type `music` (giống AirPlay) để loa tải đúng stream, không bị YouTube chặn khi tự lấy URL.
+- **Sửa cache giao diện sau khi cập nhật add-on**: tắt cache tài nguyên tĩnh (`SEND_FILE_MAX_AGE_DEFAULT=0` + `Cache-Control: no-cache`), thêm `meta[name="app-version"]`, và app tự so phiên bản với `/api/health` để tải lại giao diện mới thay vì hiển thị UI cũ/hỏng.
+- Kiểm thử: xem mục tests; cập nhật README/CHANGELOG, version `5.17.0`.
+
 ## 5.16.0 - 2026-10-10
 
 - Bỏ khối “Nhập từ YouTube / Dán link playlist hoặc album” trong Thư viện, xóa handler và CSS không còn dùng; giữ API nhập link và dữ liệu playlist hiện có.
