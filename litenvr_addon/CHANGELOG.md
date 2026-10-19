@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.4.3
+
+- Xem lại bản ghi Drive: phát hiện kết nối bị treo sớm (20 giây) và tự tải tiếp, hiện
+  tổng dung lượng ngay khi bắt đầu tải, báo "đang kết nối lại…" nếu chưa có dữ liệu.
+- Sửa trạng thái bị gán nhầm khi quay lại xem trực tiếp ngay sau khi mở bản ghi.
+
 ## 1.4.2
 
 - Xem lại bản ghi trên Google Drive không còn đứng ở "Đang tải… x%": tự tải tiếp khi
