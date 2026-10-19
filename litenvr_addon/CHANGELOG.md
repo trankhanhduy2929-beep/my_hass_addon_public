@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.4.2
+
+- Xem lại bản ghi trên Google Drive không còn đứng ở "Đang tải… x%": tự tải tiếp khi
+  kết nối đứt, phát hiện file tải thiếu và không coi là hoàn chỉnh.
+- Thanh trạng thái hiện đúng tiến độ và cập nhật lại khi phát (kể cả camera H.265
+  phải chuyển mã), kèm cảnh báo khi đang kết nối lại.
+
 ## 1.4.1
 
 - Giao diện mượt hơn: modal/menu mở và đóng có hiệu ứng, thẻ có phản hồi hover,
