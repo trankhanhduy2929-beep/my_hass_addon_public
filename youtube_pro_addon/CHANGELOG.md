@@ -1,5 +1,10 @@
 # Changelog
 
+## 5.17.1 - 2026-10-17
+
+- **Sửa lỗi không phát được trên DLNA/HomePod/Cast do `play_media` timeout**: Home Assistant đôi khi chưa trả lời `media_player.play_media` trong 12 giây (thiết bị đang tải media) nên add-on coi là lỗi, gửi lặp 4 lần rồi tự bỏ qua bài. Nay khi gặp `requests.exceptions.Timeout`, add-on kiểm tra trạng thái thật của loa (`wait_for_cast_start`, tối đa 15 giây); nếu loa đã phát đúng bài/URL thì coi là thành công và dừng thử lại, tránh phát chồng và auto-skip sai.
+- Kiểm thử: 163 passed, 1 skipped; thêm test timeout-đã-phát-thành-công và timeout-không-phát-thất-bại.
+
 ## 5.17.0 - 2026-10-14
 
 - **Bỏ tự phát tiếp sau khi bị chen ngang**: gỡ toàn bộ cơ chế `resume_after_interruption` (worker, hàng chờ gián đoạn, tự phát lại sau TTS/automation). Khi nguồn khác chiếm loa, add-on **buông loa**: dừng phiên, giữ vị trí, không tự phát tiếp — hết tình trạng bật/tắt liên tục hoặc phát lại từ đầu. Đã gỡ tùy chọn `resume_after_interruption` khỏi `config.yaml`.
