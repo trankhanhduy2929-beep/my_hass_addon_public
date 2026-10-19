@@ -6,11 +6,12 @@ Assistant sang biến môi trường và trỏ nơi lưu trữ vào thư mục b
 
 ## Cổng và truy cập
 
-- Giao diện web LiteNVR lắng nghe cổng **8080** trong container, mặc định mở ra
-  ngoài ở cổng host **8099**. Nút **OPEN WEB UI** của add-on dùng địa chỉ này.
-- Add-on không dùng Ingress vì giao diện LiteNVR dùng đường dẫn tuyệt đối
-  (`/api/...`, `/static/...`), không tương thích tiền tố Ingress. Hãy mở trực
-  tiếp theo cổng, hoặc nhúng bằng thẻ dashboard khi bật tuỳ chọn **iframe**.
+- Add-on dùng **Ingress**: LiteNVR hiện ngay trong giao diện Home Assistant. Trên
+  trang add-on, bật **Show in sidebar** để ghim LiteNVR vào thanh bên và xem trực
+  tiếp trong Home Assistant. Nút **OPEN WEB UI** cũng mở qua Ingress.
+- Giao diện web LiteNVR vẫn lắng nghe cổng **8080** trong container và mở ra ngoài
+  ở cổng host **8099** nếu muốn truy cập trực tiếp (dùng cùng đăng nhập bên dưới).
+- Có thể nhúng bằng thẻ dashboard khi bật tuỳ chọn **iframe**.
 - Tài khoản mặc định là `admin` / `admin`. Hãy đổi trong tuỳ chọn add-on trước
   khi mở ra mạng.
 

@@ -20,6 +20,6 @@ là lớp hiển thị và tự động hoá.
 
 1. Thêm kho add-on `https://github.com/trankhanhduy2929-beep/my_hass_addon_public` vào Home Assistant.
 2. Cài **LiteNVR**, chỉnh tuỳ chọn (tài khoản, múi giờ, nơi lưu trữ…), rồi **Start**.
-3. Mở **OPEN WEB UI** (hoặc cổng `8099` mặc định) để vào giao diện LiteNVR và thêm camera.
+3. Bật **Show in sidebar** để xem trực tiếp trong Home Assistant, hoặc mở **OPEN WEB UI** / cổng `8099` mặc định để vào giao diện LiteNVR và thêm camera.
 
 Chi tiết tuỳ chọn và lưu ý xem [DOCS.md](DOCS.md). Lịch sử thay đổi xem [CHANGELOG.md](CHANGELOG.md).
