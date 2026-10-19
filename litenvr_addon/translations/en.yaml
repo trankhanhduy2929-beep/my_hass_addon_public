@@ -1,0 +1,33 @@
+configuration:
+  auth_enabled:
+    name: Require login
+    description: Ask for a username and password before opening the LiteNVR web UI.
+  username:
+    name: Username
+    description: Web UI login username.
+  password:
+    name: Password
+    description: Web UI login password. Leave empty to keep the default (admin).
+  iframe:
+    name: Allow embedding
+    description: Allow the LiteNVR web UI to be embedded in an iframe / dashboard card.
+  timezone:
+    name: Timezone
+    description: Optional IANA timezone, for example Asia/Ho_Chi_Minh. Empty uses the host timezone.
+  log_level:
+    name: Log level
+    description: Verbosity of the LiteNVR web server log.
+  go2rtc:
+    name: go2rtc mode
+    description: auto uses the bundled go2rtc when available, on forces it, off disables it.
+  ffmpeg_threads:
+    name: FFmpeg threads
+    description: Thread budget for each FFmpeg process.
+  live_max_height:
+    name: Live max height
+    description: Downscale live view height in pixels. 0 keeps the original resolution.
+  storage_location:
+    name: Storage location
+    description: Where LiteNVR keeps config and recordings (data, media or share).
+network:
+  8080/tcp: LiteNVR web UI (open directly outside Home Assistant).

@@ -1,0 +1,50 @@
+name: LiteNVR
+version: "1.0.1"
+slug: litenvr
+description: >-
+  LiteNVR - NVR gọn nhẹ: xem trực tiếp, ghi hình và xem lại camera RTSP/ONVIF.
+  Lưu bản ghi trên ổ cứng (media/share), Google Drive hoặc NAS; hỗ trợ phát hiện
+  chuyển động nội bộ, cảm biến Home Assistant, ONVIF/PTZ và nhãn AI.
+url: "https://github.com/trankhanhduy2929-beep/my_hass_addon_public"
+arch:
+  - amd64
+  - aarch64
+init: false
+startup: services
+boot: auto
+stage: stable
+webui: "http://[HOST]:[PORT:8080]"
+watchdog: "http://[HOST]:[PORT:8080]/health"
+panel_icon: mdi:cctv
+panel_title: LiteNVR
+host_network: false
+map:
+  - media:rw
+  - share:rw
+ports:
+  8080/tcp: 8099
+ports_description:
+  8080/tcp: Giao diện web LiteNVR (mở trực tiếp ngoài Home Assistant)
+options:
+  auth_enabled: true
+  username: admin
+  password: ""
+  iframe: true
+  timezone: ""
+  log_level: info
+  go2rtc: auto
+  ffmpeg_threads: 2
+  live_max_height: 720
+  storage_location: media
+schema:
+  auth_enabled: bool
+  username: str
+  password: password
+  iframe: bool
+  timezone: str?
+  log_level: list(debug|info|warning|error)
+  go2rtc: list(auto|on|off)
+  ffmpeg_threads: int(1,8)
+  live_max_height: int(0,2160)
+  storage_location: list(data|media|share)
+image: "ghcr.io/trankhanhduy2929-beep/litenvr_addon"
