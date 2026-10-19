@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.4.1
+
+- Giao diện mượt hơn: modal/menu mở và đóng có hiệu ứng, thẻ có phản hồi hover,
+  đổi theme chuyển màu êm; tôn trọng tuỳ chọn giảm chuyển động của hệ thống.
+
 ## 1.4.0
 
 - Bỏ dò chuyển động nội bộ bằng CPU (ffmpeg scene-detect): chuyển động giờ nhận
