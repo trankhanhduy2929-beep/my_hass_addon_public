@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.3.0
+
+- Cảm biến chuyển động Home Assistant: tải danh sách cảm biến kèm trạng thái và chọn
+  điều kiện kích hoạt, chỉ ghi hình khi cảm biến chuyển sang trạng thái kích hoạt
+  (hết ghi liên tục khi cảm biến giữ nguyên).
+
 ## 1.2.0
 
 - Đánh dấu sự kiện, lọc theo nhãn và phân trang khi tìm lại bản ghi.
