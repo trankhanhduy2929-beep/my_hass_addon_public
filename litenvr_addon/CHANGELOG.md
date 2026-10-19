@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.4.0
+
+- Bỏ dò chuyển động nội bộ bằng CPU (ffmpeg scene-detect): chuyển động giờ nhận
+  từ cảm biến Home Assistant, ONVIF/PTZ hoặc bộ nhận diện AI bên ngoài qua webhook.
+
 ## 1.3.0
 
 - Cảm biến chuyển động Home Assistant: tải danh sách cảm biến kèm trạng thái và chọn

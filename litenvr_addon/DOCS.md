@@ -46,9 +46,8 @@ Add-on cần quyền ghi vào `media` và `share` (đã khai báo trong cấu h�
 - Thêm camera bằng **RTSP thủ công** (nhập URL luồng chính/phụ) hoặc **ONVIF**
   (nhập IP, cổng; LiteNVR dò và lấy luồng). Camera phải nằm trong cùng mạng mà
   Home Assistant truy cập được.
-- Phát hiện chuyển động nội bộ bật riêng cho từng camera (không cần ONVIF/HA).
 - Gắn **cảm biến chuyển động Home Assistant** cho từng camera: mọi thay đổi trạng
-  thái của cảm biến đều kích hoạt ghi hình + ảnh chụp.
+  thái của cảm biến đều kích hoạt ghi hình + ảnh chụp (không cần ONVIF).
 
 ## Google Drive và NAS
 

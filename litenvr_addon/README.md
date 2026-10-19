@@ -8,7 +8,7 @@ là lớp hiển thị và tự động hoá.
 ## Add-on làm gì
 
 - Xem trực tiếp nhiều camera RTSP/ONVIF (chọn luồng chính/phụ, hạ độ phân giải để nhẹ CPU).
-- Ghi hình **liên tục** hoặc **theo chuyển động** (phát hiện chuyển động nội bộ bằng FFmpeg).
+- Ghi hình **liên tục** hoặc **theo chuyển động** (kích hoạt bởi cảm biến/nguồn sự kiện).
 - Kích hoạt ghi hình từ **cảm biến Home Assistant** gán riêng cho từng camera (mọi thay đổi trạng thái).
 - Nhãn sự kiện từ bộ nhận diện AI ngoài (Frigate, DeepStack, CodeProject.AI, Node-RED…).
 - Xem lại theo dòng thời gian, tải clip, ảnh chụp nhanh, tua/tốc độ phát.
