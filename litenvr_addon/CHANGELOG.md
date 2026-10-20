@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.4.5
+
+- Menu Cài đặt tự ẩn nhóm trống theo quyền người dùng; sửa bố cục menu trên điện thoại
+  (không còn khoảng trống lớn, không tràn ngang).
+
 ## 1.4.4
 
 - Gọn lại thanh công cụ: nhóm menu Cài đặt theo Camera / Lưu trữ / Kết nối / Hệ thống,
