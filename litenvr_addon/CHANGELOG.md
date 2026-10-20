@@ -1,5 +1,18 @@
 # Changelog
 
+## 1.8.0
+
+- Giảm độ trễ xem trực tiếp: HLS dùng segment **1 giây**, playlist **4 segment**,
+  trình duyệt bắt đầu gần live edge và FFmpeg ép keyframe đúng nhịp segment khi chuyển mã.
+  Độ trễ thực tế thường còn khoảng **1–4 giây** thay vì 10–15 giây.
+- Sửa độ tương phản giao diện tối/sáng: chữ phụ, nền kính, nút nhấn mạnh, ngày đang chọn,
+  nhãn cảnh báo và màu nhấn tuỳ chỉnh đều đạt mức đọc tốt hơn.
+- Gọn **Quản lý Camera**: giao thức, codec, lịch ghi, thời gian lưu và cảm biến
+  Home Assistant được gom vào **⚙️ Tùy chọn nâng cao**, tự mở khi sửa camera đã có cấu hình.
+- Thêm nút **i** cạnh Cài đặt với hướng dẫn cài đặt chi tiết: tab Home Assistant Add-on
+  và tab Docker/Compose (cổng, biến môi trường, lưu trữ, sao lưu, HTTPS, xử lý sự cố).
+- Cập nhật tài liệu độ trễ HLS, cổng add-on 3333 và quy trình cài đặt.
+
 ## 1.7.0
 
 - Tách **Quản lý Camera** thành hai tab: **Tự động dò ONVIF** và **Nhập URL thủ công**;

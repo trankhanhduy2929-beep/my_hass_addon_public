@@ -7,7 +7,7 @@ là lớp hiển thị và tự động hoá.
 
 ## Add-on làm gì
 
-- Xem trực tiếp nhiều camera RTSP/ONVIF (chọn luồng chính/phụ, hạ độ phân giải để nhẹ CPU).
+- Xem trực tiếp nhiều camera RTSP/ONVIF với **HLS độ trễ thấp** (segment 1 giây, bắt đầu gần live edge), chọn luồng chính/phụ và hạ độ phân giải để nhẹ CPU.
 - Ghi hình **liên tục** hoặc **theo chuyển động** (kích hoạt bởi cảm biến/nguồn sự kiện).
 - Kích hoạt ghi hình từ **cảm biến Home Assistant** gán riêng cho từng camera (mọi thay đổi trạng thái).
 - Nhãn sự kiện từ bộ nhận diện AI ngoài (Frigate, DeepStack, CodeProject.AI, Node-RED…).
@@ -15,6 +15,7 @@ là lớp hiển thị và tự động hoá.
 - ONVIF: dò/quét dải IP, tự thêm camera đa hãng, lấy RTSP, điều khiển PTZ và preset.
 - Lưu trữ linh hoạt: ổ cứng, Google Drive, hoặc NAS (SMB/NFS/FTP) và chính sách giữ bản ghi.
 - Thông báo chuyển động qua Telegram và liên kết sâu mở thẳng bản ghi.
+- **Hướng dẫn cài đặt trong ứng dụng**: bấm nút **i** cạnh Cài đặt để xem hướng dẫn add-on/Docker, cấu hình, sao lưu và xử lý sự cố.
 
 ## Cách dùng
 
