@@ -65,6 +65,7 @@ media_base_url: "http://192.168.1.20:2032"
 ### Thư viện và playlist
 
 - Tab **Thư viện** tập trung vào playlist đã lưu, nghe gần đây và thống kê; không còn khối “Nhập từ YouTube / Dán link playlist hoặc album”.
+- **Nghe gần đây** có thanh lùi thời gian: chọn **Tất cả / Ngày / Tháng / Năm**, lùi/tiến từng đơn vị, chọn ngày cụ thể hoặc bấm **Hôm nay**. Mặc định **Tất cả** hiển thị 20 bài mới nhất.
 - Mỗi tab playlist hiển thị số bài; chọn bằng chuột hoặc phím mũi tên trái/phải, Home/End. Khi tải lỗi, danh sách cũ được giữ và có nút **Thử lại**.
 - Bấm **+ Playlist mới** để tạo bộ sưu tập, rồi chọn **Thêm vào playlist** trên từng bài ở Trang chủ hoặc Zing. Dữ liệu playlist hiện có giữ nguyên.
 - API nhập link `/api/playlists/import-url` và export/import JSON `/api/playlists/export`, `/api/playlists/import` vẫn giữ để tương thích; chỉ gỡ phần nhập link trên giao diện.

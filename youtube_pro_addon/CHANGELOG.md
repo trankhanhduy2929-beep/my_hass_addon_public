@@ -1,5 +1,12 @@
 # Changelog
 
+## 5.18.0 - 2026-10-19
+
+- **Lùi lịch sử theo ngày/tháng/năm**: thêm thanh chọn phạm vi **Tất cả / Ngày / Tháng / Năm** cho mục Nghe gần đây. Khi chọn Ngày/Tháng/Năm có nút lùi/tiến một đơn vị, ô chọn ngày và nút **Hôm nay**; danh sách lọc theo `played_at`, nút tiến tự khóa khi đang ở hiện tại.
+- Giữ mặc định **Tất cả** (20 bài mới nhất) như trước; bộ lọc chỉ áp dụng trên dữ liệu lịch sử local hiện có.
+- Accessibility: chip có `aria-pressed`, nút lùi/tiến có `aria-label` theo đơn vị, nhãn khoảng thời gian `aria-live`; giữ focus-visible toàn cục.
+- Kiểm thử: Playwright trên server loopback (dữ liệu giả) xác nhận lọc Ngày/Tháng/Năm, lùi ngày/tháng/năm, khóa nút tiến, không tràn ngang ở 375/768/1440px; `node --check` qua.
+
 ## 5.17.1 - 2026-10-17
 
 - **Sửa lỗi không phát được trên DLNA/HomePod/Cast do `play_media` timeout**: Home Assistant đôi khi chưa trả lời `media_player.play_media` trong 12 giây (thiết bị đang tải media) nên add-on coi là lỗi, gửi lặp 4 lần rồi tự bỏ qua bài. Nay khi gặp `requests.exceptions.Timeout`, add-on kiểm tra trạng thái thật của loa (`wait_for_cast_start`, tối đa 15 giây); nếu loa đã phát đúng bài/URL thì coi là thành công và dừng thử lại, tránh phát chồng và auto-skip sai.
