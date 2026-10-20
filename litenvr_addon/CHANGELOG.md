@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.4.8
+
+- Thu gọn thanh CPU / RAM / ổ cứng trên điện thoại thành 3 thẻ nhỏ một hàng, ẩn biểu đồ
+  phụ và giữ số liệu, thanh % dễ đọc; không còn chiếm nhiều chiều cao.
+- Sửa chữ bị chìm trong chế độ sáng: nhãn, mô tả, trạng thái và màu cảnh báo dùng biến
+  màu theo giao diện; nền thanh % và bóng thẻ cũng đổi theo sáng/tối.
+
 ## 1.4.7
 
 - Thêm lịch tháng đánh dấu ngày có bản ghi (ổ cứng và Drive), bấm để nhảy nhanh.
