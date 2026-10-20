@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.4.4
+
+- Gọn lại thanh công cụ: nhóm menu Cài đặt theo Camera / Lưu trữ / Kết nối / Hệ thống,
+  gộp công cụ giao diện vào một menu, thu gọn nhóm công cụ phát lại và ẩn bảng xuất clip
+  sau nút "Xuất clip".
+
 ## 1.4.3
 
 - Xem lại bản ghi Drive: phát hiện kết nối bị treo sớm (20 giây) và tự tải tiếp, hiện

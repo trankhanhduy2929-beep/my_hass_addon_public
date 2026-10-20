@@ -86,7 +86,7 @@ This table is generated automatically from the private release catalog after suc
 | Hanet Camera Bridge | `2.5.2` | stable | `amd64, aarch64` | [Open](hanet_bridge/README.md) |
 | Hanet Camera Bridge Pro | `3.0.9` | stable | `amd64, aarch64` | [Open](hanet_bridge_pro/README.md) |
 | AI Vision Entity Describer | `1.1.3` | stable | `amd64, aarch64` | [Open](hass-ai-vision-addon/README.md) |
-| LiteNVR | `1.4.3` | stable | `amd64, aarch64` | [Open](litenvr_addon/README.md) |
+| LiteNVR | `1.4.4` | stable | `amd64, aarch64` | [Open](litenvr_addon/README.md) |
 | PicoClaw | `0.4.4` | stable | `amd64, aarch64` | [Open](picoclaw/README.md) |
 | Rạng Đông Key Helper | `0.3.3` | experimental | `amd64, aarch64` | [Open](rangdong_key_helper/README.md) |
 | HA Camera Face ID | `2.6.0` | stable | `amd64, aarch64` | [Open](rtsp_face_bridge/README.md) |
