@@ -1,5 +1,5 @@
 name: LiteNVR
-version: "1.6.0"
+version: "1.7.0"
 slug: litenvr
 description: >-
   LiteNVR - NVR gọn nhẹ: xem trực tiếp, ghi hình và xem lại camera RTSP/ONVIF.
@@ -13,10 +13,10 @@ init: false
 startup: services
 boot: auto
 stage: stable
-webui: "http://[HOST]:[PORT:8080]"
-watchdog: "http://[HOST]:[PORT:8080]/health"
+webui: "http://[HOST]:[PORT:3333]"
+watchdog: "http://[HOST]:[PORT:3333]/health"
 ingress: true
-ingress_port: 8080
+ingress_port: 3333
 panel_icon: mdi:cctv
 panel_title: LiteNVR
 host_network: false
@@ -24,13 +24,12 @@ map:
   - media:rw
   - share:rw
 ports:
-  8080/tcp: 8099
+  3333/tcp: 3333
 ports_description:
-  8080/tcp: Giao diện web LiteNVR (mở trực tiếp ngoài Home Assistant)
+  3333/tcp: Giao diện web LiteNVR (mở trực tiếp ngoài Home Assistant)
 options:
   auth_enabled: true
   username: admin
-  password: ""
   iframe: true
   timezone: ""
   log_level: info
@@ -41,7 +40,7 @@ options:
 schema:
   auth_enabled: bool
   username: str
-  password: password
+  password: password(12,)
   iframe: bool
   timezone: str?
   log_level: list(debug|info|warning|error)

@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.7.0
+
+- Tách **Quản lý Camera** thành hai tab: **Tự động dò ONVIF** và **Nhập URL thủ công**;
+  tab thủ công có preset Imou/Dahua, EZVIZ/Hikvision và Hanet, giữ nguyên thêm hàng loạt.
+- Đổi cổng add-on sang **3333** cho Ingress, Web UI và ánh xạ host; cập nhật watchdog,
+  healthcheck và tài liệu. **Lưu ý:** truy cập trực tiếp đổi từ `8099` sang `3333`.
+- Bảo mật: mật khẩu add-on **bắt buộc tối thiểu 12 ký tự** và không dùng mật khẩu đã rò rỉ;
+  bỏ mặc định rỗng/`admin`, sửa cảnh báo pwned password của Home Assistant. Người dùng đang
+  dùng mật khẩu yếu cần đổi trước khi khởi động bản 1.7.0.
+
 ## 1.6.0
 
 - Tự dò camera ONVIF và **tự thêm hàng loạt**: chọn nhiều camera, nhập tài khoản ONVIF

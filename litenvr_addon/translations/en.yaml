@@ -7,7 +7,7 @@ configuration:
     description: Web UI login username.
   password:
     name: Password
-    description: Web UI login password. Leave empty to keep the default (admin).
+    description: Web UI login password. Required, at least 12 characters, and not a password exposed in known data breaches.
   iframe:
     name: Allow embedding
     description: Allow the LiteNVR web UI to be embedded in an iframe / dashboard card.
@@ -30,4 +30,4 @@ configuration:
     name: Storage location
     description: Where LiteNVR keeps config and recordings (data, media or share).
 network:
-  8080/tcp: LiteNVR web UI (open directly outside Home Assistant).
+  3333/tcp: LiteNVR web UI (open directly outside Home Assistant).

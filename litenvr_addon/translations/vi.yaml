@@ -7,7 +7,7 @@ configuration:
     description: Tên đăng nhập giao diện web.
   password:
     name: Mật khẩu
-    description: Mật khẩu đăng nhập giao diện web. Để trống giữ mặc định (admin).
+    description: Mật khẩu đăng nhập giao diện web. Bắt buộc, tối thiểu 12 ký tự và không dùng mật khẩu đã lộ trong các vụ rò rỉ.
   iframe:
     name: Cho phép nhúng
     description: Cho phép nhúng giao diện LiteNVR vào iframe / thẻ dashboard.
@@ -30,4 +30,4 @@ configuration:
     name: Nơi lưu trữ
     description: Nơi LiteNVR lưu cấu hình và bản ghi (data, media hoặc share).
 network:
-  8080/tcp: Giao diện web LiteNVR (mở trực tiếp ngoài Home Assistant).
+  3333/tcp: Giao diện web LiteNVR (mở trực tiếp ngoài Home Assistant).

@@ -9,11 +9,12 @@ Assistant sang biến môi trường và trỏ nơi lưu trữ vào thư mục b
 - Add-on dùng **Ingress**: LiteNVR hiện ngay trong giao diện Home Assistant. Trên
   trang add-on, bật **Show in sidebar** để ghim LiteNVR vào thanh bên và xem trực
   tiếp trong Home Assistant. Nút **OPEN WEB UI** cũng mở qua Ingress.
-- Giao diện web LiteNVR vẫn lắng nghe cổng **8080** trong container và mở ra ngoài
-  ở cổng host **8099** nếu muốn truy cập trực tiếp (dùng cùng đăng nhập bên dưới).
+- Giao diện web LiteNVR lắng nghe cổng **3333** trong container và mở ra ngoài ở
+  cổng host **3333** nếu muốn truy cập trực tiếp (dùng cùng đăng nhập bên dưới).
 - Có thể nhúng bằng thẻ dashboard khi bật tuỳ chọn **iframe**.
-- Tài khoản mặc định là `admin` / `admin`. Hãy đổi trong tuỳ chọn add-on trước
-  khi mở ra mạng.
+- Tài khoản mặc định là `admin`; **mật khẩu bắt buộc tối thiểu 12 ký tự** và không
+  được là mật khẩu đã xuất hiện trong dữ liệu rò rỉ. Home Assistant sẽ từ chối giá
+  trị yếu/rỗng. Dùng mật khẩu riêng, dài và duy nhất cho add-on.
 
 ## Tuỳ chọn
 
@@ -21,7 +22,7 @@ Assistant sang biến môi trường và trỏ nơi lưu trữ vào thư mục b
 | --- | --- | --- |
 | `auth_enabled` | `true` | Bắt đăng nhập trước khi dùng giao diện. |
 | `username` | `admin` | Tài khoản đăng nhập web. |
-| `password` | (trống) | Mật khẩu web. Để trống giữ mặc định `admin`. |
+| `password` | (bắt buộc) | Mật khẩu web, tối thiểu 12 ký tự; không dùng mật khẩu đã rò rỉ. |
 | `iframe` | `true` | Cho nhúng giao diện vào iframe / thẻ dashboard. |
 | `timezone` | (trống) | Múi giờ IANA, ví dụ `Asia/Ho_Chi_Minh`. |
 | `log_level` | `info` | Mức log máy chủ web (`debug`/`info`/`warning`/`error`). |
@@ -43,9 +44,11 @@ Add-on cần quyền ghi vào `media` và `share` (đã khai báo trong cấu h�
 
 ## Kết nối camera
 
-- Thêm camera bằng **RTSP thủ công** (nhập URL luồng chính/phụ) hoặc **ONVIF**
-  (nhập IP, cổng; LiteNVR dò và lấy luồng). Camera phải nằm trong cùng mạng mà
-  Home Assistant truy cập được.
+- **Quản lý Camera** có hai tab: **Tự động dò ONVIF** và **Nhập URL thủ công**.
+  Camera phải nằm trong cùng mạng mà Home Assistant truy cập được.
+- **Nhập URL thủ công** có preset cho Imou/Dahua (`/cam/realmonitor?channel=1&subtype=0`),
+  EZVIZ/Hikvision (`/h264/ch01/main/av_stream`) và Hanet
+  (`rtsp://ip:554/user:<user>;pwd:<pass>`).
 - **Tự dò và thêm ONVIF**: mở **Quản lý Camera** → **Dò camera ONVIF**. Nếu add-on
   chạy trong Docker bridge và không nhận multicast, nhập dải IP LAN (ví dụ
   `192.168.1.0/24`) rồi bấm **Quét dải IP**. Chọn các camera tìm thấy, nhập tài khoản
@@ -64,7 +67,7 @@ Add-on cần quyền ghi vào `media` và `share` (đã khai báo trong cấu h�
 
 ## Kiểm tra sức khoẻ
 
-Add-on có watchdog gọi `http://[HOST]:[PORT:8080]/health`; Home Assistant tự
+Add-on có watchdog gọi `http://[HOST]:[PORT:3333]/health`; Home Assistant tự
 khởi động lại add-on nếu nó ngừng phản hồi.
 
 ## Ghi chú triển khai
