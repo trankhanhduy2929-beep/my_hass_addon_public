@@ -1,5 +1,16 @@
 # Changelog
 
+## 1.5.0
+
+- Dòng thời gian có thể thu phóng 24 giờ / 6 giờ / 1 giờ, nút lùi/tới khung giờ; kéo,
+  chạm hoặc lăn chuột tua chính xác theo khung đang xem và tự bám theo lúc phát lại.
+- Tìm sự kiện trên điện thoại nhanh hơn: nút Hôm nay / 7 ngày / 30 ngày, chip bỏ từng
+  bộ lọc, nhóm kết quả theo ngày, ảnh tải dần và tự tải thêm khi cuộn. Sửa lỗi đổi camera
+  trong bộ lọc chưa áp dụng ngay.
+- Bấm sự kiện để xem chi tiết: ảnh lớn, camera, ngày giờ, nhãn, mã sự kiện; xem lại trên
+  dòng thời gian, tải ảnh JPG hoặc tải clip quanh sự kiện.
+- Thanh bộ lọc trên máy tính gọn hơn, vẫn giữ đủ camera, nhãn, khoảng ngày và đánh dấu.
+
 ## 1.4.9
 
 - Thu gọn bộ lọc tìm sự kiện trên điện thoại: ô tìm kiếm và nút "Bộ lọc" nằm một hàng,
