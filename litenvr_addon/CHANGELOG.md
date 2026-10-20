@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.4.6
+
+- Thêm nút lùi/tới ngày (giữ Shift để nhảy 7 ngày) và nút về hôm nay ngay trên thanh
+  công cụ; thanh thời gian hiện ngày đang xem khi xem lại lịch sử.
+- Camera vừa thêm được chọn và phát ngay, tự chờ luồng HLS sẵn sàng thay vì báo lỗi;
+  hiện rõ lỗi nếu lưu camera thất bại.
+
 ## 1.4.5
 
 - Menu Cài đặt tự ẩn nhóm trống theo quyền người dùng; sửa bố cục menu trên điện thoại
