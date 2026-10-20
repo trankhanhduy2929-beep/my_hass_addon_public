@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.4.9
+
+- Thu gọn bộ lọc tìm sự kiện trên điện thoại: ô tìm kiếm và nút "Bộ lọc" nằm một hàng,
+  các bộ lọc camera/nhãn/ngày chỉ mở khi cần, hiện số bộ lọc đang bật; không còn chiếm
+  nhiều dòng và gây rối màn hình nhỏ. Bố cục máy tính giữ nguyên.
+
 ## 1.4.8
 
 - Thu gọn thanh CPU / RAM / ổ cứng trên điện thoại thành 3 thẻ nhỏ một hàng, ẩn biểu đồ
