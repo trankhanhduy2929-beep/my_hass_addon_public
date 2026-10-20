@@ -46,6 +46,13 @@ Add-on cần quyền ghi vào `media` và `share` (đã khai báo trong cấu h�
 - Thêm camera bằng **RTSP thủ công** (nhập URL luồng chính/phụ) hoặc **ONVIF**
   (nhập IP, cổng; LiteNVR dò và lấy luồng). Camera phải nằm trong cùng mạng mà
   Home Assistant truy cập được.
+- **Tự dò và thêm ONVIF**: mở **Quản lý Camera** → **Dò camera ONVIF**. Nếu add-on
+  chạy trong Docker bridge và không nhận multicast, nhập dải IP LAN (ví dụ
+  `192.168.1.0/24`) rồi bấm **Quét dải IP**. Chọn các camera tìm thấy, nhập tài khoản
+  ONVIF một lần và bấm **Thêm camera đã chọn**; LiteNVR tự lấy luồng chính/phụ, tên,
+  hãng và bỏ qua camera đã có trong cấu hình.
+- Nếu camera không xuất hiện khi quét, nhập trực tiếp IP/cổng ONVIF ở ô **Hoặc nhập IP
+  ONVIF**, bấm **Lấy luồng RTSP**, kiểm tra URL rồi lưu camera.
 - Gắn **cảm biến chuyển động Home Assistant** cho từng camera: mọi thay đổi trạng
   thái của cảm biến đều kích hoạt ghi hình + ảnh chụp (không cần ONVIF).
 

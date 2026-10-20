@@ -12,7 +12,7 @@ là lớp hiển thị và tự động hoá.
 - Kích hoạt ghi hình từ **cảm biến Home Assistant** gán riêng cho từng camera (mọi thay đổi trạng thái).
 - Nhãn sự kiện từ bộ nhận diện AI ngoài (Frigate, DeepStack, CodeProject.AI, Node-RED…).
 - Xem lại theo dòng thời gian, tải clip, ảnh chụp nhanh, tua/tốc độ phát.
-- ONVIF: dò camera, lấy RTSP, điều khiển PTZ và preset.
+- ONVIF: dò/quét dải IP, tự thêm camera đa hãng, lấy RTSP, điều khiển PTZ và preset.
 - Lưu trữ linh hoạt: ổ cứng, Google Drive, hoặc NAS (SMB/NFS/FTP) và chính sách giữ bản ghi.
 - Thông báo chuyển động qua Telegram và liên kết sâu mở thẳng bản ghi.
 

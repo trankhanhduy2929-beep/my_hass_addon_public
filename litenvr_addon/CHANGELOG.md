@@ -1,5 +1,16 @@
 # Changelog
 
+## 1.6.0
+
+- Tự dò camera ONVIF và **tự thêm hàng loạt**: chọn nhiều camera, nhập tài khoản ONVIF
+  một lần, LiteNVR tự lấy luồng chính/phụ, tên, hãng rồi thêm vào danh sách.
+- Thêm **quét dải IP nội bộ** (`192.168.1.0/24` hoặc khoảng IP) cho trường hợp Docker
+  bridge chặn multicast; quét các cổng ONVIF phổ biến và bỏ qua camera đã có.
+- Hỗ trợ thêm nhanh camera Reolink, Uniview, Foscam, Amcrest, Imou/Dahua, Hikvision/EZVIZ,
+  Tapo, Yoosee, Xiaomi và thiết bị ONVIF chung; giữ nguyên cách nhập RTSP thủ công.
+- Sửa lỗi dò ONVIF không tìm thấy camera trong một số môi trường mạng; nhận diện đúng
+  thiết bị yêu cầu Basic/Digest và không nhầm web server 401 thành camera ONVIF.
+
 ## 1.5.0
 
 - Dòng thời gian có thể thu phóng 24 giờ / 6 giờ / 1 giờ, nút lùi/tới khung giờ; kéo,
