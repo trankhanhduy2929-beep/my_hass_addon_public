@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.4.7
+
+- Thêm lịch tháng đánh dấu ngày có bản ghi (ổ cứng và Drive), bấm để nhảy nhanh.
+- Thêm nút sự kiện trước/sau (⏮/⏭) và phím mũi tên ←/→ để nhảy giữa các sự kiện.
+- Cảnh báo Telegram/webhook (dùng được webhook Home Assistant) khi camera đang ghi hình
+  mất kết nối quá 60 giây, báo lại khi kết nối phục hồi; thẻ camera hiện nhãn đỏ.
+- Nút "Kiểm tra" URL camera trong lúc thêm/sửa: báo codec, độ phân giải, fps và khả năng
+  phát trực tiếp trước khi lưu.
+
 ## 1.4.6
 
 - Thêm nút lùi/tới ngày (giữ Shift để nhảy 7 ngày) và nút về hôm nay ngay trên thanh
