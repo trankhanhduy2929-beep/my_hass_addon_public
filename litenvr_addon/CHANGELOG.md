@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.8.2
+
+- Khôi phục các hộp thoại **Lưu trữ**, **Google Drive** và **Nhật ký** bị thiếu
+  trong menu Cài đặt.
+- Bỏ mục **Test Motion** khỏi menu Cài đặt.
+- Thêm hiệu ứng chuyển cảnh mượt khi chuyển trực tiếp/xem lại, lưới camera,
+  đổi camera hoặc đổi ngày; tự tắt khi bật giảm chuyển động.
+
 ## 1.8.1
 
 - Bỏ nút **i** và hộp thoại hướng dẫn trong ứng dụng; hướng dẫn cài đặt add-on
