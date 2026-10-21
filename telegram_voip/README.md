@@ -32,7 +32,7 @@ max_call_seconds: 180
 log_limit: 300
 ```
 
-4. Start add-on, mở ingress panel và nhập API token.
+4. Start add-on rồi mở ingress panel. Bảng điều khiển tự kết nối, không cần nhập token; chỉ nhập token khi truy cập trực tiếp cổng `3332`.
 
 Nếu để trống `api_token`, add-on tự sinh token tại `/data/api_token`.
 
