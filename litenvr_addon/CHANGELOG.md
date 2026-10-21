@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.8.3
+
+- Gộp CPU, RAM và SSD thành chip gọn trên thanh trên; bấm để mở chi tiết tài nguyên.
+- Cập nhật thông số mỗi giây và biểu đồ lịch sử CPU/RAM/SSD mỗi 2 giây.
+- Backend dùng mẫu thống kê dùng chung, có khóa luồng để tránh đọc lệch số liệu.
+
 ## 1.8.2
 
 - Khôi phục các hộp thoại **Lưu trữ**, **Google Drive** và **Nhật ký** bị thiếu
