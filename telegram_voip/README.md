@@ -53,7 +53,7 @@ Cài integration tại
 <https://github.com/trankhanhduy2929-beep/telegramvoip_homeassistant> để dùng
 service `telegram_voip.*`, sensor và automation trong Home Assistant.
 
-URL nội bộ cho integration: `http://telegram_voip:8098`.
+URL nội bộ cho integration: `http://telegram_voip:3332`.
 
 ## Giới hạn
 

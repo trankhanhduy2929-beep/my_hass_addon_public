@@ -1,5 +1,5 @@
 name: "Telegram VoIP Notifier"
-version: "0.1.1"
+version: "0.1.2"
 slug: "telegram_voip"
 description: "Đăng nhập nhiều tài khoản Telegram, gửi tin nhắn/voice TTS và gọi P2P bằng tài khoản người dùng."
 url: "https://github.com/trankhanhduy2929-beep/my_hass_addon_public"
@@ -11,15 +11,15 @@ startup: application
 boot: auto
 stage: experimental
 ingress: true
-ingress_port: 8098
+ingress_port: 3332
 panel_icon: "mdi:phone-in-talk"
 panel_title: "Telegram VoIP"
 panel_admin: true
 ports:
-  8098/tcp: 8098
+  3332/tcp: 3332
 ports_description:
-  8098/tcp: "REST API (cần API token)"
-watchdog: "http://[HOST]:[PORT:8098]/health"
+  3332/tcp: "REST API (cần API token)"
+watchdog: "http://[HOST]:[PORT:3332]/health"
 options:
   api_token: ""
   api_id: 0
