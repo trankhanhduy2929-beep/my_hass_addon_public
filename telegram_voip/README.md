@@ -36,6 +36,23 @@ log_limit: 300
 
 Nếu để trống `api_token`, add-on tự sinh token tại `/data/api_token`.
 
+Có thể bỏ trống các trường nhạy cảm trong Configuration và đặt secret tại
+`/data/.env`:
+
+```dotenv
+TGVOIP_API_ID=123456
+TGVOIP_API_HASH=your_api_hash
+TGVOIP_API_TOKEN=your_long_random_token
+TGVOIP_TTS_VOICE=vi-VN-HoaiMyNeural
+```
+
+```bash
+chmod 600 /data/.env
+```
+
+Thứ tự ưu tiên: biến môi trường → `/data/.env` → `/data/options.json`. File
+`.env` nằm ngoài repo/image và không commit.
+
 ## Yêu cầu
 
 - Tạo Telegram application tại <https://my.telegram.org> để lấy `api_id` và
