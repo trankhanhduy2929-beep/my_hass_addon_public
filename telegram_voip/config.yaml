@@ -1,7 +1,7 @@
 name: "Telegram VoIP Notifier"
-version: "0.1.7"
+version: "0.1.8"
 slug: "telegram_voip"
-description: "Đăng nhập nhiều tài khoản Telegram, gửi tin nhắn/voice TTS và gọi P2P bằng tài khoản người dùng."
+description: "Đăng nhập nhiều tài khoản Telegram, gửi tin nhắn/ảnh/voice TTS và gọi P2P bằng tài khoản người dùng."
 url: "https://github.com/trankhanhduy2929-beep/my_hass_addon_public"
 arch:
   - amd64
@@ -9,7 +9,6 @@ arch:
 init: false
 startup: application
 boot: auto
-stage: experimental
 ingress: true
 ingress_port: 3332
 panel_icon: "mdi:phone-in-talk"
