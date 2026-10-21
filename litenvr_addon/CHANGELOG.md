@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.8.1
+
+- Bỏ nút **i** và hộp thoại hướng dẫn trong ứng dụng; hướng dẫn cài đặt add-on
+  được chuyển thành tài liệu từng bước trong `README.md`.
+- Sửa lỗi ảnh sự kiện lúc có lúc không: snapshot được ghi ra file tạm rồi đổi tên
+  nguyên tử, sự kiện chỉ trỏ tới ảnh đã tồn tại, ảnh chụp nền tự cập nhật vào sự kiện.
+- Ưu tiên lấy frame tức thời từ go2rtc khi khả dụng; giữ ffmpeg làm phương án dự phòng.
+
 ## 1.8.0
 
 - Giảm độ trễ xem trực tiếp: HLS dùng segment **1 giây**, playlist **4 segment**,

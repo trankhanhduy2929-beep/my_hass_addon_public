@@ -24,13 +24,6 @@ keyframe đúng nhịp segment để không phải chờ GOP dài. Độ trễ t
 **1–4 giây**; camera có GOP dài hoặc mạng Wi-Fi yếu có thể cao hơn. Nếu cần ổn định
 hơn, dùng luồng phụ H.264 cho live và hạ `live_max_height`.
 
-## Trợ giúp trong ứng dụng
-
-Bấm nút **i** cạnh **⚙️ Cài đặt** để mở hướng dẫn ngay trong LiteNVR. Tab
-**Home Assistant Add-on** hướng dẫn thêm kho, cấu hình, cổng 3333, lưu trữ, cập nhật
-và xử lý sự cố; tab **Docker / Compose** có lệnh chạy, file mẫu, biến môi trường,
-ánh xạ cổng và HTTPS/reverse proxy.
-
 ## Tuỳ chọn
 
 | Tuỳ chọn | Mặc định | Ý nghĩa |
