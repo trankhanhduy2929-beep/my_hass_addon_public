@@ -17,41 +17,17 @@ gọi P2P 1:1 và gọi lặp làm chuông báo động.
 
 1. Thêm repository add-on vào Home Assistant.
 2. Cài **Telegram VoIP Notifier**.
-3. Nhập cấu hình:
+3. Start add-on rồi mở ingress panel. Bảng điều khiển tự kết nối, không cần nhập token.
+4. Vào **Cài đặt → Thông tin Telegram**, nhập `api_id`, `api_hash`, bấm **Lưu thông tin**. Add-on tự ghi `/data/.env` quyền `600`; không cần SSH, chạy lệnh hay sửa Configuration.
+5. API token cho custom integration nằm trong **Cài đặt → API token cho custom integration**; bấm biểu tượng mắt để xem hoặc copy.
 
-```yaml
-api_id: 123456
-api_hash: "your_api_hash"
-api_token: "optional-long-random-token"
-tts_voice: "vi-VN-HoaiMyNeural"
-tts_rate: "+0%"
-ring_timeout: 45
-ring_attempts: 2
-ring_interval: 15
-max_call_seconds: 180
-log_limit: 300
-```
+Các mặc định TTS và chuông (`tts_voice`, `tts_rate`, `ring_timeout`...) vẫn có thể đổi trong Configuration nếu muốn; không bắt buộc.
 
-4. Start add-on rồi mở ingress panel. Bảng điều khiển tự kết nối, không cần nhập token; chỉ nhập token khi truy cập trực tiếp cổng `3332`.
+Nếu chưa nhập token, add-on tự sinh token tại `/data/api_token`.
 
-Nếu để trống `api_token`, add-on tự sinh token tại `/data/api_token`.
+Giao diện tự tạo và cập nhật `/data/.env`; file nằm ngoài repo/image và không commit. Chỉ sửa thủ công nếu cần, sau đó restart add-on.
 
-Có thể bỏ trống các trường nhạy cảm trong Configuration và đặt secret tại
-`/data/.env`:
-
-```dotenv
-TGVOIP_API_ID=123456
-TGVOIP_API_HASH=your_api_hash
-TGVOIP_API_TOKEN=your_long_random_token
-TGVOIP_TTS_VOICE=vi-VN-HoaiMyNeural
-```
-
-```bash
-chmod 600 /data/.env
-```
-
-Thứ tự ưu tiên: biến môi trường → `/data/.env` → `/data/options.json`. File
-`.env` nằm ngoài repo/image và không commit.
+Thứ tự ưu tiên: biến môi trường → `/data/.env` → `/data/options.json`.
 
 ## Yêu cầu
 
