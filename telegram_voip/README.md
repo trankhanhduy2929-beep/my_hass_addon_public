@@ -8,7 +8,7 @@ gọi P2P 1:1 và gọi lặp làm chuông báo động.
 - Đăng nhập nhiều số điện thoại Telegram bằng OTP và mật khẩu 2FA.
 - Gửi tin nhắn văn bản.
 - Gửi ảnh từ URL, file tải lên hoặc `/data/media` kèm chú thích.
-- Tạo voice message bằng Edge TTS, fallback `espeak-ng`.
+- Tạo voice message bằng Edge TTS, tự thử lại 3 lần trước khi fallback `espeak-ng` (chất lượng thấp hơn).
 - Gọi P2P và phát TTS khi người nhận nghe máy.
 - Gọi lặp với số lần và khoảng nghỉ cấu hình được.
 - Ingress UI quản lý tài khoản, cuộc gọi, cấu hình và log.
