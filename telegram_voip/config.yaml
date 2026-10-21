@@ -1,5 +1,5 @@
 name: "Telegram VoIP Notifier"
-version: "0.1.10"
+version: "0.1.11"
 slug: "telegram_voip"
 description: "Đăng nhập nhiều tài khoản Telegram, gửi tin nhắn/ảnh/voice TTS và gọi P2P bằng tài khoản người dùng."
 url: "https://github.com/trankhanhduy2929-beep/my_hass_addon_public"
