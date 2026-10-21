@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.9.1
+
+- WebRTC ưu tiên **luồng phụ** khi camera đã khai báo, giảm CPU và băng thông
+  so với kéo luồng chính.
+- Hỗ trợ H.265 trực tiếp qua WebRTC trên Chrome 136+/Safari 18+; trình duyệt
+  không hỗ trợ mới quay về HLS chuyển mã.
+- Ghi log nguồn WebRTC (`<cam>` hoặc `<cam>_sub`) và lỗi go2rtc để dễ chẩn đoán.
+- Thanh trạng thái ghi rõ `WebRTC`, `HLS` hoặc `HLS - H.265 chuyển mã`.
+- Ghim image LiteNVR `0586215` cho bản phát hành này.
+
 ## 1.9.0
 
 - Tách ba chỉ báo **CPU, RAM, SSD** thành ba thẻ riêng; bấm thẻ nào mở chi tiết

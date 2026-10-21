@@ -12,7 +12,9 @@ Assistant sang biến môi trường và trỏ nơi lưu trữ vào thư mục b
 - Giao diện web LiteNVR lắng nghe cổng **3333** trong container và mở ra ngoài ở
   cổng host **3333** nếu muốn truy cập trực tiếp (dùng cùng đăng nhập bên dưới).
 - WebRTC dùng cổng **8556/TCP + 8556/UDP** (mở/forward cả hai khi truy cập ngoài
-  LAN). Không mở được cổng thì live tự quay về HLS.
+  LAN), ưu tiên luồng phụ nếu camera đã khai báo. Camera H.264/H.265 được truyền
+  thẳng trên trình duyệt hỗ trợ; không mở được cổng hoặc trình duyệt không hỗ trợ
+  H.265 thì live tự quay về HLS.
 - Có thể nhúng bằng thẻ dashboard khi bật tuỳ chọn **iframe**.
 - Tài khoản mặc định là `admin`; **mật khẩu bắt buộc tối thiểu 12 ký tự** và không
   được là mật khẩu đã xuất hiện trong dữ liệu rò rỉ. Home Assistant sẽ từ chối giá

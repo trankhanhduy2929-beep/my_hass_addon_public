@@ -1,5 +1,5 @@
 name: LiteNVR
-version: "1.9.0"
+version: "1.9.1"
 slug: litenvr
 description: >-
   LiteNVR - NVR gọn nhẹ: xem trực tiếp, ghi hình và xem lại camera RTSP/ONVIF.

@@ -8,8 +8,8 @@ là lớp hiển thị và tự động hoá.
 ## Tính năng
 
 - Xem trực tiếp nhiều camera RTSP/ONVIF với **WebRTC nhẹ CPU** (H.264 truyền
-  thẳng qua go2rtc) hoặc **HLS độ trễ thấp** (segment 1 giây) làm dự phòng;
-  chọn luồng chính/phụ và hạ độ phân giải để nhẹ CPU.
+  thẳng; H.265 trực tiếp trên Chrome 136+/Safari 18+), **ưu tiên luồng phụ**
+  nếu đã khai báo; tự quay về **HLS độ trễ thấp** (segment 1 giây) khi cần.
 - Bảng tài nguyên **CPU/RAM/SSD tách riêng**: bấm từng thẻ để xem tải hệ thống,
   CPU camera, RAM container/tiến trình con và dung lượng/retention/SMART của ổ lưu trữ.
 - Ghi hình **liên tục** hoặc **theo chuyển động**.
@@ -196,8 +196,9 @@ lưu thư mục tương ứng hoặc dùng Google Drive/NAS trong giao diện Li
   được đưa vào sự kiện.
 - Kiểm tra Log nếu camera không trả được frame.
 - Với go2rtc, thử đặt `go2rtc: on` rồi khởi động lại add-on.
-- Live tự về HLS nhưng vẫn tốn CPU: kiểm tra cổng **8556/TCP + 8556/UDP** đã được
-  mở/forward tới Home Assistant chưa; camera H.265 luôn phải dùng HLS chuyển mã.
+- Live tự về HLS và tốn CPU: kiểm tra cổng **8556/TCP + 8556/UDP** đã được
+  mở/forward tới Home Assistant chưa. Nếu trạng thái là `HLS - H.265 chuyển mã`,
+  hãy dùng trình duyệt hỗ trợ H.265 WebRTC hoặc khai báo luồng phụ H.264.
 - Ảnh cũ đã mất trước bản 1.8.1 không thể khôi phục tự động.
 
 ### Ổ đĩa đầy
