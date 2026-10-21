@@ -10,6 +10,8 @@ là lớp hiển thị và tự động hoá.
 - Xem trực tiếp nhiều camera RTSP/ONVIF với **WebRTC nhẹ CPU** (H.264 truyền
   thẳng qua go2rtc) hoặc **HLS độ trễ thấp** (segment 1 giây) làm dự phòng;
   chọn luồng chính/phụ và hạ độ phân giải để nhẹ CPU.
+- Bảng tài nguyên **CPU/RAM/SSD tách riêng**: bấm từng thẻ để xem tải hệ thống,
+  CPU camera, RAM container/tiến trình con và dung lượng/retention/SMART của ổ lưu trữ.
 - Ghi hình **liên tục** hoặc **theo chuyển động**.
 - Kích hoạt ghi hình từ **cảm biến Home Assistant** gán riêng cho từng camera.
 - Nhãn sự kiện từ bộ nhận diện AI ngoài (Frigate, DeepStack, CodeProject.AI,

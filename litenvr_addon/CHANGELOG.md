@@ -1,5 +1,16 @@
 # Changelog
 
+## 1.9.0
+
+- Tách ba chỉ báo **CPU, RAM, SSD** thành ba thẻ riêng; bấm thẻ nào mở chi tiết
+  đúng tài nguyên đó thay vì mở chung một hộp thoại.
+- CPU: tải 1/5/15 phút, số nhân, thời gian máy chủ hoạt động và CPU từng camera.
+- RAM: container, app, tiến trình con, bộ đệm HLS/motion, page cache và shared memory.
+- SSD: dung lượng, số ngày lưu, ngưỡng tự xoá, inode, quyền ghi và SMART.
+- Giao diện chi tiết responsive: ba thẻ gọn trên điện thoại, chuyển tab bằng bàn
+  phím, giữ focus/ARIA và biểu đồ lịch sử.
+- Ghim image LiteNVR `f9e2461` cho bản phát hành này.
+
 ## 1.8.9
 
 - Live **WebRTC nhẹ CPU** qua go2rtc nội bộ: camera H.264 được truyền thẳng,
