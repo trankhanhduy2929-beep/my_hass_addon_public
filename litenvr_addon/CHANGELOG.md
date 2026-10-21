@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.8.8
+
+- Sửa âm thanh live EZVIZ/Hikvision: luồng HLS tự chuyển audio sang AAC và có nút
+  bật/tắt tiếng cạnh nút Trực tiếp.
+- Lưu bản ghi trực tiếp ra SMB/Samba/CIFS hoặc FTP/FTPS, không cần mount share;
+  chọn "Xoá bản gốc" để chỉ giữ dữ liệu trên máy chủ ngoài.
+- Thư mục lưu ngoài và Google Drive tự chia theo ngày `YYYY-MM-DD` cho dễ tìm.
+
 ## 1.8.7
 
 - Trỏ add-on sang image LiteNVR tại repository mới `litenvr_docker_zimaos`.
