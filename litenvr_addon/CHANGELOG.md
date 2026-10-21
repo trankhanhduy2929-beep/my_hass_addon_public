@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.8.7
+
+- Trỏ add-on sang image LiteNVR tại repository mới `litenvr_docker_zimaos`.
+
+## 1.8.6
+
+- Giảm RAM phình sau nhiều giờ: chuyển cache thumbnail khỏi tmpfs, dọn HLS/buffer
+  mồ côi mỗi phút, giải phóng page cache của segment đã ghi và giảm đệm motion.
+
 ## 1.8.5
 
 - Giữ 10 giây trước sự kiện chuyển động: đệm được đẩy xuống bản ghi ngay khi
