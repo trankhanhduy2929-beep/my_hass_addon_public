@@ -8,7 +8,7 @@ gọi P2P 1:1 và gọi lặp làm chuông báo động.
 - Đăng nhập nhiều số điện thoại Telegram bằng OTP và mật khẩu 2FA.
 - Gửi tin nhắn văn bản.
 - Gửi ảnh từ URL, file tải lên hoặc `/data/media` kèm chú thích.
-- Tạo voice message bằng Edge TTS, tự thử lại 3 lần trước khi fallback `espeak-ng` (chất lượng thấp hơn).
+- Tạo voice message bằng Edge TTS; mặc định `vi-VN-HoaiMyNeural`, tự thử lại 5 lần. Với tiếng Việt, add-on báo lỗi thay vì dùng `espeak-ng` để tránh phát âm sai.
 - Gọi P2P và phát TTS khi người nhận nghe máy.
 - Gọi lặp với số lần và khoảng nghỉ cấu hình được.
 - Ingress UI quản lý tài khoản, cuộc gọi, cấu hình và log.
@@ -22,7 +22,7 @@ gọi P2P 1:1 và gọi lặp làm chuông báo động.
 4. Vào **Cài đặt → Thông tin Telegram**, nhập `api_id`, `api_hash`, bấm **Lưu thông tin**. Add-on tự ghi `/data/.env` quyền `600`; không cần SSH, chạy lệnh hay sửa Configuration.
 5. API token cho custom integration nằm trong **Cài đặt → API token cho custom integration**; bấm biểu tượng mắt để xem hoặc copy.
 
-Các mặc định TTS và chuông (`tts_voice`, `tts_rate`, `ring_timeout`...) vẫn có thể đổi trong Configuration nếu muốn; không bắt buộc.
+Các mặc định TTS và chuông (`tts_voice`, `tts_rate`, `ring_timeout`...) vẫn có thể đổi trong Configuration nếu muốn; không bắt buộc. Giọng mặc định là `vi-VN-HoaiMyNeural` (Tiếng Việt chuẩn); `vi-VN-NamMinhNeural` chỉ là giọng nam thay thế. Nếu service truyền `voice`, giá trị đó được dùng thay cho mặc định.
 
 Nếu chưa nhập token, add-on tự sinh token tại `/data/api_token`.
 
