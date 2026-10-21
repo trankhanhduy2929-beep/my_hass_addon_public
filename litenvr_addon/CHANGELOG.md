@@ -1,5 +1,16 @@
 # Changelog
 
+## 1.8.5
+
+- Giữ 10 giây trước sự kiện chuyển động: đệm được đẩy xuống bản ghi ngay khi
+  phát hiện chuyển động, clip không còn mất đoạn đầu.
+
+## 1.8.4
+
+- Ghim image LiteNVR theo đúng bản phát hành để add-on nhận giao diện chip CPU/RAM/SSD gọn.
+- Sửa camera đúng camera đang chọn; không tự nhảy sang camera khác hoặc lưu đè camera cũ.
+- Khóa mã camera khi sửa, xóa sạch form khi thêm mới và giữ nguyên tab/camera đang xem.
+
 ## 1.8.3
 
 - Gộp CPU, RAM và SSD thành chip gọn trên thanh trên; bấm để mở chi tiết tài nguyên.
