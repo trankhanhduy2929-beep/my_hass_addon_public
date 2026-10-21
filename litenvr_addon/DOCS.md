@@ -11,6 +11,8 @@ Assistant sang biến môi trường và trỏ nơi lưu trữ vào thư mục b
   tiếp trong Home Assistant. Nút **OPEN WEB UI** cũng mở qua Ingress.
 - Giao diện web LiteNVR lắng nghe cổng **3333** trong container và mở ra ngoài ở
   cổng host **3333** nếu muốn truy cập trực tiếp (dùng cùng đăng nhập bên dưới).
+- WebRTC dùng cổng **8556/TCP + 8556/UDP** (mở/forward cả hai khi truy cập ngoài
+  LAN). Không mở được cổng thì live tự quay về HLS.
 - Có thể nhúng bằng thẻ dashboard khi bật tuỳ chọn **iframe**.
 - Tài khoản mặc định là `admin`; **mật khẩu bắt buộc tối thiểu 12 ký tự** và không
   được là mật khẩu đã xuất hiện trong dữ liệu rò rỉ. Home Assistant sẽ từ chối giá
@@ -34,7 +36,7 @@ hơn, dùng luồng phụ H.264 cho live và hạ `live_max_height`.
 | `iframe` | `true` | Cho nhúng giao diện vào iframe / thẻ dashboard. |
 | `timezone` | (trống) | Múi giờ IANA, ví dụ `Asia/Ho_Chi_Minh`. |
 | `log_level` | `info` | Mức log máy chủ web (`debug`/`info`/`warning`/`error`). |
-| `go2rtc` | `auto` | Chế độ go2rtc: `auto`, `on`, `off`. |
+| `go2rtc` | `auto` | Chế độ go2rtc: `auto`, `on`, `off`; `auto`/`on` bật WebRTC. |
 | `ffmpeg_threads` | `2` | Số luồng cấp cho mỗi tiến trình FFmpeg. |
 | `live_max_height` | `720` | Hạ chiều cao khung xem trực tiếp (pixel). `0` giữ nguyên. |
 | `storage_location` | `media` | Nơi lưu cấu hình và bản ghi: `data`, `media`, `share`. |

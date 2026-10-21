@@ -7,8 +7,9 @@ là lớp hiển thị và tự động hoá.
 
 ## Tính năng
 
-- Xem trực tiếp nhiều camera RTSP/ONVIF với **HLS độ trễ thấp** (segment 1 giây,
-  bắt đầu gần live edge), chọn luồng chính/phụ và hạ độ phân giải để nhẹ CPU.
+- Xem trực tiếp nhiều camera RTSP/ONVIF với **WebRTC nhẹ CPU** (H.264 truyền
+  thẳng qua go2rtc) hoặc **HLS độ trễ thấp** (segment 1 giây) làm dự phòng;
+  chọn luồng chính/phụ và hạ độ phân giải để nhẹ CPU.
 - Ghi hình **liên tục** hoặc **theo chuyển động**.
 - Kích hoạt ghi hình từ **cảm biến Home Assistant** gán riêng cho từng camera.
 - Nhãn sự kiện từ bộ nhận diện AI ngoài (Frigate, DeepStack, CodeProject.AI,
@@ -58,7 +59,7 @@ là lớp hiển thị và tự động hoá.
 | `storage_location` | `media` (mặc định), `share` hoặc `data`. |
 | `live_max_height` | `720` để nhẹ CPU; `0` giữ nguyên độ phân giải. |
 | `ffmpeg_threads` | `2` là mặc định; tăng khi CPU còn trống. |
-| `go2rtc` | `auto` (khuyến nghị). |
+| `go2rtc` | `auto`/`on` (khuyến nghị) để dùng WebRTC. |
 | `iframe` | Bật nếu muốn nhúng giao diện vào dashboard. |
 | `log_level` | `info`; đổi `debug` khi cần chẩn đoán. |
 
@@ -76,6 +77,9 @@ Lưu ý:
 3. Bật **Show in sidebar** để mở LiteNVR từ thanh bên Home Assistant.
 4. Hoặc bấm **OPEN WEB UI**. Có thể truy cập trực tiếp qua cổng `3333`:
    `http://IP_HOME_ASSISTANT:3333`.
+5. WebRTC dùng thêm cổng **8556/TCP + 8556/UDP**. Khi truy cập qua tên miền hoặc
+   reverse proxy, đặt `WEBRTC_PUBLIC_HOST` thành IP LAN của Home Assistant để ICE
+   kết nối đúng; nếu không mở được cổng, LiteNVR tự dùng HLS.
 5. Đăng nhập bằng `username` và `password` đã đặt ở bước 3.
 
 ### 5. Thêm camera
@@ -190,6 +194,8 @@ lưu thư mục tương ứng hoặc dùng Google Drive/NAS trong giao diện Li
   được đưa vào sự kiện.
 - Kiểm tra Log nếu camera không trả được frame.
 - Với go2rtc, thử đặt `go2rtc: on` rồi khởi động lại add-on.
+- Live tự về HLS nhưng vẫn tốn CPU: kiểm tra cổng **8556/TCP + 8556/UDP** đã được
+  mở/forward tới Home Assistant chưa; camera H.265 luôn phải dùng HLS chuyển mã.
 - Ảnh cũ đã mất trước bản 1.8.1 không thể khôi phục tự động.
 
 ### Ổ đĩa đầy

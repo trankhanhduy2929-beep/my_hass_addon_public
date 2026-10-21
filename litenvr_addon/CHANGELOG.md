@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.8.9
+
+- Live **WebRTC nhẹ CPU** qua go2rtc nội bộ: camera H.264 được truyền thẳng,
+  không chuyển mã; tự quay về HLS khi camera H.265 hoặc cổng WebRTC bị chặn.
+- Mở cổng **8556/TCP + 8556/UDP** cho WebRTC; có thể đặt `WEBRTC_PUBLIC_HOST`
+  khi truy cập qua tên miền/reverse proxy.
+- Live không còn tạo nhánh HLS/ffmpeg khi không có người xem.
+
 ## 1.8.8
 
 - Sửa âm thanh live EZVIZ/Hikvision: luồng HLS tự chuyển audio sang AAC và có nút
