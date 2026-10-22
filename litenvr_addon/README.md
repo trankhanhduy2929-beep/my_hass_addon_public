@@ -125,7 +125,9 @@ Mẹo:
   Google Drive API; hướng dẫn từng bước ở
   [DOCS.md → Google Drive từng bước](DOCS.md#google-drive-từng-bước).
 - **SMB/Samba**: mở **💾 Lưu trữ ngoài (SMB/FTP)**, chọn SMB, nhập host/share/tài
-  khoản, kiểm tra đích rồi lưu. Chi tiết ở
+  khoản, bấm **↻ Kiểm tra** để xem dung lượng trống của share, rồi kiểm tra đích và
+  lưu. Có thể bật **Tự động xóa bản ghi cũ trên SMB** theo số ngày, GB tối đa hoặc
+  GB trống tối thiểu; LiteNVR chỉ xóa file do chính nó sao lưu. Chi tiết ở
   [DOCS.md → SMB/Samba từng bước](DOCS.md#smbsamba-từng-bước).
 
 ### 7. Chọn nguồn khi xem lại

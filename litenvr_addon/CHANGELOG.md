@@ -1,5 +1,18 @@
 # Changelog
 
+## 1.9.6
+
+- Hiển thị phiên bản LiteNVR ngay cạnh thương hiệu trên thanh công cụ; API mới
+  `GET /api/version` và trường `version` trong `/api/system`.
+- Xem dung lượng share SMB/Samba (còn trống, tổng, tỷ lệ đã dùng) trong **💾 Lưu
+  trữ ngoài**, kèm nút kiểm tra lại.
+- Tự động xóa bản ghi cũ trên SMB theo số ngày giữ, dung lượng tối đa hoặc dung
+  lượng trống tối thiểu; mặc định tắt. Chỉ xóa file do LiteNVR đã sao lưu và ghi
+  nhận, bỏ qua file khác trên share, bản ghi đang khóa hoặc vừa chuyển trong 2 phút.
+- Worker tự dọn SMB mỗi 10 phút; thêm nút **Dọn SMB ngay** và API
+  `POST /api/backup/smb/cleanup`, `GET /api/backup/smb/space`.
+- Ghim image LiteNVR `9a56b57` cho bản phát hành này.
+
 ## 1.9.5
 
 - Đổi **Nơi lưu bản ghi** trong Sửa camera thành checkbox **Ổ gốc**, **Google Drive**,

@@ -275,10 +275,27 @@ nhập. Cách này không cần mã thiết bị nhưng dễ sai nếu token thu
    - **Sao chép**: giữ file trên ổ cứng và gửi bản sao lên SMB.
    - **Di chuyển**: xoá file trên ổ cứng sau khi sao lưu thành công.
 7. Chọn camera cần sao lưu (bỏ trống = tất cả).
-8. Bấm **Kiểm tra đích** để LiteNVR lưu cấu hình và ghi thử, sau đó bấm **Lưu**.
-9. Đường dẫn trên NAS:
-   `\\<host>\<share>\<thư mục con>\YYYY-MM-DD\<cam_id>\<file>.mp4`.
-10. Chờ worker sao lưu các đoạn hoàn chỉnh (khoảng 60 giây/lần kiểm tra).
+8. Bấm **↻ Kiểm tra** trong mục **Dung lượng share SMB** để xem còn trống, tổng
+   dung lượng và tỷ lệ đã dùng. Nếu vừa đổi cấu hình, bấm **Lưu** trước.
+9. Bấm **Kiểm tra đích** để LiteNVR lưu cấu hình và ghi thử, sau đó bấm **Lưu**.
+10. Đường dẫn trên NAS:
+    `\\<host>\<share>\<thư mục con>\YYYY-MM-DD\<cam_id>\<file>.mp4`.
+11. Chờ worker sao lưu các đoạn hoàn chỉnh (khoảng 60 giây/lần kiểm tra).
+
+### Tự động xóa bản ghi cũ trên SMB
+
+Bật **Tự động xóa bản ghi cũ trên SMB** và đặt một hoặc nhiều giới hạn:
+
+- **Giữ tối đa (ngày)**: xóa bản ghi LiteNVR cũ hơn số ngày này.
+- **Tối đa (GB)**: chỉ giữ tối đa dung lượng bản ghi LiteNVR trên share.
+- **Giữ trống tối thiểu (GB)**: xóa bản ghi cũ nhất khi share còn trống dưới mức này.
+
+Nhập `0` để tắt từng giới hạn. LiteNVR chỉ xóa file do chính nó đã sao lưu và ghi
+nhận trong `backup_done`; không xóa file khác trên share. Bản ghi đang khóa hoặc
+vừa chuyển lên trong 2 phút được bỏ qua; mỗi lượt xóa tối đa 300 file. Worker tự
+kiểm tra mỗi 10 phút, hoặc bấm **🧹 Dọn SMB ngay** để chạy theo cấu hình đang lưu.
+Tính năng này chỉ áp dụng cho bản ghi LiteNVR sao lưu từ bản 1.9.6 trở đi; bản ghi
+cũ hơn không có thông tin đích nên được giữ nguyên.
 
 ### Xem lại từ SMB/Samba
 
