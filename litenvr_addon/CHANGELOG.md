@@ -1,5 +1,17 @@
 # Changelog
 
+## 1.9.10
+
+- Sửa chẩn đoán camera bị báo lỗi giả `stream_0_0_q` / `stream_1_0_q`: đây là dòng
+  tiến độ ffmpeg, không còn ghi đè lỗi cuối.
+- `Error parsing AU headers` được báo là **cảnh báo âm thanh** thay vì lỗi luồng;
+  video vẫn chạy, nếu live lỗi thì đặt **Âm thanh = Không** trong cấu hình camera.
+- `HLS sẵn sàng` chỉ báo Có khi ffmpeg live đang chạy thật; playlist cũ bị xoá khi
+  dừng/khởi động lại để HA và UI không đọc nhầm.
+- Chuyển sang chế độ live khởi động lại ffmpeg ngay thay vì chờ 5 giây; chẩn đoán
+  hiển thị trạng thái, tuổi playlist, cảnh báo và lỗi riêng.
+- Ghim image LiteNVR `dba4bc2` cho bản phát hành này.
+
 ## 1.9.9
 
 - Thêm **Live trong Home Assistant (Generic Camera)**: LiteNVR hiển thị URL HLS
