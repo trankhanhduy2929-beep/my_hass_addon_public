@@ -17,7 +17,8 @@ là lớp hiển thị và tự động hoá.
 - Nhãn sự kiện từ bộ nhận diện AI ngoài (Frigate, DeepStack, CodeProject.AI,
   Node-RED…).
 - Xem lại theo dòng thời gian, tải clip, xem ảnh sự kiện, tua/tốc độ phát.
-- Chọn nguồn phát khi xem lại: **ổ gốc**, **Google Drive** hoặc **SMB/Samba**.
+- Chọn nguồn phát khi xem lại: **ổ gốc**, **Google Drive** hoặc **SMB/Samba**;
+  bản ghi H.265/H.264 lạ tự chuyển mã H.264 khi phát.
 - ONVIF: dò/quét dải IP, tự thêm camera đa hãng, lấy RTSP, điều khiển PTZ và preset.
 - Lưu trữ linh hoạt: ổ cứng, Google Drive hoặc NAS (SMB/NFS/FTP).
 - Thông báo chuyển động qua Telegram và liên kết sâu mở thẳng bản ghi.
@@ -114,7 +115,7 @@ Mẹo:
 
 - Camera phải cùng mạng hoặc có route từ Home Assistant tới camera.
 - Nếu ONVIF không tìm thấy, dùng URL RTSP thủ công.
-- Với camera H.265/HEVC, LiteNVR tự chuyển mã H.264 cho trình duyệt.
+- Với camera H.265/HEVC, LiteNVR tự chuyển mã H.264 cho live và bản ghi.
 - Nên dùng luồng phụ H.264 cho live để giảm CPU.
 
 ### 6. Kết nối Google Drive hoặc SMB (tuỳ chọn)
@@ -134,7 +135,9 @@ Mẹo:
 
 Trên dòng thời gian, ô **Nguồn phát** cho phép chọn **Tự động (ổ gốc + Drive)**,
 **Chỉ ổ gốc**, **Chỉ Google Drive** hoặc **Chỉ SMB/Samba**. Chọn đúng nguồn trước
-khi tua để LiteNVR đọc bản ghi từ nơi bạn muốn.
+khi tua để LiteNVR đọc bản ghi từ nơi bạn muốn. Bản ghi H.265/HEVC hoặc H.264
+10-bit/4:2:2/4:4:4 được tự chuyển mã H.264/AAC; với SMB, đoạn ghi được tải vào
+cache tạm ở lần xem đầu.
 
 ## Độ trễ xem trực tiếp
 
@@ -165,7 +168,9 @@ lưu thư mục tương ứng hoặc dùng Google Drive/NAS trong giao diện Li
 
 Trong **Sửa camera → Nơi lưu bản ghi**, tick chọn **Ổ gốc**, **Google Drive**
 và/hoặc **SMB/Samba**. Bỏ **Ổ gốc** để chuyển bản ghi sang Drive/SMB rồi xoá bản
-gốc; chọn cả Drive + SMB sẽ giữ bản gốc tới khi cả hai đích nhận xong.
+gốc; chọn cả Drive + SMB sẽ giữ bản gốc tới khi cả hai đích nhận xong. Ô
+**Google Drive**/**SMB** chỉ bật được khi dịch vụ tương ứng đã cấu hình; nếu chưa,
+camera chỉ lưu **Ổ gốc**.
 
 ## Sao lưu và cập nhật
 
@@ -223,6 +228,8 @@ gốc; chọn cả Drive + SMB sẽ giữ bản gốc tới khi cả hai đích 
 - Live tự về HLS và tốn CPU: kiểm tra cổng **8556/TCP + 8556/UDP** đã được
   mở/forward tới Home Assistant chưa. Nếu trạng thái là `HLS - H.265 chuyển mã`,
   hãy dùng trình duyệt hỗ trợ H.265 WebRTC hoặc khai báo luồng phụ H.264.
+- Xem lại từ SMB bị chậm ở lần đầu: LiteNVR đang tải đoạn ghi vào cache để dò
+  codec/chuyển mã. Các lần sau dùng lại cache; kiểm tra dung lượng trống nếu lỗi.
 - Ảnh cũ đã mất trước bản 1.8.1 không thể khôi phục tự động.
 
 ### Ổ đĩa đầy

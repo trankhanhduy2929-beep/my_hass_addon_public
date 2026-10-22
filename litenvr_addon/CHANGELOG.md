@@ -1,5 +1,18 @@
 # Changelog
 
+## 1.9.7
+
+- Xem lại bản ghi **H.265/HEVC** hoặc **H.264 10-bit/4:2:2/4:4:4** tự động chuyển
+  mã sang H.264/AAC trước khi phát; bản ghi gốc vẫn giữ codec gốc.
+- Bản ghi **SMB/Samba** được tải vào cache tạm rồi chuyển mã khi cần; file H.264 an
+  toàn vẫn phát trực tiếp bằng HTTP Range. Cache tự dọn theo thời gian/dung lượng,
+  giới hạn số ffmpeg chạy đồng thời và tăng tốc bằng preset `ultrafast`, CRF 23.
+- Live WebRTC chỉ coi là thành công khi đã render **khung hình đầu tiên**; nếu không
+  có hình sẽ tự quay về HLS. Nhận diện thêm H.264 10-bit/4:2:2/4:4:4 để chuyển mã.
+- Chỉ bật đích lưu **Google Drive/SMB** khi dịch vụ đã cấu hình và đang bật; giữ
+  đúng lựa chọn nơi lưu của từng camera.
+- Ghim image LiteNVR `6b35e2d` cho bản phát hành này.
+
 ## 1.9.6
 
 - Hiển thị phiên bản LiteNVR ngay cạnh thương hiệu trên thanh công cụ; API mới

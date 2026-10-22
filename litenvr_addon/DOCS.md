@@ -69,7 +69,7 @@ Trong LiteNVR, ngay trên dòng thời gian có ô **Nguồn phát**:
 | `Tự động (ổ gốc + Drive)` | Mặc định; ưu tiên file trên ổ gốc, bổ sung đoạn chỉ còn trên Drive. |
 | `Chỉ ổ gốc` | Chỉ xem bản ghi còn trên ổ cứng của add-on. |
 | `Chỉ Google Drive` | Chỉ hiện các đoạn đã tải lên Drive; bấm xem sẽ tải về ổ cứng trước khi phát. |
-| `Chỉ SMB/Samba` | Đọc trực tiếp file đã sao lưu lên share SMB; hỗ trợ tua bằng Range. |
+| `Chỉ SMB/Samba` | Đọc file đã sao lưu lên share SMB; H.264 an toàn phát trực tiếp bằng Range, H.265/H.264 lạ được cache tạm rồi chuyển mã. |
 
 Chọn nguồn trước khi tua/xem; LiteNVR tải lại dòng thời gian theo nguồn đó. Nếu
 nguồn không có bản ghi, dòng thời gian trống thay vì tự phát từ nguồn khác.
@@ -140,7 +140,9 @@ Trong **Sửa camera → Nơi lưu bản ghi**, tick một hoặc nhiều ô:
 - **SMB/Samba**: sao lưu sang share SMB ở **💾 Lưu trữ ngoài**. Bỏ **Ổ gốc** thì bản gốc được xoá sau khi chuyển xong.
 
 Phải chọn ít nhất một nơi. Nếu chọn cả Drive + SMB mà không giữ ổ gốc, LiteNVR giữ
-bản gốc tới khi cả hai đích nhận xong. Camera mới mặc định chỉ lưu **Ổ gốc**.
+bản gốc tới khi cả hai đích nhận xong. Camera mới mặc định chỉ lưu **Ổ gốc**. Ô
+**Google Drive**/**SMB/Samba** chỉ bật được khi dịch vụ tương ứng đã cấu hình và
+đang bật; nếu chưa, camera chỉ lưu ổ gốc.
 
 ## Kết nối camera
 
@@ -300,12 +302,15 @@ cũ hơn không có thông tin đích nên được giữ nguyên.
 ### Xem lại từ SMB/Samba
 
 - Chọn **Nguồn phát → Chỉ SMB/Samba** trên dòng thời gian.
-- LiteNVR liệt kê file trong thư mục ngày/camera và phát trực tiếp qua HTTP Range,
-  nên có thể tua mà không tải cả file về ổ cứng.
+- LiteNVR liệt kê file trong thư mục ngày/camera. File H.264 an toàn được phát
+  trực tiếp qua HTTP Range, nên có thể tua mà không tải cả file về ổ cứng.
+- File H.265/HEVC hoặc H.264 10-bit/4:2:2/4:4:4 được tải vào cache tạm rồi chuyển
+  mã H.264/AAC. Lần xem đầu chậm hơn do phải tải đoạn ghi; cache tự dọn theo TTL
+  và giới hạn dung lượng.
 - Chỉ file đã sao lưu bằng chế độ SMB mới xuất hiện. Nếu đang dùng **Thư mục đã mount**
   hoặc FTP, chọn nguồn SMB sẽ trống.
-- Trình duyệt cần phát được codec gốc (thường H.264). LiteNVR không chuyển mã H.265
-  khi phát trực tiếp từ SMB; hãy dùng luồng phụ H.264 hoặc xem từ ổ gốc/Drive.
+- Trình duyệt chỉ cần phát H.264; LiteNVR tự chuyển mã H.265/H.264 lạ khi xem lại
+  từ SMB.
 - Nếu SMB chậm, tua có thể khựng; kiểm tra mạng LAN, SMB2/3 và tải của NAS.
 
 ## Kiểm tra sức khoẻ
