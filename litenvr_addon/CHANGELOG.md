@@ -1,5 +1,19 @@
 # Changelog
 
+## 1.9.3
+
+- Siết quyền xem camera: tài khoản chỉ có live/playback/events vẫn mở được
+  đúng màn hình; snapshot và sự kiện kiểm tra quyền theo từng camera.
+- Chặn Basic Auth cho tài khoản đã bật 2FA, khoá đăng nhập sai, so khớp CSRF
+  theo origin chính xác và chặn SSRF vào loopback/link-local.
+- Tạm dừng ffmpeg đang ghi khi ổ chứa hoặc tmpfs HLS/buffer gần đầy; tự chạy
+  lại khi có dung lượng. Bảo vệ file đang ghi, file đã khoá và file chờ Drive.
+- Ghi cấu hình nguyên tử, sao lưu thư mục qua file tạm rồi đổi tên, retry lỗi
+  sao lưu theo lô thay vì dừng ngay.
+- UI: focus trap/aria cho hộp thoại, nhãn trường nhập, điều khiển timeline và
+  lưới bằng bàn phím, thông báo trạng thái `aria-live`, dừng heartbeat live đúng lúc.
+- Ghim image LiteNVR `e315675` cho bản phát hành này.
+
 ## 1.9.2
 
 - Ghi hình **luôn giữ codec gốc** (`-c:v copy`); lựa chọn H.264 chỉ ép transcode
