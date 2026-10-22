@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.9.5
+
+- Đổi **Nơi lưu bản ghi** trong Sửa camera thành checkbox **Ổ gốc**, **Google Drive**,
+  **SMB/Samba**; chọn được nhiều đích và bắt buộc chọn ít nhất một nơi.
+- Bỏ **Ổ gốc** để chuyển bản ghi sang Drive/SMB rồi xoá bản gốc sau khi đích nhận
+  xong. Chọn cả Drive + SMB sẽ giữ bản gốc tới khi cả hai đích hoàn tất.
+- Lưu lựa chọn SMB theo từng camera, áp dụng cho thêm/sửa, thêm hàng loạt và ONVIF;
+  tự dọn camera khỏi danh sách khi xoá.
+- Cập nhật tài liệu chọn nơi lưu; ghim image LiteNVR `514b54f` cho bản phát hành này.
+
 ## 1.9.4
 
 - Thêm bộ chọn **Nguồn phát** trên dòng thời gian: Tự động, ổ gốc, Google Drive

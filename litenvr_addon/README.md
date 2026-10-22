@@ -161,6 +161,10 @@ LiteNVR lưu cấu hình, cơ sở dữ liệu và bản ghi trong `/storage`, �
 Bản ghi trong `media`/`share` **không** tự nằm trong bản sao lưu add-on. Hãy sao
 lưu thư mục tương ứng hoặc dùng Google Drive/NAS trong giao diện LiteNVR.
 
+Trong **Sửa camera → Nơi lưu bản ghi**, tick chọn **Ổ gốc**, **Google Drive**
+và/hoặc **SMB/Samba**. Bỏ **Ổ gốc** để chuyển bản ghi sang Drive/SMB rồi xoá bản
+gốc; chọn cả Drive + SMB sẽ giữ bản gốc tới khi cả hai đích nhận xong.
+
 ## Sao lưu và cập nhật
 
 ### Sao lưu trước khi cập nhật

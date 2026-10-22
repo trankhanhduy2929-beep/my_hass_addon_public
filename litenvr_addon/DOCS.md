@@ -131,6 +131,17 @@ tới `<storage_location>/litenvr`:
 
 Add-on cần quyền ghi vào `media` và `share` (đã khai báo trong cấu hình).
 
+### Chọn nơi lưu cho từng camera
+
+Trong **Sửa camera → Nơi lưu bản ghi**, tick một hoặc nhiều ô:
+
+- **Ổ gốc**: giữ bản ghi trên ổ NVR.
+- **Google Drive**: tải lên Drive nếu đã bật. Bỏ **Ổ gốc** thì bản gốc được xoá sau khi tải xong.
+- **SMB/Samba**: sao lưu sang share SMB ở **💾 Lưu trữ ngoài**. Bỏ **Ổ gốc** thì bản gốc được xoá sau khi chuyển xong.
+
+Phải chọn ít nhất một nơi. Nếu chọn cả Drive + SMB mà không giữ ổ gốc, LiteNVR giữ
+bản gốc tới khi cả hai đích nhận xong. Camera mới mặc định chỉ lưu **Ổ gốc**.
+
 ## Kết nối camera
 
 - **Quản lý Camera** có hai tab: **Tự động dò ONVIF** và **Nhập URL thủ công**.
