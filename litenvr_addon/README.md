@@ -272,6 +272,8 @@ camera chỉ lưu **Ổ gốc**.
 
 - Kiểm tra URL RTSP bằng VLC hoặc ffplay từ máy khác.
 - Thử luồng phụ H.264.
+- Log `PPS id out of range` / `SPS/VPS` / `Error parsing NAL unit` của H.265 thường do
+  NVR gửi tham số không chuẩn; video vẫn có thể chạy. Nếu không lên hình, dùng luồng phụ H.264.
 - Hạ `live_max_height` và kiểm tra CPU.
 - Xem Log của LiteNVR để biết camera có từ chối kết nối không.
 

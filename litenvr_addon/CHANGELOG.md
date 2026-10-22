@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.9.11
+
+- `PPS id out of range`, `SPS/VPS` và `Error parsing NAL unit` của nguồn H.265
+  được báo là **cảnh báo nguồn** thay vì lỗi luồng; video vẫn có thể chạy bình
+  thường. Nếu hình không lên, dùng luồng phụ H.264 cho live.
+- Cache codec có TTL 5 phút và tự xoá khi gặp cảnh báo H.265, tránh copy/ghi hình
+  sai khi NVR/go2rtc đổi codec trên cùng URL.
+- Ghim image LiteNVR `b136cdc` cho bản phát hành này.
+
 ## 1.9.10
 
 - Sửa chẩn đoán camera bị báo lỗi giả `stream_0_0_q` / `stream_1_0_q`: đây là dòng
