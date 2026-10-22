@@ -22,6 +22,8 @@ là lớp hiển thị và tự động hoá.
 - ONVIF: dò/quét dải IP, tự thêm camera đa hãng, lấy RTSP, điều khiển PTZ và preset.
 - Lưu trữ linh hoạt: ổ cứng, Google Drive hoặc NAS (SMB/NFS/FTP).
 - Thông báo chuyển động qua Telegram và liên kết sâu mở thẳng bản ghi.
+- Tự công bố camera snapshot qua **MQTT Discovery** để Home Assistant tạo entity
+  `camera.litenvr_<camera>` cho badge/card ảnh.
 
 ## Yêu cầu
 
@@ -138,6 +140,44 @@ Trên dòng thời gian, ô **Nguồn phát** cho phép chọn **Tự động (�
 khi tua để LiteNVR đọc bản ghi từ nơi bạn muốn. Bản ghi H.265/HEVC hoặc H.264
 10-bit/4:2:2/4:4:4 được tự chuyển mã H.264/AAC; với SMB, đoạn ghi được tải vào
 cache tạm ở lần xem đầu.
+
+## MQTT Discovery (tuỳ chọn)
+
+LiteNVR có thể gửi **MQTT Discovery** để Home Assistant tự tạo entity
+`camera.litenvr_<slug>` cho từng camera. Ảnh snapshot cập nhật theo chu kỳ hoặc ngay
+khi có chuyển động; **không phải luồng live**.
+
+1. Trong Home Assistant, cài và bật add-on **Mosquitto broker**, sau đó bật tích hợp
+   **MQTT** ở **Settings → Devices & Services**.
+2. Tạo một **user Home Assistant riêng cho MQTT** (**Settings → People → Users →
+   Add user**), không dùng tài khoản quản trị. Mosquitto add-on xác thực bằng user này.
+3. Trong LiteNVR, mở **🛰️ Home Assistant** → **MQTT Discovery**:
+   - Bật **MQTT Discovery**.
+   - **MQTT host**: `core-mosquitto` khi LiteNVR chạy dạng add-on; hoặc IP Home
+     Assistant nếu broker đã mở cổng `1883`.
+   - Nhập **cổng** (mặc định `1883`), **tài khoản/mật khẩu MQTT**.
+   - Giữ **Discovery prefix** `homeassistant` và **Base topic** `litenvr` nếu không
+     có nhu cầu đặc biệt; đặt **chu kỳ ảnh** 5–300 giây.
+   - Bấm **Kiểm tra MQTT** rồi **Lưu**.
+4. Home Assistant tự phát hiện thiết bị **LiteNVR** và các entity
+   `camera.litenvr_<slug>`. Thêm card bằng entity camera:
+
+```yaml
+type: picture-entity
+entity: camera.litenvr_cam1
+camera_view: auto
+show_name: true
+show_state: false
+```
+
+- Ảnh publish retained lên `<base_topic>/camera/<slug>/image`; trạng thái
+  online/offline ở `<base_topic>/status`. Khi LiteNVR mất kết nối, entity chuyển
+  unavailable.
+- Đây là camera ảnh tĩnh. Muốn card live, dùng **Generic Camera** trỏ vào luồng H.264
+  của camera hoặc mở LiteNVR để xem WebRTC/HLS.
+- Nếu đổi `base_topic`/`discovery_prefix`, entity cũ được dọn retained; nếu Home
+  Assistant vẫn còn thiết bị cũ, xoá trong **Settings → Devices & Services → MQTT
+  → LiteNVR**.
 
 ## Độ trễ xem trực tiếp
 

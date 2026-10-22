@@ -1,5 +1,19 @@
 # Changelog
 
+## 1.9.8
+
+- Thêm **MQTT Discovery**: LiteNVR tự công bố từng camera thành entity
+  `camera.litenvr_<camera>` trong Home Assistant, dùng ảnh snapshot cập nhật định
+  kỳ hoặc ngay khi có chuyển động; phù hợp badge/card ảnh.
+- Cấu hình MQTT ngay trong **🛰️ Home Assistant**: host, cổng, tài khoản/mật khẩu,
+  TLS, discovery prefix, base topic và chu kỳ ảnh 5–300 giây; có nút **Kiểm tra
+  MQTT** và trạng thái kết nối.
+- Ảnh publish retained, trạng thái online/offline qua LWT; tự xoá discovery và ảnh
+  retained khi tắt MQTT hoặc xoá camera, tránh entity "ma".
+- Hỗ trợ `core-mosquitto` khi chạy add-on hoặc IP Home Assistant khi broker mở cổng
+  1883; mật khẩu MQTT không trả về giao diện.
+- Ghim image LiteNVR `d0ab3e9` cho bản phát hành này.
+
 ## 1.9.7
 
 - Xem lại bản ghi **H.265/HEVC** hoặc **H.264 10-bit/4:2:2/4:4:4** tự động chuyển

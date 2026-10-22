@@ -161,6 +161,56 @@ bản gốc tới khi cả hai đích nhận xong. Camera mới mặc định ch
 - Gắn **cảm biến chuyển động Home Assistant** cho từng camera: mọi thay đổi trạng
   thái của cảm biến đều kích hoạt ghi hình + ảnh chụp (không cần ONVIF).
 
+## MQTT Discovery cho camera
+
+LiteNVR có thể tự công bố từng camera thành entity `camera.litenvr_<slug>` qua MQTT
+Discovery. Entity chỉ hiển thị **ảnh snapshot**, cập nhật theo chu kỳ hoặc khi có
+chuyển động — không truyền video live qua MQTT.
+
+### Chuẩn bị broker
+
+1. **Settings → Add-ons → Add-on Store**, cài và bật **Mosquitto broker**.
+2. **Settings → Devices & Services**, bật tích hợp **MQTT** nếu chưa có; broker mặc
+   định là `core-mosquitto:1883`.
+3. Tạo user riêng cho LiteNVR: **Settings → People → Users → Add user**, không dùng
+   tài khoản quản trị. Dùng user/mật khẩu này cho kết nối MQTT.
+
+### Cấu hình trong LiteNVR
+
+1. Mở **🛰️ Home Assistant** → mục **MQTT Discovery**, bật **MQTT Discovery**.
+2. **MQTT host**: `core-mosquitto` khi LiteNVR là add-on; hoặc IP Home Assistant nếu
+   broker đã mở cổng `1883` ra LAN.
+3. Nhập **cổng** `1883`, **tài khoản/mật khẩu MQTT**; bật **TLS** nếu broker yêu cầu.
+4. Giữ **Discovery prefix** `homeassistant`, **Base topic** `litenvr`; đặt **chu kỳ
+   ảnh** 5–300 giây.
+5. Bấm **Kiểm tra MQTT**, sau đó **Lưu**. Entity xuất hiện trong **Settings →
+   Devices & Services → MQTT → LiteNVR** sau vài giây.
+
+### Dùng trong dashboard
+
+```yaml
+type: picture-entity
+entity: camera.litenvr_cam1
+camera_view: auto
+show_name: true
+show_state: false
+```
+
+Tên entity lấy theo **ID camera** đã chuẩn hoá: chữ thường, dấu cách/ký tự đặc biệt
+thay bằng `_`. Ảnh được publish retained lên `<base_topic>/camera/<slug>/image`,
+trạng thái online/offline ở `<base_topic>/status` qua LWT; mất kết nối thì entity
+chuyển unavailable.
+
+**Lưu ý:**
+
+- Đây là camera ảnh tĩnh, không có live. Dùng **Generic Camera** với luồng H.264
+  (hoặc luồng phụ) nếu cần card live, hoặc mở LiteNVR để xem WebRTC/HLS.
+- Tắt MQTT hoặc xoá camera sẽ xoá discovery và ảnh retained tương ứng.
+- Nếu đổi `base_topic`/`discovery_prefix`, entity cũ được dọn; thiết bị cũ còn sót
+  có thể xoá trong **MQTT → Devices**.
+- Mật khẩu MQTT lưu trong `config.json` trên thiết bị và không trả về giao diện; nên
+  dùng user MQTT riêng, quyền tối thiểu.
+
 ## Google Drive từng bước
 
 LiteNVR dùng OAuth **device flow** và chỉ xin quyền `drive.file` (chỉ thấy file do
