@@ -1,5 +1,16 @@
 # Changelog
 
+## 1.9.9
+
+- Thêm **Live trong Home Assistant (Generic Camera)**: LiteNVR hiển thị URL HLS
+  `.../hls/<camera>/live.m3u8` và URL ảnh `.../api/cameras/<camera>/snapshot.jpg`
+  kèm nút copy trong mục **🛰️ Home Assistant**; vẫn giữ entity MQTT cho badge/card.
+- HLS chờ playlist xuất hiện tối đa 8 giây khi HA kiểm tra luồng, giúp thêm Generic
+  Camera thành công ngay lần đầu; giữ đúng quyền `live` và giới hạn theo camera.
+- Thêm endpoint snapshot dùng go2rtc hoặc ảnh sự kiện mới nhất, trả 404 rõ ràng khi
+  camera chưa có ảnh; không lộ mật khẩu trong URL.
+- Ghim image LiteNVR `1cc6989` cho bản phát hành này.
+
 ## 1.9.8
 
 - Thêm **MQTT Discovery**: LiteNVR tự công bố từng camera thành entity

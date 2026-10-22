@@ -211,6 +211,35 @@ chuyển unavailable.
 - Mật khẩu MQTT lưu trong `config.json` trên thiết bị và không trả về giao diện; nên
   dùng user MQTT riêng, quyền tối thiểu.
 
+## Live trong Home Assistant (Generic Camera)
+
+MQTT chỉ gửi ảnh snapshot. Để xem live trong Home Assistant, tạo **Generic Camera**
+trỏ vào HLS của LiteNVR; entity MQTT vẫn giữ để làm badge/card ảnh.
+
+1. Trong LiteNVR, mở **🛰️ Home Assistant** → **Live trong Home Assistant (Generic
+   Camera)**. Nhập địa chỉ HA truy cập được, thường là `http://IP-HA:3333` (add-on đã
+   map cổng `3333/tcp`), rồi copy URL live và URL ảnh của camera.
+2. Trong HA, vào **Settings → Devices & Services → Add Integration → Generic Camera**:
+   - **Stream Source**: dán URL live, dạng
+     `http://IP-HA:3333/hls/<camera>/live.m3u8`.
+   - **Still Image URL**: dán URL ảnh nếu muốn ảnh tĩnh riêng, dạng
+     `http://IP-HA:3333/api/cameras/<camera>/snapshot.jpg`; có thể **để trống** để HA
+     tự tạo ảnh từ stream. Endpoint trả 404 nếu camera chưa có snapshot nào.
+   - **Username/Password**: điền tài khoản LiteNVR (không phải tài khoản HA). Không
+     dán mật khẩu vào URL.
+   - Nếu có **Authentication**, chọn **Basic**; **RTSP transport** để mặc định/TCP.
+3. Lưu cấu hình, thêm entity Generic Camera vào dashboard bằng card **Picture Glance**
+   hoặc **WebRTC Camera**.
+
+**Lưu ý:**
+
+- Dùng **luồng phụ H.264** cho live nếu camera có; H.265 có thể không phát trực tiếp
+  trên Chrome và sẽ tốn CPU khi HA chuyển mã.
+- Không dùng URL `/api/hassio_ingress/...` cho Generic Camera: URL này gắn phiên đăng
+  nhập HA và không phù hợp với ffmpeg.
+- Generic Camera dùng Basic Auth; tài khoản LiteNVR cần quyền **live** với camera đó.
+- Nếu đổi cổng add-on, dùng đúng cổng đã map thay cho `3333`.
+
 ## Google Drive từng bước
 
 LiteNVR dùng OAuth **device flow** và chỉ xin quyền `drive.file` (chỉ thấy file do

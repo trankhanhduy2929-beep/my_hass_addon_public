@@ -173,11 +173,27 @@ show_state: false
 - Ảnh publish retained lên `<base_topic>/camera/<slug>/image`; trạng thái
   online/offline ở `<base_topic>/status`. Khi LiteNVR mất kết nối, entity chuyển
   unavailable.
-- Đây là camera ảnh tĩnh. Muốn card live, dùng **Generic Camera** trỏ vào luồng H.264
-  của camera hoặc mở LiteNVR để xem WebRTC/HLS.
+- Đây là camera ảnh tĩnh. Muốn card live, dùng **Generic Camera** trỏ vào HLS của
+  LiteNVR hoặc mở LiteNVR để xem WebRTC/HLS.
 - Nếu đổi `base_topic`/`discovery_prefix`, entity cũ được dọn retained; nếu Home
   Assistant vẫn còn thiết bị cũ, xoá trong **Settings → Devices & Services → MQTT
   → LiteNVR**.
+
+## Live trong Home Assistant (Generic Camera)
+
+MQTT không truyền video. Để xem live, tạo **Generic Camera** trong HA:
+
+1. LiteNVR → **🛰️ Home Assistant** → **Live trong Home Assistant (Generic Camera)**;
+   nhập `http://IP-HA:3333` rồi copy URL live/ảnh của camera.
+2. HA → **Settings → Devices & Services → Add Integration → Generic Camera**:
+   - **Stream Source**: `http://IP-HA:3333/hls/<camera>/live.m3u8`
+   - **Still Image URL** (tuỳ chọn): `http://IP-HA:3333/api/cameras/<camera>/snapshot.jpg`
+     — để trống nếu muốn HA tự tạo ảnh từ stream.
+   - **Username/Password**: tài khoản LiteNVR; **Authentication**: Basic.
+3. Lưu và thêm entity Generic Camera vào dashboard.
+
+Dùng luồng phụ H.264 nếu có; không dùng URL Ingress `/api/hassio_ingress/...` cho
+Generic Camera. Cổng mặc định của add-on là `3333/tcp`.
 
 ## Độ trễ xem trực tiếp
 
