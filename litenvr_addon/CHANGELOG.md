@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.9.4
+
+- Thêm bộ chọn **Nguồn phát** trên dòng thời gian: Tự động, ổ gốc, Google Drive
+  hoặc SMB/Samba; timeline tải đúng nguồn và ghi nhớ lựa chọn trên trình duyệt.
+- Xem lại trực tiếp file trên SMB/Samba qua HTTP Range, tua mà không phải tải cả
+  file; báo rõ khi chưa cấu hình lưu trữ ngoài hoặc file không còn trên share.
+- Bổ sung tài liệu A–Z: cài đặt add-on, chọn nguồn phát, cấu hình Google Cloud/OAuth
+  device flow, Google Drive, SMB/Samba, bảo mật và xử lý sự cố.
+- Ghim image LiteNVR `77544de` cho bản phát hành này.
+
 ## 1.9.3
 
 - Siết quyền xem camera: tài khoản chỉ có live/playback/events vẫn mở được

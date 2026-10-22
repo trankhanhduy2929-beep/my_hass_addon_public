@@ -17,6 +17,7 @@ là lớp hiển thị và tự động hoá.
 - Nhãn sự kiện từ bộ nhận diện AI ngoài (Frigate, DeepStack, CodeProject.AI,
   Node-RED…).
 - Xem lại theo dòng thời gian, tải clip, xem ảnh sự kiện, tua/tốc độ phát.
+- Chọn nguồn phát khi xem lại: **ổ gốc**, **Google Drive** hoặc **SMB/Samba**.
 - ONVIF: dò/quét dải IP, tự thêm camera đa hãng, lấy RTSP, điều khiển PTZ và preset.
 - Lưu trữ linh hoạt: ổ cứng, Google Drive hoặc NAS (SMB/NFS/FTP).
 - Thông báo chuyển động qua Telegram và liên kết sâu mở thẳng bản ghi.
@@ -82,7 +83,7 @@ Lưu ý:
 5. WebRTC dùng thêm cổng **8556/TCP + 8556/UDP**. Khi truy cập qua tên miền hoặc
    reverse proxy, đặt `WEBRTC_PUBLIC_HOST` thành IP LAN của Home Assistant để ICE
    kết nối đúng; nếu không mở được cổng, LiteNVR tự dùng HLS.
-5. Đăng nhập bằng `username` và `password` đã đặt ở bước 3.
+6. Đăng nhập bằng `username` và `password` đã đặt ở bước 3.
 
 ### 5. Thêm camera
 
@@ -115,6 +116,23 @@ Mẹo:
 - Nếu ONVIF không tìm thấy, dùng URL RTSP thủ công.
 - Với camera H.265/HEVC, LiteNVR tự chuyển mã H.264 cho trình duyệt.
 - Nên dùng luồng phụ H.264 cho live để giảm CPU.
+
+### 6. Kết nối Google Drive hoặc SMB (tuỳ chọn)
+
+- **Google Drive**: mở **☁️ Google Drive** trong LiteNVR, dán OAuth **Client ID**
+  và **Client secret** của client loại **TVs and Limited Input devices**, rồi bấm
+  **Kết nối bằng mã thiết bị**. Cần tạo client trong Google Cloud Console và bật
+  Google Drive API; hướng dẫn từng bước ở
+  [DOCS.md → Google Drive từng bước](DOCS.md#google-drive-từng-bước).
+- **SMB/Samba**: mở **💾 Lưu trữ ngoài (SMB/FTP)**, chọn SMB, nhập host/share/tài
+  khoản, kiểm tra đích rồi lưu. Chi tiết ở
+  [DOCS.md → SMB/Samba từng bước](DOCS.md#smbsamba-từng-bước).
+
+### 7. Chọn nguồn khi xem lại
+
+Trên dòng thời gian, ô **Nguồn phát** cho phép chọn **Tự động (ổ gốc + Drive)**,
+**Chỉ ổ gốc**, **Chỉ Google Drive** hoặc **Chỉ SMB/Samba**. Chọn đúng nguồn trước
+khi tua để LiteNVR đọc bản ghi từ nơi bạn muốn.
 
 ## Độ trễ xem trực tiếp
 
