@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.9.12
+
+- Khi **Âm thanh = Không**, FFmpeg không yêu cầu track audio RTSP nữa. Camera/NVR
+  có audio AAC lỗi `Error parsing AU headers` không còn làm HLS và ghi hình bị treo;
+  log cũng không còn cảnh báo AU giả.
+- Ghim image LiteNVR `fe50760` cho bản phát hành này.
+
 ## 1.9.11
 
 - `PPS id out of range`, `SPS/VPS` và `Error parsing NAL unit` của nguồn H.265
