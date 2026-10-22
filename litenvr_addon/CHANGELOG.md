@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.9.2
+
+- Ghi hình **luôn giữ codec gốc** (`-c:v copy`); lựa chọn H.264 chỉ ép transcode
+  cho luồng live. Giảm mạnh CPU/RAM với camera 4K/HEVC.
+- Tự khởi động lại ffmpeg camera nếu RSS vượt `CAMERA_MAX_RSS_MB` (mặc định
+  900 MB) sau 60 giây grace, chống rò rỉ RAM hoặc ffmpeg phình quá mức.
+  Tắt bằng `CAMERA_MAX_RSS_MB=0`; đổi thời gian grace bằng `CAMERA_RSS_GRACE_SEC`.
+- Ghim image LiteNVR `dc59509` cho bản phát hành này.
+
 ## 1.9.1
 
 - WebRTC ưu tiên **luồng phụ** khi camera đã khai báo, giảm CPU và băng thông
