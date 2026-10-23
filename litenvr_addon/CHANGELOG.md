@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.9.13
+
+- Google Drive có thể tải **tối đa 8 file cùng lúc** (trước đây 4). Tốc độ giới hạn
+  được chia đều cho các file đang tải; nên dùng 4–8 khi mạng khoẻ.
+- Google Drive vẫn giới hạn **750 GB/ngày/tài khoản**; vượt mức sẽ báo lỗi tạm thời
+  và LiteNVR tự thử lại.
+- Image add-on 1.9.13 dựng từ LiteNVR 1.9.13.
+
 ## 1.9.12
 
 - Khi **Âm thanh = Không**, FFmpeg không yêu cầu track audio RTSP nữa. Camera/NVR

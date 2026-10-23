@@ -288,6 +288,8 @@ chính LiteNVR tạo). Add-on không kèm OAuth client; bạn tự tạo trong G
    - **Dọn file cũ nhất khi Drive còn trống dưới (MB)**: ngưỡng an toàn.
    - **Giới hạn tốc độ tải lên (Mbps)**: `0` = không giới hạn; đặt `1`–`10` Mbps
      nếu đường truyền yếu.
+   - **Số file tải lên cùng lúc**: `1`–`8` file; tốc độ giới hạn được chia đều.
+     Nên dùng `4`–`8` khi mạng khoẻ.
 10. Bấm **💾 Lưu cài đặt**.
 11. Bấm **🔼 Tải lên ngay** để đưa bản ghi cũ trong khoảng ngày lên Drive, hoặc chờ
     LiteNVR tự sao lưu các đoạn mới.
@@ -399,10 +401,8 @@ khởi động lại add-on nếu nó ngừng phản hồi.
 
 ## Ghi chú triển khai
 
-Ảnh add-on được xuất bản tự động thành `ghcr.io/trankhanhduy2929-beep/litenvr_addon`.
+Ảnh add-on được xuất bản tự động thành `ghcr.io/trankhanhduy2929-beep/litenvr_docker_zimaos`.
 Sau lần xuất bản đầu tiên, đặt các gói GHCR sau thành **Public** trong GitHub
 Package settings để Home Assistant tải được:
 
-- `litenvr_addon`
-- `litenvr_addon-amd64`
-- `litenvr_addon-aarch64`
+- `litenvr_ha_addon`
