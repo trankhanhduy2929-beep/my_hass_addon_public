@@ -309,7 +309,7 @@ camera chỉ lưu **Ổ gốc**.
 
 - Web UI: cổng `3333` trong container, Ingress qua Home Assistant.
 - Watchdog: `http://[HOST]:[PORT:3333]/health`.
-- Image: `ghcr.io/trankhanhduy2929-beep/litenvr_docker_zimaos`.
+- Image: `ghcr.io/trankhanhduy2929-beep/litenvr_addon`.
 - Kiến trúc: `amd64`, `aarch64`.
 
 Xem thêm [DOCS.md](DOCS.md) để biết toàn bộ tuỳ chọn và [CHANGELOG.md](CHANGELOG.md)

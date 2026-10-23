@@ -1,5 +1,5 @@
 name: LiteNVR
-version: "1.9.13"
+version: "1.9.14"
 slug: litenvr
 description: >-
   LiteNVR - NVR gọn nhẹ: xem trực tiếp, ghi hình và xem lại camera RTSP/ONVIF.
@@ -52,4 +52,4 @@ schema:
   ffmpeg_threads: int(1,8)
   live_max_height: int(0,2160)
   storage_location: list(data|media|share)
-image: "ghcr.io/trankhanhduy2929-beep/litenvr_docker_zimaos"
+image: "ghcr.io/trankhanhduy2929-beep/litenvr_addon"

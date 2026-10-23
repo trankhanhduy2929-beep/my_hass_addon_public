@@ -1,12 +1,12 @@
 # Changelog
 
-## 1.9.13
+## 1.9.14
 
-- Google Drive có thể tải **tối đa 8 file cùng lúc** (trước đây 4). Tốc độ giới hạn
-  được chia đều cho các file đang tải; nên dùng 4–8 khi mạng khoẻ.
-- Google Drive vẫn giới hạn **750 GB/ngày/tài khoản**; vượt mức sẽ báo lỗi tạm thời
-  và LiteNVR tự thử lại.
-- Image add-on 1.9.13 dựng từ LiteNVR 1.9.13.
+- **Google Drive**: tự đặt **1–64 file tải lên cùng lúc** thay vì giới hạn 8,
+  phù hợp hệ thống có hàng chục camera. Giới hạn tốc độ vẫn được chia đều.
+- Live WebRTC ổn định hơn và tự phục hồi lưới camera khi kết nối gián đoạn.
+- Xem lại trên iPhone/iPad dùng HLS native, tránh lỗi phát.
+- Ghim image LiteNVR `a618b03` cho bản phát hành này.
 
 ## 1.9.12
 
