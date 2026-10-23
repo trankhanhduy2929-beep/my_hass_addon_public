@@ -210,6 +210,9 @@ Các nút chỉ được tạo khi add-on xác nhận robot hỗ trợ capabilit
 
 ### Hỗ trợ thiết bị nội địa
 
+- DEEBOT OZMO T5 Hero dùng class `eazo2f` với profile OZMO T5 `9rft3c` đã xác
+  minh; add-on cũng nhận diện tên sản phẩm chứa `T5 Hero` nếu cloud trả class
+  khác.
 - DEEBOT X9 PRO OMNI hỗ trợ trực tiếp class quốc tế `ilt3k8` và hai class nội
   địa `lwmdoj`, `0jv4ti`; class X9 mới có model/tên sản phẩm khớp sẽ dùng profile
   `ilt3k8` đã xác minh.
@@ -241,6 +244,9 @@ Các nút chỉ được tạo khi add-on xác nhận robot hỗ trợ capabilit
   218 profile đã đóng gói.
 - DEEBOT và GOAT chưa có cặp khớp chính xác dùng profile nền cùng thế hệ một
   cách bảo thủ để ưu tiên trạng thái realtime và các lệnh cơ bản.
+- DF45 dùng class legacy `158` qua XMPP; T3 chưa có class xác minh trong product
+  map. Hai model này chỉ xuất hiện dưới dạng sensor metadata và không nhận lệnh
+  MQTT. Nếu thiết bị thực tế là T30, profile T30 đã có trong catalog.
 - WINBOT, AIRBOT và thiết bị legacy chưa có protocol tương ứng vẫn xuất hiện
   dưới dạng sensor metadata; add-on không quảng bá lệnh hoặc bản đồ chưa được
   xác minh, và một thiết bị kiểu này không còn làm lỗi đăng nhập cả tài khoản.

@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.3.7 - 2026-10-23
+
+- Thêm lớp tương thích `eazo2f` cho DEEBOT OZMO T5 Hero nội địa, dùng profile
+  OZMO T5 `9rft3c` đã xác minh; nhận diện thêm tên sản phẩm có chuỗi
+  `T5 Hero` khi cloud trả về class khác.
+- Ghi rõ DF45 dùng class legacy `158` qua XMPP nên chỉ hiển thị metadata, chưa
+  thể điều khiển bằng luồng MQTT; T3 chưa có class xác minh trong product map.
+  Nếu thiết bị thực tế là T30, add-on đã hỗ trợ qua catalog profile.
+
 ## 1.3.6 - 2026-10-03
 
 - Sửa bỏ sót nền bản đồ khi `onMajorMap` chỉ gửi checksum: yêu cầu major map
