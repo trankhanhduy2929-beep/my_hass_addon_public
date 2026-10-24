@@ -22,7 +22,7 @@ Add-on YouTube Pro cho Home Assistant, được tách riêng hoàn toàn khỏi 
 - **Thống kê “Nghe nhiều”** đếm lượt nghe theo toàn cục từ lịch sử, hiển thị top bài/kênh trong Thư viện.
 - Tự lấy địa chỉ LAN của Home Assistant qua Supervisor; người dùng không phải nhập IP Hass.
 - Tự phát tới Cast/Google Cast qua `media_player`, đồng thời nhận diện Apple TV/AirPlay/HomePod.
-- **Loa MAIKA**: nhận diện integration `maika` và luôn phát qua relay của add-on thay vì đưa link YouTube trực tiếp cho loa tự tải (link bị khóa IP/POT nên loa sẽ im lặng).
+- **Loa MAIKA**: nhận diện integration `maika`, luôn phát qua relay của add-on và chuyển audio sang MP3/AUDIO_MPEG (định dạng kho nội dung MAIKA dùng), tránh link YouTube trực tiếp bị khóa IP/POT và tránh AAC/m4a bị dừng.
 - **Phát nhiều loa cùng lúc**: tích nhiều loa/TV để phát chung một hàng chờ; đang phát thì tích thêm loa để loa đó vào đúng chỗ, bỏ tích để chỉ loa đó dừng. Mỗi loa có thanh âm lượng riêng và cả nhóm tự chuyển bài khi hết bài.
 - **Mỗi bài hai nút Nghe / Xem**: nút **Nghe** phát chỉ tiếng, nút **Xem** mở video trên trình duyệt hoặc truyền tới Cast/TV.
 - **Ẩn thiết bị**: loa mất kết nối tự ẩn và tự hiện lại khi kết nối; có nút ẩn/hiện thủ công cho từng loa, lưu trên trình duyệt.
@@ -39,7 +39,7 @@ Add-on YouTube Pro cho Home Assistant, được tách riêng hoàn toàn khỏi 
 ## Cài add-on
 
 1. Chép thư mục `youtube_pro_addon` vào repository add-on local.
-2. Reload add-on store rồi cài **YouTube Pro 5.18.1**.
+2. Reload add-on store rồi cài **YouTube Pro 5.18.2**.
 3. Giữ port host `2032` nếu không có dịch vụ khác sử dụng cổng này. Không cần điền `media_base_url` trong cấu hình thông thường.
 4. Khởi động add-on và mở Web UI.
 

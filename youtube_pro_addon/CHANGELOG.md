@@ -1,5 +1,11 @@
 # Changelog
 
+## 5.18.2 - 2026-10-24
+
+- **Loa MAIKA phát MP3 thay vì AAC/m4a**: kho nội dung MAIKA dùng MP3 với `AUDIO_MPEG`, còn luồng m4a/AAC bị loa dừng ngay. Add-on chuyển audio nguồn sang MP3 trực tiếp bằng ffmpeg tại `/api/media-mp3/<token>/audio.mp3` khi thiết bị là MAIKA; vẫn giữ relay cho Cast/AirPlay/DLNA và video.
+- Thêm log host:port của URL cast (`Gửi cast ... qua ...`) và log mọi lần loa tải stream MP3 để chẩn đoán khi loa không gọi về add-on.
+- Kiểm thử: 170 passed; thêm test đường dẫn MP3, tham số ffmpeg `libmp3lame`, và media type `audio/mpeg`.
+
 ## 5.18.1 - 2026-10-24
 
 - **Sửa cast nhạc lên loa MAIKA bị im lặng**: nhận diện entity của integration `maika` (platform `maika` hoặc tên/manufacturer MAIKA) và **chỉ dùng transport `relay`**, không thử `direct` và không fallback về `direct`. Link `googlevideo.com` bị khóa theo IP của Home Assistant (và thường cần chữ ký/POT), nên khi loa tự tải URL trực tiếp thì cloud MAIKA vẫn nhận lệnh nhưng loa không phát; relay để add-on tải hộ rồi phát lại qua mạng LAN.

@@ -93,7 +93,7 @@ This table is generated automatically from the private release catalog after suc
 | Telegram VoIP Notifier | `0.1.12` | stable | `amd64, aarch64` | [Open](telegram_voip/README.md) |
 | Voice Action Bridge VI Lite | `1.0.4` | stable | `amd64, aarch64` | [Open](voice-action-bridge-vi-lite/README.md) |
 | YouTube Music Lite | `2.4.0` | stable | `amd64, aarch64` | [Open](youtube_cast_addon/README.md) |
-| YouTube Pro | `5.18.1` | stable | `amd64, aarch64` | [Open](youtube_pro_addon/README.md) |
+| YouTube Pro | `5.18.2` | stable | `amd64, aarch64` | [Open](youtube_pro_addon/README.md) |
 
 <!-- AUTO-ADDON-CATALOG:END -->
 
