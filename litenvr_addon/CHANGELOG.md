@@ -1,5 +1,16 @@
 # Changelog
 
+## 1.9.18
+
+- **Chẩn đoán RAM chi tiết**: trang trạng thái hiển thị bộ nhớ ẩn danh, bộ nhớ file,
+  đỉnh RSS, số thread và số tác vụ thông báo đang chạy để xác định nguồn tăng RAM.
+- **Giảm áp lực bộ nhớ**: giới hạn tối đa 4 thông báo chuyển động xử lý đồng thời,
+  bỏ qua thông báo vượt giới hạn kèm cảnh báo; trả bộ nhớ đệm về hệ điều hành mỗi phút
+  và đặt `MALLOC_ARENA_MAX=2`.
+- **Dọn ổ đĩa nhẹ hơn**: chỉ tải danh sách bản ghi đã xong khi thực sự vượt quota,
+  thay vì đọc toàn bộ mỗi 5 phút.
+- Ghim image LiteNVR `4a962bb` cho bản phát hành này.
+
 ## 1.9.17
 
 - **Sửa lỗi Check AI báo 502**: cập nhật model mặc định còn hoạt động
