@@ -1,5 +1,11 @@
 # Changelog
 
+## 5.18.4 - 2026-10-24
+
+- **Khôi phục direct-first cho loa MAIKA**: các bản trước 5.18.1 thử link HTTPS của YouTube trước và vẫn phát được trên nhiều đời loa. 5.18.1 ép relay-only nên một số firmware chặn HTTP LAN bị im lặng. Nay MAIKA thử `direct` với media type gốc (`audio/mp4`/`music`) trước, rồi tự fallback sang relay MP3 nếu loa không chuyển sang phát.
+- Giữ nguyên relay MP3 và route `/api/media-mp3` đã sửa 403 ở 5.18.3 cho các trường hợp direct bị khóa IP/POT hoặc loa cần relay.
+- Kiểm thử: 172 passed; cập nhật test MAIKA direct-first, fallback relay, và fallback khi cast không start.
+
 ## 5.18.3 - 2026-10-24
 
 - **Sửa relay MP3 bị chặn 403 với IP LAN**: route `/api/media-mp3/...` chưa nằm trong nhóm endpoint media được phép truy cập ngoài Ingress, nên loa gọi từ `192.168.x.x` bị Flask trả 403 trước khi vào route. Nay route MP3 được xử lý như `/api/media` và `/api/media-remux`, kèm CORS cho trình phát.
