@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.3.8 - 2026-10-24
+
+- Sửa AppArmor chặn s6-overlay truy cập chính thư mục `/run`, `/etc/s6-overlay`
+  và các thư mục runtime, gây lỗi `s6-rc-init: unable to opendir /run` và
+  container khởi động lặp. Giữ nguyên license key và dữ liệu đã lưu.
+
 ## 1.3.7 - 2026-10-23
 
 - Thêm lớp tương thích `eazo2f` cho DEEBOT OZMO T5 Hero nội địa, dùng profile
