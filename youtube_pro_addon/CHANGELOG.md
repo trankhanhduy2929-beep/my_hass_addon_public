@@ -1,5 +1,11 @@
 # Changelog
 
+## 5.18.3 - 2026-10-24
+
+- **Sửa relay MP3 bị chặn 403 với IP LAN**: route `/api/media-mp3/...` chưa nằm trong nhóm endpoint media được phép truy cập ngoài Ingress, nên loa gọi từ `192.168.x.x` bị Flask trả 403 trước khi vào route. Nay route MP3 được xử lý như `/api/media` và `/api/media-remux`, kèm CORS cho trình phát.
+- **Thêm log chẩn đoán**: log phiên bản lúc khởi động, log mọi request `/api/cast` kèm entity/remote, và log request `media-mp3` trước khi kiểm tra token để phân biệt "loa không gọi về" với "token hết hạn".
+- Kiểm thử: thêm test loa LAN (`192.168.5.50`) tải `/api/media-mp3/...` trả 200 và `audio/mpeg`.
+
 ## 5.18.2 - 2026-10-24
 
 - **Loa MAIKA phát MP3 thay vì AAC/m4a**: kho nội dung MAIKA dùng MP3 với `AUDIO_MPEG`, còn luồng m4a/AAC bị loa dừng ngay. Add-on chuyển audio nguồn sang MP3 trực tiếp bằng ffmpeg tại `/api/media-mp3/<token>/audio.mp3` khi thiết bị là MAIKA; vẫn giữ relay cho Cast/AirPlay/DLNA và video.
