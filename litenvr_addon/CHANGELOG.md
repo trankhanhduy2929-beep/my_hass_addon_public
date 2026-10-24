@@ -1,5 +1,16 @@
 # Changelog
 
+## 1.9.17
+
+- **Sửa lỗi Check AI báo 502**: cập nhật model mặc định còn hoạt động
+  (Gemini `gemini-3.8-flash`, Groq `qwen/qwen3.8-27b`, OpenAI `gpt-6-luna`).
+- Tự chuyển cấu hình cũ dùng `gemini-2.0-flash` hoặc
+  `meta-llama/llama-4-scout-17b-16e-instruct` sang model mới khi vẫn dùng
+  Base URL gốc; model tùy chỉnh và proxy riêng được giữ nguyên.
+- Gửi đúng tham số cho model reasoning (`max_completion_tokens`, giới hạn
+  output lớn hơn), thêm User-Agent và chuẩn hóa Base URL/model.
+- Ghim image LiteNVR `7cce56e` cho bản phát hành này.
+
 ## 1.9.16
 
 - **Bản quyền gọn hơn**: bỏ ô License server URL; link mua/quản lý license nằm ngay trên hộp thoại, key dùng server mặc định.
