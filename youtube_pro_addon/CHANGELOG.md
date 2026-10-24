@@ -1,5 +1,12 @@
 # Changelog
 
+## 5.18.1 - 2026-10-24
+
+- **Sửa cast nhạc lên loa MAIKA bị im lặng**: nhận diện entity của integration `maika` (platform `maika` hoặc tên/manufacturer MAIKA) và **chỉ dùng transport `relay`**, không thử `direct` và không fallback về `direct`. Link `googlevideo.com` bị khóa theo IP của Home Assistant (và thường cần chữ ký/POT), nên khi loa tự tải URL trực tiếp thì cloud MAIKA vẫn nhận lệnh nhưng loa không phát; relay để add-on tải hộ rồi phát lại qua mạng LAN.
+- Thêm log INFO khi có thiết bị tải media qua relay (`Relay <file>: <IP> yêu cầu GET`) để kiểm tra loa đã lấy được stream hay chưa.
+- Không đổi hành vi với Cast/AirPlay/DLNA/HomePod và các `media_player` khác.
+- Kiểm thử: 168 passed; thêm test nhận diện hồ sơ MAIKA, kế hoạch cast chỉ có `relay`, gửi đúng URL relay (không gửi link `googlevideo`), và không fallback sang `direct` khi relay thất bại.
+
 ## 5.18.0 - 2026-10-19
 
 - **Lùi lịch sử theo ngày/tháng/năm**: thêm thanh chọn phạm vi **Tất cả / Ngày / Tháng / Năm** cho mục Nghe gần đây. Khi chọn Ngày/Tháng/Năm có nút lùi/tiến một đơn vị, ô chọn ngày và nút **Hôm nay**; danh sách lọc theo `played_at`, nút tiến tự khóa khi đang ở hiện tại.
