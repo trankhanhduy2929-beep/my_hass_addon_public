@@ -25,7 +25,8 @@ là lớp hiển thị và tự động hoá.
 - Tự công bố camera snapshot qua **MQTT Discovery** để Home Assistant tạo entity
   `camera.litenvr_<camera>` cho badge/card ảnh.
 - **Mô tả sự kiện bằng AI** (Gemini/OpenAI/Groq/custom): mô tả tiếng Việt dưới
-  ảnh sự kiện, trong chi tiết, Telegram/webhook và tìm kiếm được.
+  ảnh sự kiện, trong chi tiết, Telegram/webhook và tìm kiếm được. Nút **Check AI**
+  kiểm tra API key/model trước khi lưu; chưa có license thì tự mở mục Bản quyền.
 - **LiteNVR Pro**: kích hoạt license trong **Cài đặt → Bản quyền**; mở khoá mô tả
   AI và thông báo Telegram, tự kiểm tra 6 giờ/lần và dùng ngoại tuyến tối đa 7 ngày.
 

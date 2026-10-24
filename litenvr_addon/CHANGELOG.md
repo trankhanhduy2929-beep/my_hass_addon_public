@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.9.16
+
+- **Bản quyền gọn hơn**: bỏ ô License server URL; link mua/quản lý license nằm ngay trên hộp thoại, key dùng server mặc định.
+- **Check AI**: kiểm tra API key, Base URL và model trước khi lưu; menu Mô tả sự kiện AI có icon robot.
+- **Chặn AI khi chưa có license**: bấm Mô tả sự kiện AI tự mở mục Bản quyền và nhắc kích hoạt.
+- Ghim image LiteNVR `e0f12c1` cho bản phát hành này.
+
 ## 1.9.15
 
 - **Bản quyền LiteNVR Pro**: thêm màn hình kích hoạt trong **Cài đặt → Bản quyền**,
