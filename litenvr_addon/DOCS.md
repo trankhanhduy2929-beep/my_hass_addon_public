@@ -397,6 +397,18 @@ cũ hơn không có thông tin đích nên được giữ nguyên.
 Add-on có watchdog gọi `http://[HOST]:[PORT:3333]/health`; Home Assistant tự
 khởi động lại add-on nếu nó ngừng phản hồi.
 
+## Bản quyền Pro
+
+- Mở [trang bán license](https://litenvr-license.vercel.app), đăng ký bằng email
+  hoặc số điện thoại. Có gói dùng thử 1 ngày, 7 ngày (50.000đ) và vĩnh viễn
+  (200.000đ); thanh toán PayOS, key hiện tại mục **Tài khoản**.
+- Trong LiteNVR vào **Cài đặt → Bản quyền**, dán key, bấm **Kích hoạt**, sau đó
+  **Kiểm tra lại**.
+- Add-on kiểm tra license mỗi 6 giờ; nếu mất mạng vẫn dùng tiếp tối đa 7 ngày kể
+  từ lần kiểm tra thành công cuối. Mô tả AI và Telegram cần license còn hiệu lực.
+- Đổi thiết bị: vào trang quản trị license để **Gỡ máy**, rồi kích hoạt lại trên
+  máy mới.
+
 ## Ghi chú triển khai
 
 Ảnh add-on được xuất bản tự động thành `ghcr.io/trankhanhduy2929-beep/litenvr_addon`.

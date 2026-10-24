@@ -24,6 +24,21 @@ là lớp hiển thị và tự động hoá.
 - Thông báo chuyển động qua Telegram và liên kết sâu mở thẳng bản ghi.
 - Tự công bố camera snapshot qua **MQTT Discovery** để Home Assistant tạo entity
   `camera.litenvr_<camera>` cho badge/card ảnh.
+- **Mô tả sự kiện bằng AI** (Gemini/OpenAI/Groq/custom): mô tả tiếng Việt dưới
+  ảnh sự kiện, trong chi tiết, Telegram/webhook và tìm kiếm được.
+- **LiteNVR Pro**: kích hoạt license trong **Cài đặt → Bản quyền**; mở khoá mô tả
+  AI và thông báo Telegram, tự kiểm tra 6 giờ/lần và dùng ngoại tuyến tối đa 7 ngày.
+
+## Bản quyền Pro
+
+Mô tả AI và thông báo Telegram cần license **LiteNVR Pro**. Webhook JSON vẫn miễn phí.
+
+1. Mở [trang bán license](https://litenvr-license.vercel.app), tạo tài khoản bằng
+   email hoặc số điện thoại, chọn **Dùng thử 1 ngày** (miễn phí), **7 ngày**
+   (50.000đ) hoặc **Vĩnh viễn** (200.000đ).
+2. Thanh toán PayOS, key hiện trong **Tài khoản**.
+3. Vào LiteNVR → **Cài đặt → Bản quyền**, dán key và bấm **Kích hoạt**.
+4. Bấm **Kiểm tra lại**; khi đổi máy, nhờ quản trị gỡ máy hoặc dùng trang quản trị.
 
 ## Yêu cầu
 

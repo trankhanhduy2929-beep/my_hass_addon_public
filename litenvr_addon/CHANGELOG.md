@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.9.15
+
+- **Bản quyền LiteNVR Pro**: thêm màn hình kích hoạt trong **Cài đặt → Bản quyền**,
+  tự kiểm tra định kỳ 6 giờ và cho phép dùng ngoại tuyến tối đa 7 ngày.
+- **Mô tả sự kiện bằng AI**: Gemini, OpenAI, Groq hoặc endpoint OpenAI-compatible;
+  mô tả tiếng Việt hiển thị dưới ảnh, trong chi tiết, Telegram/webhook và tìm kiếm được.
+- Thêm nút thử mô tả AI với snapshot mới nhất, gửi clip Telegram và cải thiện cài đặt.
+- Ghim image LiteNVR `7647413` cho bản phát hành này.
+
 ## 1.9.14
 
 - **Google Drive**: tự đặt **1–64 file tải lên cùng lúc** thay vì giới hạn 8,
