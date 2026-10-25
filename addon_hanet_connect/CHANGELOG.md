@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.13.4 - 2026-10-25
+
+- Không còn gắn nhãn "Người lạ" cho sự kiện chuyển động hoặc cảnh báo
+  (`human`, `alarm`) và sự kiện không xác định.
+- Sensor "Phát hiện người quen" và "Người nhận diện gần nhất" lấy sự kiện có
+  FaceID gần nhất thay vì sự kiện mới nhất bất kỳ loại.
+- Sensor "Phát hiện người lạ" chỉ bật khi thiết bị thực sự báo người lạ.
+- Map mã sự kiện 25 (HA800) thành "Sự kiện khác" thay vì "Chấm công".
+
 ## 0.13.3 - 2026-10-06
 
 - Khi popup kích hoạt không mở trong Home Assistant Ingress, giữ màn nhập key
