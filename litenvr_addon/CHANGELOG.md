@@ -1,5 +1,16 @@
 # Changelog
 
+## 1.9.20
+
+- **Live H.265/HEVC trên điện thoại nhanh hơn**: bỏ qua WebRTC (không giải mã được HEVC)
+  và chuyển thẳng sang HLS, không còn chờ timeout 8 giây.
+- **Tải trang nhẹ hơn**: HLS.js chỉ tải khi thật sự cần, bật gzip và cache cho tài nguyên
+  tĩnh, ảnh camera tải lười; giảm dữ liệu lần đầu trên 4G/Wi-Fi yếu.
+- **Giảm RAM**: hạ page cache SQLite mỗi kết nối, cache kích thước thư mục, hạ ngưỡng
+  tự khởi động lại ffmpeg xuống `640 MB`, tạm dừng polling khi tab ẩn và giãn nhịp
+  cập nhật thống kê.
+- Ghim image LiteNVR `2469f46` cho bản phát hành này.
+
 ## 1.9.19
 
 - **Sửa live Hik NVR/H.265**: khi luồng phụ go2rtc trả `404`/`401`/timeout, tự đánh dấu
