@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.9.21
+
+- **Sửa live camera trả `400 Bad Request`**: nhận diện lỗi 400 từ luồng phụ (sai kênh/đường dẫn
+  RTSP) và tự chuyển sang luồng chính; WebRTC cũng thử lại bằng luồng chính.
+- Gợi ý rõ nguyên nhân 400 trong nhật ký: sai kênh/đường dẫn hoặc luồng phụ không tồn tại
+  (Hik: `101`/`102` = kênh 1, `201`/`202` = kênh 2...).
+- Ghim image LiteNVR `7dbfd9c` cho bản phát hành này.
+
 ## 1.9.20
 
 - **Live H.265/HEVC trên điện thoại nhanh hơn**: bỏ qua WebRTC (không giải mã được HEVC)
