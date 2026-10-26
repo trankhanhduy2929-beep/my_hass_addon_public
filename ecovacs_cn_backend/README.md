@@ -1,6 +1,6 @@
 # Ecovacs đa vùng Backend cho Home Assistant
 
-Ecovacs Backend `1.3.6` là add-on điều khiển robot từ nhiều tài khoản Ecovacs
+Ecovacs Backend `1.4.0` là add-on điều khiển robot từ nhiều tài khoản Ecovacs
 China và quốc tế cùng lúc, sau đó đưa entity vào Home Assistant trực tiếp bằng
 MQTT Discovery. Không cần cài custom component hoặc nhập cloud credential vào
 Home Assistant Core.
@@ -244,9 +244,12 @@ Các nút chỉ được tạo khi add-on xác nhận robot hỗ trợ capabilit
   218 profile đã đóng gói.
 - DEEBOT và GOAT chưa có cặp khớp chính xác dùng profile nền cùng thế hệ một
   cách bảo thủ để ưu tiên trạng thái realtime và các lệnh cơ bản.
-- DF45 dùng class legacy `158` qua XMPP; T3 chưa có class xác minh trong product
-  map. Hai model này chỉ xuất hiện dưới dạng sensor metadata và không nhận lệnh
-  MQTT. Nếu thiết bị thực tế là T30, profile T30 đã có trong catalog.
+- DEEBOT T3 và DF45 dùng class legacy `158` (`company=eco-legacy`) qua XMPP.
+  Add-on nhận trạng thái, pin, lỗi, tuổi thọ vật tư và điều khiển bắt đầu, tạm
+  dừng, dừng, về trạm, tìm robot, bốn mức lực hút qua MQTT Discovery.
+- T3/DF45 legacy không có luồng bản đồ realtime. Khi XMPP tạm không kết nối,
+  thiết bị tự quay về metadata-only thay vì làm lỗi cả tài khoản. Nếu thiết bị
+  thực tế là T30, profile T30 đã có trong catalog.
 - WINBOT, AIRBOT và thiết bị legacy chưa có protocol tương ứng vẫn xuất hiện
   dưới dạng sensor metadata; add-on không quảng bá lệnh hoặc bản đồ chưa được
   xác minh, và một thiết bị kiểu này không còn làm lỗi đăng nhập cả tài khoản.
@@ -283,11 +286,11 @@ Các nút chỉ được tạo khi add-on xác nhận robot hỗ trợ capabilit
 
 ## Cài thủ công từ ZIP
 
-1. Giải nén `ecovacs_cn_addon-repository-v1.3.6.zip`.
+1. Giải nén `ecovacs_cn_addon-repository-v1.4.0.zip`.
 2. Chép nguyên thư mục `ecovacs_cn_backend` vào `/addons/`.
 3. Mở Add-on Store và chọn **Reload/Check for updates**.
 4. Chọn **Ecovacs China Backend** và nhấn **Install/Rebuild**.
-5. Kiểm tra trang thông tin phải hiển thị phiên bản `1.3.6`.
+5. Kiểm tra trang thông tin phải hiển thị phiên bản `1.4.0`.
 6. Khởi động add-on và bật **Show in sidebar** nếu muốn.
 
 Không chép riêng `addon_app` hoặc `protocol_components`. Docker build cần toàn bộ
@@ -472,8 +475,8 @@ Kiểm tra đang dùng `1.3.5`. Bản này cài package trực tiếp vào Pytho
 ## Gói phát hành
 
 - Mọi bản build mới được lưu trong thư mục `ket_qua` ở root workspace.
-- `ecovacs_cn_addon-repository-v1.3.6.zip`: add-on repository/local build.
-- `SHA256SUMS-v1.3.6.txt`: checksum của archive add-on.
+- `ecovacs_cn_addon-repository-v1.4.0.zip`: add-on repository/local build.
+- `SHA256SUMS-v1.4.0.txt`: checksum của archive add-on.
 
 Xem thêm hướng dẫn vận hành ngắn trong `DOCS.md` và lịch sử thay đổi trong
 `CHANGELOG.md`.

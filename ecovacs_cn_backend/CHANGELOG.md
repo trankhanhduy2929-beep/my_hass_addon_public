@@ -1,5 +1,19 @@
 # Changelog
 
+## 1.4.0 - 2026-10-26
+
+- Hỗ trợ đầy đủ DEEBOT T3 và DF45 dùng class legacy `158`
+  (`company=eco-legacy`) qua XMPP China: pin, trạng thái dọn/sạc, lỗi, tuổi
+  thọ chổi/bộ lọc, bắt đầu, tạm dừng, dừng, về trạm, tìm robot và bốn mức lực
+  hút; entity vẫn được tạo qua MQTT Discovery.
+- Sửa bộ lọc JID legacy để chấp nhận resource dạng
+  `did@158.ecorobot.net/atom`, nguyên nhân khiến T3 bị rơi về metadata-only.
+- Thêm kết nối XMPP STARTTLS, SASL PLAIN, reconnect nền và fallback metadata
+  an toàn khi luồng legacy không khả dụng. T3/DF45 không quảng bá bản đồ giả.
+- Thêm regression test cho nhận diện thiết bị, JID, ghép gói IQ phân mảnh, lệnh
+  điều khiển, trạng thái/tuổi thọ và fallback kết nối.
+- Khai báo rõ `defusedxml` trong dependency add-on và kiểm thử.
+
 ## 1.3.8 - 2026-10-24
 
 - Sửa AppArmor chặn s6-overlay truy cập chính thư mục `/run`, `/etc/s6-overlay`

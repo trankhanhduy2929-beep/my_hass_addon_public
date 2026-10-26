@@ -107,10 +107,12 @@ cloud token đã lưu.
 - **DEEBOT OZMO T5 Hero:** class `eazo2f` được map sang profile `9rft3c`. Nếu
   thiết bị vẫn chỉ hiện metadata, gửi log chứa `class`, `company`, `UILogicId`
   và `model` để đối chiếu.
-- **DF45/T3:** DF45 là class legacy `158` qua XMPP, không dùng được với luồng
-  MQTT hiện tại; T3 chưa có class xác minh. Hai model này chỉ hiện metadata,
-  không tạo vacuum entity hoặc gửi lệnh. T30 đã được hỗ trợ nếu tên thực tế là
-  T30.
+- **DF45/T3:** hai model dùng class legacy `158` qua XMPP và đã được hỗ trợ
+  trực tiếp: vacuum entity, pin, trạng thái, lỗi, tuổi thọ vật tư, bắt đầu/tạm
+  dừng/dừng/về trạm/tìm robot và bốn mức lực hút. Không có bản đồ realtime.
+  Nếu lần kết nối đầu chưa được, thiết bị giữ metadata-only an toàn và có thể
+  thử lại bằng nút kết nối lại tài khoản; sau khi đã vào XMPP, client tự
+  reconnect nền. T30 đã được hỗ trợ nếu tên thực tế là T30.
 - **Dọn một khu vực:** dùng MQTT button **Dọn [tên khu vực]** trong Home
   Assistant. Ingress không còn hiển thị bản đồ/nút chọn phòng vì firmware có
   thể chỉ trả room ID mà không có ranh giới hoặc tâm phòng đáng tin cậy.
