@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.9.22
+
+- **Tự cứu live khi âm thanh RTSP bị treo**: nếu ffmpeg đứng quá 20 giây mà chưa có
+  khung hình đầu tiên, app tự đặt `audio_mode=none` cho camera, lưu cấu hình và khởi
+  động lại luồng. Tránh trường hợp NVR/go2rtc gửi audio hỏng làm video không bao giờ chạy.
+- Chỉ áp dụng khi chưa có khung hình; camera đang chạy bình thường hoặc stall sau khi
+  đã có hình sẽ giữ nguyên âm thanh.
+- Ghim image LiteNVR `6a5476b` cho bản phát hành này.
+
 ## 1.9.21
 
 - **Sửa live camera trả `400 Bad Request`**: nhận diện lỗi 400 từ luồng phụ (sai kênh/đường dẫn
