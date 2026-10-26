@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.9.19
+
+- **Sửa live Hik NVR/H.265**: khi luồng phụ go2rtc trả `404`/`401`/timeout, tự đánh dấu
+  luồng phụ lỗi và chuyển sang luồng chính; nếu restream chính cũng lỗi, tạm nối trực tiếp NVR.
+- **WebRTC tự phục hồi**: luồng phụ `404` sẽ thử lại bằng luồng chính; HLS, ghi hình và
+  dò codec dùng cùng cơ chế fallback.
+- Ghim image LiteNVR `2a2720a` cho bản phát hành này.
+
 ## 1.9.18
 
 - **Chẩn đoán RAM chi tiết**: trang trạng thái hiển thị bộ nhớ ẩn danh, bộ nhớ file,
