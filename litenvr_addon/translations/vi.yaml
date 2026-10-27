@@ -25,7 +25,7 @@ configuration:
     description: Số luồng cấp cho mỗi tiến trình FFmpeg.
   live_max_height:
     name: Chiều cao xem trực tiếp tối đa
-    description: Hạ chiều cao khung xem trực tiếp theo pixel. 0 giữ nguyên độ phân giải.
+    description: Hạ chiều cao khung xem trực tiếp theo pixel. H.265/HEVC luôn cap tối đa 576p và dùng 1 thread. 0 giữ mức cap mặc định.
   storage_location:
     name: Nơi lưu trữ
     description: Nơi LiteNVR lưu cấu hình và bản ghi (data, media hoặc share).

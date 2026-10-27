@@ -25,7 +25,7 @@ configuration:
     description: Thread budget for each FFmpeg process.
   live_max_height:
     name: Live max height
-    description: Downscale live view height in pixels. 0 keeps the original resolution.
+    description: Downscale live view height in pixels. H.265/HEVC is always capped at 576p with 1 thread. 0 keeps the default cap.
   storage_location:
     name: Storage location
     description: Where LiteNVR keeps config and recordings (data, media or share).

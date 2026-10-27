@@ -103,7 +103,7 @@ LiteNVR dùng HLS segment **1 giây**, playlist **4 segment** và trình duyệt
 gần live edge. Khi camera phải chuyển mã H.265/HEVC sang H.264, FFmpeg tự ép
 keyframe đúng nhịp segment để không phải chờ GOP dài. Độ trễ thực tế thường khoảng
 **1–4 giây**; camera có GOP dài hoặc mạng Wi-Fi yếu có thể cao hơn. Nếu cần ổn định
-hơn, dùng luồng phụ H.264 cho live và hạ `live_max_height`.
+hơn, dùng luồng phụ H.264 cho live và hạ `live_max_height`. Live H.265/HEVC được cap tối đa 576p và dùng 1 thread để giảm RAM.
 
 ## Tuỳ chọn
 
@@ -117,7 +117,7 @@ hơn, dùng luồng phụ H.264 cho live và hạ `live_max_height`.
 | `log_level` | `info` | Mức log máy chủ web (`debug`/`info`/`warning`/`error`). |
 | `go2rtc` | `auto` | Chế độ go2rtc: `auto`, `on`, `off`; `auto`/`on` bật WebRTC. |
 | `ffmpeg_threads` | `2` | Số luồng cấp cho mỗi tiến trình FFmpeg. |
-| `live_max_height` | `720` | Hạ chiều cao khung xem trực tiếp (pixel). `0` giữ nguyên. |
+| `live_max_height` | `576` | Hạ chiều cao khung xem trực tiếp (pixel). Camera H.265/HEVC luôn bị cap tối đa 576p và dùng 1 thread để giảm RAM; `0` giữ nguyên mức cap mặc định. |
 | `storage_location` | `media` | Nơi lưu cấu hình và bản ghi: `data`, `media`, `share`. |
 
 ## Nơi lưu trữ

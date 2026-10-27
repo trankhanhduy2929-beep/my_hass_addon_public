@@ -79,7 +79,7 @@ Mô tả AI và thông báo Telegram cần license **LiteNVR Pro**. Webhook JSON
 | `password` | **Bắt buộc**, tối thiểu 12 ký tự, dùng mật khẩu riêng và duy nhất. |
 | `timezone` | `Asia/Ho_Chi_Minh` hoặc múi giờ của bạn. |
 | `storage_location` | `media` (mặc định), `share` hoặc `data`. |
-| `live_max_height` | `720` để nhẹ CPU; `0` giữ nguyên độ phân giải. |
+| `live_max_height` | `576` để nhẹ CPU; H.265/HEVC luôn cap tối đa 576p, dùng 1 thread. |
 | `ffmpeg_threads` | `2` là mặc định; tăng khi CPU còn trống. |
 | `go2rtc` | `auto`/`on` (khuyến nghị) để dùng WebRTC. |
 | `iframe` | Bật nếu muốn nhúng giao diện vào dashboard. |
@@ -221,7 +221,7 @@ Nếu live chậm hơn:
 
 - Kiểm tra GOP/keyframe của camera; nên đặt keyframe 1–2 giây.
 - Dùng luồng phụ H.264 cho live.
-- Hạ `live_max_height` xuống `480` hoặc `720`.
+- Hạ `live_max_height` xuống `480` hoặc `576`.
 - Tăng `ffmpeg_threads` nếu CPU còn trống.
 - Với reverse proxy, tắt proxy buffering cho đường dẫn `/hls/`.
 

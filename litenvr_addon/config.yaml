@@ -1,5 +1,5 @@
 name: LiteNVR
-version: "1.9.22"
+version: "1.9.23"
 slug: litenvr
 description: >-
   LiteNVR - NVR gọn nhẹ: xem trực tiếp, ghi hình và xem lại camera RTSP/ONVIF.
@@ -39,7 +39,7 @@ options:
   log_level: info
   go2rtc: auto
   ffmpeg_threads: 2
-  live_max_height: 720
+  live_max_height: 576
   storage_location: media
 schema:
   auth_enabled: bool

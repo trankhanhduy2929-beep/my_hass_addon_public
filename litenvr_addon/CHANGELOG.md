@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.9.23
+
+- **Giảm RAM khi xem live H.265/HEVC**: hạ tối đa **576p** và dùng **1 thread** cho
+  giải mã, bộ lọc và mã hoá; camera H.264 copy giữ nguyên cấu hình cũ. Bản ghi vẫn
+  giữ nguyên độ phân giải gốc.
+- Thêm `LIVE_TRANSCODE_MAX_HEIGHT` (mặc định `576`, `0` = tắt cap) để chỉnh riêng
+  mức hạ cho live H.265; `live_max_height` vẫn là giới hạn người dùng.
+- Ghim image LiteNVR `c243bc8` cho bản phát hành này.
+
 ## 1.9.22
 
 - **Tự cứu live khi âm thanh RTSP bị treo**: nếu ffmpeg đứng quá 20 giây mà chưa có
