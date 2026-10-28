@@ -84,7 +84,7 @@ This table is generated automatically from the private release catalog after suc
 | Ecovacs China Backend | `1.4.0` | stable | `amd64, aarch64` | [Open](ecovacs_cn_backend/README.md) |
 | Ecovacs Private Gateway | `2.1.5` | stable | `amd64, aarch64` | [Open](ecovacs_gateway/README.md) |
 | Hanet Camera Bridge | `2.5.2` | stable | `amd64, aarch64` | [Open](hanet_bridge/README.md) |
-| Hanet Camera Bridge Pro | `3.2.1` | stable | `amd64, aarch64` | [Open](hanet_bridge_pro/README.md) |
+| Hanet Camera Bridge Pro | `3.2.2` | stable | `amd64, aarch64` | [Open](hanet_bridge_pro/README.md) |
 | AI Vision Entity Describer | `1.1.3` | stable | `amd64, aarch64` | [Open](hass-ai-vision-addon/README.md) |
 | LiteNVR | `1.9.23` | stable | `amd64, aarch64` | [Open](litenvr_addon/README.md) |
 | PicoClaw | `0.4.4` | stable | `amd64, aarch64` | [Open](picoclaw/README.md) |

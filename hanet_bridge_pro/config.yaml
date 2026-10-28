@@ -1,5 +1,5 @@
 name: Hanet Camera Bridge Pro
-version: 3.2.1
+version: 3.2.2
 slug: hanet_bridge_pro
 description: Kết nối Hanet AI Camera qua MQTT, tự tạo thiết bị và camera cho Home Assistant. Bản PRO sử dụng License Key của Hanet License.
 url: "https://github.com/trankhanhduy2929-beep/my_hass_addon_public"

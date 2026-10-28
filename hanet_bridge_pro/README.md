@@ -2,7 +2,7 @@
 
 Add-on Home Assistant nhận dữ liệu từ Hanet AI Camera qua MQTT, lưu lịch sử, hiển thị ảnh và tự tạo thiết bị/camera/sensor trong Home Assistant.
 
-Bản `3.2.1` chỉ dùng dữ liệu do camera Hanet gửi. Add-on không tải model, không chạy nhận diện khuôn mặt local và không cần `numpy`, `scipy`, OpenCV hay InsightFace.
+Bản `3.2.2` chỉ dùng dữ liệu do camera Hanet gửi. Add-on không tải model, không chạy nhận diện khuôn mặt local và không cần `numpy`, `scipy`, OpenCV hay InsightFace.
 
 ## Yêu cầu
 
@@ -21,6 +21,7 @@ Bản `3.2.1` chỉ dùng dữ liệu do camera Hanet gửi. Add-on không tải
    - `Dockerfile`
    - `config.yaml`
    - `icon.png`
+   - thư mục `static/` (Bootstrap, Font Awesome và Inter dùng offline)
 4. Vào **Settings > Add-ons > Add-on Store**.
 5. Mở menu ba chấm, chọn **Check for updates**.
 6. Trong **Local Add-ons**, mở **Hanet Camera Bridge Pro** và chọn **Install**.
@@ -39,11 +40,12 @@ Cấu hình được lưu trong add-on, không cần sửa `config.yaml` sau khi
    - MQTT Host
    - MQTT Port, mặc định `1883`
    - MQTT Username và Password nếu broker yêu cầu
+   - Bật **MQTT over TLS** nếu broker dùng cổng `8883`; có thể trỏ CA certificate tới tệp trong `/share`
    - Hanet Topic, mặc định `/topic/detected/#`
    - Số ngày lưu lịch sử, `0` là lưu vĩnh viễn
    - Tên hiển thị cho từng camera
-4. Bấm **Lưu cấu hình**.
-5. Bấm **Khởi động lại Addon** nếu thay đổi MQTT.
+4. Bấm **Lưu cấu hình**. Add-on tự kết nối lại MQTT, không cần khởi động lại.
+5. Dùng **Sao lưu / phục hồi** trong trang Cài đặt để tải hoặc phục hồi cấu hình JSON. Tệp backup chứa mật khẩu MQTT, hãy cất giữ cẩn thận.
 
 Có thể đổi website license trong phần Configuration của add-on qua tùy chọn `license_portal_url`.
 
@@ -178,7 +180,7 @@ Add-on tự kết nối lại. Nếu lỗi kéo dài, kiểm tra broker, mạng 
 - Kiểm tra key còn hạn và chưa gắn với thiết bị khác.
 - Dùng **Installation ID** trong trang License khi cần quản trị viên hỗ trợ reset thiết bị.
 
-## Phạm vi phiên bản 3.2.1
+## Phạm vi phiên bản 3.2.2
 
 - Chỉ xử lý dữ liệu Hanet qua MQTT.
 - Đã bỏ Face Compare, model local, training, thêm người và test AI.
