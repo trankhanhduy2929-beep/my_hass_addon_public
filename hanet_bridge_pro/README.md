@@ -2,7 +2,7 @@
 
 Add-on Home Assistant nhận dữ liệu từ Hanet AI Camera qua MQTT, lưu lịch sử, hiển thị ảnh và tự tạo thiết bị/camera/sensor trong Home Assistant.
 
-Bản `3.2.2` chỉ dùng dữ liệu do camera Hanet gửi. Add-on không tải model, không chạy nhận diện khuôn mặt local và không cần `numpy`, `scipy`, OpenCV hay InsightFace.
+Bản `3.3.0` chỉ dùng dữ liệu do camera Hanet gửi. Add-on không tải model, không chạy nhận diện khuôn mặt local và không cần `numpy`, `scipy`, OpenCV hay InsightFace.
 
 ## Yêu cầu
 
@@ -70,7 +70,9 @@ Payload:
 ```json
 {
   "person_name": "Nguyễn Văn A",
+  "person_id": "12345",
   "person_type": "Gia đình",
+  "event_code": "0",
   "timestamp": "08:30:15 27/10/2026"
 }
 ```
@@ -80,6 +82,8 @@ Giá trị `person_type`:
 - `Gia đình`
 - `Người quen`
 - `Người lạ`
+
+Add-on chỉ xử lý sự kiện FaceID (`0`, `1`, `2`, `FACE`, `CHECKIN`, `PERSON` hoặc sự kiện có `person_id`). Sự kiện cảnh báo/chuyển động/khác như `3`, `4`, `25`, `ALARM`, `HUMAN`, `OTHER` bị bỏ qua. Thời gian và `person_id` được lấy từ payload camera khi có; sự kiện trùng trong 30 giây bị loại.
 
 Ảnh mới nhất được gửi tại:
 
@@ -174,14 +178,20 @@ Dữ liệu tên/loại do camera Hanet gửi. Kiểm tra lại danh bạ và c�
 
 Add-on tự kết nối lại. Nếu lỗi kéo dài, kiểm tra broker, mạng và thông tin đăng nhập trong **Cài đặt**.
 
+### Watchdog và health check
+
+Add-on có endpoint `/health` và đã cấu hình `watchdog` trong `config.yaml`. Home Assistant sẽ tự khởi động lại add-on nếu endpoint không phản hồi. Endpoint trả trạng thái MQTT và license nhưng không yêu cầu đăng nhập.
+
 ### License báo lỗi
 
 - Kiểm tra add-on có truy cập được `https://hanet-license.vercel.app`.
 - Kiểm tra key còn hạn và chưa gắn với thiết bị khác.
 - Dùng **Installation ID** trong trang License khi cần quản trị viên hỗ trợ reset thiết bị.
 
-## Phạm vi phiên bản 3.2.2
+## Phạm vi phiên bản 3.3.0
 
 - Chỉ xử lý dữ liệu Hanet qua MQTT.
+- Lọc sự kiện FaceID, dùng thời gian/face ID từ payload và chống trùng.
+- Có `/health` và watchdog để Home Assistant tự khởi động lại khi cần.
 - Đã bỏ Face Compare, model local, training, thêm người và test AI.
 - Giữ Dashboard, Lịch sử, Cài đặt, License, MQTT Discovery và lưu ảnh/lịch sử.
