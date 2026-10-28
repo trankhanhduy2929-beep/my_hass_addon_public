@@ -1,7 +1,7 @@
 name: Hanet Camera Bridge Pro
-version: 3.0.9
+version: 3.2.1
 slug: hanet_bridge_pro
-description: Kết nối Hanet AI Camera qua MQTT. Tích hợp nhận diện khuôn mặt nâng cao (Face Compare). Bản PRO
+description: Kết nối Hanet AI Camera qua MQTT, tự tạo thiết bị và camera cho Home Assistant. Bản PRO sử dụng License Key của Hanet License.
 url: "https://github.com/trankhanhduy2929-beep/my_hass_addon_public"
 arch:
   - amd64
@@ -10,11 +10,11 @@ startup: application
 boot: auto
 ingress: true
 ingress_port: 2900
-ports:
-  2900/tcp: 2900
 map:
   - config:rw
   - share:rw
-options: {}
-schema: {}
+options:
+  license_portal_url: https://hanet-license.vercel.app
+schema:
+  license_portal_url: str
 image: "ghcr.io/trankhanhduy2929-beep/hanet_bridge_pro"
