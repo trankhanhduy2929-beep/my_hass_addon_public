@@ -2,7 +2,7 @@
 
 Add-on Home Assistant nhận dữ liệu từ Hanet AI Camera qua MQTT, lưu lịch sử, hiển thị ảnh và tự tạo thiết bị/camera/sensor trong Home Assistant.
 
-Bản `3.3.0` chỉ dùng dữ liệu do camera Hanet gửi. Add-on không tải model, không chạy nhận diện khuôn mặt local và không cần `numpy`, `scipy`, OpenCV hay InsightFace.
+Bản `3.3.1` chỉ dùng dữ liệu do camera Hanet gửi. Add-on không tải model, không chạy nhận diện khuôn mặt local và không cần `numpy`, `scipy`, OpenCV hay InsightFace.
 
 ## Yêu cầu
 
@@ -44,8 +44,9 @@ Cấu hình được lưu trong add-on, không cần sửa `config.yaml` sau khi
    - Hanet Topic, mặc định `/topic/detected/#`
    - Số ngày lưu lịch sử, `0` là lưu vĩnh viễn
    - Tên hiển thị cho từng camera
-4. Bấm **Lưu cấu hình**. Add-on tự kết nối lại MQTT, không cần khởi động lại.
-5. Dùng **Sao lưu / phục hồi** trong trang Cài đặt để tải hoặc phục hồi cấu hình JSON. Tệp backup chứa mật khẩu MQTT, hãy cất giữ cẩn thận.
+4. Trong **Configuration** của add-on, đặt `timezone` đúng với Home Assistant, mặc định `Asia/Ho_Chi_Minh`.
+5. Bấm **Lưu cấu hình**. Add-on tự kết nối lại MQTT, không cần khởi động lại.
+6. Dùng **Sao lưu / phục hồi** trong trang Cài đặt để tải hoặc phục hồi cấu hình JSON. Tệp backup chứa mật khẩu MQTT, hãy cất giữ cẩn thận.
 
 Có thể đổi website license trong phần Configuration của add-on qua tùy chọn `license_portal_url`.
 
@@ -178,6 +179,10 @@ Dữ liệu tên/loại do camera Hanet gửi. Kiểm tra lại danh bạ và c�
 
 Add-on tự kết nối lại. Nếu lỗi kéo dài, kiểm tra broker, mạng và thông tin đăng nhập trong **Cài đặt**.
 
+### Sai múi giờ hoặc lệch ngày
+
+Đặt `timezone` trong **Configuration** của add-on đúng với múi giờ Home Assistant, ví dụ `Asia/Ho_Chi_Minh`, rồi khởi động lại add-on. Giờ ảnh, lịch sử và MQTT state sẽ dùng múi giờ này; kiểm tra lại tại `/health`.
+
 ### Watchdog và health check
 
 Add-on có endpoint `/health` và đã cấu hình `watchdog` trong `config.yaml`. Home Assistant sẽ tự khởi động lại add-on nếu endpoint không phản hồi. Endpoint trả trạng thái MQTT và license nhưng không yêu cầu đăng nhập.
@@ -188,10 +193,11 @@ Add-on có endpoint `/health` và đã cấu hình `watchdog` trong `config.yaml
 - Kiểm tra key còn hạn và chưa gắn với thiết bị khác.
 - Dùng **Installation ID** trong trang License khi cần quản trị viên hỗ trợ reset thiết bị.
 
-## Phạm vi phiên bản 3.3.0
+## Phạm vi phiên bản 3.3.1
 
 - Chỉ xử lý dữ liệu Hanet qua MQTT.
 - Lọc sự kiện FaceID, dùng thời gian/face ID từ payload và chống trùng.
+- Dùng múi giờ cấu hình được, mặc định `Asia/Ho_Chi_Minh`.
 - Có `/health` và watchdog để Home Assistant tự khởi động lại khi cần.
 - Đã bỏ Face Compare, model local, training, thêm người và test AI.
 - Giữ Dashboard, Lịch sử, Cài đặt, License, MQTT Discovery và lưu ảnh/lịch sử.
