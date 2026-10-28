@@ -2,7 +2,7 @@
 
 Add-on Home Assistant nhận dữ liệu từ Hanet AI Camera qua MQTT, lưu lịch sử, hiển thị ảnh và tự tạo thiết bị/camera/sensor trong Home Assistant.
 
-Bản `3.3.1` chỉ dùng dữ liệu do camera Hanet gửi. Add-on không tải model, không chạy nhận diện khuôn mặt local và không cần `numpy`, `scipy`, OpenCV hay InsightFace.
+Bản `3.4.0` chỉ dùng dữ liệu do camera Hanet gửi. Add-on không tải model, không chạy nhận diện khuôn mặt local và không cần `numpy`, `scipy`, OpenCV hay InsightFace.
 
 ## Yêu cầu
 
@@ -42,6 +42,7 @@ Cấu hình được lưu trong add-on, không cần sửa `config.yaml` sau khi
    - MQTT Username và Password nếu broker yêu cầu
    - Bật **MQTT over TLS** nếu broker dùng cổng `8883`; có thể trỏ CA certificate tới tệp trong `/share`
    - Hanet Topic, mặc định `/topic/detected/#`
+   - Bật **Lưu toàn bộ sự kiện MQTT** và chọn topic cần nghe nếu muốn xem dữ liệu thô từ broker
    - Số ngày lưu lịch sử, `0` là lưu vĩnh viễn
    - Tên hiển thị cho từng camera
 4. Trong **Configuration** của add-on, đặt `timezone` đúng với Home Assistant, mặc định `Asia/Ho_Chi_Minh`.
@@ -49,6 +50,17 @@ Cấu hình được lưu trong add-on, không cần sửa `config.yaml` sau khi
 6. Dùng **Sao lưu / phục hồi** trong trang Cài đặt để tải hoặc phục hồi cấu hình JSON. Tệp backup chứa mật khẩu MQTT, hãy cất giữ cẩn thận.
 
 Có thể đổi website license trong phần Configuration của add-on qua tùy chọn `license_portal_url`.
+
+## Lưu toàn bộ sự kiện MQTT
+
+Mục **Cài đặt > Sự kiện MQTT** cho phép lưu dữ liệu thô từ broker để kiểm tra hoặc phát triển tính năng sau này.
+
+- Bật **Lưu toàn bộ sự kiện MQTT** trong trang Cài đặt.
+- Topic mặc định là `#` (mọi topic). Có thể thu hẹp, ví dụ `zigbee2mqtt/#` hoặc `+/telemetry/#`.
+- Add-on bỏ qua topic nội bộ `hanet_bridge/#` và bản tin do chính add-on phát để tránh ghi lại dữ liệu trùng.
+- Mỗi payload được lưu tối đa 16 KB; payload dài hơn sẽ bị cắt và đánh dấu.
+- Giữ tối đa 2000 sự kiện gần nhất trong SQLite. Bảng mới không ảnh hưởng lịch sử nhận diện.
+- Trang **Sự kiện MQTT** hỗ trợ lọc topic, xem payload, xóa dữ liệu và xuất JSONL để phân tích.
 
 ## Dữ liệu và Home Assistant
 
@@ -179,6 +191,13 @@ Dữ liệu tên/loại do camera Hanet gửi. Kiểm tra lại danh bạ và c�
 
 Add-on tự kết nối lại. Nếu lỗi kéo dài, kiểm tra broker, mạng và thông tin đăng nhập trong **Cài đặt**.
 
+### Không thấy sự kiện MQTT
+
+- Kiểm tra đã bật **Lưu toàn bộ sự kiện MQTT** trong **Cài đặt**.
+- Kiểm tra topic lắng nghe có khớp với topic broker đang gửi.
+- Topic nội bộ `hanet_bridge/#` bị bỏ qua có chủ đích.
+- Dữ liệu chỉ lưu tối đa 2000 sự kiện gần nhất; sự kiện cũ hơn bị xóa tự động.
+
 ### Sai múi giờ hoặc lệch ngày
 
 Đặt `timezone` trong **Configuration** của add-on đúng với múi giờ Home Assistant, ví dụ `Asia/Ho_Chi_Minh`, rồi khởi động lại add-on. Giờ ảnh, lịch sử và MQTT state sẽ dùng múi giờ này; kiểm tra lại tại `/health`.
@@ -193,11 +212,12 @@ Add-on có endpoint `/health` và đã cấu hình `watchdog` trong `config.yaml
 - Kiểm tra key còn hạn và chưa gắn với thiết bị khác.
 - Dùng **Installation ID** trong trang License khi cần quản trị viên hỗ trợ reset thiết bị.
 
-## Phạm vi phiên bản 3.3.1
+## Phạm vi phiên bản 3.4.0
 
 - Chỉ xử lý dữ liệu Hanet qua MQTT.
 - Lọc sự kiện FaceID, dùng thời gian/face ID từ payload và chống trùng.
 - Dùng múi giờ cấu hình được, mặc định `Asia/Ho_Chi_Minh`.
 - Có `/health` và watchdog để Home Assistant tự khởi động lại khi cần.
+- Lưu tùy chọn toàn bộ sự kiện MQTT vào SQLite, xem/lọc/xóa/xuất JSONL trong giao diện.
 - Đã bỏ Face Compare, model local, training, thêm người và test AI.
 - Giữ Dashboard, Lịch sử, Cài đặt, License, MQTT Discovery và lưu ảnh/lịch sử.
