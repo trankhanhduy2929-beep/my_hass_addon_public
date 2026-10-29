@@ -2,7 +2,7 @@
 
 Add-on Home Assistant nhận dữ liệu từ Hanet AI Camera qua MQTT, lưu lịch sử, hiển thị ảnh và tự tạo thiết bị/camera/sensor trong Home Assistant.
 
-Bản `3.4.2` chỉ dùng dữ liệu do camera Hanet gửi. Add-on không tải model, không chạy nhận diện khuôn mặt local và không cần `numpy`, `scipy`, OpenCV hay InsightFace.
+Bản `3.4.3` chỉ dùng dữ liệu do camera Hanet gửi. Add-on không tải model, không chạy nhận diện khuôn mặt local và không cần `numpy`, `scipy`, OpenCV hay InsightFace.
 
 ## Yêu cầu
 
@@ -41,7 +41,7 @@ Cấu hình được lưu trong add-on, không cần sửa `config.yaml` sau khi
    - MQTT Port, mặc định `1883`
    - MQTT Username và Password nếu broker yêu cầu
    - Bật **MQTT over TLS** nếu broker dùng cổng `8883`; có thể trỏ CA certificate tới tệp trong `/share`
-   - Hanet Topic, mặc định `/topic/detected/#`
+   - MQTT Detect Topic, mặc định `/topic/detected/#`
    - Bật **Lưu toàn bộ sự kiện MQTT** và chọn topic cần nghe nếu muốn xem dữ liệu thô từ broker
    - Số ngày lưu lịch sử, `0` là lưu vĩnh viễn
    - Tên hiển thị cho từng camera
@@ -58,9 +58,9 @@ Mục **Cài đặt > Sự kiện MQTT** cho phép lưu dữ liệu thô từ br
 - Bật **Lưu toàn bộ sự kiện MQTT** trong trang Cài đặt.
 - Topic mặc định là `#` (mọi topic). Có thể thu hẹp, ví dụ `zigbee2mqtt/#` hoặc `+/telemetry/#`.
 - Add-on bỏ qua topic nội bộ `hanet_bridge/#` và bản tin do chính add-on phát để tránh ghi lại dữ liệu trùng.
-- Mỗi payload được lưu tối đa 16 KB; payload dài hơn sẽ bị cắt và đánh dấu.
+- Mỗi payload được lưu tối đa 256 KB; payload dài hơn sẽ bị cắt và đánh dấu.
 - Giữ tối đa 2000 sự kiện gần nhất trong SQLite. Bảng mới không ảnh hưởng lịch sử nhận diện.
-- Trang **Sự kiện MQTT** hỗ trợ lọc topic, xem payload, xóa dữ liệu và xuất JSONL để phân tích.
+- Trang **Sự kiện MQTT** hỗ trợ lọc topic, tải payload khi mở, xóa dữ liệu và xuất JSONL để phân tích.
 
 ## Dữ liệu và Home Assistant
 
@@ -96,7 +96,7 @@ Giá trị `person_type`:
 - `Người quen`
 - `Người lạ`
 
-Add-on chỉ xử lý sự kiện FaceID (`0`, `1`, `2`, `FACE`, `CHECKIN`, `PERSON` hoặc sự kiện có `person_id`). Sự kiện cảnh báo/chuyển động/khác như `3`, `4`, `25`, `ALARM`, `HUMAN`, `OTHER` bị bỏ qua. Thời gian và `person_id` được lấy từ payload camera khi có; sự kiện trùng trong 30 giây bị loại.
+Add-on chỉ xử lý sự kiện FaceID (`0`, `1`, `2`, `FACE`, `CHECKIN`, `PERSON` hoặc sự kiện có `person_id`). Sự kiện cảnh báo/chuyển động/khác như `3`, `4`, `25`, `ALARM`, `HUMAN`, `OTHER` bị bỏ qua. Thời gian và `person_id` được lấy từ payload camera khi có; sự kiện trùng `msg_id`/`event_id` hoặc trùng ảnh và thời gian trong 30 giây bị loại.
 
 Ảnh mới nhất được gửi tại:
 
@@ -212,7 +212,7 @@ Add-on có endpoint `/health` và đã cấu hình `watchdog` trong `config.yaml
 - Kiểm tra key còn hạn và chưa gắn với thiết bị khác.
 - Dùng **Installation ID** trong trang License khi cần quản trị viên hỗ trợ reset thiết bị.
 
-## Phạm vi phiên bản 3.4.2
+## Phạm vi phiên bản 3.4.3
 
 - Chỉ xử lý dữ liệu Hanet qua MQTT.
 - Lọc sự kiện FaceID, dùng thời gian/face ID từ payload và chống trùng.
