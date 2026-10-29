@@ -2,7 +2,7 @@
 
 Add-on Home Assistant nhận dữ liệu từ Hanet AI Camera qua MQTT, lưu lịch sử, hiển thị ảnh và tự tạo thiết bị/camera/sensor trong Home Assistant.
 
-Bản `3.4.1` chỉ dùng dữ liệu do camera Hanet gửi. Add-on không tải model, không chạy nhận diện khuôn mặt local và không cần `numpy`, `scipy`, OpenCV hay InsightFace.
+Bản `3.4.2` chỉ dùng dữ liệu do camera Hanet gửi. Add-on không tải model, không chạy nhận diện khuôn mặt local và không cần `numpy`, `scipy`, OpenCV hay InsightFace.
 
 ## Yêu cầu
 
@@ -212,7 +212,7 @@ Add-on có endpoint `/health` và đã cấu hình `watchdog` trong `config.yaml
 - Kiểm tra key còn hạn và chưa gắn với thiết bị khác.
 - Dùng **Installation ID** trong trang License khi cần quản trị viên hỗ trợ reset thiết bị.
 
-## Phạm vi phiên bản 3.4.1
+## Phạm vi phiên bản 3.4.2
 
 - Chỉ xử lý dữ liệu Hanet qua MQTT.
 - Lọc sự kiện FaceID, dùng thời gian/face ID từ payload và chống trùng.
