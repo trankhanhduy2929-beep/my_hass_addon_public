@@ -1,0 +1,44 @@
+name: "Telegram VoIP Notifier"
+version: "0.1.12"
+slug: "telegram_voip"
+description: "Đăng nhập nhiều tài khoản Telegram, gửi tin nhắn/ảnh/voice TTS và gọi P2P bằng tài khoản người dùng."
+url: "https://github.com/trankhanhduy2929-beep/my_hass_addon_public"
+arch:
+  - amd64
+  - aarch64
+init: false
+startup: application
+boot: auto
+ingress: true
+ingress_port: 3332
+panel_icon: "mdi:phone-in-talk"
+panel_title: "Telegram VoIP"
+panel_admin: true
+ports:
+  3332/tcp: 3332
+ports_description:
+  3332/tcp: "REST API (cần API token)"
+watchdog: "http://[HOST]:[PORT:3332]/health"
+options:
+  api_token: ""
+  api_id: 0
+  api_hash: ""
+  tts_voice: "vi-VN-HoaiMyNeural"
+  tts_rate: "+0%"
+  ring_timeout: 45
+  ring_attempts: 2
+  ring_interval: 15
+  max_call_seconds: 180
+  log_limit: 300
+schema:
+  api_token: "password?"
+  api_id: "int(0,)?"
+  api_hash: "password?"
+  tts_voice: "str?"
+  tts_rate: "str?"
+  ring_timeout: "int(10,180)?"
+  ring_attempts: "int(1,10)?"
+  ring_interval: "int(0,600)?"
+  max_call_seconds: "int(10,900)?"
+  log_limit: "int(50,2000)?"
+image: "ghcr.io/trankhanhduy2929-beep/telegram_voip"

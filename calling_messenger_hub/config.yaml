@@ -1,5 +1,5 @@
 name: "Calling Messenger Hub"
-version: "0.2.3"
+version: "0.2.4"
 slug: "calling_messenger_hub"
 description: "Trung tâm gọi và tin nhắn đa dịch vụ cho Home Assistant. Hiện hỗ trợ Telegram: nhiều tài khoản, tin nhắn/ảnh/voice TTS và gọi P2P."
 url: "https://github.com/trankhanhduy2929-beep/my_hass_addon_public"
@@ -15,9 +15,9 @@ panel_icon: "mdi:phone-in-talk"
 panel_title: "Calling Messenger Hub"
 panel_admin: true
 ports:
-  3332/tcp: 3332
+  3333/tcp: 3332
 ports_description:
-  3332/tcp: "REST API (cần API token)"
+  3333/tcp: "REST API (cần API token)"
 watchdog: "http://[HOST]:[PORT:3332]/health"
 options:
   api_token: ""
