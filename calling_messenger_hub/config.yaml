@@ -1,7 +1,7 @@
 name: "Calling Messenger Hub"
-version: "0.2.8"
+version: "0.3.0"
 slug: "calling_messenger_hub"
-description: "Trung tâm gọi và tin nhắn đa dịch vụ cho Home Assistant. Hiện hỗ trợ Telegram: nhiều tài khoản, tin nhắn/ảnh/voice TTS và gọi P2P."
+description: "Trung tâm gọi và tin nhắn đa dịch vụ cho Home Assistant. Hỗ trợ Telegram (tin nhắn/ảnh/voice TTS, gọi P2P) và Discord (bot gửi tin nhắn/ảnh/voice TTS)."
 url: "https://github.com/trankhanhduy2929-beep/my_hass_addon_public"
 arch:
   - amd64
