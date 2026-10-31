@@ -80,6 +80,7 @@ This table is generated automatically from the private release catalog after suc
 |---|---:|---|---|---|
 | HANET Connect Gateway | `0.13.4` | stable | `amd64, aarch64` | [Open](addon_hanet_connect/README.md) |
 | AI Proxy Router | `1.14.0` | stable | `amd64, aarch64` | [Open](ai_proxy_router/README.md) |
+| Calling Messenger Hub | `0.2.0` | stable | `amd64, aarch64` | [Open](calling_messenger_hub/README.md) |
 | Chấm Công ZKTeco | `2.0.5` | stable | `amd64, aarch64` | [Open](cham_cong_zkteco/README.md) |
 | Ecovacs China Backend | `1.4.0` | stable | `amd64, aarch64` | [Open](ecovacs_cn_backend/README.md) |
 | Ecovacs Private Gateway | `2.1.5` | stable | `amd64, aarch64` | [Open](ecovacs_gateway/README.md) |
@@ -90,7 +91,6 @@ This table is generated automatically from the private release catalog after suc
 | PicoClaw | `0.4.4` | stable | `amd64, aarch64` | [Open](picoclaw/README.md) |
 | Rạng Đông Key Helper | `0.3.3` | experimental | `amd64, aarch64` | [Open](rangdong_key_helper/README.md) |
 | HA Camera Face ID | `2.6.0` | stable | `amd64, aarch64` | [Open](rtsp_face_bridge/README.md) |
-| Telegram VoIP Notifier | `0.1.12` | stable | `amd64, aarch64` | [Open](telegram_voip/README.md) |
 | Voice Action Bridge VI Lite | `1.0.4` | stable | `amd64, aarch64` | [Open](voice-action-bridge-vi-lite/README.md) |
 | YouTube Music Lite | `2.4.0` | stable | `amd64, aarch64` | [Open](youtube_cast_addon/README.md) |
 | YouTube Pro | `5.18.4` | stable | `amd64, aarch64` | [Open](youtube_pro_addon/README.md) |

@@ -1,11 +1,10 @@
-# Telegram VoIP Notifier
+# Calling Messenger Hub
 
-Add-on Home Assistant dùng nhiều tài khoản Telegram để gửi tin nhắn, voice TTS,
-gọi P2P 1:1 và gọi lặp làm chuông báo động.
+Trung tâm gọi và tin nhắn đa dịch vụ cho Home Assistant. Bản `0.2.0` dùng Telegram làm provider đầu tiên; các dịch vụ khác sẽ được bổ sung sau.
 
 ## Chức năng
 
-- Đăng nhập nhiều số điện thoại Telegram bằng OTP và mật khẩu 2FA.
+- Đăng nhập nhiều tài khoản Telegram bằng OTP và mật khẩu 2FA.
 - Gửi tin nhắn văn bản.
 - Gửi ảnh từ URL, file tải lên hoặc `/data/media` kèm chú thích.
 - Tạo voice message bằng Edge TTS; mặc định `vi-VN-HoaiMyNeural`, tự thử lại 5 lần. Với tiếng Việt, add-on báo lỗi thay vì dùng `espeak-ng` để tránh phát âm sai.
@@ -17,7 +16,7 @@ gọi P2P 1:1 và gọi lặp làm chuông báo động.
 ## Cài đặt
 
 1. Thêm repository add-on vào Home Assistant.
-2. Cài **Telegram VoIP Notifier**.
+2. Cài **Calling Messenger Hub**.
 3. Start add-on rồi mở ingress panel. Bảng điều khiển tự kết nối, không cần nhập token.
 4. Vào **Cài đặt → Thông tin Telegram**, nhập `api_id`, `api_hash`, bấm **Lưu thông tin**. Add-on tự ghi `/data/.env` quyền `600`; không cần SSH, chạy lệnh hay sửa Configuration.
 5. API token cho custom integration nằm trong **Cài đặt → API token cho custom integration**; bấm biểu tượng mắt để xem hoặc copy.
@@ -28,7 +27,7 @@ Nếu chưa nhập token, add-on tự sinh token tại `/data/api_token`.
 
 Giao diện tự tạo và cập nhật `/data/.env`; file nằm ngoài repo/image và không commit. Chỉ sửa thủ công nếu cần, sau đó restart add-on.
 
-Thứ tự ưu tiên: biến môi trường → `/data/.env` → `/data/options.json`.
+Thứ tự ưu tiên: biến môi trường → `/data/.env` → `/data/options.json`. Tiền tố `TGVOIP_*` được giữ để tương thích với bản cũ.
 
 ## Yêu cầu
 
@@ -45,9 +44,16 @@ Thứ tự ưu tiên: biến môi trường → `/data/.env` → `/data/options.
 
 Cài integration tại
 <https://github.com/trankhanhduy2929-beep/telegramvoip_homeassistant> để dùng
-service `telegram_voip.*`, sensor và automation trong Home Assistant.
+service `calling_messenger_hub.*`, sensor và automation trong Home Assistant.
 
-URL nội bộ cho integration: `http://local-telegram-voip:3332`.
+URL nội bộ cho integration: `http://local-calling-messenger-hub:3332`.
+
+## Nâng cấp từ Telegram VoIP Notifier
+
+- Add-on slug đổi từ `telegram_voip` sang `calling_messenger_hub`.
+- Integration domain và service prefix đổi sang `calling_messenger_hub`.
+- Dữ liệu `/data` (`accounts.json`, session, cache, `api_token`) giữ nguyên.
+- Gỡ add-on và integration cũ, cài lại bản mới, rồi cập nhật automation.
 
 ## Giới hạn
 

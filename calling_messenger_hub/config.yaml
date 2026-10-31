@@ -1,7 +1,7 @@
-name: "Telegram VoIP Notifier"
-version: "0.1.12"
-slug: "telegram_voip"
-description: "Đăng nhập nhiều tài khoản Telegram, gửi tin nhắn/ảnh/voice TTS và gọi P2P bằng tài khoản người dùng."
+name: "Calling Messenger Hub"
+version: "0.2.0"
+slug: "calling_messenger_hub"
+description: "Trung tâm gọi và tin nhắn đa dịch vụ cho Home Assistant. Hiện hỗ trợ Telegram: nhiều tài khoản, tin nhắn/ảnh/voice TTS và gọi P2P."
 url: "https://github.com/trankhanhduy2929-beep/my_hass_addon_public"
 arch:
   - amd64
@@ -12,7 +12,7 @@ boot: auto
 ingress: true
 ingress_port: 3332
 panel_icon: "mdi:phone-in-talk"
-panel_title: "Telegram VoIP"
+panel_title: "Calling Messenger Hub"
 panel_admin: true
 ports:
   3332/tcp: 3332
@@ -41,4 +41,4 @@ schema:
   ring_interval: "int(0,600)?"
   max_call_seconds: "int(10,900)?"
   log_limit: "int(50,2000)?"
-image: "ghcr.io/trankhanhduy2929-beep/telegram_voip"
+image: "ghcr.io/trankhanhduy2929-beep/calling_messenger_hub"

@@ -3,6 +3,7 @@
   "addons": [
     "addon_hanet_connect",
     "ai_proxy_router",
+    "calling_messenger_hub",
     "cham_cong_zkteco",
     "ecovacs_cn_backend",
     "ecovacs_gateway",
@@ -13,7 +14,6 @@
     "picoclaw",
     "rangdong_key_helper",
     "rtsp_face_bridge",
-    "telegram_voip",
     "voice-action-bridge-vi-lite",
     "youtube_cast_addon",
     "youtube_pro_addon"
