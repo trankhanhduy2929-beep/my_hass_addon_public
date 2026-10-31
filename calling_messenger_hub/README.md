@@ -1,6 +1,6 @@
 # Calling Messenger Hub
 
-Trung tâm gọi và tin nhắn đa dịch vụ cho Home Assistant. Bản `0.2.1` dùng Telegram làm provider đầu tiên; các dịch vụ khác sẽ được bổ sung sau.
+Trung tâm gọi và tin nhắn đa dịch vụ cho Home Assistant. Bản `0.2.2` dùng Telegram làm provider đầu tiên; các dịch vụ khác sẽ được bổ sung sau.
 
 ## Chức năng
 
@@ -20,6 +20,7 @@ Trung tâm gọi và tin nhắn đa dịch vụ cho Home Assistant. Bản `0.2.1
 3. Start add-on rồi mở ingress panel. Bảng điều khiển tự kết nối, không cần nhập token.
 4. Vào **Cài đặt → Thông tin Telegram**, nhập `api_id`, `api_hash`, bấm **Lưu thông tin**. Add-on tự ghi `/data/.env` quyền `600`; không cần SSH, chạy lệnh hay sửa Configuration.
 5. API token cho custom integration nằm trong **Cài đặt → API token cho custom integration**; bấm biểu tượng mắt để xem hoặc copy.
+6. Khi bấm **Thêm tài khoản Telegram**, hộp thoại có hướng dẫn 4 bước tạo Telegram application kèm link <https://my.telegram.org/apps>, OTP và mật khẩu 2FA. Làm trực tiếp trong giao diện, không cần mở tài liệu ngoài.
 
 Các mặc định TTS và chuông (`tts_voice`, `tts_rate`, `ring_timeout`...) vẫn có thể đổi trong Configuration nếu muốn; không bắt buộc. Giọng mặc định là `vi-VN-HoaiMyNeural` (Tiếng Việt chuẩn); `vi-VN-NamMinhNeural` chỉ là giọng nam thay thế. Nếu service truyền `voice`, giá trị đó được dùng thay cho mặc định.
 
