@@ -1,6 +1,6 @@
 # Calling Messenger Hub
 
-Trung tâm gọi và tin nhắn đa dịch vụ cho Home Assistant. Bản `0.2.5` dùng Telegram làm provider đầu tiên; các dịch vụ khác sẽ được bổ sung sau.
+Trung tâm gọi và tin nhắn đa dịch vụ cho Home Assistant. Bản `0.2.6` dùng Telegram làm provider đầu tiên; các dịch vụ khác sẽ được bổ sung sau.
 
 ## Chức năng
 
@@ -13,6 +13,7 @@ Trung tâm gọi và tin nhắn đa dịch vụ cho Home Assistant. Bản `0.2.5
 - Gọi lặp với số lần và khoảng nghỉ cấu hình được.
 - Ingress UI quản lý tài khoản, cuộc gọi, cấu hình và log.
 - REST API có Bearer token cho custom integration/automation.
+- Khóa bảng điều khiển và API vận hành nếu license chưa kích hoạt, hết hạn hoặc bị thu hồi.
 
 ## Cài đặt
 
@@ -41,6 +42,12 @@ Thứ tự ưu tiên: biến môi trường → `/data/.env` → `/data/options.
 - Edge TTS cần Internet. Add-on image có `ffmpeg` và `espeak-ng`.
 - Chỉ dùng tài khoản phụ hoặc tài khoản bạn sở hữu. Gọi tự động có thể vi phạm
   Telegram Terms of Service và bị giới hạn tài khoản.
+
+## License
+
+Mở add-on và nhập license key tại màn hình kích hoạt hoặc **Cài đặt → License**. Key gắn với `instance_id` của add-on và được kiểm tra định kỳ; khi mất mạng, add-on dùng cache đã ký tối đa 72 giờ.
+
+Khi license chưa hợp lệ, giao diện hiện màn hình kích hoạt thay vì bảng điều khiển. Các endpoint `/health`, `/api/config`, `/api/status`, `/api/license`, `/api/license/check`, `/api/settings/license` vẫn mở để chẩn đoán và kích hoạt; các endpoint vận hành còn lại trả `403`.
 
 ## Custom integration
 

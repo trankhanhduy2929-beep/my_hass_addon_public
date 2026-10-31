@@ -1,5 +1,5 @@
 name: "Calling Messenger Hub"
-version: "0.2.5"
+version: "0.2.6"
 slug: "calling_messenger_hub"
 description: "Trung tâm gọi và tin nhắn đa dịch vụ cho Home Assistant. Hiện hỗ trợ Telegram: nhiều tài khoản, tin nhắn/ảnh/voice TTS và gọi P2P."
 url: "https://github.com/trankhanhduy2929-beep/my_hass_addon_public"
@@ -31,6 +31,9 @@ options:
   ring_interval: 15
   max_call_seconds: 180
   log_limit: 300
+  license_key: ""
+  license_server_url: "https://calling-messenger-hub-license.vercel.app"
+  license_site_url: "https://calling-messenger-hub-license.vercel.app"
 schema:
   api_token: "password?"
   api_id: "int(0,)?"
@@ -43,4 +46,7 @@ schema:
   ring_interval: "int(0,600)?"
   max_call_seconds: "int(10,900)?"
   log_limit: "int(50,2000)?"
+  license_key: "password?"
+  license_server_url: "url?"
+  license_site_url: "url?"
 image: "ghcr.io/trankhanhduy2929-beep/calling_messenger_hub"
