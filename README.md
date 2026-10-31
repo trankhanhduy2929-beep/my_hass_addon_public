@@ -80,7 +80,7 @@ This table is generated automatically from the private release catalog after suc
 |---|---:|---|---|---|
 | HANET Connect Gateway | `0.13.4` | stable | `amd64, aarch64` | [Open](addon_hanet_connect/README.md) |
 | AI Proxy Router | `1.14.0` | stable | `amd64, aarch64` | [Open](ai_proxy_router/README.md) |
-| Calling Messenger Hub | `0.3.0` | stable | `amd64, aarch64` | [Open](calling_messenger_hub/README.md) |
+| Calling Messenger Hub | `0.6.0` | stable | `amd64, aarch64` | [Open](calling_messenger_hub/README.md) |
 | Chấm Công ZKTeco | `2.0.5` | stable | `amd64, aarch64` | [Open](cham_cong_zkteco/README.md) |
 | Ecovacs China Backend | `1.4.0` | stable | `amd64, aarch64` | [Open](ecovacs_cn_backend/README.md) |
 | Ecovacs Private Gateway | `2.1.5` | stable | `amd64, aarch64` | [Open](ecovacs_gateway/README.md) |
