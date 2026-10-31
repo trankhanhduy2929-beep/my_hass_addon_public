@@ -49,7 +49,7 @@ service `telegram_voip.*`, sensor và automation trong Home Assistant.
 
 URL nội bộ cho integration: `http://local-telegram-voip:3332`.
 
-REST API trực tiếp dùng cổng host `3332`. Add-on này có thể chạy song song với **Calling Messenger Hub**, bản mới dùng cổng host `3333`.
+REST API trực tiếp dùng cổng host `3332`. Add-on này có thể chạy song song với **Calling Messenger Hub**, bản mới dùng cổng `3030`.
 
 ## Giới hạn
 
