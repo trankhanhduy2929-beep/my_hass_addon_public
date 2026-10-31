@@ -1,5 +1,5 @@
 name: "Calling Messenger Hub"
-version: "0.2.2"
+version: "0.2.3"
 slug: "calling_messenger_hub"
 description: "Trung tâm gọi và tin nhắn đa dịch vụ cho Home Assistant. Hiện hỗ trợ Telegram: nhiều tài khoản, tin nhắn/ảnh/voice TTS và gọi P2P."
 url: "https://github.com/trankhanhduy2929-beep/my_hass_addon_public"
@@ -25,6 +25,7 @@ options:
   api_hash: ""
   tts_voice: "vi-VN-HoaiMyNeural"
   tts_rate: "+0%"
+  tts_cache: true
   ring_timeout: 45
   ring_attempts: 2
   ring_interval: 15
@@ -36,6 +37,7 @@ schema:
   api_hash: "password?"
   tts_voice: "str?"
   tts_rate: "str?"
+  tts_cache: "bool?"
   ring_timeout: "int(10,180)?"
   ring_attempts: "int(1,10)?"
   ring_interval: "int(0,600)?"

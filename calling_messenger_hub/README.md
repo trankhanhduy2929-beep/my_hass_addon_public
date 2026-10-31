@@ -1,13 +1,14 @@
 # Calling Messenger Hub
 
-Trung tâm gọi và tin nhắn đa dịch vụ cho Home Assistant. Bản `0.2.2` dùng Telegram làm provider đầu tiên; các dịch vụ khác sẽ được bổ sung sau.
+Trung tâm gọi và tin nhắn đa dịch vụ cho Home Assistant. Bản `0.2.3` dùng Telegram làm provider đầu tiên; các dịch vụ khác sẽ được bổ sung sau.
 
 ## Chức năng
 
 - Đăng nhập nhiều tài khoản Telegram bằng OTP và mật khẩu 2FA.
 - Gửi tin nhắn văn bản.
 - Gửi ảnh từ URL, file tải lên hoặc `/data/media` kèm chú thích.
-- Tạo voice message bằng Edge TTS; mặc định `vi-VN-HoaiMyNeural`, tự thử lại 5 lần. Với tiếng Việt, add-on báo lỗi thay vì dùng `espeak-ng` để tránh phát âm sai.
+- Tạo voice message bằng Edge TTS; mặc định `vi-VN-HoaiMyNeural`, tự thử lại 5 lần với backoff. Với tiếng Việt, add-on báo lỗi thay vì dùng `espeak-ng` để tránh phát âm sai.
+- Bật/tắt cache TTS trong **Cài đặt** để gửi lại nhanh cùng nội dung, giọng và tốc độ; hoặc đặt `TGVOIP_TTS_CACHE=false`.
 - Gọi P2P và phát TTS khi người nhận nghe máy.
 - Gọi lặp với số lần và khoảng nghỉ cấu hình được.
 - Ingress UI quản lý tài khoản, cuộc gọi, cấu hình và log.
