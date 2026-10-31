@@ -1,6 +1,6 @@
 # Calling Messenger Hub
 
-Trung tâm gọi và tin nhắn đa dịch vụ cho Home Assistant. Bản `0.2.0` dùng Telegram làm provider đầu tiên; các dịch vụ khác sẽ được bổ sung sau.
+Trung tâm gọi và tin nhắn đa dịch vụ cho Home Assistant. Bản `0.2.1` dùng Telegram làm provider đầu tiên; các dịch vụ khác sẽ được bổ sung sau.
 
 ## Chức năng
 
@@ -43,7 +43,7 @@ Thứ tự ưu tiên: biến môi trường → `/data/.env` → `/data/options.
 ## Custom integration
 
 Cài integration tại
-<https://github.com/trankhanhduy2929-beep/telegramvoip_homeassistant> để dùng
+<https://github.com/trankhanhduy2929-beep/calling_messenger_hub> để dùng
 service `calling_messenger_hub.*`, sensor và automation trong Home Assistant.
 
 URL nội bộ cho integration: `http://local-calling-messenger-hub:3332`.
