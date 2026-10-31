@@ -1,6 +1,6 @@
 # Calling Messenger Hub
 
-Trung tâm gọi và tin nhắn đa dịch vụ cho Home Assistant. Bản `0.2.7` dùng Telegram làm provider đầu tiên; các dịch vụ khác sẽ được bổ sung sau.
+Trung tâm gọi và tin nhắn đa dịch vụ cho Home Assistant. Bản `0.2.8` dùng Telegram làm provider đầu tiên; các dịch vụ khác sẽ được bổ sung sau.
 
 ## Chức năng
 
@@ -47,7 +47,7 @@ Thứ tự ưu tiên: biến môi trường → `/data/.env` → `/data/options.
 
 Mở add-on và nhập license key tại màn hình kích hoạt hoặc **Cài đặt → License**. Key gắn với `instance_id` của add-on và được kiểm tra định kỳ; khi mất mạng, add-on dùng cache đã ký tối đa 72 giờ.
 
-Giao diện chỉ nhập license key; các trường máy chủ license nâng cao đã được bỏ. Máy chủ tùy chỉnh cấu hình qua add-on options hoặc `TGVOIP_LICENSE_SERVER_URL`.
+Giao diện chỉ nhập license key; các trường máy chủ license nâng cao đã được bỏ. URL `app.js`/`styles.css` có version và trả `Cache-Control: no-store` để tránh JS cũ sau khi cập nhật. Máy chủ tùy chỉnh cấu hình qua add-on options hoặc `TGVOIP_LICENSE_SERVER_URL`.
 
 Khi license chưa hợp lệ, giao diện hiện màn hình kích hoạt thay vì bảng điều khiển. Các endpoint `/health`, `/api/config`, `/api/status`, `/api/license`, `/api/license/check`, `/api/settings/license` vẫn mở để chẩn đoán và kích hoạt; các endpoint vận hành còn lại trả `403`.
 
