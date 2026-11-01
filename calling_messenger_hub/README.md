@@ -1,6 +1,6 @@
 # Calling Messenger Hub
 
-Trung tâm gọi và tin nhắn đa dịch vụ cho Home Assistant. Bản `0.10.0` hỗ trợ Telegram, Discord, Signal, LINE Official Account và mô-đun SIM 4G SIMCom A7670C-LANS hoặc Quectel EC20/EC2x trên cùng một bảng điều khiển, dùng chung biểu mẫu gửi tin nhắn và ảnh; SIM 4G xem được nhà mạng, mức sóng, số dư, hạn dùng qua USSD và đọc hộp thư SMS/OTP.
+Trung tâm gọi và tin nhắn đa dịch vụ cho Home Assistant. Bản `0.11.0` hỗ trợ Telegram, Discord, Signal, LINE Official Account, Zalo cá nhân và mô-đun SIM 4G SIMCom A7670C-LANS hoặc Quectel EC20/EC2x trên cùng một bảng điều khiển, dùng chung biểu mẫu gửi tin nhắn và ảnh; SIM 4G xem được nhà mạng, mức sóng, số dư, hạn dùng qua USSD và đọc hộp thư SMS/OTP.
 
 Chức năng hiện có:
 
@@ -13,13 +13,14 @@ Chức năng hiện có:
 - đăng nhập tài khoản Discord bằng token phiên, gửi tin nhắn/ảnh/voice TTS đến DM hoặc kênh;
 - kết nối Signal qua signal-cli REST API, gửi tin nhắn/ảnh/voice TTS đến số, nhóm hoặc username;
 - kết nối LINE Official Account qua Messaging API, gửi tin nhắn/ảnh URL HTTPS và nhận ID người nhận qua webhook có xác thực chữ ký;
+- đăng nhập Zalo cá nhân bằng QR, xem hội thoại/tin nhắn và gửi tin nhắn văn bản tới bạn bè hoặc nhóm;
 - kết nối SIMCom A7670C-LANS hoặc Quectel EC20/EC2x qua serial/UART hoặc TCP bridge, tự nhận diện dòng module, gọi thoại thật, phát TTS khi nghe máy và gọi lặp làm chuông báo động;
 - xem nhà mạng, mức sóng, số dư, hạn dùng SIM bằng USSD, đọc SMS/OTP trong ingress UI;
 - xem trạng thái kênh, cuộc gọi, log và điều khiển qua ingress UI;
 - kích hoạt license key, kiểm tra hạn dùng và tự chặn thao tác khi hết hạn;
 - gọi REST API từ automation Home Assistant.
 
-> Chưa kiểm thử với tài khoản Telegram, tài khoản Discord, Signal API, LINE Official Account hoặc mô-đun A7670C-LANS/EC20 thật, hoặc trên thiết bị Home Assistant thật. Định dạng USSD/SMS khác nhau theo nhà mạng và thế hệ SIM; cần xác minh lại trên SIM thật. Cần build lại image `amd64`/`aarch64` cho bản `0.10.0`.
+> Chưa kiểm thử với tài khoản Telegram, tài khoản Discord, Signal API, LINE Official Account, Zalo cá nhân hoặc mô-đun A7670C-LANS/EC20 thật, hoặc trên thiết bị Home Assistant thật. Định dạng USSD/SMS khác nhau theo nhà mạng và thế hệ SIM; cần xác minh lại trên SIM thật. Cần build lại image `amd64`/`aarch64` cho bản `0.11.0`.
 
 ## Định hướng đa dịch vụ
 
@@ -36,6 +37,10 @@ LINE dùng **Messaging API** của LINE Official Account, không dùng tài kho�
 Để gửi tin, nhập user ID `U...`, group ID `C...` hoặc room ID `R...` (33 ký tự). Bật **Channel secret** nếu muốn dùng webhook nhận ID tự động: mở Messaging API settings, bật webhook với URL `https://PUBLIC_HOST/api/line/webhook/ACCOUNT_ID`, rồi nhắn thử cho Official Account. Nút **Webhook** trong thẻ tài khoản sao chép URL hiện tại; phải thay host bằng URL công khai. Add-on xác thực header `X-Line-Signature`, không yêu cầu Bearer token cho webhook.
 
 LINE chỉ gửi ảnh bằng URL `https://` công khai, không nhận file `/data/media` hay data URI; không gửi được voice TTS cục bộ và không hỗ trợ gọi thoại/chuông. Tin nhắn dài được chia theo giới hạn 5.000 ký tự.
+
+Zalo dùng tài khoản cá nhân qua giao thức nội bộ không chính thức, không phải Zalo OA API. Mở **Tài khoản & kênh → Thêm Zalo**, quét QR bằng ứng dụng Zalo trên điện thoại rồi xác nhận đăng nhập. Add-on lưu phiên trong `/data/zalo/` với quyền `600`, chỉ gửi và nhận văn bản; ảnh, voice TTS, gọi thoại và chuông không được hỗ trợ cho tài khoản `zl_...`. Tin nhắn dài được chia theo giới hạn 2.000 ký tự.
+
+> **Cảnh báo:** đăng nhập Zalo bằng giao thức không chính thức có thể vi phạm điều khoản Zalo và khiến tài khoản bị hạn chế hoặc khóa. Chỉ dùng tài khoản bạn sở hữu hoặc tài khoản phụ; phiên đăng nhập tương đương quyền truy cập tài khoản. Giao thức có thể thay đổi mà không báo trước.
 
 SIM dùng mô-đun 4G **SIMCom A7670C-LANS** hoặc **Quectel EC20/EC2x/EG2x** qua lệnh AT. Add-on hỗ trợ hai kiểu kết nối: serial/UART (`/dev/ttyUSB2`, `/dev/ttyACM0`, cần `uart: true` trong add-on) hoặc TCP serial bridge. Khi thêm SIM, chọn dòng module hoặc để **Tự động nhận diện**; add-on đọc `AT+CGMM`/`AT+CGMR` để chọn profile A7670 hoặc EC20. Quá trình kiểm tra gồm `AT+CPIN?`, `AT+CEREG?`/`AT+CREG?`, `AT+COPS?`, `AT+CSQ`, `AT+CGSN`, `AT+QCCID`/`AT+CCID`, `AT+CNUM`, rồi lưu cấu hình trong `/data/sim_accounts.json` với quyền `600`. SIM phải đã tắt mã PIN, đăng ký mạng và bật VoLTE nếu nhà mạng yêu cầu gọi thoại trên 4G.
 
@@ -87,6 +92,8 @@ Bản `0.9.0` thêm profile Quectel EC20/EC2x/EG2x bên cạnh A7670C-LANS: tự
 
 Bản `0.10.0` thêm bảng **SIM 4G**: nhà mạng từ `AT+COPS?`, mức sóng %, dBm và số vạch từ `AT+CSQ`, gửi USSD để lấy số dư/hạn dùng, đọc hộp thư SMS text mode và tách OTP để sao chép. Bổ sung API `refresh`, `ussd`, `sms`; integration `2.0.6` không đổi.
 
+Bản `0.11.0` thêm **Zalo cá nhân**: đăng nhập bằng QR, lưu phiên cục bộ, xem danh sách hội thoại và tin nhắn, gửi văn bản tới bạn bè/nhóm, tự làm mới và chia tin dài. Thêm thư viện mã hóa/QR và API `/api/zalo/*`; tài khoản Zalo chỉ hỗ trợ văn bản, không gọi thoại, ảnh, voice TTS hoặc chuông. Integration `2.0.6` không đổi.
+
 ## Cấu trúc
 
 ```text
@@ -101,6 +108,9 @@ input/telegram_voip/
 │   │   ├── signal_store.py           # signal_accounts.json (quyền 600)
 │   │   ├── line_manager.py           # provider LINE: Messaging API + webhook
 │   │   ├── line_store.py             # line_accounts.json (quyền 600)
+│   │   ├── zalo_client.py            # giao thức Zalo cá nhân: QR, mã hóa, chat
+│   │   ├── zalo_manager.py           # provider Zalo: phiên, polling, gửi văn bản
+│   │   ├── zalo_store.py             # zalo_accounts.json + zalo/ (quyền 600/700)
 │   │   ├── sim_manager.py            # provider SIM: AT commands A7670/EC20 + call audio
 │   │   ├── sim_store.py              # sim_accounts.json (quyền 600)
 │   │   ├── tts.py                    # Edge TTS -> OGG/Opus, AMR/MP3/WAV cho SIM
@@ -125,9 +135,10 @@ input/telegram_voip/
 5. Với Discord, lấy token phiên của tài khoản người dùng (không phải bot token). Chỉ dùng tài khoản phụ vì self-bot trái Điều khoản Discord và có thể bị khóa.
 6. Với Signal, chạy signal-cli-rest-api, liên kết thiết bị qua `/v1/qrcodelink` bằng QR trong ứng dụng Signal, rồi nhập số E.164 và URL API vào add-on. Không mở Signal API trực tiếp ra Internet khi chưa có xác thực.
 7. Với LINE, tạo Messaging API channel, phát hành channel access token và nhập channel secret nếu dùng webhook. Webhook phải dùng URL công khai HTTPS trỏ tới `/api/line/webhook/{account_id}`.
-8. Với SIM, cắm A7670C-LANS hoặc EC20/EC2x qua USB/UART hoặc nối TCP serial bridge, tắt mã PIN, lắp SIM đã đăng ký mạng và bật `uart: true` nếu dùng serial trong Home Assistant. Chọn đúng dòng module hoặc để tự nhận diện; bật VoLTE nếu cần. EC20/EC2x không cần card âm thanh trên host; A7670C-LANS cần cấu hình đường audio phần cứng phù hợp. Add-on không truyền audio qua USB.
-9. Chỉ dùng tài khoản phụ hoặc tài khoản bạn sở hữu. Gọi tự động có thể vi phạm Telegram Terms of Service, quy định viễn thông và gây cước phí SIM.
-10. Add-on cần license key còn hạn cho các thao tác gửi/gọi. Key dùng thử, gói tháng hoặc vĩnh viễn được cấp từ trang license; xem mục **License** bên dưới.
+8. Với Zalo, mở **Thêm Zalo**, quét QR bằng ứng dụng Zalo trên điện thoại và xác nhận trên thiết bị. Phiên Zalo được lưu cục bộ; đăng xuất khỏi add-on sẽ xóa phiên đã lưu.
+9. Với SIM, cắm A7670C-LANS hoặc EC20/EC2x qua USB/UART hoặc nối TCP serial bridge, tắt mã PIN, lắp SIM đã đăng ký mạng và bật `uart: true` nếu dùng serial trong Home Assistant. Chọn đúng dòng module hoặc để tự nhận diện; bật VoLTE nếu cần. EC20/EC2x không cần card âm thanh trên host; A7670C-LANS cần cấu hình đường audio phần cứng phù hợp. Add-on không truyền audio qua USB.
+10. Chỉ dùng tài khoản phụ hoặc tài khoản bạn sở hữu. Gọi tự động có thể vi phạm Telegram Terms of Service, quy định viễn thông và gây cước phí SIM.
+11. Add-on cần license key còn hạn cho các thao tác gửi/gọi. Key dùng thử, gói tháng hoặc vĩnh viễn được cấp từ trang license; xem mục **License** bên dưới.
 
 ## Cài add-on
 
@@ -212,7 +223,7 @@ data:
   silent: false
 ```
 
-`to` nhận username/số điện thoại/user ID với Telegram, hoặc ID kênh/người dùng, `#ten-kenh`, `@username` với Discord. `account` nhận ID tài khoản, số điện thoại, tên tài khoản hoặc ID Discord (`dc_...`); bỏ trống để dùng tài khoản Telegram online đầu tiên.
+`to` nhận username/số điện thoại/user ID với Telegram, ID kênh/người dùng hoặc `#ten-kenh`/`@username` với Discord, ID hội thoại Zalo (bạn bè hoặc nhóm) với Zalo. `account` nhận ID tài khoản, số điện thoại, tên tài khoản, ID Discord (`dc_...`) hoặc ID Zalo (`zl_...`); bỏ trống để dùng tài khoản Telegram online đầu tiên. Zalo chỉ nhận `message` văn bản; không dùng `send_photo`, `send_tts`, gọi thoại hoặc chuông với tài khoản `zl_...`.
 
 ### Gửi voice TTS
 
@@ -293,6 +304,13 @@ POST   /api/discord/accounts
 POST   /api/signal/accounts
 POST   /api/line/accounts
 POST   /api/line/webhook/{account_id}
+POST   /api/zalo/login
+GET    /api/zalo/login/{login_id}
+DELETE /api/zalo/login/{login_id}
+GET    /api/zalo/accounts/{account_id}/threads?limit=100&refresh=true
+GET    /api/zalo/accounts/{account_id}/messages?thread_id=...&limit=100&is_group=true
+POST   /api/zalo/accounts/{account_id}/refresh
+POST   /api/zalo/messages
 POST   /api/sim/accounts
 POST   /api/sim/accounts/{account_id}/refresh
 POST   /api/sim/accounts/{account_id}/ussd
@@ -315,6 +333,27 @@ GET    /api/rings
 POST   /api/rings/{ring_id}/cancel
 GET    /api/logs
 ```
+
+### Zalo
+
+Bắt đầu đăng nhập QR bằng `POST /api/zalo/login` với `{"name":"Zalo nhà"}`. Kết quả `login.qr.image` là data URI; poll `GET /api/zalo/login/{login_id}` cho đến khi `state` là `online` hoặc `done`. Hủy phiên chờ bằng `DELETE /api/zalo/login/{login_id}`. Sau khi đăng nhập, dùng ID `zl_...` cho các endpoint hội thoại.
+
+```bash
+curl -X POST http://HOST:3030/api/zalo/login \
+  -H "Authorization: Bearer TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"name":"Zalo nhà"}'
+
+curl "http://HOST:3030/api/zalo/accounts/zl_1234567890/threads?limit=100" \
+  -H "Authorization: Bearer TOKEN"
+
+curl -X POST http://HOST:3030/api/zalo/messages \
+  -H "Authorization: Bearer TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"account":"zl_1234567890","to":"group_123","message":"Cửa đang mở.","is_group":true}'
+```
+
+`threads` trả các hội thoại đã chuẩn hóa (`id`, `name`, `preview`, `time`, `is_group`, `avatar`, `updated_ts`). `messages` trả `thread` và danh sách `messages`; `POST /api/zalo/messages` trả số đoạn đã gửi trong `messages`. Zalo không hỗ trợ endpoint ảnh/TTS/gọi/chuông.
 
 ### SIM 4G
 
@@ -358,9 +397,9 @@ Nếu `pending` hoặc `fallback` là `true`, gọi endpoint `sms` để xem ph�
 ## Bảo mật
 
 - API token là bearer token toàn quyền với add-on; không đưa vào file public.
-- `accounts.json`, `discord_accounts.json`, `signal_accounts.json`, `line_accounts.json`, `sim_accounts.json`, token và session nằm trong `/data`; không copy ra ngoài.
-- Session Telegram và token tài khoản Discord tương đương quyền đăng nhập tài khoản; token Signal API tương đương quyền gửi tin qua cầu nối; channel access token LINE cho phép gửi tin dưới danh nghĩa Official Account; quyền truy cập mô-đun SIM 4G cho phép gọi, phát audio, gửi USSD và đọc SMS bằng SIM. Hộp thư SMS có thể chứa OTP hoặc thông tin cá nhân; không chia sẻ log/ảnh chụp bảng điều khiển. Bảo vệ bản backup Home Assistant.
-- Không commit `data/`, `*.session`, `accounts.json`, `discord_accounts.json`, `signal_accounts.json`, `line_accounts.json`, `sim_accounts.json`, `api_token`, `options.json`.
+- `accounts.json`, `discord_accounts.json`, `signal_accounts.json`, `line_accounts.json`, `zalo_accounts.json`, `sim_accounts.json`, token và session nằm trong `/data`; không copy ra ngoài. Phiên Zalo nằm trong `/data/zalo/` với quyền thư mục `700` và tệp `600`.
+- Session Telegram và token tài khoản Discord tương đương quyền đăng nhập tài khoản; token Signal API tương đương quyền gửi tin qua cầu nối; channel access token LINE cho phép gửi tin dưới danh nghĩa Official Account; phiên Zalo tương đương quyền đăng nhập và nhắn tin bằng tài khoản cá nhân; quyền truy cập mô-đun SIM 4G cho phép gọi, phát audio, gửi USSD và đọc SMS bằng SIM. Hộp thư SMS có thể chứa OTP hoặc thông tin cá nhân; không chia sẻ log/ảnh chụp bảng điều khiển. Bảo vệ bản backup Home Assistant.
+- Không commit `data/`, `*.session`, `accounts.json`, `discord_accounts.json`, `signal_accounts.json`, `line_accounts.json`, `zalo_accounts.json`, `zalo/`, `sim_accounts.json`, `api_token`, `options.json`.
 - Add-on publish port `3030`; nếu không cần truy cập trực tiếp, bỏ mapping port và chỉ dùng ingress/integration nội bộ.
 
 ## Kiểm thử
@@ -374,16 +413,17 @@ python3 -m venv .venv
 node --check calling_messenger_hub/app/ui/app.js
 ```
 
-Kết quả hiện tại: 90 test add-on pass, 15 test license server pass, `ruff`, Python compile và JavaScript syntax pass; smoke Playwright trên mock server đã kiểm tra desktop/mobile/dark mode, không tràn ngang và không trùng ID. License server đã deploy tại `https://calling-messenger-hub-license.vercel.app`; đã test đăng ký, trial, tạo key, validate, tạo/hủy link PayOS, admin dùng dashboard, link quản trị theo `is_admin`, đổi mật khẩu user/admin và đăng nhập lại bằng mật khẩu mới. Chưa test thanh toán chuyển tiền thật, đăng nhập/gọi Telegram thật, tài khoản Discord/Signal/LINE thật, A7670C-LANS/EC20 thật hoặc Home Assistant runtime thật.
+Kết quả hiện tại: 98 test add-on pass (gồm 8 test Zalo), 15 test license server pass, `ruff`, Python compile và JavaScript syntax pass. Smoke Playwright desktop/mobile/dark mode đã chạy ở bản `0.10.0`; giao diện Zalo mới được kiểm tra HTML/JS tĩnh và API mocked, chưa chụp Playwright lại do Chromium headless của môi trường build không ổn định. License server đã deploy tại `https://calling-messenger-hub-license.vercel.app`; đã test đăng ký, trial, tạo key, validate, tạo/hủy link PayOS, admin dùng dashboard, link quản trị theo `is_admin`, đổi mật khẩu user/admin và đăng nhập lại bằng mật khẩu mới. Chưa test thanh toán chuyển tiền thật, đăng nhập/gọi Telegram thật, tài khoản Discord/Signal/LINE/Zalo thật, A7670C-LANS/EC20 thật hoặc Home Assistant runtime thật.
 
 ## Giới hạn đã biết
 
 - Discord dùng token tài khoản người dùng (self-bot), trái Điều khoản Discord và có thể bị khóa tài khoản; không hỗ trợ gọi thoại. Chỉ dùng tài khoản phụ.
 - Signal cần signal-cli REST API riêng; add-on không đăng ký số Signal và không có cuộc gọi Signal.
+- Zalo dùng giao thức không chính thức, có thể bị Zalo thay đổi hoặc chặn; chỉ hỗ trợ văn bản, không có ảnh/TTS/gọi/chuông. Phiên QR và cookie là dữ liệu nhạy cảm, không đưa vào log hoặc backup công khai.
 - Signal API không có xác thực mặc định; phải giới hạn mạng hoặc đặt sau reverse proxy. Tính năng Bearer token chỉ hoạt động khi proxy kiểm tra token.
 - Gửi ảnh/TTS Signal dùng tệp đính kèm; một số bản signal-cli có thể không hiển thị voice dưới dạng voice note.
 - Discord `@username` chỉ tìm trong bạn bè hoặc DM đã có; nên dùng ID người dùng hoặc ID kênh. Token hết hạn sau khi đổi mật khẩu/đăng xuất mọi thiết bị.
-- P2P call chỉ hoạt động với user Telegram, không gọi nhóm. SIM chỉ gọi số điện thoại, không gọi Telegram/Discord/Signal.
+- P2P call chỉ hoạt động với user Telegram, không gọi nhóm. SIM chỉ gọi số điện thoại, không gọi Telegram/Discord/Signal/Zalo.
 - Người nhận phải bấm nghe máy; không có cách phát TTS vào voicemail.
 - Chất lượng/khả năng gọi phụ thuộc privacy setting và phiên bản Telegram của người nhận.
 - SIM A7670C-LANS và EC20/EC2x chưa được kiểm thử trên phần cứng thật. Cần xác minh đường audio, mức âm lượng, `AT+CFTRANRX`/`AT+QFUPL` ở 115200 baud, quyền ghi EFS/UFS và dung lượng bộ nhớ của từng firmware. Cần xác minh thêm `AT+COPS?`/`AT+CSQ`, `AT+CUSD`, cách nhà mạng trả USSD qua SMS, mã hóa UCS2 và thời gian phản hồi. Add-on chia audio 60/30/5 giây và có thể chuyển AMR → MP3 → WAV nếu `ffmpeg` thiếu encoder.
