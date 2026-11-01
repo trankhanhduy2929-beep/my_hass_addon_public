@@ -1,6 +1,6 @@
 # Calling Messenger Hub
 
-Trung tâm gọi và tin nhắn đa dịch vụ cho Home Assistant. Bản `0.8.0` hỗ trợ Telegram, Discord, Signal, LINE Official Account và SIM A7670C-LANS trên cùng một bảng điều khiển, dùng chung biểu mẫu gửi tin nhắn và ảnh.
+Trung tâm gọi và tin nhắn đa dịch vụ cho Home Assistant. Bản `0.9.0` hỗ trợ Telegram, Discord, Signal, LINE Official Account và mô-đun SIM 4G SIMCom A7670C-LANS hoặc Quectel EC20/EC2x trên cùng một bảng điều khiển, dùng chung biểu mẫu gửi tin nhắn và ảnh.
 
 Chức năng hiện có:
 
@@ -13,16 +13,16 @@ Chức năng hiện có:
 - đăng nhập tài khoản Discord bằng token phiên, gửi tin nhắn/ảnh/voice TTS đến DM hoặc kênh;
 - kết nối Signal qua signal-cli REST API, gửi tin nhắn/ảnh/voice TTS đến số, nhóm hoặc username;
 - kết nối LINE Official Account qua Messaging API, gửi tin nhắn/ảnh URL HTTPS và nhận ID người nhận qua webhook có xác thực chữ ký;
-- kết nối SIM A7670C-LANS qua serial/UART hoặc TCP bridge, gọi thoại thật, phát TTS khi nghe máy và gọi lặp làm chuông báo động;
+- kết nối SIMCom A7670C-LANS hoặc Quectel EC20/EC2x qua serial/UART hoặc TCP bridge, tự nhận diện dòng module, gọi thoại thật, phát TTS khi nghe máy và gọi lặp làm chuông báo động;
 - xem trạng thái kênh, cuộc gọi, log và điều khiển qua ingress UI;
 - kích hoạt license key, kiểm tra hạn dùng và tự chặn thao tác khi hết hạn;
 - gọi REST API từ automation Home Assistant.
 
-> Chưa kiểm thử với tài khoản Telegram, tài khoản Discord, Signal API, LINE Official Account hoặc mô-đun A7670C-LANS thật, hoặc trên thiết bị Home Assistant thật. Cần build lại image `amd64`/`aarch64` cho bản `0.8.0`.
+> Chưa kiểm thử với tài khoản Telegram, tài khoản Discord, Signal API, LINE Official Account hoặc mô-đun A7670C-LANS/EC20 thật, hoặc trên thiết bị Home Assistant thật. Cần build lại image `amd64`/`aarch64` cho bản `0.9.0`.
 
 ## Định hướng đa dịch vụ
 
-`Calling Messenger Hub` là lớp trung tâm cho gọi và nhắn tin. Telegram, Discord, Signal, LINE và SIM dùng chung danh sách tài khoản, biểu mẫu gửi và REST API; gọi thoại hỗ trợ Telegram P2P và SIM A7670C-LANS.
+`Calling Messenger Hub` là lớp trung tâm cho gọi và nhắn tin. Telegram, Discord, Signal, LINE và SIM dùng chung danh sách tài khoản, biểu mẫu gửi và REST API; gọi thoại hỗ trợ Telegram P2P và SIM 4G A7670/EC20.
 
 Discord dùng token phiên của tài khoản người dùng, không dùng bot. Add-on đăng nhập trực tiếp qua Discord REST API, gửi DM/group DM hoặc kênh server mà tài khoản tham gia. Tin nhắn dài được chia theo giới hạn 2.000 ký tự.
 
@@ -36,11 +36,11 @@ LINE dùng **Messaging API** của LINE Official Account, không dùng tài kho�
 
 LINE chỉ gửi ảnh bằng URL `https://` công khai, không nhận file `/data/media` hay data URI; không gửi được voice TTS cục bộ và không hỗ trợ gọi thoại/chuông. Tin nhắn dài được chia theo giới hạn 5.000 ký tự.
 
-SIM dùng mô-đun 4G **A7670C-LANS** qua lệnh AT. Add-on hỗ trợ hai kiểu kết nối: serial/UART (`/dev/ttyUSB2`, `/dev/ttyACM0`, cần `uart: true` trong add-on) hoặc TCP serial bridge. Khi thêm SIM, add-on kiểm tra `AT+CPIN?`, `AT+CREG?`, `AT+CSQ`, `AT+CNUM`, model/IMEI/ICCID rồi lưu cấu hình trong `/data/sim_accounts.json` với quyền `600`. SIM phải đã tắt mã PIN và đăng ký mạng.
+SIM dùng mô-đun 4G **SIMCom A7670C-LANS** hoặc **Quectel EC20/EC2x/EG2x** qua lệnh AT. Add-on hỗ trợ hai kiểu kết nối: serial/UART (`/dev/ttyUSB2`, `/dev/ttyACM0`, cần `uart: true` trong add-on) hoặc TCP serial bridge. Khi thêm SIM, chọn dòng module hoặc để **Tự động nhận diện**; add-on đọc `AT+CGMM`/`AT+CGMR` để chọn profile A7670 hoặc EC20. Quá trình kiểm tra gồm `AT+CPIN?`, `AT+CEREG?`/`AT+CREG?`, `AT+CSQ`, `AT+CGSN`, `AT+QCCID`/`AT+CCID`, `AT+CNUM`, rồi lưu cấu hình trong `/data/sim_accounts.json` với quyền `600`. SIM phải đã tắt mã PIN, đăng ký mạng và bật VoLTE nếu nhà mạng yêu cầu gọi thoại trên 4G.
 
-Cuộc gọi SIM thực hiện `ATD< số >;`, chờ `AT+CLCC` báo trạng thái active trong `ring_timeout`, rồi tải từng đoạn audio vào EFS bằng `AT+CFTRANRX` và phát bằng `AT+CCMXPLAY` với đường audio về phía mô-đun. Audio 8 kHz mono được chia nhỏ để vừa giới hạn bộ nhớ USB/UART: ưu tiên AMR 60 giây, sau đó MP3 30 giây, cuối cùng WAV 5 giây. Khi kết thúc, add-on dừng phát, `AT+CHUP` và xóa file tạm bằng `AT+FSDEL`. SIM không gửi tin nhắn/ảnh/TTS qua API; `send_message` trong chuông SIM bị bỏ qua.
+Cuộc gọi SIM thực hiện `ATD< số >;`, chờ `AT+CLCC` báo cuộc gọi thoại đang active trong `ring_timeout` (bỏ qua các dòng CLCC là data call), rồi tải từng đoạn audio và phát khi nghe máy. Với A7670, add-on dùng `AT+CFTRANRX` vào EFS, phát bằng `AT+CCMXPLAY`, dừng bằng `AT+CCMXSTOP` và xóa bằng `AT+FSDEL`. Với EC20/EC2x, add-on dùng `AT+QFUPL` vào UFS bằng tên file không tiền tố, phát tới đầu xa bằng `AT+QPSND=1,"<file>",0,1,1`, dừng bằng `AT+QPSND=0,"<file>",0` và xóa bằng `AT+QFDEL`. Audio 8 kHz mono được chia nhỏ để vừa giới hạn bộ nhớ USB/UART: ưu tiên AMR 60 giây, sau đó MP3 30 giây, cuối cùng WAV 5 giây. SIM không gửi tin nhắn/ảnh/TTS qua API; `send_message` trong chuông SIM bị bỏ qua.
 
-A7670C-LANS cần loa/mic hoặc đường audio phần cứng để nghe TTS; add-on chỉ điều khiển lệnh AT, không truyền audio USB. Cước gọi do nhà mạng của SIM tính. Không hỗ trợ cuộc gọi đến, voicemail hay SMS. Chỉ gọi tới người đã đồng ý và tuân thủ quy định viễn thông địa phương.
+EC20/EC2x phát TTS trực tiếp vào đường lên cuộc gọi nên host không cần card âm thanh; A7670C-LANS cần cấu hình loa/mic hoặc đường audio phần cứng phù hợp. Add-on chỉ điều khiển lệnh AT, không truyền audio USB. Cước gọi do nhà mạng của SIM tính. Không hỗ trợ cuộc gọi đến, voicemail hay SMS. Chỉ gọi tới người đã đồng ý và tuân thủ quy định viễn thông địa phương.
 
 ## Thay đổi tên từ bản cũ
 
@@ -80,7 +80,7 @@ Bản `0.7.0` thêm LINE Official Account qua Messaging API: thêm tài khoản 
 
 Bản `0.8.0` thêm SIM A7670C-LANS qua serial/UART hoặc TCP bridge: thêm tài khoản SIM trong UI, kiểm tra SIM/sóng/nhà mạng, gọi thoại thật, tải audio TTS theo đoạn AMR/MP3/WAV, phát khi nghe máy, gọi lặp làm chuông và dừng/xóa file tạm đúng cách. SIM chỉ gọi thoại, không gửi tin nhắn/ảnh và không nhận cuộc gọi đến.
 
-Integration `2.0.5` cập nhật mô tả service cho SIM. Cài kèm add-on `0.8.0`; không cần cấu hình lại entity.
+Bản `0.9.0` thêm profile Quectel EC20/EC2x/EG2x bên cạnh A7670C-LANS: tự nhận diện qua `AT+CGMM`/`AT+CGMR`, cho phép chọn dòng module thủ công, đọc ICCID bằng `AT+QCCID`, tải audio UFS bằng `AT+QFUPL`, phát tới đầu xa bằng `AT+QPSND`, xóa bằng `AT+QFDEL`, lọc data call khi đọc `AT+CLCC` và hỗ trợ đăng ký qua `AT+CEREG?`. Integration `2.0.6` đi kèm add-on `0.9.0`; không cần cấu hình lại entity.
 
 ## Cấu trúc
 
@@ -96,7 +96,7 @@ input/telegram_voip/
 │   │   ├── signal_store.py           # signal_accounts.json (quyền 600)
 │   │   ├── line_manager.py           # provider LINE: Messaging API + webhook
 │   │   ├── line_store.py             # line_accounts.json (quyền 600)
-│   │   ├── sim_manager.py            # provider SIM: AT commands A7670 + call audio
+│   │   ├── sim_manager.py            # provider SIM: AT commands A7670/EC20 + call audio
 │   │   ├── sim_store.py              # sim_accounts.json (quyền 600)
 │   │   ├── tts.py                    # Edge TTS -> OGG/Opus, AMR/MP3/WAV cho SIM
 │   │   ├── license.py                # license service + offline cache
@@ -120,7 +120,7 @@ input/telegram_voip/
 5. Với Discord, lấy token phiên của tài khoản người dùng (không phải bot token). Chỉ dùng tài khoản phụ vì self-bot trái Điều khoản Discord và có thể bị khóa.
 6. Với Signal, chạy signal-cli-rest-api, liên kết thiết bị qua `/v1/qrcodelink` bằng QR trong ứng dụng Signal, rồi nhập số E.164 và URL API vào add-on. Không mở Signal API trực tiếp ra Internet khi chưa có xác thực.
 7. Với LINE, tạo Messaging API channel, phát hành channel access token và nhập channel secret nếu dùng webhook. Webhook phải dùng URL công khai HTTPS trỏ tới `/api/line/webhook/{account_id}`.
-8. Với SIM, cắm A7670C-LANS qua USB/UART hoặc nối TCP serial bridge, tắt mã PIN, lắp SIM đã đăng ký mạng và bật `uart: true` nếu dùng serial trong Home Assistant. Cần loa/mic hoặc đường audio phần cứng; add-on không truyền audio qua USB.
+8. Với SIM, cắm A7670C-LANS hoặc EC20/EC2x qua USB/UART hoặc nối TCP serial bridge, tắt mã PIN, lắp SIM đã đăng ký mạng và bật `uart: true` nếu dùng serial trong Home Assistant. Chọn đúng dòng module hoặc để tự nhận diện; bật VoLTE nếu cần. EC20/EC2x không cần card âm thanh trên host; A7670C-LANS cần cấu hình đường audio phần cứng phù hợp. Add-on không truyền audio qua USB.
 9. Chỉ dùng tài khoản phụ hoặc tài khoản bạn sở hữu. Gọi tự động có thể vi phạm Telegram Terms of Service, quy định viễn thông và gây cước phí SIM.
 10. Add-on cần license key còn hạn cho các thao tác gửi/gọi. Key dùng thử, gói tháng hoặc vĩnh viễn được cấp từ trang license; xem mục **License** bên dưới.
 
@@ -312,7 +312,7 @@ GET    /api/logs
 
 - API token là bearer token toàn quyền với add-on; không đưa vào file public.
 - `accounts.json`, `discord_accounts.json`, `signal_accounts.json`, `line_accounts.json`, `sim_accounts.json`, token và session nằm trong `/data`; không copy ra ngoài.
-- Session Telegram và token tài khoản Discord tương đương quyền đăng nhập tài khoản; token Signal API tương đương quyền gửi tin qua cầu nối; channel access token LINE cho phép gửi tin dưới danh nghĩa Official Account; quyền truy cập A7670C-LANS cho phép gọi và phát audio bằng SIM. Bảo vệ bản backup Home Assistant.
+- Session Telegram và token tài khoản Discord tương đương quyền đăng nhập tài khoản; token Signal API tương đương quyền gửi tin qua cầu nối; channel access token LINE cho phép gửi tin dưới danh nghĩa Official Account; quyền truy cập mô-đun SIM 4G cho phép gọi và phát audio bằng SIM. Bảo vệ bản backup Home Assistant.
 - Không commit `data/`, `*.session`, `accounts.json`, `discord_accounts.json`, `signal_accounts.json`, `line_accounts.json`, `sim_accounts.json`, `api_token`, `options.json`.
 - Add-on publish port `3030`; nếu không cần truy cập trực tiếp, bỏ mapping port và chỉ dùng ingress/integration nội bộ.
 
@@ -327,7 +327,7 @@ python3 -m venv .venv
 node --check calling_messenger_hub/app/ui/app.js
 ```
 
-Kết quả hiện tại: 82 test add-on pass, 15 test license server pass, `ruff`, Python compile và JavaScript syntax pass. License server đã deploy tại `https://calling-messenger-hub-license.vercel.app`; đã test đăng ký, trial, tạo key, validate, tạo/hủy link PayOS, admin dùng dashboard, link quản trị theo `is_admin`, đổi mật khẩu user/admin và đăng nhập lại bằng mật khẩu mới. Chưa test thanh toán chuyển tiền thật, đăng nhập/gọi Telegram thật, tài khoản Discord/Signal/LINE thật, A7670C-LANS thật hoặc Home Assistant runtime thật.
+Kết quả hiện tại: 85 test add-on pass, 15 test license server pass, `ruff`, Python compile và JavaScript syntax pass. License server đã deploy tại `https://calling-messenger-hub-license.vercel.app`; đã test đăng ký, trial, tạo key, validate, tạo/hủy link PayOS, admin dùng dashboard, link quản trị theo `is_admin`, đổi mật khẩu user/admin và đăng nhập lại bằng mật khẩu mới. Chưa test thanh toán chuyển tiền thật, đăng nhập/gọi Telegram thật, tài khoản Discord/Signal/LINE thật, A7670C-LANS/EC20 thật hoặc Home Assistant runtime thật.
 
 ## Giới hạn đã biết
 
@@ -339,7 +339,7 @@ Kết quả hiện tại: 82 test add-on pass, 15 test license server pass, `ruf
 - P2P call chỉ hoạt động với user Telegram, không gọi nhóm. SIM chỉ gọi số điện thoại, không gọi Telegram/Discord/Signal.
 - Người nhận phải bấm nghe máy; không có cách phát TTS vào voicemail.
 - Chất lượng/khả năng gọi phụ thuộc privacy setting và phiên bản Telegram của người nhận.
-- SIM A7670C-LANS chưa được kiểm thử trên phần cứng thật. Cần xác minh đường audio, mức âm lượng, `AT+CFTRANRX` ở 115200 baud và dung lượng EFS của từng firmware. Add-on chia audio 60/30/5 giây và có thể chuyển AMR → MP3 → WAV nếu `ffmpeg` thiếu encoder.
+- SIM A7670C-LANS và EC20/EC2x chưa được kiểm thử trên phần cứng thật. Cần xác minh đường audio, mức âm lượng, `AT+CFTRANRX`/`AT+QFUPL` ở 115200 baud, quyền ghi EFS/UFS và dung lượng bộ nhớ của từng firmware. Add-on chia audio 60/30/5 giây và có thể chuyển AMR → MP3 → WAV nếu `ffmpeg` thiếu encoder.
 - SIM không hỗ trợ cuộc gọi đến, SMS, voicemail, gửi tin nhắn/ảnh hoặc TTS qua API. Cước phí và giới hạn gọi do nhà mạng quyết định.
 - Edge TTS phụ thuộc dịch vụ Microsoft; nội dung TTS được gửi qua Internet.
 - `ntgcalls` cần manylinux 2.28; image dùng `python:3.12-slim-bookworm` và chỉ chạy trên `amd64`/`aarch64`.

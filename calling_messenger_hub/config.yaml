@@ -1,7 +1,7 @@
 name: "Calling Messenger Hub"
-version: "0.8.0"
+version: "0.9.0"
 slug: "calling_messenger_hub"
-description: "Trung tâm gọi và tin nhắn đa dịch vụ cho Home Assistant. Hỗ trợ Telegram (tin nhắn/ảnh/voice TTS, gọi P2P), Discord/Signal (chuông TTS lặp), LINE Official Account (tin nhắn/ảnh qua Messaging API) và SIM A7670C-LANS (gọi thoại thật, phát TTS khi nghe máy)."
+description: "Trung tâm gọi và tin nhắn đa dịch vụ cho Home Assistant. Hỗ trợ Telegram (tin nhắn/ảnh/voice TTS, gọi P2P), Discord/Signal (chuông TTS lặp), LINE Official Account (tin nhắn/ảnh qua Messaging API) và mô-đun SIM 4G SIMCom A7670C-LANS/Quectel EC20/EC2x (gọi thoại thật, phát TTS khi nghe máy)."
 url: "https://github.com/trankhanhduy2929-beep/my_hass_addon_public"
 arch:
   - amd64
