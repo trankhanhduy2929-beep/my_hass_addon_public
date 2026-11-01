@@ -1,6 +1,6 @@
 # Calling Messenger Hub
 
-Trung tâm gọi và tin nhắn đa dịch vụ cho Home Assistant. Bản `0.11.3` hỗ trợ Telegram, Discord, Signal, LINE Official Account, Zalo cá nhân và mô-đun SIM 4G SIMCom A7670C-LANS hoặc Quectel EC20/EC2x trên cùng một bảng điều khiển, dùng chung biểu mẫu gửi tin nhắn và ảnh; SIM 4G xem được nhà mạng, mức sóng, số dư, hạn dùng qua USSD và đọc hộp thư SMS/OTP.
+Trung tâm gọi và tin nhắn đa dịch vụ cho Home Assistant. Bản `0.12.0` hỗ trợ Telegram, Discord, Signal, LINE Official Account, Zalo cá nhân và mô-đun SIM 4G SIMCom A7670C-LANS hoặc Quectel EC20/EC2x trên cùng một bảng điều khiển, dùng chung biểu mẫu gửi tin nhắn và ảnh; SIM 4G xem được nhà mạng, mức sóng, số dư, hạn dùng qua USSD và đọc hộp thư SMS/OTP.
 
 Chức năng hiện có:
 
@@ -13,14 +13,14 @@ Chức năng hiện có:
 - đăng nhập tài khoản Discord bằng token phiên, gửi tin nhắn/ảnh/voice TTS đến DM hoặc kênh;
 - kết nối Signal qua signal-cli REST API, gửi tin nhắn/ảnh/voice TTS đến số, nhóm hoặc username;
 - kết nối LINE Official Account qua Messaging API, gửi tin nhắn/ảnh URL HTTPS và nhận ID người nhận qua webhook có xác thực chữ ký;
-- đăng nhập Zalo cá nhân bằng QR, xem hội thoại/tin nhắn và gửi tin nhắn văn bản tới bạn bè hoặc nhóm;
+- đăng nhập Zalo cá nhân bằng QR, xem hội thoại/tin nhắn, trả lời tin nhắn, tải thêm lịch sử nhóm và quản lý nhóm (tạo, đổi tên, thêm/xoá thành viên, rời nhóm);
 - kết nối SIMCom A7670C-LANS hoặc Quectel EC20/EC2x qua serial/UART hoặc TCP bridge, tự nhận diện dòng module, gọi thoại thật, phát TTS khi nghe máy và gọi lặp làm chuông báo động;
 - xem nhà mạng, mức sóng, số dư, hạn dùng SIM bằng USSD, đọc SMS/OTP trong ingress UI;
 - xem trạng thái kênh, cuộc gọi, log và điều khiển qua ingress UI;
 - kích hoạt license key, kiểm tra hạn dùng và tự chặn thao tác khi hết hạn;
 - gọi REST API từ automation Home Assistant.
 
-> Chưa kiểm thử với tài khoản Telegram, tài khoản Discord, Signal API, LINE Official Account, Zalo cá nhân hoặc mô-đun A7670C-LANS/EC20 thật, hoặc trên thiết bị Home Assistant thật. Định dạng USSD/SMS khác nhau theo nhà mạng và thế hệ SIM; cần xác minh lại trên SIM thật. Cần build lại image `amd64`/`aarch64` cho bản `0.11.3`.
+> Chưa kiểm thử với tài khoản Telegram, tài khoản Discord, Signal API, LINE Official Account, Zalo cá nhân hoặc mô-đun A7670C-LANS/EC20 thật, hoặc trên thiết bị Home Assistant thật. Định dạng USSD/SMS khác nhau theo nhà mạng và thế hệ SIM; cần xác minh lại trên SIM thật. Cần build lại image `amd64`/`aarch64` cho bản `0.12.0`.
 
 ## Định hướng đa dịch vụ
 
@@ -99,6 +99,8 @@ Bản `0.11.1` sửa giải mã phản hồi `getLoginInfo` để lấy đúng `
 Bản `0.11.2` thu thập cookie `zpw_sek` được Zalo xoay vòng trong toàn bộ quá trình polling/confirm QR và giữ giá trị mới nhất, khắc phục lỗi **600: zpw_sek bị thiếu hoặc không đúng** sau khi đăng nhập QR thành công.
 
 Bản `0.11.3` lưu nhiều cookie `zpw_sek` ứng viên trong phiên QR, thử lại hồ sơ với từng cookie khi gặp lỗi `102`/`600`, đồng thời hiển thị chẩn đoán không chứa bí mật (`cookie`, `key`, số ứng viên) khi đăng nhập thất bại.
+
+Bản `0.12.0` mở rộng Zalo cá nhân: trả lời/trích dẫn tin nhắn, tải thêm lịch sử nhóm qua `getoldv2`, và quản lý nhóm (tạo nhóm, đổi tên, thêm/xoá thành viên, rời nhóm) ngay trong ingress UI. Thêm API nhóm `/api/zalo/accounts/{account_id}/groups/*` và trường `reply_to` cho tin nhắn; Integration `2.0.6` không đổi.
 
 ## Cấu trúc
 
@@ -314,8 +316,14 @@ POST   /api/zalo/login
 GET    /api/zalo/login/{login_id}
 DELETE /api/zalo/login/{login_id}
 GET    /api/zalo/accounts/{account_id}/threads?limit=100&refresh=true
-GET    /api/zalo/accounts/{account_id}/messages?thread_id=...&limit=100&is_group=true
+GET    /api/zalo/accounts/{account_id}/messages?thread_id=...&limit=100&is_group=true&before=GLOBAL_MSG_ID
 POST   /api/zalo/accounts/{account_id}/refresh
+GET    /api/zalo/accounts/{account_id}/groups/{group_id}
+POST   /api/zalo/accounts/{account_id}/groups
+PATCH  /api/zalo/accounts/{account_id}/groups/{group_id}
+POST   /api/zalo/accounts/{account_id}/groups/{group_id}/members
+DELETE /api/zalo/accounts/{account_id}/groups/{group_id}/members
+POST   /api/zalo/accounts/{account_id}/groups/{group_id}/leave
 POST   /api/zalo/messages
 POST   /api/sim/accounts
 POST   /api/sim/accounts/{account_id}/refresh
@@ -419,13 +427,13 @@ python3 -m venv .venv
 node --check calling_messenger_hub/app/ui/app.js
 ```
 
-Kết quả hiện tại: 102 test add-on pass (gồm 12 test Zalo), 15 test license server pass, `ruff`, Python compile và JavaScript syntax pass. Smoke Playwright desktop/mobile/dark mode đã chạy ở bản `0.10.0`; giao diện Zalo mới được kiểm tra HTML/JS tĩnh và API mocked, chưa chụp Playwright lại do Chromium headless của môi trường build không ổn định. License server đã deploy tại `https://calling-messenger-hub-license.vercel.app`; đã test đăng ký, trial, tạo key, validate, tạo/hủy link PayOS, admin dùng dashboard, link quản trị theo `is_admin`, đổi mật khẩu user/admin và đăng nhập lại bằng mật khẩu mới. Chưa test thanh toán chuyển tiền thật, đăng nhập/gọi Telegram thật, tài khoản Discord/Signal/LINE/Zalo thật, A7670C-LANS/EC20 thật hoặc Home Assistant runtime thật.
+Kết quả hiện tại: 105 test add-on pass (gồm 15 test Zalo), 15 test license server pass, `ruff`, Python compile và JavaScript syntax pass. Smoke Playwright desktop/mobile/dark mode đã chạy lại ở bản `0.12.0` cho các luồng Zalo (trả lời, tải lịch sử, quản lý/tạo nhóm), không có lỗi console và không tràn ngang; ảnh chụp lưu tại `/var/tmp/cmh-ui-shots`. License server đã deploy tại `https://calling-messenger-hub-license.vercel.app`; đã test đăng ký, trial, tạo key, validate, tạo/hủy link PayOS, admin dùng dashboard, link quản trị theo `is_admin`, đổi mật khẩu user/admin và đăng nhập lại bằng mật khẩu mới. Chưa test thanh toán chuyển tiền thật, đăng nhập/gọi Telegram thật, tài khoản Discord/Signal/LINE/Zalo thật, A7670C-LANS/EC20 thật hoặc Home Assistant runtime thật.
 
 ## Giới hạn đã biết
 
 - Discord dùng token tài khoản người dùng (self-bot), trái Điều khoản Discord và có thể bị khóa tài khoản; không hỗ trợ gọi thoại. Chỉ dùng tài khoản phụ.
 - Signal cần signal-cli REST API riêng; add-on không đăng ký số Signal và không có cuộc gọi Signal.
-- Zalo dùng giao thức không chính thức, có thể bị Zalo thay đổi hoặc chặn; chỉ hỗ trợ văn bản, không có ảnh/TTS/gọi/chuông. Phiên QR và cookie là dữ liệu nhạy cảm, không đưa vào log hoặc backup công khai.
+- Zalo dùng giao thức không chính thức, có thể bị Zalo thay đổi hoặc chặn; chỉ hỗ trợ văn bản, trả lời, lịch sử nhóm và quản lý nhóm, không có ảnh/TTS/gọi/chuông. Lịch sử nhóm cũ chỉ tải được khi tin nhắn có `globalMsgId`; thêm/xoá thành viên, đổi tên và rời nhóm còn phụ thuộc quyền của tài khoản trong nhóm. Phiên QR và cookie là dữ liệu nhạy cảm, không đưa vào log hoặc backup công khai.
 - Signal API không có xác thực mặc định; phải giới hạn mạng hoặc đặt sau reverse proxy. Tính năng Bearer token chỉ hoạt động khi proxy kiểm tra token.
 - Gửi ảnh/TTS Signal dùng tệp đính kèm; một số bản signal-cli có thể không hiển thị voice dưới dạng voice note.
 - Discord `@username` chỉ tìm trong bạn bè hoặc DM đã có; nên dùng ID người dùng hoặc ID kênh. Token hết hạn sau khi đổi mật khẩu/đăng xuất mọi thiết bị.
