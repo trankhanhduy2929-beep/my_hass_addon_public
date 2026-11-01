@@ -1,6 +1,6 @@
 # Calling Messenger Hub
 
-Trung tâm gọi và tin nhắn đa dịch vụ cho Home Assistant. Bản `0.6.0` hỗ trợ Telegram, Discord và Signal trên cùng một bảng điều khiển, dùng chung biểu mẫu gửi tin nhắn, ảnh và voice TTS.
+Trung tâm gọi và tin nhắn đa dịch vụ cho Home Assistant. Bản `0.7.0` hỗ trợ Telegram, Discord, Signal và LINE Official Account trên cùng một bảng điều khiển, dùng chung biểu mẫu gửi tin nhắn và ảnh.
 
 Chức năng hiện có:
 
@@ -12,21 +12,28 @@ Chức năng hiện có:
 - gọi lặp làm chuông báo động Telegram; Discord/Signal gửi voice TTS lặp;
 - đăng nhập tài khoản Discord bằng token phiên, gửi tin nhắn/ảnh/voice TTS đến DM hoặc kênh;
 - kết nối Signal qua signal-cli REST API, gửi tin nhắn/ảnh/voice TTS đến số, nhóm hoặc username;
+- kết nối LINE Official Account qua Messaging API, gửi tin nhắn/ảnh URL HTTPS và nhận ID người nhận qua webhook có xác thực chữ ký;
 - xem trạng thái kênh, cuộc gọi, log và điều khiển qua ingress UI;
 - kích hoạt license key, kiểm tra hạn dùng và tự chặn thao tác khi hết hạn;
 - gọi REST API từ automation Home Assistant.
 
-> Chưa kiểm thử với tài khoản Telegram, tài khoản Discord hoặc Signal API thật, hoặc trên thiết bị Home Assistant thật. Cần build lại image `amd64`/`aarch64` cho bản `0.6.0`.
+> Chưa kiểm thử với tài khoản Telegram, tài khoản Discord, Signal API hoặc LINE Official Account thật, hoặc trên thiết bị Home Assistant thật. Cần build lại image `amd64`/`aarch64` cho bản `0.7.0`.
 
 ## Định hướng đa dịch vụ
 
-`Calling Messenger Hub` là lớp trung tâm cho gọi và nhắn tin. Telegram, Discord và Signal dùng chung danh sách tài khoản, biểu mẫu gửi và REST API; cuộc gọi P2P hiện chỉ có trên Telegram.
+`Calling Messenger Hub` là lớp trung tâm cho gọi và nhắn tin. Telegram, Discord, Signal và LINE dùng chung danh sách tài khoản, biểu mẫu gửi và REST API; cuộc gọi P2P hiện chỉ có trên Telegram.
 
 Discord dùng token phiên của tài khoản người dùng, không dùng bot. Add-on đăng nhập trực tiếp qua Discord REST API, gửi DM/group DM hoặc kênh server mà tài khoản tham gia. Tin nhắn dài được chia theo giới hạn 2.000 ký tự.
 
 > **Cảnh báo:** tự động hóa tài khoản Discord bằng token phiên là self-bot, trái Điều khoản Discord và có thể khiến tài khoản bị khóa. Chỉ dùng tài khoản phụ; token tương đương mật khẩu đăng nhập. Add-on không hỗ trợ gọi thoại Discord vì API người dùng không cung cấp cuộc gọi 1:1.
 
 Signal dùng [signal-cli-rest-api](https://github.com/bbernhard/signal-cli-rest-api) làm cầu nối, không nhúng signal-cli vào add-on. Cần chạy Signal API riêng, liên kết thiết bị bằng QR rồi nhập số E.164 và URL API trong hộp thoại **Thêm Signal**. Signal API không có xác thực mặc định; chỉ mở trong LAN hoặc đặt sau reverse proxy có Bearer token. Add-on hỗ trợ nhắn tin, ảnh và voice TTS; không hỗ trợ gọi Signal.
+
+LINE dùng **Messaging API** của LINE Official Account, không dùng tài khoản LINE cá nhân. Tạo channel tại [LINE Developers Console](https://developers.line.biz/console/), phát hành **Channel access token (long-lived)** rồi nhập cùng tên gợi nhớ trong hộp thoại **Thêm LINE**. Add-on kiểm tra token qua `/v2/bot/info`, lưu token trong `/data/line_accounts.json` với quyền `600` và chỉ hiển thị trạng thái.
+
+Để gửi tin, nhập user ID `U...`, group ID `C...` hoặc room ID `R...` (33 ký tự). Bật **Channel secret** nếu muốn dùng webhook nhận ID tự động: mở Messaging API settings, bật webhook với URL `https://PUBLIC_HOST/api/line/webhook/ACCOUNT_ID`, rồi nhắn thử cho Official Account. Nút **Webhook** trong thẻ tài khoản sao chép URL hiện tại; phải thay host bằng URL công khai. Add-on xác thực header `X-Line-Signature`, không yêu cầu Bearer token cho webhook.
+
+LINE chỉ gửi ảnh bằng URL `https://` công khai, không nhận file `/data/media` hay data URI; không gửi được voice TTS cục bộ và không hỗ trợ gọi thoại/chuông. Tin nhắn dài được chia theo giới hạn 5.000 ký tự.
 
 ## Thay đổi tên từ bản cũ
 
@@ -62,6 +69,10 @@ Bản `0.5.0` chuyển Discord từ bot token sang token tài khoản người d
 
 Bản `0.6.0` thêm chuông TTS lặp cho tài khoản Discord và Signal qua `ring`: gửi text tùy chọn một lần rồi gửi voice TTS theo `attempts`/`interval`. UI cho chọn tài khoản Discord/Signal trong màn hình chuông; nút gọi thoại vẫn chỉ dành cho Telegram.
 
+Bản `0.7.0` thêm LINE Official Account qua Messaging API: thêm tài khoản bằng channel access token, gửi văn bản và ảnh URL HTTPS, chia tin dài, tự kiểm tra token định kỳ, nhận user/group/room ID qua webhook có xác thực `X-Line-Signature`, và hiển thị danh bạ đã nhận. LINE không hỗ trợ gọi thoại, chuông TTS hoặc voice TTS cục bộ.
+
+Integration `2.0.4` cập nhật mô tả service cho LINE. Cài kèm add-on `0.7.0`; không cần cấu hình lại entity.
+
 ## Cấu trúc
 
 ```text
@@ -74,6 +85,8 @@ input/telegram_voip/
 │   │   ├── discord_store.py          # discord_accounts.json (quyền 600)
 │   │   ├── signal_manager.py         # provider Signal: signal-cli REST API
 │   │   ├── signal_store.py           # signal_accounts.json (quyền 600)
+│   │   ├── line_manager.py           # provider LINE: Messaging API + webhook
+│   │   ├── line_store.py             # line_accounts.json (quyền 600)
 │   │   ├── tts.py                    # Edge TTS -> OGG/Opus
 │   │   ├── license.py                # license service + offline cache
 │   │   ├── store.py                  # accounts.json + session files
@@ -95,8 +108,9 @@ input/telegram_voip/
 4. Edge TTS cần Internet. Giọng mặc định là `vi-VN-HoaiMyNeural` (Tiếng Việt, nữ); đổi trong Configuration hoặc truyền `voice` khi gọi service. Add-on tự thử lại 5 lần; với tiếng Việt, nếu Edge TTS vẫn lỗi add-on báo lỗi thay vì dùng `espeak-ng` để tránh phát âm sai. Add-on image có cả `ffmpeg` và `espeak-ng` cho giọng ngôn ngữ khác.
 5. Với Discord, lấy token phiên của tài khoản người dùng (không phải bot token). Chỉ dùng tài khoản phụ vì self-bot trái Điều khoản Discord và có thể bị khóa.
 6. Với Signal, chạy signal-cli-rest-api, liên kết thiết bị qua `/v1/qrcodelink` bằng QR trong ứng dụng Signal, rồi nhập số E.164 và URL API vào add-on. Không mở Signal API trực tiếp ra Internet khi chưa có xác thực.
-7. Chỉ dùng tài khoản phụ hoặc tài khoản bạn sở hữu. Gọi tự động có thể vi phạm Telegram Terms of Service và bị giới hạn tài khoản.
-8. Add-on cần license key còn hạn cho các thao tác gửi/gọi. Key dùng thử, gói tháng hoặc vĩnh viễn được cấp từ trang license; xem mục **License** bên dưới.
+7. Với LINE, tạo Messaging API channel, phát hành channel access token và nhập channel secret nếu dùng webhook. Webhook phải dùng URL công khai HTTPS trỏ tới `/api/line/webhook/{account_id}`.
+8. Chỉ dùng tài khoản phụ hoặc tài khoản bạn sở hữu. Gọi tự động có thể vi phạm Telegram Terms of Service và bị giới hạn tài khoản.
+9. Add-on cần license key còn hạn cho các thao tác gửi/gọi. Key dùng thử, gói tháng hoặc vĩnh viễn được cấp từ trang license; xem mục **License** bên dưới.
 
 ## Cài add-on
 
@@ -250,7 +264,7 @@ Bỏ `call_id` để kết thúc mọi cuộc gọi đang hoạt động. Có th
 
 ## API nội bộ
 
-Mọi endpoint `/api/*` yêu cầu `Authorization: Bearer <token>` hoặc `X-API-Token`. `/health` công khai. Ngoài ra, các endpoint vận hành cần license hợp lệ; nhóm chẩn đoán/kích hoạt được liệt kê trong mục **License**.
+Mọi endpoint `/api/*` yêu cầu `Authorization: Bearer <token>` hoặc `X-API-Token`, trừ webhook LINE dùng `X-Line-Signature`. `/health` công khai. Ngoài ra, các endpoint vận hành cần license hợp lệ; nhóm chẩn đoán/kích hoạt được liệt kê trong mục **License**.
 
 ```text
 GET    /health
@@ -260,6 +274,8 @@ GET    /api/accounts
 POST   /api/accounts/login
 POST   /api/discord/accounts
 POST   /api/signal/accounts
+POST   /api/line/accounts
+POST   /api/line/webhook/{account_id}
 POST   /api/accounts/login/{login_id}/verify
 DELETE /api/accounts/login/{login_id}
 POST   /api/accounts/{account_id}/reconnect
@@ -282,9 +298,9 @@ GET    /api/logs
 ## Bảo mật
 
 - API token là bearer token toàn quyền với add-on; không đưa vào file public.
-- `accounts.json`, `discord_accounts.json`, `signal_accounts.json`, token và session nằm trong `/data`; không copy ra ngoài.
-- Session Telegram và token tài khoản Discord tương đương quyền đăng nhập tài khoản; token Signal API tương đương quyền gửi tin qua cầu nối. Bảo vệ bản backup Home Assistant.
-- Không commit `data/`, `*.session`, `accounts.json`, `discord_accounts.json`, `signal_accounts.json`, `api_token`, `options.json`.
+- `accounts.json`, `discord_accounts.json`, `signal_accounts.json`, `line_accounts.json`, token và session nằm trong `/data`; không copy ra ngoài.
+- Session Telegram và token tài khoản Discord tương đương quyền đăng nhập tài khoản; token Signal API tương đương quyền gửi tin qua cầu nối; channel access token LINE cho phép gửi tin dưới danh nghĩa Official Account. Bảo vệ bản backup Home Assistant.
+- Không commit `data/`, `*.session`, `accounts.json`, `discord_accounts.json`, `signal_accounts.json`, `line_accounts.json`, `api_token`, `options.json`.
 - Add-on publish port `3030`; nếu không cần truy cập trực tiếp, bỏ mapping port và chỉ dùng ingress/integration nội bộ.
 
 ## Kiểm thử
@@ -298,7 +314,7 @@ python3 -m venv .venv
 node --check calling_messenger_hub/app/ui/app.js
 ```
 
-Kết quả hiện tại: 69 test add-on pass, 15 test license server pass, `ruff`, Python compile, JavaScript syntax, TypeScript typecheck và Next build pass. License server đã deploy tại `https://calling-messenger-hub-license.vercel.app`; đã test đăng ký, trial, tạo key, validate, tạo/hủy link PayOS, admin dùng dashboard, link quản trị theo `is_admin`, đổi mật khẩu user/admin và đăng nhập lại bằng mật khẩu mới. Chưa test thanh toán chuyển tiền thật, đăng nhập/gọi Telegram thật, tài khoản Discord/Signal thật hoặc Home Assistant runtime thật.
+Kết quả hiện tại: 75 test add-on pass, 15 test license server pass, `ruff`, Python compile, JavaScript syntax, TypeScript typecheck và Next build pass. License server đã deploy tại `https://calling-messenger-hub-license.vercel.app`; đã test đăng ký, trial, tạo key, validate, tạo/hủy link PayOS, admin dùng dashboard, link quản trị theo `is_admin`, đổi mật khẩu user/admin và đăng nhập lại bằng mật khẩu mới. Chưa test thanh toán chuyển tiền thật, đăng nhập/gọi Telegram thật, tài khoản Discord/Signal/LINE thật hoặc Home Assistant runtime thật.
 
 ## Giới hạn đã biết
 
