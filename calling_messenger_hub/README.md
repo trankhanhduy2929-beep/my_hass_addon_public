@@ -1,6 +1,6 @@
 # Calling Messenger Hub
 
-Trung tâm gọi và tin nhắn đa dịch vụ cho Home Assistant. Bản `0.12.0` hỗ trợ Telegram, Discord, Signal, LINE Official Account, Zalo cá nhân và mô-đun SIM 4G SIMCom A7670C-LANS hoặc Quectel EC20/EC2x trên cùng một bảng điều khiển, dùng chung biểu mẫu gửi tin nhắn và ảnh; SIM 4G xem được nhà mạng, mức sóng, số dư, hạn dùng qua USSD và đọc hộp thư SMS/OTP.
+Trung tâm gọi và tin nhắn đa dịch vụ cho Home Assistant. Bản `0.12.1` hỗ trợ Telegram, Discord, Signal, LINE Official Account, Zalo cá nhân và mô-đun SIM 4G SIMCom A7670C-LANS hoặc Quectel EC20/EC2x trên cùng một bảng điều khiển, dùng chung biểu mẫu gửi tin nhắn và ảnh; SIM 4G xem được nhà mạng, mức sóng, số dư, hạn dùng qua USSD và đọc hộp thư SMS/OTP.
 
 Chức năng hiện có:
 
@@ -20,7 +20,7 @@ Chức năng hiện có:
 - kích hoạt license key, kiểm tra hạn dùng và tự chặn thao tác khi hết hạn;
 - gọi REST API từ automation Home Assistant.
 
-> Chưa kiểm thử với tài khoản Telegram, tài khoản Discord, Signal API, LINE Official Account, Zalo cá nhân hoặc mô-đun A7670C-LANS/EC20 thật, hoặc trên thiết bị Home Assistant thật. Định dạng USSD/SMS khác nhau theo nhà mạng và thế hệ SIM; cần xác minh lại trên SIM thật. Cần build lại image `amd64`/`aarch64` cho bản `0.12.0`.
+> Chưa kiểm thử với tài khoản Telegram, tài khoản Discord, Signal API, LINE Official Account, Zalo cá nhân hoặc mô-đun A7670C-LANS/EC20 thật, hoặc trên thiết bị Home Assistant thật. Định dạng USSD/SMS khác nhau theo nhà mạng và thế hệ SIM; cần xác minh lại trên SIM thật. Cần build lại image `amd64`/`aarch64` cho bản `0.12.1`.
 
 ## Định hướng đa dịch vụ
 
@@ -101,6 +101,8 @@ Bản `0.11.2` thu thập cookie `zpw_sek` được Zalo xoay vòng trong toàn 
 Bản `0.11.3` lưu nhiều cookie `zpw_sek` ứng viên trong phiên QR, thử lại hồ sơ với từng cookie khi gặp lỗi `102`/`600`, đồng thời hiển thị chẩn đoán không chứa bí mật (`cookie`, `key`, số ứng viên) khi đăng nhập thất bại.
 
 Bản `0.12.0` mở rộng Zalo cá nhân: trả lời/trích dẫn tin nhắn, tải thêm lịch sử nhóm qua `getoldv2`, và quản lý nhóm (tạo nhóm, đổi tên, thêm/xoá thành viên, rời nhóm) ngay trong ingress UI. Thêm API nhóm `/api/zalo/accounts/{account_id}/groups/*` và trường `reply_to` cho tin nhắn; Integration `2.0.6` không đổi.
+
+Bản `0.12.1` sửa lỗi hội thoại Zalo bị lẫn tin nhắn giữa các nhóm: lọc tin theo `thread_id` ở client, manager và UI; tự tra cứu tên nhóm khi mở hội thoại và chấp nhận `gridInfoMap` khóa `g<id>`; thêm ô tìm kiếm và bộ lọc Tất cả/Nhóm/Cá nhân trong cột hội thoại. Không thêm tính năng gọi thoại Zalo vì API cá nhân hiện chỉ hỗ trợ văn bản.
 
 ## Cấu trúc
 
@@ -427,7 +429,7 @@ python3 -m venv .venv
 node --check calling_messenger_hub/app/ui/app.js
 ```
 
-Kết quả hiện tại: 105 test add-on pass (gồm 15 test Zalo), 15 test license server pass, `ruff`, Python compile và JavaScript syntax pass. Smoke Playwright desktop/mobile/dark mode đã chạy lại ở bản `0.12.0` cho các luồng Zalo (trả lời, tải lịch sử, quản lý/tạo nhóm), không có lỗi console và không tràn ngang; ảnh chụp lưu tại `/var/tmp/cmh-ui-shots`. License server đã deploy tại `https://calling-messenger-hub-license.vercel.app`; đã test đăng ký, trial, tạo key, validate, tạo/hủy link PayOS, admin dùng dashboard, link quản trị theo `is_admin`, đổi mật khẩu user/admin và đăng nhập lại bằng mật khẩu mới. Chưa test thanh toán chuyển tiền thật, đăng nhập/gọi Telegram thật, tài khoản Discord/Signal/LINE/Zalo thật, A7670C-LANS/EC20 thật hoặc Home Assistant runtime thật.
+Kết quả hiện tại: 109 test add-on pass (gồm 19 test Zalo), 15 test license server pass, `ruff`, Python compile và JavaScript syntax pass. Smoke Playwright desktop/mobile/dark mode đã chạy lại ở bản `0.12.1` cho các luồng Zalo (tìm/lọc hội thoại, trả lời, tải lịch sử, quản lý/tạo nhóm), không có lỗi console và không tràn ngang; ảnh chụp lưu tại `/var/tmp/cmh-ui-shots`. License server đã deploy tại `https://calling-messenger-hub-license.vercel.app`; đã test đăng ký, trial, tạo key, validate, tạo/hủy link PayOS, admin dùng dashboard, link quản trị theo `is_admin`, đổi mật khẩu user/admin và đăng nhập lại bằng mật khẩu mới. Chưa test thanh toán chuyển tiền thật, đăng nhập/gọi Telegram thật, tài khoản Discord/Signal/LINE/Zalo thật, A7670C-LANS/EC20 thật hoặc Home Assistant runtime thật.
 
 ## Giới hạn đã biết
 
