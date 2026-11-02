@@ -1,6 +1,6 @@
 # Calling Messenger Hub
 
-Trung tâm gọi và tin nhắn đa dịch vụ cho Home Assistant. Bản `0.14.0` hỗ trợ Telegram, Discord, Signal, LINE Official Account, Zalo cá nhân và mô-đun SIM 4G SIMCom A7670C-LANS hoặc Quectel EC20/EC2x trên cùng một bảng điều khiển, dùng chung biểu mẫu gửi tin nhắn và ảnh; SIM 4G xem được nhà mạng, mức sóng, số dư, hạn dùng qua USSD và đọc hộp thư SMS/OTP.
+Trung tâm gọi và tin nhắn đa dịch vụ cho Home Assistant. Bản `0.14.1` hỗ trợ Telegram, Discord, Signal, LINE Official Account, Zalo cá nhân và mô-đun SIM 4G SIMCom A7670C-LANS hoặc Quectel EC20/EC2x trên cùng một bảng điều khiển, dùng chung biểu mẫu gửi tin nhắn và ảnh; SIM 4G xem được nhà mạng, mức sóng, số dư, hạn dùng qua USSD và đọc hộp thư SMS/OTP.
 
 Chức năng hiện có:
 
@@ -20,7 +20,7 @@ Chức năng hiện có:
 - kích hoạt license key, kiểm tra hạn dùng và tự chặn thao tác khi hết hạn;
 - gọi REST API từ automation Home Assistant.
 
-> Chưa kiểm thử với tài khoản Telegram, tài khoản Discord, Signal API, LINE Official Account, Zalo cá nhân hoặc mô-đun A7670C-LANS/EC20 thật, hoặc trên thiết bị Home Assistant thật. Luồng đổ chuông Zalo (401 `requestcall` rồi 416 `request` kèm media) mới được kiểm thử bằng mock, chưa xác minh với tài khoản Zalo thật. Định dạng USSD/SMS khác nhau theo nhà mạng và thế hệ SIM; cần xác minh lại trên SIM thật. Cần build lại image `amd64`/`aarch64` cho bản `0.14.0`.
+> Chưa kiểm thử với tài khoản Telegram, tài khoản Discord, Signal API, LINE Official Account hoặc mô-đun A7670C-LANS/EC20 thật, hoặc trên thiết bị Home Assistant thật. Zalo mới thử được chuông (401 `requestcall` rồi 416 `request` kèm media) trên tài khoản thật, chưa có cuộc gọi thành công trọn vẹn; trạng thái cuộc gọi và danh bạ mới được kiểm thử bằng mock. Định dạng USSD/SMS khác nhau theo nhà mạng và thế hệ SIM; cần xác minh lại trên SIM thật. Cần build lại image `amd64`/`aarch64` cho bản `0.14.1`.
 
 ## Định hướng đa dịch vụ
 
@@ -109,6 +109,8 @@ Bản `0.12.2` sửa cách xác định hội thoại 1:1: dùng người nhận
 Bản `0.13.0` thêm tín hiệu **đổ chuông Zalo** qua `requestcall`/`cancel`/`endcall`: gọi một lần hoặc từ trang Cuộc gọi với tài khoản `zl_...`, dùng call ID 9 chữ số, đọc `id`/`status` từ phản hồi, hủy khi hết `ring_timeout` và hỗ trợ kết thúc cuộc gọi. Zalo chỉ đổ chuông, không truyền thoại/TTS/ảnh vì thiếu lớp media RTP/SRTP/Opus. UI ghi rõ giới hạn này và không bắt nhập lời thoại khi gọi Zalo. Integration `2.0.7` cho phép bỏ trống `message` trong service `call` để dùng với Zalo.
 
 Bản `0.14.0` sửa lỗi Zalo chỉ ghi nhận cuộc gọi nhỡ mà không đổ chuông: gửi đủ chuỗi 401 `requestcall` tạo call record rồi 416 `/api/voicecall/request` với `subCommand:3`, `extendData`, `session` và địa chỉ RTP/RTCP để nâng invite của người nhận. Thêm **tải danh bạ Zalo** trên trang Cuộc gọi, cho phép nhập tên trong danh bạ, số điện thoại (tự chuẩn hóa `0...` → `84...`) hoặc UID; tên được so khớp không phân biệt hoa thường/dấu tiếng Việt và báo lỗi nếu trùng tên. Thêm API `GET /api/zalo/accounts/{account_id}/contacts`; integration `2.0.7` không đổi vì service `call` đã nhận chuỗi `to`.
+
+Bản `0.14.1` sửa trạng thái cuộc gọi Zalo bị kẹt ở “đang gọi” sau khi chuông tắt: bỏ kiểm tra `status` của phản hồi 416 (chỉ coi `error_code` là lỗi), thêm long-poll `lp_control` với queue `4,5,14,17,18,19,20` để nhận `answer`/`end_call`/`cancel`, gửi `408 answerack` khi nghe máy và cập nhật cuộc gọi thành đã kết thúc, bị từ chối hoặc nhỡ. Danh bạ Zalo ưu tiên host `friend`, fallback hội thoại gần đây khi `getfriends` lỗi, và UI fallback sang `/threads` nếu route contacts trả 404. Integration `2.0.7` không đổi.
 
 ## Cấu trúc
 
@@ -209,7 +211,7 @@ Mã nguồn add-on nằm tại <https://github.com/trankhanhduy2929-beep/my_hass
 
 ## Thêm integration
 
-Custom integration `2.0.7` đi kèm add-on `0.14.0`; service `call` cho phép bỏ trống `message` khi dùng với Zalo. Từ `2.0.3`, integration tự đổi URL mặc định cũ `3332` sang `3030` khi khởi động; URL tùy chỉnh cần sửa tay.
+Custom integration `2.0.7` đi kèm add-on `0.14.1`; service `call` cho phép bỏ trống `message` khi dùng với Zalo. Từ `2.0.3`, integration tự đổi URL mặc định cũ `3332` sang `3030` khi khởi động; URL tùy chỉnh cần sửa tay.
 
 1. Copy `custom_components/calling_messenger_hub/` vào `/config/custom_components/calling_messenger_hub/`.
 2. Restart Home Assistant.
@@ -436,7 +438,7 @@ python3 -m venv .venv
 node --check calling_messenger_hub/app/ui/app.js
 ```
 
-Kết quả hiện tại: 120 test add-on pass (gồm 30 test Zalo), 15 test license server pass, `ruff`, Python compile và JavaScript syntax pass. Bản `0.14.0` thêm test mock cho chuỗi 401/416, dựng `extendData`/`session`, tra số điện thoại, tải danh bạ và resolve tên/số khi gọi; test cũ cho call ID 9 chữ số, dùng `id` từ phản hồi và từ chối khi Zalo trả `status` lỗi vẫn giữ. Chưa chạy lại smoke Playwright cho giao diện `0.14.0`. Smoke Playwright desktop/mobile/dark mode đã chạy lại ở bản `0.12.2` cho các luồng Zalo (tìm/lọc hội thoại, trả lời, tải lịch sử, quản lý/tạo nhóm), không có lỗi console và không tràn ngang; ảnh chụp lưu tại `/var/tmp/cmh-ui-shots`. License server đã deploy tại `https://calling-messenger-hub-license.vercel.app`; đã test đăng ký, trial, tạo key, validate, tạo/hủy link PayOS, admin dùng dashboard, link quản trị theo `is_admin`, đổi mật khẩu user/admin và đăng nhập lại bằng mật khẩu mới. Chưa test thanh toán chuyển tiền thật, đăng nhập/gọi Telegram thật, tài khoản Discord/Signal/LINE/Zalo thật, A7670C-LANS/EC20 thật hoặc Home Assistant runtime thật.
+Kết quả hiện tại: 126 test add-on pass (gồm 36 test Zalo), 15 test license server pass, `ruff`, Python compile và JavaScript syntax pass. Bản `0.14.1` thêm test mock cho 416 trả `status` khác 0 nhưng vẫn giữ cuộc gọi, parse event VoIP từ `lp_control`, gửi `answerack`, cập nhật trạng thái answered/end_call, ưu tiên host friend và fallback danh bạ sang hội thoại gần đây. Test cũ cho 401/416, `extendData`/`session`, call ID 9 chữ số và resolve tên/số vẫn giữ. Chưa chạy lại smoke Playwright cho giao diện `0.14.1`. Smoke Playwright desktop/mobile/dark mode đã chạy lại ở bản `0.12.2` cho các luồng Zalo (tìm/lọc hội thoại, trả lời, tải lịch sử, quản lý/tạo nhóm), không có lỗi console và không tràn ngang; ảnh chụp lưu tại `/var/tmp/cmh-ui-shots`. License server đã deploy tại `https://calling-messenger-hub-license.vercel.app`; đã test đăng ký, trial, tạo key, validate, tạo/hủy link PayOS, admin dùng dashboard, link quản trị theo `is_admin`, đổi mật khẩu user/admin và đăng nhập lại bằng mật khẩu mới. Chưa test thanh toán chuyển tiền thật, đăng nhập/gọi Telegram thật, tài khoản Discord/Signal/LINE/Zalo thật, A7670C-LANS/EC20 thật hoặc Home Assistant runtime thật.
 
 ## Giới hạn đã biết
 
