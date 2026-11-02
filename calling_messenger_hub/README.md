@@ -1,6 +1,6 @@
 # Calling Messenger Hub
 
-Trung tâm gọi và tin nhắn đa dịch vụ cho Home Assistant. Bản `0.12.2` hỗ trợ Telegram, Discord, Signal, LINE Official Account, Zalo cá nhân và mô-đun SIM 4G SIMCom A7670C-LANS hoặc Quectel EC20/EC2x trên cùng một bảng điều khiển, dùng chung biểu mẫu gửi tin nhắn và ảnh; SIM 4G xem được nhà mạng, mức sóng, số dư, hạn dùng qua USSD và đọc hộp thư SMS/OTP.
+Trung tâm gọi và tin nhắn đa dịch vụ cho Home Assistant. Bản `0.13.0` hỗ trợ Telegram, Discord, Signal, LINE Official Account, Zalo cá nhân và mô-đun SIM 4G SIMCom A7670C-LANS hoặc Quectel EC20/EC2x trên cùng một bảng điều khiển, dùng chung biểu mẫu gửi tin nhắn và ảnh; SIM 4G xem được nhà mạng, mức sóng, số dư, hạn dùng qua USSD và đọc hộp thư SMS/OTP.
 
 Chức năng hiện có:
 
@@ -13,18 +13,18 @@ Chức năng hiện có:
 - đăng nhập tài khoản Discord bằng token phiên, gửi tin nhắn/ảnh/voice TTS đến DM hoặc kênh;
 - kết nối Signal qua signal-cli REST API, gửi tin nhắn/ảnh/voice TTS đến số, nhóm hoặc username;
 - kết nối LINE Official Account qua Messaging API, gửi tin nhắn/ảnh URL HTTPS và nhận ID người nhận qua webhook có xác thực chữ ký;
-- đăng nhập Zalo cá nhân bằng QR, xem hội thoại/tin nhắn, trả lời tin nhắn, tải thêm lịch sử nhóm và quản lý nhóm (tạo, đổi tên, thêm/xoá thành viên, rời nhóm);
+- đăng nhập Zalo cá nhân bằng QR, xem hội thoại/tin nhắn, trả lời tin nhắn, tải thêm lịch sử nhóm, quản lý nhóm (tạo, đổi tên, thêm/xoá thành viên, rời nhóm) và gửi tín hiệu đổ chuông Zalo;
 - kết nối SIMCom A7670C-LANS hoặc Quectel EC20/EC2x qua serial/UART hoặc TCP bridge, tự nhận diện dòng module, gọi thoại thật, phát TTS khi nghe máy và gọi lặp làm chuông báo động;
 - xem nhà mạng, mức sóng, số dư, hạn dùng SIM bằng USSD, đọc SMS/OTP trong ingress UI;
 - xem trạng thái kênh, cuộc gọi, log và điều khiển qua ingress UI;
 - kích hoạt license key, kiểm tra hạn dùng và tự chặn thao tác khi hết hạn;
 - gọi REST API từ automation Home Assistant.
 
-> Chưa kiểm thử với tài khoản Telegram, tài khoản Discord, Signal API, LINE Official Account, Zalo cá nhân hoặc mô-đun A7670C-LANS/EC20 thật, hoặc trên thiết bị Home Assistant thật. Định dạng USSD/SMS khác nhau theo nhà mạng và thế hệ SIM; cần xác minh lại trên SIM thật. Cần build lại image `amd64`/`aarch64` cho bản `0.12.2`.
+> Chưa kiểm thử với tài khoản Telegram, tài khoản Discord, Signal API, LINE Official Account, Zalo cá nhân hoặc mô-đun A7670C-LANS/EC20 thật, hoặc trên thiết bị Home Assistant thật. Luồng đổ chuông Zalo mới được kiểm thử bằng mock, chưa xác minh với tài khoản Zalo thật. Định dạng USSD/SMS khác nhau theo nhà mạng và thế hệ SIM; cần xác minh lại trên SIM thật. Cần build lại image `amd64`/`aarch64` cho bản `0.13.0`.
 
 ## Định hướng đa dịch vụ
 
-`Calling Messenger Hub` là lớp trung tâm cho gọi và nhắn tin. Telegram, Discord, Signal, LINE và SIM dùng chung danh sách tài khoản, biểu mẫu gửi và REST API; gọi thoại hỗ trợ Telegram P2P và SIM 4G A7670/EC20.
+`Calling Messenger Hub` là lớp trung tâm cho gọi và nhắn tin. Telegram, Discord, Signal, LINE, Zalo và SIM dùng chung danh sách tài khoản, biểu mẫu gửi và REST API; gọi thoại hỗ trợ Telegram P2P, SIM 4G A7670/EC20 và tín hiệu đổ chuông Zalo (không truyền âm thanh).
 
 Discord dùng token phiên của tài khoản người dùng, không dùng bot. Add-on đăng nhập trực tiếp qua Discord REST API, gửi DM/group DM hoặc kênh server mà tài khoản tham gia. Tin nhắn dài được chia theo giới hạn 2.000 ký tự.
 
@@ -38,7 +38,7 @@ LINE dùng **Messaging API** của LINE Official Account, không dùng tài kho�
 
 LINE chỉ gửi ảnh bằng URL `https://` công khai, không nhận file `/data/media` hay data URI; không gửi được voice TTS cục bộ và không hỗ trợ gọi thoại/chuông. Tin nhắn dài được chia theo giới hạn 5.000 ký tự.
 
-Zalo dùng tài khoản cá nhân qua giao thức nội bộ không chính thức, không phải Zalo OA API. Mở **Tài khoản & kênh → Thêm Zalo**, quét QR bằng ứng dụng Zalo trên điện thoại rồi xác nhận đăng nhập. Add-on lưu phiên trong `/data/zalo/` với quyền `600`, chỉ gửi và nhận văn bản; ảnh, voice TTS, gọi thoại và chuông không được hỗ trợ cho tài khoản `zl_...`. Tin nhắn dài được chia theo giới hạn 2.000 ký tự.
+Zalo dùng tài khoản cá nhân qua giao thức nội bộ không chính thức, không phải Zalo OA API. Mở **Tài khoản & kênh → Thêm Zalo**, quét QR bằng ứng dụng Zalo trên điện thoại rồi xác nhận đăng nhập. Add-on lưu phiên trong `/data/zalo/` với quyền `600`, gửi/nhận văn bản và gửi tín hiệu đổ chuông qua endpoint `requestcall`/`cancel`/`endcall`. Zalo chỉ đổ chuông: không truyền thoại, không phát TTS và không gửi ảnh/voice cho tài khoản `zl_...` vì giao thức media cần client Zalo chính thức cùng RTP/SRTP/Opus. Tin nhắn dài được chia theo giới hạn 2.000 ký tự.
 
 > **Cảnh báo:** đăng nhập Zalo bằng giao thức không chính thức có thể vi phạm điều khoản Zalo và khiến tài khoản bị hạn chế hoặc khóa. Chỉ dùng tài khoản bạn sở hữu hoặc tài khoản phụ; phiên đăng nhập tương đương quyền truy cập tài khoản. Giao thức có thể thay đổi mà không báo trước.
 
@@ -102,9 +102,11 @@ Bản `0.11.3` lưu nhiều cookie `zpw_sek` ứng viên trong phiên QR, thử 
 
 Bản `0.12.0` mở rộng Zalo cá nhân: trả lời/trích dẫn tin nhắn, tải thêm lịch sử nhóm qua `getoldv2`, và quản lý nhóm (tạo nhóm, đổi tên, thêm/xoá thành viên, rời nhóm) ngay trong ingress UI. Thêm API nhóm `/api/zalo/accounts/{account_id}/groups/*` và trường `reply_to` cho tin nhắn; Integration `2.0.6` không đổi.
 
-Bản `0.12.1` sửa lỗi hội thoại Zalo bị lẫn tin nhắn giữa các nhóm: lọc tin theo `thread_id` ở client, manager và UI; tự tra cứu tên nhóm khi mở hội thoại và chấp nhận `gridInfoMap` khóa `g<id>`; thêm ô tìm kiếm và bộ lọc Tất cả/Nhóm/Cá nhân trong cột hội thoại. Không thêm tính năng gọi thoại Zalo vì API cá nhân hiện chỉ hỗ trợ văn bản.
+Bản `0.12.1` sửa lỗi hội thoại Zalo bị lẫn tin nhắn giữa các nhóm: lọc tin theo `thread_id` ở client, manager và UI; tự tra cứu tên nhóm khi mở hội thoại và chấp nhận `gridInfoMap` khóa `g<id>`; thêm ô tìm kiếm và bộ lọc Tất cả/Nhóm/Cá nhân trong cột hội thoại. Bản này vẫn chưa thêm gọi thoại Zalo; tính năng đổ chuông được bổ sung ở `0.13.0`.
 
 Bản `0.12.2` sửa cách xác định hội thoại 1:1: dùng người nhận/người gửi còn lại thay vì UID của chính tài khoản, nên không còn gộp mọi chat cá nhân vào mục "Người dùng <uid>"; bổ sung tra cứu tên qua `getprofiles/v2` (kèm `getminiprofiles`) và lấy tên từ người gửi khi API hồ sơ không trả về.
+
+Bản `0.13.0` thêm tín hiệu **đổ chuông Zalo** qua `requestcall`/`cancel`/`endcall`: gọi một lần hoặc từ trang Cuộc gọi với tài khoản `zl_...`, dùng call ID 9 chữ số, đọc `id`/`status` từ phản hồi, hủy khi hết `ring_timeout` và hỗ trợ kết thúc cuộc gọi. Zalo chỉ đổ chuông, không truyền thoại/TTS/ảnh vì thiếu lớp media RTP/SRTP/Opus. UI ghi rõ giới hạn này và không bắt nhập lời thoại khi gọi Zalo. Integration `2.0.7` cho phép bỏ trống `message` trong service `call` để dùng với Zalo.
 
 ## Cấu trúc
 
@@ -205,7 +207,7 @@ Mã nguồn add-on nằm tại <https://github.com/trankhanhduy2929-beep/my_hass
 
 ## Thêm integration
 
-Custom integration `2.0.3` tự đổi URL mặc định cũ `3332` sang `3030` khi khởi động; URL tùy chỉnh cần sửa tay.
+Custom integration `2.0.7` đi kèm add-on `0.13.0`; service `call` cho phép bỏ trống `message` khi dùng với Zalo. Từ `2.0.3`, integration tự đổi URL mặc định cũ `3332` sang `3030` khi khởi động; URL tùy chỉnh cần sửa tay.
 
 1. Copy `custom_components/calling_messenger_hub/` vào `/config/custom_components/calling_messenger_hub/`.
 2. Restart Home Assistant.
@@ -235,7 +237,7 @@ data:
   silent: false
 ```
 
-`to` nhận username/số điện thoại/user ID với Telegram, ID kênh/người dùng hoặc `#ten-kenh`/`@username` với Discord, ID hội thoại Zalo (bạn bè hoặc nhóm) với Zalo. `account` nhận ID tài khoản, số điện thoại, tên tài khoản, ID Discord (`dc_...`) hoặc ID Zalo (`zl_...`); bỏ trống để dùng tài khoản Telegram online đầu tiên. Zalo chỉ nhận `message` văn bản; không dùng `send_photo`, `send_tts`, gọi thoại hoặc chuông với tài khoản `zl_...`.
+`to` nhận username/số điện thoại/user ID với Telegram, ID kênh/người dùng hoặc `#ten-kenh`/`@username` với Discord, ID hội thoại Zalo (bạn bè hoặc nhóm) với Zalo. `account` nhận ID tài khoản, số điện thoại, tên tài khoản, ID Discord (`dc_...`) hoặc ID Zalo (`zl_...`); bỏ trống để dùng tài khoản Telegram online đầu tiên. Zalo chỉ nhận `message` văn bản; không dùng `send_photo` hoặc `send_tts` với tài khoản `zl_...`. Dùng service `call` với `account: zl_...` để gửi tín hiệu đổ chuông; Zalo không phát TTS.
 
 ### Gửi voice TTS
 
@@ -275,7 +277,7 @@ data:
   wait_seconds: 90
 ```
 
-`account` nhận ID tài khoản Telegram, số điện thoại quốc tế, tên tài khoản hoặc ID SIM (`sm_...`). Bỏ trống để dùng tài khoản Telegram online đầu tiên; SIM chỉ dùng khi chọn rõ ID. Discord và Signal không hỗ trợ gọi thoại; dùng `ring` để gửi voice TTS lặp hoặc `send_message`/`send_tts`. `wait: true` giữ service cho đến khi cuộc gọi kết thúc hoặc hết `wait_seconds` (mặc định 60). Không nên dùng `wait: true` trong automation dài.
+`account` nhận ID tài khoản Telegram, số điện thoại quốc tế, tên tài khoản, ID SIM (`sm_...`) hoặc ID Zalo (`zl_...`). Bỏ trống để dùng tài khoản Telegram online đầu tiên; SIM/Zalo chỉ dùng khi chọn rõ ID. Với Zalo, `message` có thể bỏ trống: add-on chỉ gửi tín hiệu đổ chuông, không phát TTS. Discord và Signal không hỗ trợ gọi thoại; dùng `ring` để gửi voice TTS lặp hoặc `send_message`/`send_tts`. `wait: true` giữ service cho đến khi cuộc gọi kết thúc hoặc hết `wait_seconds` (mặc định 60). Không nên dùng `wait: true` trong automation dài.
 
 ### Chuông báo động
 
@@ -371,7 +373,7 @@ curl -X POST http://HOST:3030/api/zalo/messages \
   -d '{"account":"zl_1234567890","to":"group_123","message":"Cửa đang mở.","is_group":true}'
 ```
 
-`threads` trả các hội thoại đã chuẩn hóa (`id`, `name`, `preview`, `time`, `is_group`, `avatar`, `updated_ts`). `messages` trả `thread` và danh sách `messages`; `POST /api/zalo/messages` trả số đoạn đã gửi trong `messages`. Zalo không hỗ trợ endpoint ảnh/TTS/gọi/chuông.
+`threads` trả các hội thoại đã chuẩn hóa (`id`, `name`, `preview`, `time`, `is_group`, `avatar`, `updated_ts`). `messages` trả `thread` và danh sách `messages`; `POST /api/zalo/messages` trả số đoạn đã gửi trong `messages`. Zalo không hỗ trợ endpoint ảnh/TTS. Gọi Zalo dùng `POST /api/calls` với `account: zl_...` và `to` là UID Zalo; add-on gửi `requestcall`, chỉ đổ chuông và không phát TTS.
 
 ### SIM 4G
 
@@ -431,17 +433,17 @@ python3 -m venv .venv
 node --check calling_messenger_hub/app/ui/app.js
 ```
 
-Kết quả hiện tại: 111 test add-on pass (gồm 21 test Zalo), 15 test license server pass, `ruff`, Python compile và JavaScript syntax pass. Smoke Playwright desktop/mobile/dark mode đã chạy lại ở bản `0.12.2` cho các luồng Zalo (tìm/lọc hội thoại, trả lời, tải lịch sử, quản lý/tạo nhóm), không có lỗi console và không tràn ngang; ảnh chụp lưu tại `/var/tmp/cmh-ui-shots`. License server đã deploy tại `https://calling-messenger-hub-license.vercel.app`; đã test đăng ký, trial, tạo key, validate, tạo/hủy link PayOS, admin dùng dashboard, link quản trị theo `is_admin`, đổi mật khẩu user/admin và đăng nhập lại bằng mật khẩu mới. Chưa test thanh toán chuyển tiền thật, đăng nhập/gọi Telegram thật, tài khoản Discord/Signal/LINE/Zalo thật, A7670C-LANS/EC20 thật hoặc Home Assistant runtime thật.
+Kết quả hiện tại: 116 test add-on pass (gồm 26 test Zalo), 15 test license server pass, `ruff`, Python compile và JavaScript syntax pass. Bản `0.13.0` mới thêm test mock cho call ID 9 chữ số, dùng `id` từ phản hồi và từ chối khi Zalo trả `status` lỗi; chưa chạy lại smoke Playwright cho giao diện `0.13.0`. Smoke Playwright desktop/mobile/dark mode đã chạy lại ở bản `0.12.2` cho các luồng Zalo (tìm/lọc hội thoại, trả lời, tải lịch sử, quản lý/tạo nhóm), không có lỗi console và không tràn ngang; ảnh chụp lưu tại `/var/tmp/cmh-ui-shots`. License server đã deploy tại `https://calling-messenger-hub-license.vercel.app`; đã test đăng ký, trial, tạo key, validate, tạo/hủy link PayOS, admin dùng dashboard, link quản trị theo `is_admin`, đổi mật khẩu user/admin và đăng nhập lại bằng mật khẩu mới. Chưa test thanh toán chuyển tiền thật, đăng nhập/gọi Telegram thật, tài khoản Discord/Signal/LINE/Zalo thật, A7670C-LANS/EC20 thật hoặc Home Assistant runtime thật.
 
 ## Giới hạn đã biết
 
 - Discord dùng token tài khoản người dùng (self-bot), trái Điều khoản Discord và có thể bị khóa tài khoản; không hỗ trợ gọi thoại. Chỉ dùng tài khoản phụ.
 - Signal cần signal-cli REST API riêng; add-on không đăng ký số Signal và không có cuộc gọi Signal.
-- Zalo dùng giao thức không chính thức, có thể bị Zalo thay đổi hoặc chặn; chỉ hỗ trợ văn bản, trả lời, lịch sử nhóm và quản lý nhóm, không có ảnh/TTS/gọi/chuông. Lịch sử nhóm cũ chỉ tải được khi tin nhắn có `globalMsgId`; thêm/xoá thành viên, đổi tên và rời nhóm còn phụ thuộc quyền của tài khoản trong nhóm. Phiên QR và cookie là dữ liệu nhạy cảm, không đưa vào log hoặc backup công khai.
+- Zalo dùng giao thức không chính thức, có thể bị Zalo thay đổi hoặc chặn; hỗ trợ văn bản, trả lời, lịch sử nhóm, quản lý nhóm và gửi tín hiệu đổ chuông, không có ảnh/TTS và không truyền âm thanh cuộc gọi. Lịch sử nhóm cũ chỉ tải được khi tin nhắn có `globalMsgId`; thêm/xoá thành viên, đổi tên và rời nhóm còn phụ thuộc quyền của tài khoản trong nhóm. Phiên QR và cookie là dữ liệu nhạy cảm, không đưa vào log hoặc backup công khai.
 - Signal API không có xác thực mặc định; phải giới hạn mạng hoặc đặt sau reverse proxy. Tính năng Bearer token chỉ hoạt động khi proxy kiểm tra token.
 - Gửi ảnh/TTS Signal dùng tệp đính kèm; một số bản signal-cli có thể không hiển thị voice dưới dạng voice note.
 - Discord `@username` chỉ tìm trong bạn bè hoặc DM đã có; nên dùng ID người dùng hoặc ID kênh. Token hết hạn sau khi đổi mật khẩu/đăng xuất mọi thiết bị.
-- P2P call chỉ hoạt động với user Telegram, không gọi nhóm. SIM chỉ gọi số điện thoại, không gọi Telegram/Discord/Signal/Zalo.
+- P2P call chỉ hoạt động với user Telegram, không gọi nhóm. SIM chỉ gọi số điện thoại, không gọi Telegram/Discord/Signal/Zalo. Zalo chỉ gửi tín hiệu đổ chuông, không phát TTS và không đảm bảo cuộc gọi được kết nối.
 - Người nhận phải bấm nghe máy; không có cách phát TTS vào voicemail.
 - Chất lượng/khả năng gọi phụ thuộc privacy setting và phiên bản Telegram của người nhận.
 - SIM A7670C-LANS và EC20/EC2x chưa được kiểm thử trên phần cứng thật. Cần xác minh đường audio, mức âm lượng, `AT+CFTRANRX`/`AT+QFUPL` ở 115200 baud, quyền ghi EFS/UFS và dung lượng bộ nhớ của từng firmware. Cần xác minh thêm `AT+COPS?`/`AT+CSQ`, `AT+CUSD`, cách nhà mạng trả USSD qua SMS, mã hóa UCS2 và thời gian phản hồi. Add-on chia audio 60/30/5 giây và có thể chuyển AMR → MP3 → WAV nếu `ffmpeg` thiếu encoder.
