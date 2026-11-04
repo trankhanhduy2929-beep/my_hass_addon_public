@@ -5,11 +5,11 @@ Trung tâm gọi, nhắn tin và báo động đa kênh cho Home Assistant. Qu�
 ## Tính năng
 
 - Gửi tin nhắn, SMS, ảnh và voice TTS qua nhiều dịch vụ.
-- Gọi thoại Telegram, SIM 4G và Zalo một chiều; phát TTS khi người nhận nghe máy.
+- Gọi thoại Telegram, SIM 4G và Zalo một chiều; phát TTS khi người nhận nghe máy. Gọi thủ công, nghe máy và gửi DTMF qua SIM.
 - Gọi lặp hoặc gửi voice TTS lặp làm chuông báo động.
 - Trung tâm báo động với chính sách nhiều bước: gọi lần lượt nhiều người, leo thang khi không nghe máy, chống trùng, xác nhận, xử lý, hủy và lưu lịch sử.
 - Quản lý nhiều tài khoản, xem trạng thái kênh, cuộc gọi và nhật ký trên một bảng điều khiển.
-- Với SIM 4G: gửi/đọc SMS, xem nhà mạng, mức sóng, số dư, hạn dùng qua USSD và đọc OTP.
+- Với SIM 4G: gửi/đọc SMS, xem nhà mạng, mức sóng, số dư, hạn dùng qua USSD (tự thử lại và fallback SMS số dư), gọi thủ công, nghe máy, gửi DTMF và đọc OTP.
 - Tự động hóa SIM: CLIP, lệnh SMS, chuyển OTP, DTMF, cảnh báo mất điện/Internet, nuôi SIM và failover 4G qua Home Assistant.
 - Điều khiển từ Home Assistant qua custom integration hoặc REST API.
 
@@ -78,6 +78,7 @@ Giao diện có hướng dẫn ngắn cho từng loại tài khoản.
 - Add-on giữ nhịp kết nối bằng lệnh `AT` mỗi 5 giây và làm mới sóng/nhà mạng mỗi 15 giây khi SIM đang rảnh.
 - Khi mất kết nối, add-on đóng cổng cũ, chuyển sang **Đang kết nối lại** và tự thử lại sau 2, 4, 8, 16 rồi tối đa 30 giây; không cần bấm kết nối lại thủ công.
 - Trong cuộc gọi, add-on tạm dừng nhịp kiểm tra để không làm gián đoạn thoại.
+- Khi tra cứu USSD, add-on chờ phản hồi đến muộn, tự thử lại một lần nếu rỗng và dùng SMS số dư nhận trong 30 phút gần nhất nếu nhà mạng trả kết quả qua SMS.
 
 ### Gửi tin nhắn, ảnh và voice
 
@@ -103,7 +104,8 @@ Mở **SIM 4G → Tự động hóa SIM** để cấu hình:
 
 ### Gọi và chuông báo động
 
-- **Gọi:** chọn tài khoản, người nhận và lời thoại. Người nhận phải bấm nghe máy thì TTS mới phát.
+- **Gọi thủ công SIM:** mở tab **Cuộc gọi**, chọn SIM, nhập số bằng bàn phím rồi bấm **Gọi**. Cuộc gọi đến hiện **Nghe máy** và **Từ chối**; khi đang gọi, bàn phím gửi DTMF; bấm **Kết thúc** để gác máy.
+- **Gọi TTS:** chọn tài khoản, người nhận và lời thoại. Người nhận phải bấm nghe máy thì TTS mới phát.
 - **Chuông:** chọn số lần lặp, khoảng nghỉ và thời gian đổ chuông.
 - **Kết thúc:** dùng nút kết thúc cuộc gọi hoặc service `hangup`.
 
@@ -149,6 +151,24 @@ data:
   dedupe_key: "cua-chinh"
 ```
 
+Gọi, nghe máy và gửi DTMF qua SIM:
+
+```yaml
+action: calling_messenger_hub.dial
+data:
+  account: "sm_..."
+  to: "+84912345678"
+
+action: calling_messenger_hub.answer
+data:
+  account: "sm_..."
+
+action: calling_messenger_hub.send_dtmf
+data:
+  account: "sm_..."
+  digits: "1#"
+```
+
 Integration tạo các sensor:
 
 - `sensor.calling_messenger_hub_accounts_online`
@@ -163,7 +183,8 @@ Danh sách service và ví dụ chi tiết nằm trong README của integration.
 - Chưa hỗ trợ gọi đồng thời nhiều người. Chính sách báo động gọi lần lượt từng người.
 - Telegram chỉ gọi 1:1, không gọi nhóm.
 - Discord, Signal, LINE và Zalo không truyền thoại hai chiều.
-- SIM gọi thoại, gửi/đọc SMS và gửi USSD; không gửi ảnh hay TTS qua API.
+- SIM gọi thoại, gửi/đọc SMS, gửi USSD và DTMF; không gửi ảnh hoặc TTS như tin nhắn.
+- SIM điều khiển cuộc gọi qua lệnh AT. Add-on chưa truyền âm thanh mic/loa hai chiều qua Home Assistant; muốn nghe nói trực tiếp cần bổ sung USB audio/ALSA trên host.
 - Edge TTS cần Internet.
 - Tự động gọi/nhắn tin có thể vi phạm điều khoản nền tảng và gây cước phí SIM. Chỉ dùng tài khoản bạn sở hữu hoặc tài khoản phụ, và chỉ gửi đến người đã đồng ý.
 
