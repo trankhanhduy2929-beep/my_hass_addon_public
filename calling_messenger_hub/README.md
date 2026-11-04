@@ -109,7 +109,7 @@ Mở **SIM 4G → Tự động hóa SIM** để cấu hình:
 - **Chuông:** chọn số lần lặp, khoảng nghỉ và thời gian đổ chuông.
 - **Kết thúc:** dùng nút kết thúc cuộc gọi hoặc service `hangup`.
 
-Telegram và SIM gọi thoại thật. Discord và Signal gửi voice TTS lặp. Zalo đổ chuông và phát TTS một chiều, không nghe mic.
+Telegram gọi thoại thật. SIM gọi số và phát TTS một chiều; add-on không truyền mic/loa. Discord và Signal gửi voice TTS lặp. Zalo đổ chuông và phát TTS một chiều, không nghe mic.
 
 ### Trung tâm báo động
 
@@ -184,7 +184,7 @@ Danh sách service và ví dụ chi tiết nằm trong README của integration.
 - Telegram chỉ gọi 1:1, không gọi nhóm.
 - Discord, Signal, LINE và Zalo không truyền thoại hai chiều.
 - SIM gọi thoại, gửi/đọc SMS, gửi USSD và DTMF; không gửi ảnh hoặc TTS như tin nhắn.
-- SIM điều khiển cuộc gọi qua lệnh AT. Add-on chưa truyền âm thanh mic/loa hai chiều qua Home Assistant; muốn nghe nói trực tiếp cần bổ sung USB audio/ALSA trên host.
+- SIM chỉ điều khiển cuộc gọi qua lệnh AT và phát TTS một chiều. Add-on không hỗ trợ truyền mic/loa hai chiều qua thiết bị Home Assistant.
 - Edge TTS cần Internet.
 - Tự động gọi/nhắn tin có thể vi phạm điều khoản nền tảng và gây cước phí SIM. Chỉ dùng tài khoản bạn sở hữu hoặc tài khoản phụ, và chỉ gửi đến người đã đồng ý.
 
