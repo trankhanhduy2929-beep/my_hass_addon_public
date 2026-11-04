@@ -4,12 +4,12 @@ Trung tâm gọi, nhắn tin và báo động đa kênh cho Home Assistant. Qu�
 
 ## Tính năng
 
-- Gửi tin nhắn, ảnh và voice TTS qua nhiều dịch vụ.
+- Gửi tin nhắn, SMS, ảnh và voice TTS qua nhiều dịch vụ.
 - Gọi thoại Telegram, SIM 4G và Zalo một chiều; phát TTS khi người nhận nghe máy.
 - Gọi lặp hoặc gửi voice TTS lặp làm chuông báo động.
 - Trung tâm báo động với chính sách nhiều bước: gọi lần lượt nhiều người, leo thang khi không nghe máy, chống trùng, xác nhận, xử lý, hủy và lưu lịch sử.
 - Quản lý nhiều tài khoản, xem trạng thái kênh, cuộc gọi và nhật ký trên một bảng điều khiển.
-- Với SIM 4G: xem nhà mạng, mức sóng, số dư, hạn dùng qua USSD và đọc SMS/OTP.
+- Với SIM 4G: gửi/đọc SMS, xem nhà mạng, mức sóng, số dư, hạn dùng qua USSD và đọc OTP.
 - Tự động hóa SIM: CLIP, lệnh SMS, chuyển OTP, DTMF, cảnh báo mất điện/Internet, nuôi SIM và failover 4G qua Home Assistant.
 - Điều khiển từ Home Assistant qua custom integration hoặc REST API.
 
@@ -22,7 +22,7 @@ Trung tâm gọi, nhắn tin và báo động đa kênh cho Home Assistant. Qu�
 | Signal | Có | Có | Có | Không | Voice lặp |
 | LINE Official Account | Có | URL HTTPS | Không | Không | Không |
 | Zalo cá nhân | Có | Có | Có | Một chiều | Không |
-| SIM 4G | Không | Không | Trong cuộc gọi | Có | Có |
+| SIM 4G | SMS | Không | Trong cuộc gọi | Có | Có |
 
 ## Yêu cầu
 
@@ -41,7 +41,7 @@ Trung tâm gọi, nhắn tin và báo động đa kênh cho Home Assistant. Qu�
 
 1. Settings > Add-ons > Add-on Store.
 2. Menu 3 chấm > Repositories.
-3. Thêm `https://github.com/trankhanhduy2929-beep/my_hass_addon_public`.
+3. Thêm `https://github.com/trankhanhduy2929-beep/my_hass_addon_private`.
 4. Cài **Calling Messenger Hub**, sau đó bấm **Start**.
 
 ### Copy thủ công
@@ -71,6 +71,13 @@ Copy thư mục `calling_messenger_hub/` vào thư mục add-ons của Home Assi
   - Nếu vẫn báo “chưa tạo cổng tty”, kiểm tra `lsusb` và `ls -l /dev/ttyUSB* /dev/ttyACM*`. Modem ở chế độ chỉ QMI/ECM sẽ không có cổng AT; cần đổi USB composition sang chế độ có serial.
 
 Giao diện có hướng dẫn ngắn cho từng loại tài khoản.
+
+### Theo dõi kết nối SIM
+
+- Trang **SIM & số dư** tự đọc lại trạng thái mô-đun khoảng 2,5 giây một lần, hiển thị thời điểm đồng bộ và độ trễ phản hồi.
+- Add-on giữ nhịp kết nối bằng lệnh `AT` mỗi 5 giây và làm mới sóng/nhà mạng mỗi 15 giây khi SIM đang rảnh.
+- Khi mất kết nối, add-on đóng cổng cũ, chuyển sang **Đang kết nối lại** và tự thử lại sau 2, 4, 8, 16 rồi tối đa 30 giây; không cần bấm kết nối lại thủ công.
+- Trong cuộc gọi, add-on tạm dừng nhịp kiểm tra để không làm gián đoạn thoại.
 
 ### Gửi tin nhắn, ảnh và voice
 
@@ -156,7 +163,7 @@ Danh sách service và ví dụ chi tiết nằm trong README của integration.
 - Chưa hỗ trợ gọi đồng thời nhiều người. Chính sách báo động gọi lần lượt từng người.
 - Telegram chỉ gọi 1:1, không gọi nhóm.
 - Discord, Signal, LINE và Zalo không truyền thoại hai chiều.
-- SIM chỉ gọi thoại, đọc SMS và gửi USSD; không gửi tin nhắn, ảnh hay TTS qua API.
+- SIM gọi thoại, gửi/đọc SMS và gửi USSD; không gửi ảnh hay TTS qua API.
 - Edge TTS cần Internet.
 - Tự động gọi/nhắn tin có thể vi phạm điều khoản nền tảng và gây cước phí SIM. Chỉ dùng tài khoản bạn sở hữu hoặc tài khoản phụ, và chỉ gửi đến người đã đồng ý.
 
