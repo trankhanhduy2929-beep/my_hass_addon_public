@@ -40,7 +40,7 @@ Trung tâm gọi, nhắn tin và báo động đa kênh cho Home Assistant. Qu�
 
 1. Settings > Add-ons > Add-on Store.
 2. Menu 3 chấm > Repositories.
-3. Thêm `https://github.com/trankhanhduy2929-beep/my_hass_addon_private`.
+3. Thêm `https://github.com/trankhanhduy2929-beep/my_hass_addon_public`.
 4. Cài **Calling Messenger Hub**, sau đó bấm **Start**.
 
 ### Copy thủ công
