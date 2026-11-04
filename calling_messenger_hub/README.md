@@ -10,6 +10,7 @@ Trung tâm gọi, nhắn tin và báo động đa kênh cho Home Assistant. Qu�
 - Trung tâm báo động với chính sách nhiều bước: gọi lần lượt nhiều người, leo thang khi không nghe máy, chống trùng, xác nhận, xử lý, hủy và lưu lịch sử.
 - Quản lý nhiều tài khoản, xem trạng thái kênh, cuộc gọi và nhật ký trên một bảng điều khiển.
 - Với SIM 4G: xem nhà mạng, mức sóng, số dư, hạn dùng qua USSD và đọc SMS/OTP.
+- Tự động hóa SIM: CLIP, lệnh SMS, chuyển OTP, DTMF, cảnh báo mất điện/Internet, nuôi SIM và failover 4G qua Home Assistant.
 - Điều khiển từ Home Assistant qua custom integration hoặc REST API.
 
 ## Kênh hỗ trợ
@@ -80,6 +81,18 @@ Giao diện có hướng dẫn ngắn cho từng loại tài khoản.
 5. Bấm gửi.
 
 Với ảnh, có thể dùng URL, tải file lên hoặc chọn file trong `/data/media`. LINE chỉ nhận URL HTTPS công khai.
+
+### Tự động hóa SIM
+
+Mở **SIM 4G → Tự động hóa SIM** để cấu hình:
+
+- **CLIP:** gọi action Home Assistant khi có cuộc gọi từ số tin cậy; có thể tự từ chối để tránh cước.
+- **Lệnh SMS:** số tin cậy gửi lệnh, add-on gọi action HA và trả lời SMS.
+- **OTP:** chuyển mã OTP qua Telegram hoặc đọc trên media player.
+- **DTMF:** gán phím 1/2/9 trong cuộc gọi cảnh báo; phím 9 có thể kết thúc cuộc gọi.
+- **Mất điện/Internet:** gọi cảnh báo TTS khi entity nguồn tắt hoặc URL Internet lỗi.
+- **Nuôi SIM:** gửi SMS hoặc nháy máy định kỳ hằng tháng và tra cứu số dư.
+- **Failover 4G:** gọi action HA khi Internet chính lỗi. Việc đổi route/WAN do script hoặc `shell_command` trên host Home Assistant thực hiện.
 
 ### Gọi và chuông báo động
 
