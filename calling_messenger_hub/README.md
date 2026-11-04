@@ -66,7 +66,8 @@ Copy thư mục `calling_messenger_hub/` vào thư mục add-ons của Home Assi
 - **SIM 4G:** chọn cổng serial/TCP, dòng module hoặc để tự nhận diện.
   - EC20/EC25 thường dùng `/dev/ttyUSB2`; A7670 dùng `/dev/ttyUSB2` hoặc `/dev/ttyACM0`.
   - Không dùng `/dev/bus/usb/...` cho pyserial. Add-on có thể tự đổi đường dẫn này sang cổng tty, nhưng nên nhập trực tiếp cổng tty.
-  - Add-on đã bật `uart: true`; không cần bật `usb: true` chỉ để gửi AT command.
+  - Add-on đã bật `uart: true` và `kernel_modules: true`; tự nạp driver `option`/`usbserial` để EC20/EC25 tạo `/dev/ttyUSB*`. Không cần bật `usb: true` chỉ để gửi AT command.
+  - Nếu vẫn báo “chưa tạo cổng tty”, kiểm tra `lsusb` và `ls -l /dev/ttyUSB* /dev/ttyACM*`. Modem ở chế độ chỉ QMI/ECM sẽ không có cổng AT; cần đổi USB composition sang chế độ có serial.
 
 Giao diện có hướng dẫn ngắn cho từng loại tài khoản.
 
