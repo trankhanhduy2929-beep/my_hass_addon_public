@@ -1,6 +1,6 @@
 # Calling Messenger Hub
 
-Trung tâm gọi và tin nhắn đa dịch vụ cho Home Assistant. Bản `0.15.6` hỗ trợ Telegram, Discord, Signal, LINE Official Account, Zalo cá nhân và mô-đun SIM 4G SIMCom A7670C-LANS hoặc Quectel EC20/EC2x trên cùng một bảng điều khiển, dùng chung biểu mẫu gửi tin nhắn, ảnh và voice TTS; SIM 4G xem được nhà mạng, mức sóng, số dư, hạn dùng qua USSD và đọc hộp thư SMS/OTP.
+Trung tâm gọi và tin nhắn đa dịch vụ cho Home Assistant. Bản `0.16.0` hỗ trợ Telegram, Discord, Signal, LINE Official Account, Zalo cá nhân và mô-đun SIM 4G SIMCom A7670C-LANS hoặc Quectel EC20/EC2x trên cùng một bảng điều khiển, dùng chung biểu mẫu gửi tin nhắn, ảnh và voice TTS; SIM 4G xem được nhà mạng, mức sóng, số dư, hạn dùng qua USSD và đọc hộp thư SMS/OTP.
 
 Chức năng hiện có:
 
@@ -10,6 +10,7 @@ Chức năng hiện có:
 - tạo voice message từ văn bản bằng Edge TTS, có thể bật/tắt cache để gửi lại nhanh;
 - gọi P2P 1:1 và phát TTS khi người nhận nghe máy;
 - gọi lặp làm chuông báo động Telegram; Discord/Signal gửi voice TTS lặp;
+- trung tâm báo động có chính sách nhiều bước, tự leo thang từ Telegram/Zalo/dịch vụ IoT sang SIM 4G khi không nghe máy, xác nhận/hủy và lưu lịch sử;
 - đăng nhập tài khoản Discord bằng token phiên, gửi tin nhắn/ảnh/voice TTS đến DM hoặc kênh;
 - kết nối Signal qua signal-cli REST API, gửi tin nhắn/ảnh/voice TTS đến số, nhóm hoặc username;
 - kết nối LINE Official Account qua Messaging API, gửi tin nhắn/ảnh URL HTTPS và nhận ID người nhận qua webhook có xác thực chữ ký;
@@ -20,7 +21,7 @@ Chức năng hiện có:
 - kích hoạt license key, kiểm tra hạn dùng và tự chặn thao tác khi hết hạn;
 - gọi REST API từ automation Home Assistant.
 
-> Chưa kiểm thử với tài khoản Telegram, tài khoản Discord, Signal API, LINE Official Account hoặc mô-đun A7670C-LANS/EC20 thật, hoặc trên thiết bị Home Assistant thật. Zalo đã đổ chuông thành công trên tài khoản thật với chuỗi 401 `requestcall` → đăng ký ZRTP UDP relay → 416 `request`; trạng thái cuộc gọi, danh bạ và relay mới được kiểm thử bằng mock/relay giả. Gửi voice TTS trong chat Zalo đã được xác nhận trên tài khoản thật; phát TTS Zalo một chiều trong cuộc gọi mới được kiểm thử bằng mock/relay giả. Định dạng USSD/SMS khác nhau theo nhà mạng và thế hệ SIM; cần xác minh lại trên SIM thật. Cần build lại image `amd64`/`aarch64` cho bản `0.15.6`.
+> Chưa kiểm thử với tài khoản Telegram, tài khoản Discord, Signal API, LINE Official Account hoặc mô-đun A7670C-LANS/EC20 thật, hoặc trên thiết bị Home Assistant thật. Zalo đã đổ chuông thành công trên tài khoản thật với chuỗi 401 `requestcall` → đăng ký ZRTP UDP relay → 416 `request`; trạng thái cuộc gọi, danh bạ và relay mới được kiểm thử bằng mock/relay giả. Gửi voice TTS trong chat Zalo đã được xác nhận trên tài khoản thật; phát TTS Zalo một chiều trong cuộc gọi mới được kiểm thử bằng mock/relay giả. Định dạng USSD/SMS khác nhau theo nhà mạng và thế hệ SIM; cần xác minh lại trên SIM thật. Trung tâm báo động mới được kiểm thử bằng mock/pytest, chưa chạy leo thang thật qua dịch vụ/SIM. Cần build lại image `amd64`/`aarch64` cho bản `0.16.0`; chưa build do host không có Docker.
 
 ## Định hướng đa dịch vụ
 
@@ -118,6 +119,8 @@ Bản `0.14.3` sửa lỗi chuông Zalo reo một lần rồi thành cuộc gọ
 
 Bản `0.15.0` thêm **phát TTS một chiều khi gọi Zalo**: dùng `message`/`voice`/`rate` của service `call` hoặc form Cuộc gọi, tổng hợp Edge TTS, chuyển PCM 16 kHz mono, mã hoá Opus 20 ms và gửi RTP qua relay token đã đăng ký. Add-on phát TTS sau khi người nhận bắt máy, giới hạn theo `max_call_seconds`, rồi gửi `endcall`; để trống lời thoại thì chỉ đổ chuông. Không nghe mic và không hỗ trợ gọi hai chiều.
 
+Bản `0.16.0` thêm **trung tâm báo động**: chính sách nhiều bước có thứ tự, chờ nghe máy, lặp lại và ghi đè lời thoại; dispatcher hỗ trợ gọi/tin nhắn/TTS/chuông, dừng leo thang khi có người nghe máy, xác nhận thủ công hoặc hủy, chống trùng theo `dedupe_key`, lưu `/data/alerts.json` và hiển thị đang chạy/lịch sử trong ingress UI. Integration `2.1.0` thêm service `trigger_alert`, `acknowledge_alert`, `resolve_alert`, `cancel_alert` và cảm biến `alerts_active`, `alerts_unacknowledged`.
+
 Bản `0.15.6` tối ưu hiệu năng và tinh gọn giao diện: chỉ render tab đang mở khi poll trạng thái, chặn request trạng thái chồng lấn, tạm dừng poll khi tab ẩn, giảm tần suất tải lại danh sách hội thoại Zalo, nén gzip HTML/CSS/JS/JSON, cache asset theo version, đóng sẵn các hướng dẫn dài, sửa `VERSION` khớp `config.yaml` và tránh gọi trạng thái Zalo hai lần. Không đổi API hay cấu hình.
 
 Bản `0.15.5` sửa lỗi vẫn không nhận được callback voice sau `0.15.4`: WebSocket giờ chấp nhận event upload ngay cả khi `fileId` server trả khác `fileId` trong phản hồi HTTP, hỗ trợ thêm payload nén gzip, và gửi chunk với `Content-Type: application/octet-stream` giống client Zalo. Lỗi còn lại sẽ kèm danh sách lệnh WebSocket, số lỗi giải mã và số event nhận được để chẩn đoán. Luồng đã được xác nhận trên tài khoản Zalo thật.
@@ -149,6 +152,7 @@ input/telegram_voip/
 │   │   ├── zalo_store.py             # zalo_accounts.json + zalo/ (quyền 600/700)
 │   │   ├── sim_manager.py            # provider SIM: AT commands A7670/EC20 + call audio
 │   │   ├── sim_store.py              # sim_accounts.json (quyền 600)
+│   │   ├── alerts.py                 # chính sách, leo thang, lịch sử báo động
 │   │   ├── tts.py                    # Edge TTS -> OGG/Opus, AMR/MP3/WAV cho SIM
 │   │   ├── license.py                # license service + offline cache
 │   │   ├── store.py                  # accounts.json + session files
@@ -229,7 +233,7 @@ Mã nguồn add-on nằm tại <https://github.com/trankhanhduy2929-beep/my_hass
 
 ## Thêm integration
 
-Custom integration `2.0.8` đi kèm add-on `0.15.6`; service `call` cho phép bỏ trống `message` khi dùng với Zalo, còn `send_tts`, `send_photo` và `send_message` nhận tài khoản `zl_...`. Từ `2.0.3`, integration tự đổi URL mặc định cũ `3332` sang `3030` khi khởi động; URL tùy chỉnh cần sửa tay.
+Custom integration `2.1.0` đi kèm add-on `0.16.0`; service `call` cho phép bỏ trống `message` khi dùng với Zalo, còn `send_tts`, `send_photo` và `send_message` nhận tài khoản `zl_...`. Từ `2.0.3`, integration tự đổi URL mặc định cũ `3332` sang `3030` khi khởi động; URL tùy chỉnh cần sửa tay.
 
 1. Copy `custom_components/calling_messenger_hub/` vào `/config/custom_components/calling_messenger_hub/`.
 2. Restart Home Assistant.
@@ -316,6 +320,29 @@ data:
 
 Với Telegram, mỗi lần là một cuộc gọi P2P; người nhận phải bấm nghe máy thì TTS mới phát, `ring_timeout` giới hạn thời gian chờ. Với SIM, mỗi lần là một cuộc gọi điện thoại thật tới số trong `to`; TTS phát khi người nhận nghe máy, `ring_timeout` giới hạn thời gian chờ và `send_message` bị bỏ qua. Với Discord/Signal, add-on gửi tin nhắn văn bản một lần nếu `send_message: true`, sau đó gửi voice TTS `attempts` lần, nghỉ `interval` giây; không có cuộc gọi, không có phát hiện nghe máy và `ring_timeout` bị bỏ qua.
 
+### Trung tâm báo động
+
+Tạo chính sách trong tab **Báo động** của ingress UI. Mỗi bước chọn dịch vụ, hành động (`call`, `message`, `tts`, `ring`), tài khoản gửi, người nhận, lời thoại, thời gian chờ nghe máy và cờ `continue_on_answer`. Chính sách chạy lần lượt các bước, lặp theo `repeat`; bước gọi thất bại hoặc không nghe máy sẽ chuyển sang bước kế tiếp. Khi có người nghe máy, báo động chuyển `acknowledged` và dừng leo thang.
+
+```yaml
+action: calling_messenger_hub.trigger_alert
+data:
+  policy_id: "a1b2c3d4e5"
+  source: "automation cua_chinh"
+  dedupe_key: "cua-chinh"
+```
+
+Dùng `name` thay cho `policy_id` nếu muốn gọi theo tên chính xác. `message` ghi đè lời thoại; `severity` nhận `info`, `warning`, `critical`. Báo động đang chạy cùng `dedupe_key` không tạo thêm.
+
+```yaml
+action: calling_messenger_hub.acknowledge_alert
+data:
+  alert_id: "f6e5d4c3b2a1"
+  by: "telegram:owner"
+```
+
+`resolve_alert` đánh dấu đã xử lý; `cancel_alert` dừng chuỗi và hủy cuộc gọi/chuông hiện tại. Cả ba service nhận `alert_id` và `by` tùy chọn. ID chính sách hiển thị trong thẻ chính sách; ID báo động nằm trong tab đang hoạt động/lịch sử.
+
 ### Kết thúc cuộc gọi
 
 ```yaml
@@ -374,6 +401,15 @@ POST   /api/hangup
 POST   /api/rings
 GET    /api/rings
 POST   /api/rings/{ring_id}/cancel
+GET    /api/alerts
+GET    /api/alerts/policies
+POST   /api/alerts/policies
+PUT    /api/alerts/policies/{policy_id}
+DELETE /api/alerts/policies/{policy_id}
+POST   /api/alerts/trigger
+POST   /api/alerts/{alert_id}/acknowledge
+POST   /api/alerts/{alert_id}/resolve
+POST   /api/alerts/{alert_id}/cancel
 GET    /api/logs
 ```
 
@@ -456,7 +492,7 @@ python3 -m venv .venv
 node --check calling_messenger_hub/app/ui/app.js
 ```
 
-Kết quả hiện tại: 145 test add-on pass (gồm 53 test Zalo), 15 test license server pass, Python compile và JavaScript syntax pass. Bản `0.15.6` thêm test version add-on khớp `config.yaml`; bản `0.15.5` thêm test giải mã payload WebSocket nén gzip và test nhận event dù `fileId` khác nhau; bản `0.15.4` thêm test fallback `asyncfile/upload` khi `voice/upload` không trả URL và sửa test call ID 9 chữ số; bản `0.15.3` thêm test cho event `voice_aac_success` và chờ URL qua WebSocket khi phản hồi upload chỉ có `fileId`; bản `0.15.2` thêm test cho chuyển TTS sang MP3, tải/gửi voice Zalo và giải mã event WebSocket `file_done`; bản `0.15.1` thêm test cho luồng tải/gửi ảnh Zalo hai bước và cập nhật hội thoại cục bộ; bản `0.15.0` thêm test cho gói RTP/Opus có relay token và luồng phát TTS rồi `endcall`; bản `0.14.3` thêm test cho packet ZRTP, parse phản hồi `InitZRTP`, đăng ký UDP relay với relay giả và `extendData` có `numServers`/P2P công khai. Bản `0.14.2` thêm test cho event `answer status=5` sớm/kèm media và test cũ vẫn giữ. Bản `0.14.1` thêm test mock cho 416 trả `status` khác 0 nhưng vẫn giữ cuộc gọi, parse event VoIP từ `lp_control`, gửi `answerack`, cập nhật trạng thái answered/end_call, ưu tiên host friend và fallback danh bạ sang hội thoại gần đây. Test cũ cho 401/416, `extendData`/`session`, call ID 9 chữ số và resolve tên/số vẫn giữ. Chưa chạy lại smoke Playwright cho giao diện `0.15.5`. Smoke Playwright desktop/mobile/dark mode đã chạy lại ở bản `0.12.2` cho các luồng Zalo (tìm/lọc hội thoại, trả lời, tải lịch sử, quản lý/tạo nhóm), không có lỗi console và không tràn ngang; ảnh chụp lưu tại `/var/tmp/cmh-ui-shots`. License server đã deploy tại `https://calling-messenger-hub-license.vercel.app`; đã test đăng ký, trial, tạo key, validate, tạo/hủy link PayOS, admin dùng dashboard, link quản trị theo `is_admin`, đổi mật khẩu user/admin và đăng nhập lại bằng mật khẩu mới. Chưa test thanh toán chuyển tiền thật, đăng nhập/gọi Telegram thật, tài khoản Discord/Signal/LINE/Zalo thật, A7670C-LANS/EC20 thật hoặc Home Assistant runtime thật.
+Kết quả hiện tại: 151 test add-on pass (gồm 53 test Zalo và 6 test báo động), 15 test license server pass, Python compile và JavaScript syntax pass. Bản `0.16.0` thêm test CRUD chính sách, gọi theo tên, chặn chính sách tắt, leo thang Telegram → SIM, dừng khi nghe máy, chống trùng, ack/cancel và API báo động; bản `0.15.6` thêm test version add-on khớp `config.yaml`; bản `0.15.5` thêm test giải mã payload WebSocket nén gzip và test nhận event dù `fileId` khác nhau; bản `0.15.4` thêm test fallback `asyncfile/upload` khi `voice/upload` không trả URL và sửa test call ID 9 chữ số; bản `0.15.3` thêm test cho event `voice_aac_success` và chờ URL qua WebSocket khi phản hồi upload chỉ có `fileId`; bản `0.15.2` thêm test cho chuyển TTS sang MP3, tải/gửi voice Zalo và giải mã event WebSocket `file_done`; bản `0.15.1` thêm test cho luồng tải/gửi ảnh Zalo hai bước và cập nhật hội thoại cục bộ; bản `0.15.0` thêm test cho gói RTP/Opus có relay token và luồng phát TTS rồi `endcall`; bản `0.14.3` thêm test cho packet ZRTP, parse phản hồi `InitZRTP`, đăng ký UDP relay với relay giả và `extendData` có `numServers`/P2P công khai. Bản `0.14.2` thêm test cho event `answer status=5` sớm/kèm media và test cũ vẫn giữ. Bản `0.14.1` thêm test mock cho 416 trả `status` khác 0 nhưng vẫn giữ cuộc gọi, parse event VoIP từ `lp_control`, gửi `answerack`, cập nhật trạng thái answered/end_call, ưu tiên host friend và fallback danh bạ sang hội thoại gần đây. Test cũ cho 401/416, `extendData`/`session`, call ID 9 chữ số và resolve tên/số vẫn giữ. Chưa chạy lại smoke Playwright cho giao diện `0.15.5`. Smoke Playwright desktop/mobile/dark mode đã chạy lại ở bản `0.12.2` cho các luồng Zalo (tìm/lọc hội thoại, trả lời, tải lịch sử, quản lý/tạo nhóm), không có lỗi console và không tràn ngang; ảnh chụp lưu tại `/var/tmp/cmh-ui-shots`. License server đã deploy tại `https://calling-messenger-hub-license.vercel.app`; đã test đăng ký, trial, tạo key, validate, tạo/hủy link PayOS, admin dùng dashboard, link quản trị theo `is_admin`, đổi mật khẩu user/admin và đăng nhập lại bằng mật khẩu mới. Chưa test thanh toán chuyển tiền thật, đăng nhập/gọi Telegram thật, tài khoản Discord/Signal/LINE/Zalo thật, A7670C-LANS/EC20 thật hoặc Home Assistant runtime thật.
 
 ## Giới hạn đã biết
 
