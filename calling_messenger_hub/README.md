@@ -64,6 +64,9 @@ Copy thư mục `calling_messenger_hub/` vào thư mục add-ons của Home Assi
 - **LINE:** nhập channel access token và channel secret nếu dùng webhook.
 - **Zalo:** bấm **Thêm Zalo**, quét QR và xác nhận trên điện thoại.
 - **SIM 4G:** chọn cổng serial/TCP, dòng module hoặc để tự nhận diện.
+  - EC20/EC25 thường dùng `/dev/ttyUSB2`; A7670 dùng `/dev/ttyUSB2` hoặc `/dev/ttyACM0`.
+  - Không dùng `/dev/bus/usb/...` cho pyserial. Add-on có thể tự đổi đường dẫn này sang cổng tty, nhưng nên nhập trực tiếp cổng tty.
+  - Add-on đã bật `uart: true`; không cần bật `usb: true` chỉ để gửi AT command.
 
 Giao diện có hướng dẫn ngắn cho từng loại tài khoản.
 
