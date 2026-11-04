@@ -80,6 +80,13 @@ Giao diện có hướng dẫn ngắn cho từng loại tài khoản.
 - Trong cuộc gọi, add-on tạm dừng nhịp kiểm tra để không làm gián đoạn thoại.
 - Khi tra cứu USSD, add-on chờ phản hồi đến muộn, tự thử lại một lần nếu rỗng và dùng SMS số dư nhận trong 30 phút gần nhất nếu nhà mạng trả kết quả qua SMS.
 
+### Vận hành và giám sát
+
+- **MQTT Discovery:** mở **Cài đặt → MQTT & Home Assistant**, bật cầu nối, nhập host/port/tài khoản và lưu. Add-on tự công bố cảm biến cho tài khoản online, cuộc gọi đang hoạt động, cảnh báo chưa xác nhận, sức khỏe SIM, bản cập nhật và cường độ sóng từng SIM. Topic mặc định `calling_messenger_hub/#`, discovery prefix `homeassistant`.
+- **Prometheus:** scrape `http://<add-on>:3030/metrics`. Endpoint trả `cmh_*` cho uptime, tài khoản, cuộc gọi, cảnh báo, SIM, MQTT và bản cập nhật. `/metrics` không yêu cầu token; chỉ mở cổng 3030 trong LAN tin cậy hoặc đặt sau reverse proxy có xác thực.
+- **Sức khỏe SIM:** trang **SIM & số dư** hiển thị badge tổng hợp; cảnh báo khi SIM offline, dữ liệu cũ quá 15 phút, sóng dưới 25% hoặc hạn dùng còn ≤ 7 ngày.
+- **Kiểm tra cập nhật:** nút trong **Cài đặt** gọi GitHub Releases và báo phiên bản mới; add-on không tự cài đặt.
+
 ### Gửi tin nhắn, ảnh và voice
 
 1. Mở tab gửi tin.

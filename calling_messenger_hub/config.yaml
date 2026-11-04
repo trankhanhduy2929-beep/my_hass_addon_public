@@ -1,5 +1,5 @@
 name: "Calling Messenger Hub"
-version: "0.18.0"
+version: "0.19.0"
 slug: "calling_messenger_hub"
 description: "Trung tâm gọi và tin nhắn đa dịch vụ cho Home Assistant. Hỗ trợ Telegram (tin nhắn/ảnh/voice TTS, gọi P2P), Discord/Signal (chuông TTS lặp), LINE Official Account (tin nhắn/ảnh qua Messaging API), Zalo cá nhân (đăng nhập QR, nhắn tin văn bản, gửi ảnh/voice TTS, đổ chuông và phát TTS một chiều) mô-đun SIM 4G SIMCom A7670C-LANS/Quectel EC20/EC2x (gọi cảnh báo và phát TTS một chiều, gửi/đọc SMS, xem sóng/số dư/hạn dùng qua USSD và đọc OTP), cùng trung tâm báo động có chính sách leo thang từ dịch vụ IoT sang SIM 4G, xác nhận và lịch sử."
 url: "https://github.com/trankhanhduy2929-beep/my_hass_addon_public"
@@ -33,6 +33,14 @@ options:
   ring_interval: 15
   max_call_seconds: 180
   log_limit: 300
+  mqtt_enabled: false
+  mqtt_host: ""
+  mqtt_port: 1883
+  mqtt_username: ""
+  mqtt_password: ""
+  mqtt_tls: false
+  mqtt_topic_prefix: "calling_messenger_hub"
+  mqtt_discovery_prefix: "homeassistant"
   license_key: ""
   license_server_url: "https://calling-messenger-hub-license.vercel.app"
   license_site_url: "https://calling-messenger-hub-license.vercel.app"
@@ -48,6 +56,14 @@ schema:
   ring_interval: "int(0,600)?"
   max_call_seconds: "int(10,900)?"
   log_limit: "int(50,2000)?"
+  mqtt_enabled: "bool?"
+  mqtt_host: "str?"
+  mqtt_port: "int(1,65535)?"
+  mqtt_username: "str?"
+  mqtt_password: "password?"
+  mqtt_tls: "bool?"
+  mqtt_topic_prefix: "str?"
+  mqtt_discovery_prefix: "str?"
   license_key: "password?"
   license_server_url: "url?"
   license_site_url: "url?"
