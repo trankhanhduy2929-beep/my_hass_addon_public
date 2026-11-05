@@ -9,7 +9,7 @@ Trung tâm gọi, nhắn tin và báo động đa kênh cho Home Assistant. Qu�
 - Gọi lặp hoặc gửi voice TTS lặp làm chuông báo động.
 - Trung tâm báo động với chính sách nhiều bước: gọi lần lượt nhiều người, leo thang khi không nghe máy, chống trùng, xác nhận, xử lý, hủy và lưu lịch sử.
 - Quản lý nhiều tài khoản, xem trạng thái kênh, cuộc gọi và nhật ký trên một bảng điều khiển.
-- Với SIM 4G: gửi/đọc SMS, xem nhà mạng, mức sóng, số dư, hạn dùng qua USSD (tự thử lại và fallback SMS số dư) và đọc OTP.
+- Với SIM 4G: gửi/đọc SMS, xem nhà mạng, mức sóng, số dư, hạn dùng qua USSD (tự thử lại và fallback SMS số dư), đọc OTP, lưu APN và bật/tắt phiên dữ liệu 4G.
 - Tự động hóa SIM: CLIP, lệnh SMS, chuyển OTP, DTMF, cảnh báo mất điện/Internet, nuôi SIM và failover 4G qua Home Assistant.
 - Điều khiển từ Home Assistant qua custom integration hoặc REST API.
 
@@ -74,11 +74,22 @@ Giao diện có hướng dẫn ngắn cho từng loại tài khoản.
 
 ### Theo dõi kết nối SIM
 
-- Trang **SIM & số dư** tự đọc lại trạng thái mô-đun khoảng 2,5 giây một lần, hiển thị thời điểm đồng bộ và độ trễ phản hồi.
-- Add-on giữ nhịp kết nối bằng lệnh `AT` mỗi 5 giây và làm mới sóng/nhà mạng mỗi 15 giây khi SIM đang rảnh.
+- Trang **SIM & số dư** tự đọc lại trạng thái mô-đun khoảng 5 giây một lần, hiển thị thời điểm đồng bộ và độ trễ phản hồi.
+- Add-on giữ nhịp kết nối bằng lệnh `AT` mỗi 30 giây và làm mới sóng/nhà mạng mỗi 5 phút khi SIM đang rảnh để giảm tải modem/CPU.
 - Khi mất kết nối, add-on đóng cổng cũ, chuyển sang **Đang kết nối lại** và tự thử lại sau 2, 4, 8, 16 rồi tối đa 30 giây; không cần bấm kết nối lại thủ công.
 - Trong cuộc gọi, add-on tạm dừng nhịp kiểm tra để không làm gián đoạn thoại.
 - Khi tra cứu USSD, add-on chờ phản hồi đến muộn, tự thử lại một lần nếu rỗng và dùng SMS số dư nhận trong 30 phút gần nhất nếu nhà mạng trả kết quả qua SMS.
+
+### Dữ liệu 4G
+
+Trong **SIM & số dư → Dữ liệu 4G**:
+
+- Lưu **APN** vào hồ sơ SIM.
+- **Bật 4G** tạo PDP context và đọc IP qua `AT+CGPADDR`.
+- **Tắt 4G** hủy PDP context.
+- Hiển thị loại mạng, IP, dung lượng nhận/gửi nếu modem hỗ trợ `AT+QGDCNT`.
+
+Add-on chỉ điều khiển phiên data của modem. Route mặc định, NAT và failover LAN → 4G vẫn do HASSOS/NetworkManager hoặc script trên host quản lý.
 
 ### Vận hành và giám sát
 
