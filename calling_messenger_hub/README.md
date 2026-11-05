@@ -99,6 +99,8 @@ Với ảnh, có thể dùng URL, tải file lên hoặc chọn file trong `/dat
 
 ### Tự động hóa SIM
 
+Add-on dùng `SUPERVISOR_TOKEN` với quyền `homeassistant_api` để gọi Home Assistant Core; bấm **Kiểm tra HA** để xác thực token và quyền.
+
 Mở **SIM 4G → Tự động hóa SIM** để cấu hình:
 
 - **CLIP:** gọi action Home Assistant khi có cuộc gọi từ số tin cậy; có thể tự từ chối để tránh cước.
