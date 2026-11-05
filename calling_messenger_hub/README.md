@@ -9,8 +9,9 @@ Trung tâm gọi, nhắn tin và báo động đa kênh cho Home Assistant. Qu�
 - Gọi lặp hoặc gửi voice TTS lặp làm chuông báo động.
 - Trung tâm báo động với chính sách nhiều bước: gọi lần lượt nhiều người, leo thang khi không nghe máy, chống trùng, xác nhận, xử lý, hủy và lưu lịch sử.
 - Quản lý nhiều tài khoản, xem trạng thái kênh, cuộc gọi và nhật ký trên một bảng điều khiển.
-- Với SIM 4G: gửi/đọc SMS, xem nhà mạng, mức sóng, số dư, hạn dùng qua USSD (tự thử lại và fallback SMS số dư) và đọc OTP.
-- Tự động hóa SIM: CLIP, lệnh SMS, chuyển OTP, DTMF, cảnh báo mất điện/Internet, nuôi SIM và failover 4G qua Home Assistant.
+- Với SIM 4G: hộp thư SMS có tìm kiếm, soạn mới/trả lời trực tiếp; xem nhà mạng, mức sóng, số dư, hạn dùng qua USSD (tự thử lại và fallback SMS số dư) và đọc OTP.
+- Tự động hóa SIM: CLIP, lệnh SMS, chuyển OTP, DTMF, cảnh báo mất điện/Internet, nuôi SIM, failover 4G và cảnh báo ngưỡng sức khỏe SIM qua Telegram/Home Assistant.
+- Sao lưu và khôi phục tài khoản, phiên đăng nhập, token, lịch sử cảnh báo và cấu hình automation bằng tệp mã hóa AES-256-GCM.
 - Điều khiển từ Home Assistant qua custom integration hoặc REST API.
 
 ## Kênh hỗ trợ
@@ -84,7 +85,7 @@ Giao diện có hướng dẫn ngắn cho từng loại tài khoản.
 
 - **MQTT Discovery:** mở **Cài đặt → MQTT & Home Assistant**, bật cầu nối, nhập host/port/tài khoản và lưu. Add-on tự công bố cảm biến cho tài khoản online, cuộc gọi đang hoạt động, cảnh báo chưa xác nhận, sức khỏe SIM, bản cập nhật và cường độ sóng từng SIM. Topic mặc định `calling_messenger_hub/#`, discovery prefix `homeassistant`.
 - **Prometheus:** scrape `http://<add-on>:3030/metrics`. Endpoint trả `cmh_*` cho uptime, tài khoản, cuộc gọi, cảnh báo, SIM, MQTT và bản cập nhật. `/metrics` không yêu cầu token; chỉ mở cổng 3030 trong LAN tin cậy hoặc đặt sau reverse proxy có xác thực.
-- **Sức khỏe SIM:** trang **SIM & số dư** hiển thị badge tổng hợp; cảnh báo khi SIM offline, dữ liệu cũ quá 15 phút, sóng dưới 25% hoặc hạn dùng còn ≤ 7 ngày.
+- **Sức khỏe SIM:** trang **SIM & số dư** hiển thị badge tổng hợp; mặc định cảnh báo khi SIM offline, dữ liệu cũ quá 15 phút, sóng dưới 25% hoặc hạn dùng còn ≤ 7 ngày. Có thể bật cảnh báo sóng yếu, số dư thấp, sắp hết hạn và mất kết nối với ngưỡng riêng trong **Tự động hóa SIM → Cảnh báo sức khỏe SIM**; gửi qua Telegram và/hoặc action Home Assistant.
 - **Kiểm tra cập nhật:** nút trong **Cài đặt** gọi GitHub Releases và báo phiên bản mới; add-on không tự cài đặt.
 
 ### Gửi tin nhắn, ảnh và voice
@@ -96,6 +97,12 @@ Giao diện có hướng dẫn ngắn cho từng loại tài khoản.
 5. Bấm gửi.
 
 Với ảnh, có thể dùng URL, tải file lên hoặc chọn file trong `/data/media`. LINE chỉ nhận URL HTTPS công khai.
+
+### SMS trên SIM
+
+1. Mở **SIM 4G**, chọn mô-đun và bấm **Tải hộp thư**.
+2. Tìm SMS theo số gửi hoặc nội dung, bấm **Trả lời** để điền số nhận, hoặc nhập số mới và nội dung rồi bấm **Gửi SMS**.
+3. SMS gửi đi dùng chính mô-đun SIM đang chọn; tối đa 1.000 ký tự và có thể chia nhiều phần theo chuẩn GSM.
 
 ### Tự động hóa SIM
 
@@ -110,6 +117,13 @@ Mở **SIM 4G → Tự động hóa SIM** để cấu hình:
 - **Mất điện/Internet:** gọi cảnh báo TTS khi entity nguồn tắt hoặc URL Internet lỗi.
 - **Nuôi SIM:** gửi SMS hoặc nháy máy định kỳ hằng tháng và tra cứu số dư.
 - **Failover 4G:** gọi action HA khi Internet chính lỗi. Việc đổi route/WAN do script hoặc `shell_command` trên host Home Assistant thực hiện.
+- **Cảnh báo sức khỏe SIM:** đặt ngưỡng sóng, số dư, ngày hết hạn, thời gian mất kết nối và chống lặp; gửi Telegram, action HA hoặc cả hai. MQTT vẫn công bố `binary_sensor.sim_health` và cảm biến sóng từng SIM.
+
+### Sao lưu và khôi phục
+
+Mở **Cài đặt → Sao lưu & khôi phục**, nhập mật khẩu tối thiểu 8 ký tự rồi tải tệp `.cmhb`. Tệp chứa tài khoản, phiên đăng nhập, token, cấu hình automation, lịch sử cảnh báo và License state; dữ liệu được mã hóa AES-256-GCM bằng khóa PBKDF2-SHA256. Cache TTS và media không được đưa vào bản backup.
+
+Để khôi phục, chọn tệp, nhập đúng mật khẩu và xác nhận. Add-on ghi đè các tệp trùng tên; khởi động lại add-on sau khi hoàn tất. Không có mật khẩu thì không thể giải mã bản backup.
 
 ### Gọi và chuông báo động
 
@@ -182,7 +196,7 @@ Danh sách service và ví dụ chi tiết nằm trong README của integration.
 
 - API token có toàn quyền với add-on; không chia sẻ hoặc đưa vào file công khai.
 - Token, phiên đăng nhập và danh sách tài khoản được lưu trong `/data` với quyền hạn chế.
-- Không công khai log, ảnh chụp bảng điều khiển hoặc bản backup Home Assistant.
+- Không công khai log, ảnh chụp bảng điều khiển hoặc bản backup Home Assistant. Bản backup `.cmhb` chứa token và phiên đăng nhập; dù đã mã hóa, vẫn phải lưu ở nơi an toàn và dùng mật khẩu mạnh.
 - Nếu không cần truy cập trực tiếp, không publish port `3030`.
 
 ## License
