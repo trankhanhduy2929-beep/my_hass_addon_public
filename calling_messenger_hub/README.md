@@ -184,6 +184,26 @@ Integration tạo các sensor:
 - `sensor.calling_messenger_hub_alerts_active`
 - `sensor.calling_messenger_hub_alerts_unacknowledged`
 
+Các entity bổ sung:
+
+- `binary_sensor`: kết nối API, license, MQTT, sự cố SIM, bản cập nhật.
+- `button`: làm mới trạng thái, kiểm tra cập nhật.
+- `switch.calling_messenger_hub_mqtt_bridge`: bật/tắt cầu nối MQTT.
+- `event.calling_messenger_hub_activity`: cuộc gọi, chuông và báo động mới.
+
+Gửi thông báo qua notify:
+
+```yaml
+action: notify.calling_messenger_hub
+data:
+  title: "Home Assistant"
+  message: "Cửa chính đang mở."
+  target:
+    - "@username"
+  data:
+    account: "+84901234567"
+```
+
 Danh sách service và ví dụ chi tiết nằm trong README của integration.
 
 ## Lưu ý
