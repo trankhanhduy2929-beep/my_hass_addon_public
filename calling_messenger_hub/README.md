@@ -52,10 +52,11 @@ Copy thư mục `calling_messenger_hub/` vào thư mục add-ons của Home Assi
 
 ### Sau khi cài
 
-1. Mở **Open Web UI**.
-2. Vào **Cài đặt → License**, nhập license key.
+1. Mở **Open Web UI**. Không cần cấu hình trong tab **Configuration** của add-on.
+2. Vào **Cài đặt → License**, nhập license key. Không cần nhập license server/site URL; add-on tự dùng mặc định.
 3. Vào **Cài đặt → API token cho custom integration**, sao chép token nếu dùng Home Assistant integration.
-4. Mở **Tài khoản & kênh** để thêm tài khoản.
+4. Trong **Cài đặt → Mặc định add-on**, chỉnh giọng/tốc độ TTS, thời gian chờ và số lần gọi nếu cần.
+5. Mở **Tài khoản & kênh** để thêm tài khoản.
 
 ## Hướng dẫn sử dụng
 
