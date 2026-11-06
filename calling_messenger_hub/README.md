@@ -9,6 +9,7 @@ Trung tâm gọi, nhắn tin và báo động đa kênh cho Home Assistant. Qu�
 - Gọi lặp hoặc gửi voice TTS lặp làm chuông báo động.
 - Trung tâm báo động với chính sách nhiều bước: gọi lần lượt nhiều người, leo thang khi không nghe máy, chống trùng, xác nhận, xử lý, hủy và lưu lịch sử.
 - Quản lý nhiều tài khoản, xem trạng thái kênh, cuộc gọi và nhật ký trên một bảng điều khiển.
+- Đồng bộ trạng thái và sự kiện theo thời gian thực qua SSE; Home Assistant nhận cuộc gọi, chuông, báo động, SMS/OTP gần như ngay lập tức và tự kết nối lại khi mất luồng.
 - Với SIM 4G: hộp thư SMS có tìm kiếm, soạn mới/trả lời trực tiếp; xem nhà mạng, mức sóng, số dư, hạn dùng qua USSD (tự thử lại và fallback SMS số dư) và đọc OTP.
 - Với EC20/EC25 hai cổng AT: tách **cổng điều khiển** (AT, USSD, SMS) và **cổng sự kiện** (RING, +CLIP, +CMTI, DTMF) để cuộc gọi không bị chặn khi đang tra USSD; tự fallback về một cổng nếu cổng sự kiện lỗi.
 - Tự động hóa SIM: CLIP, lệnh SMS, chuyển OTP, DTMF, cảnh báo mất điện/Internet, nuôi SIM, failover 4G và cảnh báo ngưỡng sức khỏe SIM qua Telegram/Home Assistant.
@@ -91,6 +92,7 @@ Giao diện có hướng dẫn ngắn cho từng loại tài khoản.
 - **Prometheus:** scrape `http://<add-on>:3030/metrics`. Endpoint trả `cmh_*` cho uptime, tài khoản, cuộc gọi, cảnh báo, SIM, MQTT và bản cập nhật. `/metrics` không yêu cầu token; chỉ mở cổng 3030 trong LAN tin cậy hoặc đặt sau reverse proxy có xác thực.
 - **Sức khỏe SIM:** trang **SIM & số dư** hiển thị badge tổng hợp; mặc định cảnh báo khi SIM offline, dữ liệu cũ quá 15 phút, sóng dưới 25% hoặc hạn dùng còn ≤ 7 ngày. Có thể bật cảnh báo sóng yếu, số dư thấp, sắp hết hạn và mất kết nối với ngưỡng riêng trong **Tự động hóa SIM → Cảnh báo sức khỏe SIM**; gửi qua Telegram và/hoặc action Home Assistant.
 - **Kiểm tra cập nhật:** nút trong **Cài đặt** gọi GitHub Releases và báo phiên bản mới; add-on không tự cài đặt.
+- **Sự kiện realtime:** integration mở `GET /api/events/stream` để nhận sự kiện qua SSE. Add-on gửi heartbeat mỗi 15 giây; integration tự kết nối lại với backoff 1–30 giây và vẫn dùng polling làm phương án dự phòng.
 
 ### Gửi tin nhắn, ảnh và voice
 
@@ -189,7 +191,8 @@ Các entity bổ sung:
 - `binary_sensor`: kết nối API, license, MQTT, sự cố SIM, bản cập nhật.
 - `button`: làm mới trạng thái, kiểm tra cập nhật.
 - `switch.calling_messenger_hub_mqtt_bridge`: bật/tắt cầu nối MQTT.
-- `event.calling_messenger_hub_activity`: cuộc gọi, chuông và báo động mới.
+- `event.calling_messenger_hub_activity`: cuộc gọi, chuông, báo động, tin nhắn, SMS/OTP, tài khoản, automation và các sự kiện khác. Sự kiện SMS/OTP không chứa nội dung tin nhắn hoặc mã OTP.
+- Mỗi tài khoản có `binary_sensor` online riêng; mỗi tài khoản SIM có thêm cảm biến sóng, nhà mạng, số dư và hạn dùng. Entity được thêm hoặc gỡ tự động khi danh sách tài khoản thay đổi.
 
 Gửi thông báo qua notify:
 
