@@ -58,7 +58,7 @@ Copy thư mục `calling_messenger_hub/` vào thư mục add-ons của Home Assi
 1. Mở **Open Web UI**. Không cần cấu hình trong tab **Configuration** của add-on.
 2. Vào **Cài đặt → License**, nhập license key. Không cần nhập license server/site URL; add-on tự dùng mặc định.
 3. Vào **Cài đặt → API token cho custom integration**, sao chép token nếu dùng Home Assistant integration.
-4. Trong **Cài đặt → Mặc định add-on**, chỉnh giọng/tốc độ TTS, thời gian chờ và số lần gọi nếu cần.
+4. Trong **Cài đặt → Mặc định add-on**, chỉnh giọng/tốc độ TTS, thời gian chờ, số lần gọi và âm lượng TTS cuộc gọi SIM (1-7, áp dụng cho Quectel EC20/EC2x) nếu cần.
 5. Mở **Tài khoản & kênh** để thêm tài khoản.
 
 ## Hướng dẫn sử dụng
