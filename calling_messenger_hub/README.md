@@ -36,7 +36,7 @@ Trung tâm gọi, nhắn tin và báo động đa kênh cho Home Assistant. Qu�
 - Signal: một signal-cli REST API đã liên kết thiết bị.
 - LINE: Messaging API channel access token.
 - Zalo: ứng dụng Zalo trên điện thoại để quét QR.
-- SIM 4G: module SIMCom A7670C-LANS hoặc Quectel EC20/EC2x, kết nối USB/UART hoặc TCP serial bridge; tắt PIN và dùng SIM đã đăng ký mạng.
+- SIM 4G: module SIMCom A7670C-LANS hoặc Quectel EC20/EC2x, kết nối USB/UART hoặc TCP serial bridge; tắt PIN và dùng SIM đã đăng ký mạng. A7670C-LANS không hỗ trợ USSD; dùng SMS nhà mạng để kiểm tra số dư. Quectel EC20/EC2x giữ nguyên USSD.
 
 ## Cài add-on
 
