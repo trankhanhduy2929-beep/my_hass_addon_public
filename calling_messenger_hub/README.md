@@ -84,7 +84,7 @@ Giao diện có hướng dẫn ngắn cho từng loại tài khoản.
 - Add-on giữ nhịp kết nối bằng lệnh `AT` mỗi 5 giây và làm mới sóng/nhà mạng mỗi 15 giây khi SIM đang rảnh.
 - Khi mất kết nối, add-on đóng cổng cũ, chuyển sang **Đang kết nối lại** và tự thử lại sau 2, 4, 8, 16 rồi tối đa 30 giây; không cần bấm kết nối lại thủ công.
 - Trong cuộc gọi, add-on tạm dừng nhịp kiểm tra để không làm gián đoạn thoại.
-- Khi tra cứu USSD, add-on gửi lệnh không kèm DCS trước (tương thích A7670C), tự thử lại kèm DCS nếu module trả `ERROR`, tắt IMS qua `AT*IMSRCFG="switch",off` nếu module A76XX đang bật IMS (yêu cầu bắt buộc để CUSD không trả `ERROR`), chờ phản hồi đến muộn, tự thử lại một lần nếu rỗng, tự kết nối lại nếu cổng serial/TCP mất kết nối giữa chừng và dùng SMS số dư nhận trong 30 phút gần nhất nếu nhà mạng trả kết quả qua SMS.
+- Khi tra cứu USSD, add-on tạm tắt IMS nếu module A76XX đang bật (bắt buộc để CUSD không trả `ERROR`) rồi bật lại sau khi tra; gửi lệnh không kèm DCS trước, tự thử lại kèm DCS nếu module trả `ERROR`, chờ phản hồi đến muộn, tự thử lại một lần nếu rỗng, tự kết nối lại nếu cổng serial/TCP mất kết nối giữa chừng và dùng SMS số dư nhận trong 30 phút gần nhất nếu nhà mạng trả kết quả qua SMS. Trạng thái `4` nghĩa là mạng hiện tại không hỗ trợ USSD cho thuê bao; kiểm tra cùng mã trên điện thoại hoặc thử khi SIM bắt được 2G/3G.
 
 ### Vận hành và giám sát
 
