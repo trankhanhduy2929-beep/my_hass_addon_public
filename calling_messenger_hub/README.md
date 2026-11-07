@@ -70,7 +70,6 @@ Copy thư mục `calling_messenger_hub/` vào thư mục add-ons của Home Assi
 - **Zalo:** bấm **Thêm Zalo**, quét QR và xác nhận trên điện thoại.
 - **SIM 4G:** chọn cổng serial/TCP, dòng module hoặc để tự nhận diện.
   - EC20/EC25 thường dùng `/dev/ttyUSB2`; A7670 dùng `/dev/ttyUSB2` hoặc `/dev/ttyACM0`.
-  - SIMCom `1e0e:9011` (A7670): interface `if04` là cổng AT (`ttyUSB2`), interface `if05` là cổng Modem (`ttyUSB3`). Đặt **Cổng điều khiển** là `ttyUSB2` (hoặc `/dev/serial/by-id/...-if04-port0`) và **để trống Cổng sự kiện**; không dùng `ttyUSB3` làm cổng AT.
   - Với EC20/EC25, đặt **Cổng điều khiển** và **Cổng sự kiện** khác nhau nếu firmware tạo hai cổng AT, ví dụ `ttyUSB2` và `ttyUSB3`. Bấm **Quét cổng USB** để xem cổng đang map và gợi ý vai trò. Để trống nếu chỉ có một cổng.
   - Cổng sự kiện đọc URC liên tục; SMS vẫn được đối chiếu định kỳ 30 giây và ngay khi có `+CMTI`. Nếu firmware không route URC riêng, add-on tự quay lại chế độ poll một cổng.
   - Không dùng `/dev/bus/usb/...` cho pyserial. Add-on có thể tự đổi đường dẫn này sang cổng tty, nhưng nên nhập trực tiếp cổng tty.
@@ -85,7 +84,7 @@ Giao diện có hướng dẫn ngắn cho từng loại tài khoản.
 - Add-on giữ nhịp kết nối bằng lệnh `AT` mỗi 5 giây và làm mới sóng/nhà mạng mỗi 15 giây khi SIM đang rảnh.
 - Khi mất kết nối, add-on đóng cổng cũ, chuyển sang **Đang kết nối lại** và tự thử lại sau 2, 4, 8, 16 rồi tối đa 30 giây; không cần bấm kết nối lại thủ công.
 - Trong cuộc gọi, add-on tạm dừng nhịp kiểm tra để không làm gián đoạn thoại.
-- Khi tra cứu USSD, add-on tạm tắt IMS nếu module A76XX đang bật (bắt buộc để CUSD không trả `ERROR`) rồi bật lại sau khi tra; gửi lệnh không kèm DCS trước, tự thử lại kèm DCS nếu module trả `ERROR`, chờ phản hồi đến muộn, tự thử lại một lần nếu rỗng, tự kết nối lại nếu cổng serial/TCP mất kết nối giữa chừng và dùng SMS số dư nhận trong 30 phút gần nhất nếu nhà mạng trả kết quả qua SMS. Trạng thái `4` nghĩa là mạng hiện tại không hỗ trợ USSD cho thuê bao; kiểm tra cùng mã trên điện thoại hoặc thử khi SIM bắt được 2G/3G.
+- Khi tra cứu USSD, add-on chờ phản hồi đến muộn, tự thử lại một lần nếu rỗng và dùng SMS số dư nhận trong 30 phút gần nhất nếu nhà mạng trả kết quả qua SMS.
 
 ### Vận hành và giám sát
 
