@@ -12,7 +12,7 @@ Trung tâm gọi, nhắn tin và báo động đa kênh cho Home Assistant. Qu�
 - Đồng bộ trạng thái và sự kiện theo thời gian thực qua SSE; Home Assistant nhận cuộc gọi, chuông, báo động, SMS/OTP gần như ngay lập tức và tự kết nối lại khi mất luồng.
 - Với SIM 4G: hộp thư SMS có tìm kiếm, soạn mới/trả lời trực tiếp; xem nhà mạng, mức sóng, số dư, hạn dùng qua USSD (tự thử lại và fallback SMS số dư) và đọc OTP. Trang mạng hiển thị nhà mạng đang dùng, chuyển vùng, RSRP/RSRQ/SINR/RSSI, băng tần, cell/TAC; quét và chọn nhà mạng thủ công, tự chọn lại mạng khi mất đăng ký.
 - Với EC20/EC25 hoặc A7670 có hai cổng AT: tách **cổng điều khiển** (AT, USSD, SMS) và **cổng sự kiện** (RING, +CLIP, +CMTI, DTMF) để cuộc gọi không bị chặn khi đang tra USSD; tự fallback về một cổng nếu cổng sự kiện lỗi.
-- Trước mỗi cuộc gọi SIM, add-on đọc trạng thái VoLTE/IMS (`AT*IMSRCFG="switch"` với A7670, `AT+QCFG="ims"` với EC20/EC2x), chỉ đọc và không bật/tắt IMS. Nếu A7670 báo IMS tắt, add-on báo lỗi và không cố gọi; với EC20/EC2x, add-on ghi cảnh báo và vẫn thử gọi qua CSFB.
+- Trước mỗi cuộc gọi SIM, add-on đọc trạng thái VoLTE/IMS (`AT*IMSRCFG="switch"` với A7670, `AT+QCFG="ims"` với EC20/EC2x). Nếu A7670 báo IMS tắt, add-on báo lỗi và không cố gọi; với EC20/EC2x, add-on ghi cảnh báo và vẫn thử gọi qua CSFB. Có thể bấm **Bật VoLTE** ở mục **Thông tin kết nối** để gửi lệnh bật IMS/VoLTE (`AT*IMSRCFG="switch","on"` với A7670, `AT+QCFG="ims",1,1` với EC20/EC2x); thao tác này cần SIM, nhà mạng và vùng phủ 4G/LTE hỗ trợ VoLTE.
 - Lưu 40 lệnh AT gần nhất kèm phản hồi/lỗi để chẩn đoán cuộc gọi lỗi; số điện thoại và nội dung SMS được ẩn.
 - Tự động hóa SIM: CLIP, lệnh SMS, chuyển OTP, DTMF, cảnh báo mất điện/Internet, nuôi SIM, failover 4G và cảnh báo ngưỡng sức khỏe SIM qua Telegram/Home Assistant.
 - Sao lưu và khôi phục tài khoản, phiên đăng nhập, token, lịch sử cảnh báo và cấu hình automation bằng tệp mã hóa AES-256-GCM.
@@ -84,6 +84,7 @@ Giao diện có hướng dẫn ngắn cho từng loại tài khoản.
 ### Theo dõi kết nối SIM
 
 - Trang **SIM & số dư** tự đọc lại trạng thái mô-đun khoảng 2,5 giây một lần, hiển thị thời điểm đồng bộ và độ trễ phản hồi.
+- Khối **Thông tin kết nối** có nút **Bật VoLTE** cho A7670/EC20/EC2x. Add-on gửi lệnh bật IMS/VoLTE và đọc lại cấu hình; nếu module chưa xác nhận, giao diện báo có thể cần khởi động lại module hoặc chờ đăng ký LTE. VoLTE chỉ hoạt động khi SIM, nhà mạng và vùng phủ 4G/LTE hỗ trợ.
 - Add-on giữ nhịp kết nối bằng lệnh `AT` mỗi 5 giây và làm mới sóng/nhà mạng mỗi 15 giây khi SIM đang rảnh.
 - Khối **Mạng & phủ sóng** đọc chi tiết serving cell (`AT+QENG="servingcell"`), quét nhà mạng bằng `AT+COPS=?` và đổi tự động/thủ công bằng `AT+COPS`. Bật **Tự động chọn lại mạng khi mất đăng ký** để add-on gửi `AT+COPS=0` khi SIM rớt mạng; lựa chọn mạng và ưu tiên được lưu theo từng mô-đun.
 - Khi mất kết nối, add-on đóng cổng cũ, chuyển sang **Đang kết nối lại** và tự thử lại sau 2, 4, 8, 16 rồi tối đa 30 giây; không cần bấm kết nối lại thủ công.
