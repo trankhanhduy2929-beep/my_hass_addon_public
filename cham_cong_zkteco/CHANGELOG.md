@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.0.8
+
+- Tối ưu migration chống trùng attendance bằng câu lệnh SQL gộp thay vì vòng lặp từng bản ghi, giảm thời gian khởi động lần đầu.
+- Bỏ qua toàn bộ bước sửa correction/xóa dòng nếu database không có bản ghi trùng; vẫn tạo unique index và giữ nguyên dữ liệu.
+
 ## 2.0.7
 
 - Sửa bộ đếm ngược giờ tạm dùng mốc `server_now` và bù lệch đồng hồ trình duyệt, không còn phụ thuộc đồng hồ tuyệt đối của client.
