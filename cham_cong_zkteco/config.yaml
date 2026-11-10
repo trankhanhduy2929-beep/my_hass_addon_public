@@ -1,5 +1,5 @@
 name: "Chấm Công ZKTeco"
-version: "2.0.8"
+version: "2.0.9"
 slug: "cham_cong_zkteco"
 description: "Quản lý nhân viên và bảng chấm công ZKTeco qua Home Assistant"
 arch:

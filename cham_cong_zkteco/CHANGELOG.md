@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.0.9
+
+- Ước tính tổng thời gian làm việc theo ngày: 2 lượt chấm lấy giờ cuối trừ giờ đầu; 4 lượt chấm ghép cặp vào–ra và trừ khoảng nghỉ trưa giữa hai lượt chấm giữa.
+- Hiển thị tổng giờ và thời gian nghỉ ở bảng công, bảng công tháng của nhân viên và tổng giờ trong tháng; lượt chấm lẻ được đánh dấu ước tính.
+
 ## 2.0.8
 
 - Tối ưu migration chống trùng attendance bằng câu lệnh SQL gộp thay vì vòng lặp từng bản ghi, giảm thời gian khởi động lần đầu.

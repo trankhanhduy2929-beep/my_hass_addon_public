@@ -5,7 +5,7 @@ Home Assistant Local App/Add-on để quản lý máy chấm công ZKTeco qua gi
 ## Tính năng
 
 - Đồng bộ nhân viên và lịch sử chấm công từ thiết bị.
-- Bảng công tách cột giờ vào và giờ ra.
+- Bảng công tách cột giờ vào và giờ ra, kèm ước tính tổng giờ làm và thời gian nghỉ trưa.
 - Xem đầy đủ bảng công tháng và toàn bộ lượt chấm trong ngày.
 - Lọc theo tháng, khoảng ngày, hôm nay hoặc xem toàn bộ dữ liệu lịch sử.
 - Chế độ lượt chấm thô để xem từng bản ghi riêng biệt.
