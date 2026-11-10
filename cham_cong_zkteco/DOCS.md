@@ -17,6 +17,8 @@ Home Assistant và máy chấm công phải truy cập được nhau qua mạng 
 
 Trong mục **Chấm công**, chọn tháng để tải toàn bộ ngày công và mọi lượt chấm trong tháng đó. Trong mục **Nhân viên**, bấm biểu tượng đồng hồ cạnh nhân viên để mở bảng công tháng riêng ở chế độ chỉ xem. Việc điều chỉnh lượt chấm, nếu cần, được thực hiện trong mục **Chấm công**.
 
+Cột **Tổng giờ** ước tính thời gian làm việc từ các cặp lượt vào–ra liên tiếp. Với 2 lượt chấm, tổng giờ là lượt cuối trừ lượt đầu. Với 4 lượt chấm, hệ thống cộng hai cặp `1–2` và `3–4`, đồng thời hiển thị khoảng nghỉ trưa giữa lượt `2–3`. Lượt lẻ cuối được đánh dấu ước tính và không cộng vào tổng.
+
 Nếu cần xem ngoài tháng hiện tại, chọn **Khoảng ngày** hoặc **Toàn bộ dữ liệu**. Chế độ **Tất cả lượt chấm thô** hiển thị mỗi lần chấm thành một dòng riêng và có phân trang, phù hợp để kiểm tra dữ liệu cũ mà không qua bước gom giờ vào/ra.
 
 ## Chỉnh giờ thiết bị
