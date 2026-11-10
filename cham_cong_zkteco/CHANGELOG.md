@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.0.7
+
+- Sửa bộ đếm ngược giờ tạm dùng mốc `server_now` và bù lệch đồng hồ trình duyệt, không còn phụ thuộc đồng hồ tuyệt đối của client.
+- Chống trùng lượt chấm theo `user_id` + `timestamp`; tự dọn bản ghi trùng cũ và giữ correction đang hoạt động.
+- Thêm regression test cho trường hợp thiết bị trả `uid/status/punch` khác nhau cho cùng một lượt chấm.
+
 ## 2.0.6
 
 - Siết ranh giới danh tính: lớp thiết bị từ chối mọi giá trị không phải `datetime`; test tự động xác nhận lệnh đặt/khôi phục giờ và restart không nhận username, cookie, header hay session.
