@@ -1,5 +1,13 @@
 # Changelog
 
+## 2.0.6
+
+- Siết ranh giới danh tính: lớp thiết bị từ chối mọi giá trị không phải `datetime`; test tự động xác nhận lệnh đặt/khôi phục giờ và restart không nhận username, cookie, header hay session.
+- Thêm test tự động cho auth Ingress, setup/login/logout, rate limit đăng nhập, đồng bộ nhân viên, chống trùng attendance và CSV injection.
+- Thêm security header cho toàn bộ response, giới hạn 5 lần đăng nhập sai mỗi 60 giây, cookie `Secure` khi chạy sau HTTPS và secret key quyền `0600`.
+- Che IP/serial/MAC thật trong tài liệu và đổi IP mặc định sang giá trị mẫu trước khi chia sẻ gói.
+- Bổ sung `requirements-dev.txt` và thư mục `tests/`; gói Add-on runtime không chứa test.
+
 ## 2.0.5
 
 - Thêm chế độ **giờ tạm / đặt giờ tùy chọn** ngay trên trang **Tổng quan**, dùng cùng cơ chế an toàn với preset: đặt giờ theo ý muốn, giữ 3–300 giây, nhận vân tay rồi tự trả về GMT+7 hoặc trả ngay bằng nút khôi phục.

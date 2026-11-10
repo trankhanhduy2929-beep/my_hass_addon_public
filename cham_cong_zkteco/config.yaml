@@ -1,5 +1,5 @@
 name: "Chấm Công ZKTeco"
-version: "2.0.5"
+version: "2.0.6"
 slug: "cham_cong_zkteco"
 description: "Quản lý nhân viên và bảng chấm công ZKTeco qua Home Assistant"
 arch:
@@ -17,7 +17,7 @@ panel_admin: true
 watchdog: "http://[HOST]:[PORT:8765]/api/health"
 backup: cold
 options:
-  zk_ip: "192.168.1.115"
+  zk_ip: "192.168.1.100"
   zk_port: 4370
   zk_password: 0
   zk_timeout: 8

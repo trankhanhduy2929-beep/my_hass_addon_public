@@ -25,6 +25,8 @@ Home Assistant Local App/Add-on để quản lý máy chấm công ZKTeco qua gi
 - Xuất báo cáo toàn nhân viên theo ngày/tháng/năm, có giờ công mỗi ngày và tổng giờ từng tháng.
 - Giao diện, phân trang và long-poll realtime được tối ưu cho điện thoại/Home Assistant Ingress; tab ẩn không giữ request nền.
 - Không lưu PIN/password nhân viên vào database; log nội bộ dùng múi giờ GMT+7 nhất quán.
+- Danh tính người đăng nhập web chỉ lưu trong audit cục bộ; lệnh gửi tới máy chấm công chỉ chứa `datetime` hoặc tham số giao thức, không chứa username/cookie/session.
+- Có security header, giới hạn đăng nhập sai và kiểm thử tự động cho ranh giới danh tính.
 - Dữ liệu bền vững trong volume `/data` của Add-on.
 
 ## Cài đặt
