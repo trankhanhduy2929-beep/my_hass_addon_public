@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.0.10
+
+- Chặn cache trình duyệt cho file tĩnh `app.js`/`styles.css` để bản cập nhật giao diện không bị trộn HTML mới với JavaScript cũ, tránh cột mới hiển thị trống.
+
 ## 2.0.9
 
 - Ước tính tổng thời gian làm việc theo ngày: 2 lượt chấm lấy giờ cuối trừ giờ đầu; 4 lượt chấm ghép cặp vào–ra và trừ khoảng nghỉ trưa giữa hai lượt chấm giữa.
