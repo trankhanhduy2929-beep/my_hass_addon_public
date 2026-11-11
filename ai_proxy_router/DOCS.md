@@ -293,6 +293,15 @@ Response thành công có các header `X-AI-Proxy-Token-Saver`, `X-AI-Proxy-Inpu
 - Tool arguments chỉ được trả cho client, không ghi vào request log/CSV/test history. Client phải tự xác thực, cấp quyền và thực thi function.
 - Hosted web/file/computer tools bị từ chối. Codex OAuth không được chọn cho request tools/JSON Schema và không bao giờ thực thi tools.
 
+## Cập nhật 1.14.1 — Bảo mật lưu trữ và CSRF
+
+- Mọi endpoint `/api/*` thay đổi dữ liệu yêu cầu header `X-CSRF-Token`; dashboard tự gắn token, request thiếu hoặc sai bị trả `403`.
+- `data.json` và file backup được ghi với quyền `600`.
+- JSON hỏng không còn bị bỏ qua im lặng: file lỗi được sao thành `data.json.corrupt-*`, cảnh báo được ghi vào dashboard và việc ghi bị chặn nếu không thể giữ bản lỗi.
+- `X-Forwarded-For` chỉ được tin khi kết nối đến từ ingress gateway tin cậy.
+- Tailwind và Chart.js được đóng gói cục bộ trong `vendor/`; bỏ phụ thuộc Google Fonts.
+- Pin Codex CLI `0.167.1` thay vì `@latest`.
+
 ## Version 1.10.2 — Language switch freeze fix
 
 - Fixed a `MutationObserver` loop caused by rewriting unchanged text nodes.
@@ -343,6 +352,15 @@ Response thành công có các header `X-AI-Proxy-Token-Saver`, `X-AI-Proxy-Inpu
 - The dashboard adds Chat/Vision, Tool Calling, and JSON Schema test modes and automatically uses an active Proxy Key.
 - Tool arguments are returned to the client but excluded from request logs, CSV exports, and test history. The client must validate, authorize, and execute functions safely.
 - Hosted web/file/computer tools are rejected. Codex OAuth is excluded from tools/JSON Schema requests and never executes tools.
+
+## Version 1.14.1 — Storage security and CSRF
+
+- Every data-changing `/api/*` endpoint requires an `X-CSRF-Token` header; the dashboard adds it automatically and missing/invalid tokens return `403`.
+- `data.json` and backup files are written with mode `600`.
+- Corrupt JSON is no longer ignored silently: the bad file is copied to `data.json.corrupt-*`, an alert is recorded in the dashboard, and writes are blocked if the corrupt copy cannot be preserved.
+- `X-Forwarded-For` is trusted only when the connection comes from a trusted ingress gateway.
+- Tailwind and Chart.js are bundled locally under `vendor/`; the Google Fonts dependency is removed.
+- Codex CLI is pinned to `0.167.1` instead of `@latest`.
 
 ---
 

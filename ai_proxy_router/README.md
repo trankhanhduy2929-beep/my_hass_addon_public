@@ -291,6 +291,8 @@ Headroom phải chạy như dịch vụ riêng có endpoint `/v1/compress`. Nh�
 ### 14. Lưu ý bảo mật
 
 - Dashboard và API quản trị chỉ nhận request từ Home Assistant Ingress.
+- Mọi thao tác thay đổi dữ liệu qua `/api/*` yêu cầu header `X-CSRF-Token` do dashboard tự gắn.
+- `data.json` và file backup được đặt quyền `600`; file JSON lỗi được giữ thành bản `.corrupt-*` thay vì ghi đè.
 - Port `1236` mặc định tắt; nếu bật, chỉ dùng cho API `/v1/*` có Proxy Key và không nên mở trực tiếp ra Internet.
 - Không chia sẻ API key nguồn; cấp Proxy Key riêng cho từng ứng dụng và đặt hạn mức/rate limit.
 - Tạo lại Proxy Key ngay nếu nghi ngờ bị lộ.
@@ -580,6 +582,8 @@ Headroom must run as a separate service exposing `/v1/compress`. Enter its servi
 ### 14. Security notes
 
 - The dashboard and administration APIs accept requests only through Home Assistant Ingress.
+- Every data-changing `/api/*` call requires an `X-CSRF-Token` header added automatically by the dashboard.
+- `data.json` and backup files are written with mode `600`; corrupt JSON is preserved as a `.corrupt-*` copy instead of being overwritten.
 - Port `1236` is disabled by default; if enabled, use it only for Proxy Key-protected `/v1/*` APIs and do not expose it directly to the Internet.
 - Never share upstream API keys; issue a separate Proxy Key per application and apply budgets/rate limits.
 - Regenerate a Proxy Key immediately if it may have leaked.
@@ -589,6 +593,6 @@ Headroom must run as a separate service exposing `/v1/compress`. Enter its servi
 
 ## Phiên bản / Version
 
-Tài liệu này áp dụng cho AI Proxy Router `1.14.0`.
+Tài liệu này áp dụng cho AI Proxy Router `1.14.1`.
 
-This guide applies to AI Proxy Router `1.14.0`.
+This guide applies to AI Proxy Router `1.14.1`.
