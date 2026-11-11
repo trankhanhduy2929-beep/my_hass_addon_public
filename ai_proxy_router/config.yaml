@@ -1,6 +1,6 @@
 name: "AI Proxy Router"
 description: "Xoay API Key, Text/Vision, SSE, Responses API, Function Tools, JSON Schema và Bolt Token Saver."
-version: "1.14.2"
+version: "1.14.3"
 slug: "ai_proxy_router"
 init: false
 arch:

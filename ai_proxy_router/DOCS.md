@@ -310,6 +310,15 @@ Response thành công có các header `X-AI-Proxy-Token-Saver`, `X-AI-Proxy-Inpu
 - Đồng bộ card, input, bảng, trạng thái focus bàn phím, reduced motion và màu nền theo một bộ token giao diện mới.
 - Giữ nguyên API, CSRF, i18n, HA Ingress và các asset vendored; thêm stylesheet nội bộ `/dashboard.css` qua cùng lớp xác thực ingress.
 
+## Cập nhật 1.14.3 — Giao diện mềm và mượt hơn
+
+- Bỏ thanh điều hướng dọc cố định; chuyển sang dải tab nổi dạng viên thuốc, nằm ngay dưới top bar và cuộn theo trang.
+- Top bar dạng kính mờ nổi, bo tròn; nền dashboard dùng gradient aurora nhẹ thay cho các mảng màu tương phản mạnh.
+- Hero chuyển sang tông sáng pastel, chữ đậm dễ đọc; nút hành động bo tròn, chuyển động nâng nhẹ khi hover.
+- Card, KPI, Base URL, sơ đồ định tuyến dùng bo góc lớn hơn, viền sáng và bóng đổ khuếch tán; input/select bo tròn, focus ring mềm.
+- Mobile ẩn dải tab ngang, giữ bottom navigation dạng kính nổi; thêm hiệu ứng chuyển tab và reduced-motion fallback.
+- Giữ nguyên toàn bộ API, handler, CSRF, i18n, HA Ingress và asset vendored.
+
 ## Version 1.10.2 — Language switch freeze fix
 
 - Fixed a `MutationObserver` loop caused by rewriting unchanged text nodes.
@@ -377,6 +386,15 @@ Response thành công có các header `X-AI-Proxy-Token-Saver`, `X-AI-Proxy-Inpu
 - Advanced timeout/retry and Token Saver move from Chat to the System tab so AI testing stays focused.
 - Cards, inputs, tables, keyboard focus, reduced motion, and background colors share a new interface token set.
 - API behavior, CSRF, i18n, HA Ingress, and vendored assets are unchanged; a local `/dashboard.css` stylesheet is served through the same ingress authentication.
+
+## Version 1.14.3 — Softer, smoother interface
+
+- The fixed vertical rail is replaced by a floating pill-style tab strip directly below the top bar.
+- The top bar floats as frosted glass with larger rounding; the dashboard background uses a soft aurora gradient instead of high-contrast blocks.
+- The hero uses a light pastel surface with dark, readable text; action buttons are pill-shaped and lift gently on hover.
+- Cards, KPIs, Base URL, and the routing map use larger radii, bright hairline borders, and diffuse shadows; inputs and selects are rounded with a soft focus ring.
+- Mobile hides the horizontal tab strip, keeps a floating glass bottom navigation, and retains the tab transition plus reduced-motion fallback.
+- All APIs, handlers, CSRF, i18n, HA Ingress, and vendored assets remain unchanged.
 
 ---
 
