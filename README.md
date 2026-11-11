@@ -79,7 +79,7 @@ This table is generated automatically from the private release catalog after suc
 | Add-on | Version | Stage | Architectures | Documentation |
 |---|---:|---|---|---|
 | HANET Connect Gateway | `0.13.4` | stable | `amd64, aarch64` | [Open](addon_hanet_connect/README.md) |
-| AI Proxy Router | `1.14.1` | stable | `amd64, aarch64` | [Open](ai_proxy_router/README.md) |
+| AI Proxy Router | `1.14.2` | stable | `amd64, aarch64` | [Open](ai_proxy_router/README.md) |
 | Calling Messenger Hub | `0.24.26` | stable | `amd64, aarch64` | [Open](calling_messenger_hub/README.md) |
 | Chấm Công ZKTeco | `2.0.10` | stable | `amd64, aarch64` | [Open](cham_cong_zkteco/README.md) |
 | Ecovacs China Backend | `1.4.0` | stable | `amd64, aarch64` | [Open](ecovacs_cn_backend/README.md) |

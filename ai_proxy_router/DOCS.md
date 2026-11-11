@@ -302,6 +302,14 @@ Response thành công có các header `X-AI-Proxy-Token-Saver`, `X-AI-Proxy-Inpu
 - Tailwind và Chart.js được đóng gói cục bộ trong `vendor/`; bỏ phụ thuộc Google Fonts.
 - Pin Codex CLI `0.167.1` thay vì `@latest`.
 
+## Cập nhật 1.14.2 — Giao diện dashboard hiện đại
+
+- Desktop dùng thanh điều hướng dọc cố định, top bar kính mờ và vùng nội dung rộng hơn; mobile giữ thanh tab ngang và bottom navigation.
+- Hero gọn hơn, bỏ cụm số liệu trùng lặp; KPI chuyển thành ba cột, thẻ Base URL trải rộng với bốn endpoint dạng lưới.
+- Chuyển Advanced timeout/retry và Token Saver từ tab Chat sang tab Hệ thống để giữ luồng test AI gọn.
+- Đồng bộ card, input, bảng, trạng thái focus bàn phím, reduced motion và màu nền theo một bộ token giao diện mới.
+- Giữ nguyên API, CSRF, i18n, HA Ingress và các asset vendored; thêm stylesheet nội bộ `/dashboard.css` qua cùng lớp xác thực ingress.
+
 ## Version 1.10.2 — Language switch freeze fix
 
 - Fixed a `MutationObserver` loop caused by rewriting unchanged text nodes.
@@ -361,6 +369,14 @@ Response thành công có các header `X-AI-Proxy-Token-Saver`, `X-AI-Proxy-Inpu
 - `X-Forwarded-For` is trusted only when the connection comes from a trusted ingress gateway.
 - Tailwind and Chart.js are bundled locally under `vendor/`; the Google Fonts dependency is removed.
 - Codex CLI is pinned to `0.167.1` instead of `@latest`.
+
+## Version 1.14.2 — Modern dashboard interface
+
+- Desktop uses a fixed vertical navigation rail, a frosted top bar, and a wider content area; mobile keeps horizontal tabs and bottom navigation.
+- The hero is more compact and no longer duplicates KPI values; KPIs use three columns and the Base URL card spans the row with a four-endpoint grid.
+- Advanced timeout/retry and Token Saver move from Chat to the System tab so AI testing stays focused.
+- Cards, inputs, tables, keyboard focus, reduced motion, and background colors share a new interface token set.
+- API behavior, CSRF, i18n, HA Ingress, and vendored assets are unchanged; a local `/dashboard.css` stylesheet is served through the same ingress authentication.
 
 ---
 
