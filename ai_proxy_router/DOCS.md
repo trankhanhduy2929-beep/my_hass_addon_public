@@ -310,6 +310,31 @@ Response thành công có các header `X-AI-Proxy-Token-Saver`, `X-AI-Proxy-Inpu
 - Đồng bộ card, input, bảng, trạng thái focus bàn phím, reduced motion và màu nền theo một bộ token giao diện mới.
 - Giữ nguyên API, CSRF, i18n, HA Ingress và các asset vendored; thêm stylesheet nội bộ `/dashboard.css` qua cùng lớp xác thực ingress.
 
+## Cập nhật 1.16.0 — Tab Quota và CLI Tools
+
+- Thêm tab `Quota`: tổng hạn mức, đã dùng, số nguồn không giới hạn, số key sắp chạm ngưỡng, kèm thanh tiến độ và mức còn lại cho từng nguồn và Proxy Key.
+- Thêm tab `CLI Tools`: snippet copy một chạm cho OpenAI SDK (Python), cURL, biến môi trường và Codex CLI dùng endpoint OpenAI-compatible của router.
+- Liên kết nhanh `Xem Quota` trong tab Usage và `Mở CLI Tools` trong tab Endpoint & Key; vẫn hỗ trợ vuốt tab trên mobile.
+- Bổ sung CSS responsive cho hai tab mới và bản dịch Việt/Anh cho toàn bộ nhãn, nút copy và thông báo.
+- Giữ nguyên API, CSRF, i18n, HA Ingress và asset vendored.
+
+## Cập nhật 1.15.0 — Giao diện 9router, theme sáng/tối và tab mới
+
+- Đổi bộ màu theo 9router: nền kem `#fdfaf6`, nhấn cam `#e56a4a`, sidebar sáng, card phẳng và bo góc lớn hơn.
+- Thêm nút chuyển sáng/tối ở top bar; lưu lựa chọn vào `localStorage` và tôn trọng `prefers-color-scheme`.
+- Thêm ba tab: `Endpoint & Key` (Base URL, Chat Completions, Responses, Models kèm nút copy), `Usage` (biểu đồ + nhật ký) và `Token Saver`.
+- Hero chuyển sang bố cục grid ổn định; KPI 3 cột ở tablet và 2 cột trên điện thoại nhỏ, hết tràn số liệu chi phí ở 360px.
+- Biểu đồ tròn dùng bảng màu thương hiệu và tự cập nhật màu chú giải khi đổi theme.
+- Giữ nguyên API, CSRF, i18n, HA Ingress và asset vendored.
+
+## Cập nhật 1.14.4 — Giao diện điều khiển cao cấp
+
+- Dựng lại toàn bộ khung dashboard: sidebar tối cố định, top bar kính mờ, vùng nội dung rộng và nhịp khoảng trắng thoáng hơn.
+- Hero mới dạng control center với nền graphite, điểm nhấn xanh indigo/teal và cụm đồ họa vòng định tuyến.
+- Điều hướng dùng icon SVG thay emoji, trạng thái hệ thống, phiên bản và bộ chọn ngôn ngữ gom vào sidebar.
+- Chuẩn hóa card, KPI, input, bảng và nút theo bộ token mới; mobile giữ bottom navigation tối, thêm nút kiểm tra nhanh.
+- Sửa tiêu đề Chat test co giãn trên mobile; giữ nguyên API, CSRF, i18n, HA Ingress và asset vendored.
+
 ## Cập nhật 1.14.3 — Giao diện mềm và mượt hơn
 
 - Bỏ thanh điều hướng dọc cố định; chuyển sang dải tab nổi dạng viên thuốc, nằm ngay dưới top bar và cuộn theo trang.
@@ -386,6 +411,31 @@ Response thành công có các header `X-AI-Proxy-Token-Saver`, `X-AI-Proxy-Inpu
 - Advanced timeout/retry and Token Saver move from Chat to the System tab so AI testing stays focused.
 - Cards, inputs, tables, keyboard focus, reduced motion, and background colors share a new interface token set.
 - API behavior, CSRF, i18n, HA Ingress, and vendored assets are unchanged; a local `/dashboard.css` stylesheet is served through the same ingress authentication.
+
+## Version 1.16.0 — Quota and CLI Tools tabs
+
+- Added the `Quota` tab: total budget, used amount, unlimited source count, and keys near their limit, with progress bars and remaining balance per source and Proxy Key.
+- Added the `CLI Tools` tab: one-tap copy snippets for the OpenAI Python SDK, cURL, environment variables, and Codex CLI against the router's OpenAI-compatible endpoint.
+- Quick links `View Quota` in the Usage tab and `Open CLI Tools` in the Endpoint & Key tab; mobile tab swiping is unchanged.
+- Responsive CSS for both new tabs plus Vietnamese/English translations for every label, copy button, and toast.
+- API, CSRF, i18n, HA Ingress, and vendored assets are unchanged.
+
+## Version 1.15.0 — 9router interface, light/dark theme, and new tabs
+
+- Adopted the 9router palette: cream background `#fdfaf6`, coral accent `#e56a4a`, light sidebar, flatter cards, and larger radii.
+- Added a light/dark toggle in the top bar; the choice is stored in `localStorage` and falls back to `prefers-color-scheme`.
+- Added three tabs: `Endpoint & Key` (Base URL, Chat Completions, Responses, Models with copy buttons), `Usage` (chart and request logs), and `Token Saver`.
+- The hero uses a stable grid; KPIs stay three columns on tablets and switch to two columns on small phones, fixing cost-value overflow at 360px.
+- The doughnut chart uses brand colors and refreshes its legend color when the theme changes.
+- API behavior, CSRF, i18n, HA Ingress, and vendored assets are unchanged.
+
+## Version 1.14.4 — Premium control center interface
+
+- Rebuilt the dashboard shell with a fixed dark sidebar, frosted top bar, wider content area, and more generous spacing.
+- New control-center hero with a graphite surface, indigo/teal accents, and a routing-ring visual.
+- SVG navigation icons replace emoji; system status, version, and language selector move into the sidebar.
+- Unified cards, KPIs, inputs, tables, and buttons under the new token set; mobile keeps a dark bottom navigation and quick-check action.
+- Fixed the Chat test header wrapping on mobile; APIs, CSRF, i18n, HA Ingress, and vendored assets remain unchanged.
 
 ## Version 1.14.3 — Softer, smoother interface
 
