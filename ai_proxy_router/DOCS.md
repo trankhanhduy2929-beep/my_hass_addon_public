@@ -310,6 +310,16 @@ Response thành công có các header `X-AI-Proxy-Token-Saver`, `X-AI-Proxy-Inpu
 - Đồng bộ card, input, bảng, trạng thái focus bàn phím, reduced motion và màu nền theo một bộ token giao diện mới.
 - Giữ nguyên API, CSRF, i18n, HA Ingress và các asset vendored; thêm stylesheet nội bộ `/dashboard.css` qua cùng lớp xác thực ingress.
 
+## Cập nhật 1.17.0 — Key Vault và Voice (STT/TTS)
+
+- Thêm **Key Vault**: nhập một lần nhiều API key (mỗi dòng một key), lưu theo provider và hiển thị ở ô chọn `🔐 Chọn key đã lưu` khi thêm model. Key được che khi trả về dashboard và chỉ lộ qua endpoint reveal có CSRF.
+- Khi tải model hoặc thêm Nguồn, có thể chọn key đã lưu thay vì dán lại key; key dùng thành công được tự động ghi nhớ vào vault.
+- Key Vault tự migrate từ các key đang có khi nâng cấp và hiển thị trong `get_stats`; backup/debug bundle đã che key.
+- Thêm endpoint OpenAI-compatible `POST /v1/audio/transcriptions` (multipart) và `POST /v1/audio/speech` (JSON), tự chọn nguồn có model audio phù hợp và trả nguyên content-type.
+- `/v1/models` ẩn model audio để client chat không chọn nhầm.
+- Thêm tab `Voice`: tải model audio, thử STT bằng file và TTS ra trình phát, kèm snippet Home Assistant (`shell_command` cho STT, `rest_command` cho TTS).
+- Thêm CSS vault/voice, bản dịch Việt/Anh cho nhãn mới và tăng phiên bản lên `1.17.0`.
+
 ## Cập nhật 1.16.0 — Tab Quota và CLI Tools
 
 - Thêm tab `Quota`: tổng hạn mức, đã dùng, số nguồn không giới hạn, số key sắp chạm ngưỡng, kèm thanh tiến độ và mức còn lại cho từng nguồn và Proxy Key.
@@ -411,6 +421,16 @@ Response thành công có các header `X-AI-Proxy-Token-Saver`, `X-AI-Proxy-Inpu
 - Advanced timeout/retry and Token Saver move from Chat to the System tab so AI testing stays focused.
 - Cards, inputs, tables, keyboard focus, reduced motion, and background colors share a new interface token set.
 - API behavior, CSRF, i18n, HA Ingress, and vendored assets are unchanged; a local `/dashboard.css` stylesheet is served through the same ingress authentication.
+
+## Version 1.17.0 — Key Vault and Voice (STT/TTS)
+
+- Added a **Key Vault**: paste many API keys at once (one per line), store them per provider, and pick a saved key with `🔐 Choose a saved key` when adding a model. Keys are masked in the dashboard and revealed only through a CSRF-protected endpoint.
+- Loading models or adding a source can reuse a saved key instead of pasting it again; a key that works is remembered automatically.
+- The vault migrates existing keys on upgrade, is included in `get_stats`, and is masked in backups and debug bundles.
+- Added OpenAI-compatible `POST /v1/audio/transcriptions` (multipart) and `POST /v1/audio/speech` (JSON); the router picks a source with a matching audio model and preserves the upstream content type.
+- `/v1/models` hides audio models so chat clients do not pick them.
+- Added a `Voice` tab: load audio models, test STT from a file and TTS to a player, plus a Home Assistant snippet (`shell_command` for STT, `rest_command` for TTS).
+- Added vault/voice CSS, Vietnamese/English labels, and bumped the version to `1.17.0`.
 
 ## Version 1.16.0 — Quota and CLI Tools tabs
 

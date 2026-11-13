@@ -593,6 +593,6 @@ Headroom must run as a separate service exposing `/v1/compress`. Enter its servi
 
 ## Phiên bản / Version
 
-Tài liệu này áp dụng cho AI Proxy Router `1.16.0`.
+Tài liệu này áp dụng cho AI Proxy Router `1.17.0`.
 
-This guide applies to AI Proxy Router `1.16.0`.
+This guide applies to AI Proxy Router `1.17.0`.
