@@ -310,6 +310,14 @@ Response thành công có các header `X-AI-Proxy-Token-Saver`, `X-AI-Proxy-Inpu
 - Đồng bộ card, input, bảng, trạng thái focus bàn phím, reduced motion và màu nền theo một bộ token giao diện mới.
 - Giữ nguyên API, CSRF, i18n, HA Ingress và các asset vendored; thêm stylesheet nội bộ `/dashboard.css` qua cùng lớp xác thực ingress.
 
+## Cập nhật 1.18.0 — Menu gọn gàng và nâng cấp Kho key/Voice
+
+- Sidebar chia nhóm rõ ràng: Kết nối, Theo dõi, Công cụ, Hệ thống; thứ tự tab và thao tác vuốt được đồng bộ, Voice đứng cạnh CLI Tools.
+- Bottom navigation mobile còn 6 mục trên một hàng; nút `Thêm` mở sheet chứa Endpoint & Key, Quota, Token Saver, CLI Tools và Hệ thống, có `aria-expanded`, đóng bằng ESC/chạm nền và trả focus về nút mở.
+- Key Vault có ô tìm kiếm theo provider/nhãn/key, bộ đếm kết quả, nhãn chung khi nhập nhiều key và sửa/xóa nhãn qua `PATCH /api/key_vault/{id}` có CSRF và audit log.
+- Voice cho chọn Proxy Key đang hoạt động (reveal qua endpoint CSRF), chọn ngôn ngữ STT, giọng/định dạng/tốc độ TTS; snippet Home Assistant copy theo lựa chọn hiện tại.
+- Bổ sung CSS cho sheet mobile, dark mode, responsive vault/voice và tăng phiên bản lên `1.18.0`.
+
 ## Cập nhật 1.17.0 — Key Vault và Voice (STT/TTS)
 
 - Thêm **Key Vault**: nhập một lần nhiều API key (mỗi dòng một key), lưu theo provider và hiển thị ở ô chọn `🔐 Chọn key đã lưu` khi thêm model. Key được che khi trả về dashboard và chỉ lộ qua endpoint reveal có CSRF.
@@ -421,6 +429,14 @@ Response thành công có các header `X-AI-Proxy-Token-Saver`, `X-AI-Proxy-Inpu
 - Advanced timeout/retry and Token Saver move from Chat to the System tab so AI testing stays focused.
 - Cards, inputs, tables, keyboard focus, reduced motion, and background colors share a new interface token set.
 - API behavior, CSRF, i18n, HA Ingress, and vendored assets are unchanged; a local `/dashboard.css` stylesheet is served through the same ingress authentication.
+
+## Version 1.18.0 — Tidier navigation and Key Vault/Voice upgrades
+
+- The sidebar is grouped into Connect, Monitoring, Tools, and System; tab order and swipe order stay in sync, with Voice next to CLI Tools.
+- Mobile bottom navigation now fits six items in one row; the `More` button opens a sheet with Endpoint & Key, Quota, Token Saver, CLI Tools, and System, including `aria-expanded`, ESC/backdrop close, and focus return.
+- Key Vault adds provider/label/key search, a result count, a shared label for bulk imports, and label editing through the CSRF-protected `PATCH /api/key_vault/{id}` with audit logging.
+- Voice can pick an active Proxy Key (revealed through the CSRF endpoint), choose the STT language, and set TTS voice/format/speed; the Home Assistant snippet follows the current selection.
+- Added mobile-sheet, dark-mode, and responsive vault/voice CSS, and bumped the version to `1.18.0`.
 
 ## Version 1.17.0 — Key Vault and Voice (STT/TTS)
 
