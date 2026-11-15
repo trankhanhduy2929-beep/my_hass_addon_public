@@ -113,7 +113,7 @@ Với ảnh, có thể dùng URL, tải file lên hoặc chọn file trong `/dat
 
 1. Mở **SIM 4G**, chọn mô-đun và bấm **Tải hộp thư**.
 2. Tìm SMS theo số gửi hoặc nội dung, bấm **Trả lời** để điền số nhận, hoặc nhập số mới và nội dung rồi bấm **Gửi SMS**.
-3. SMS gửi đi dùng chính mô-đun SIM đang chọn; tối đa 1.000 ký tự và có thể chia nhiều phần theo chuẩn GSM.
+3. SMS gửi đi dùng chính mô-đun SIM đang chọn; tối đa 1.000 ký tự và có thể chia nhiều phần theo chuẩn GSM. Hỗ trợ cả số di động và số dịch vụ/tổng đài ngắn như `9199`, `1414`, `1900...`.
 
 ### Tự động hóa SIM
 
