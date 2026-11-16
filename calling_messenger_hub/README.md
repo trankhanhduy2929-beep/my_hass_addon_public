@@ -12,7 +12,7 @@ Trung tâm gọi, nhắn tin và báo động đa kênh cho Home Assistant. Qu�
 - Đồng bộ trạng thái và sự kiện theo thời gian thực qua SSE; Home Assistant nhận cuộc gọi, chuông, báo động, SMS/OTP gần như ngay lập tức, tự kết nối lại khi mất luồng và có cảm biến sức khỏe luồng SSE.
 - Thông báo Home Assistant có nút xử lý nhanh: đánh dấu báo động đã xử lý, gọi lại số trong sự kiện, mở chat Telegram/Zalo, tắt chuông hoặc mở dashboard; hỗ trợ nhiều dịch vụ notify, lọc tài khoản/mức độ, giờ im lặng, chống trùng và định tuyến sự kiện nghiêm trọng.
 - Device trigger cho từng loại sự kiện và blueprint mẫu để dựng automation trực tiếp trong giao diện Home Assistant, không cần viết YAML.
-- Với SIM 4G: hội thoại SMS gộp tin đã gửi và đã nhận, bong bóng chat có nhãn gửi/nhận, thời gian theo đồng hồ điện thoại, tìm kiếm, tự ghép tin nhiều phần, soạn mới/trả lời trực tiếp, xoá SMS và đọc OTP; tin gửi được lưu trên add-on, tin nhận đọc trực tiếp từ SIM; quản lý danh bạ lưu trên SIM; xem nhà mạng, mức sóng, số dư, hạn dùng qua USSD (tự thử lại và fallback SMS số dư); tự phát hiện mất đăng ký mạng, thử lại nhà mạng đã chọn rồi fallback chọn mạng tự động với backoff để giữ kết nối ổn định.
+- Với SIM 4G: hội thoại SMS gộp tin đã gửi và đã nhận, bong bóng chat có nhãn gửi/nhận, thời gian theo đồng hồ điện thoại, tìm kiếm, tự ghép tin nhiều phần, soạn mới/trả lời trực tiếp, xoá SMS đã nhận trên SIM, xoá tin đã gửi khỏi lịch sử và đọc OTP; tin gửi được lưu trên add-on, tin nhận đọc trực tiếp từ SIM; quản lý danh bạ lưu trên SIM; xem nhà mạng, mức sóng, số dư, hạn dùng qua USSD (tự thử lại và fallback SMS số dư); tự phát hiện mất đăng ký mạng, thử lại nhà mạng đã chọn rồi fallback chọn mạng tự động với backoff để giữ kết nối ổn định.
 - Với EC20/EC25 hai cổng AT: tách **cổng điều khiển** (AT, USSD, SMS) và **cổng sự kiện** (RING, +CLIP, +CMTI, DTMF) để cuộc gọi không bị chặn khi đang tra USSD; tự fallback về một cổng nếu cổng sự kiện lỗi.
 - Tự động hóa SIM: CLIP, lệnh SMS, chuyển OTP, DTMF, cảnh báo mất điện/Internet, nuôi SIM, failover 4G và cảnh báo ngưỡng sức khỏe SIM qua Telegram/Home Assistant.
 - Sao lưu và khôi phục tài khoản, phiên đăng nhập, token, lịch sử cảnh báo và cấu hình automation bằng tệp mã hóa AES-256-GCM.
@@ -109,7 +109,7 @@ Với ảnh, có thể dùng URL, tải file lên hoặc chọn file trong `/dat
 ### SMS trên SIM
 
 1. Mở **SIM 4G**, chọn mô-đun và bấm **Tải hội thoại**.
-2. Chọn hội thoại để xem tin đã nhận/đã gửi, tìm theo số, tên hoặc nội dung, rồi nhập nội dung và bấm **Gửi SMS**. Bấm **Tin nhắn mới** để nhập số nhận khác.
+2. Chọn hội thoại để xem tin đã nhận/đã gửi, tìm theo số, tên hoặc nội dung, rồi nhập nội dung và bấm **Gửi SMS**. Bấm **Tin nhắn mới** để nhập số nhận khác. Bấm biểu tượng thùng rác trên bong bóng để xoá: tin nhận bị xoá khỏi SIM, tin gửi bị xoá khỏi lịch sử add-on (không thu hồi được ở người nhận).
 3. Thời gian tin nhận lấy từ đồng hồ của mô-đun/SIM; tin gửi được lưu trong lịch sử add-on để hiển thị cùng hội thoại. SMS gửi đi dùng chính mô-đun SIM đang chọn; tối đa 1.000 ký tự và có thể chia nhiều phần theo chuẩn GSM.
 
 ### Tự động hóa SIM
