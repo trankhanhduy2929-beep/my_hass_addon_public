@@ -9,11 +9,11 @@ Trung tâm gọi, nhắn tin và báo động đa kênh cho Home Assistant. Qu�
 - Gọi lặp hoặc gửi voice TTS lặp làm chuông báo động.
 - Trung tâm báo động với chính sách nhiều bước: gọi lần lượt nhiều người, leo thang khi không nghe máy, chống trùng, xác nhận, xử lý, hủy và lưu lịch sử.
 - Quản lý nhiều tài khoản, xem trạng thái kênh, cuộc gọi và nhật ký trên một bảng điều khiển.
-- Đồng bộ trạng thái và sự kiện theo thời gian thực qua SSE; Home Assistant nhận cuộc gọi, chuông, báo động, SMS/OTP gần như ngay lập tức và tự kết nối lại khi mất luồng.
-- Với SIM 4G: hộp thư SMS có tìm kiếm, tự ghép tin nhiều phần, soạn mới/trả lời trực tiếp, xoá SMS; quản lý danh bạ lưu trên SIM; xem nhà mạng, mức sóng, số dư, hạn dùng qua USSD (tự thử lại và fallback SMS số dư) và đọc OTP. Trang mạng hiển thị nhà mạng đang dùng, chuyển vùng, RSRP/RSRQ/SINR/RSSI, băng tần, cell/TAC; quét và chọn nhà mạng thủ công, tự phát hiện mất đăng ký, thử lại nhà mạng đã chọn rồi fallback chọn mạng tự động với backoff.
-- Với EC20/EC25 hoặc A7670 có hai cổng AT: tách **cổng điều khiển** (AT, USSD, SMS) và **cổng sự kiện** (RING, +CLIP, +CMTI, DTMF) để cuộc gọi không bị chặn khi đang tra USSD; tự fallback về một cổng nếu cổng sự kiện lỗi.
-- Trước mỗi cuộc gọi SIM, add-on đọc trạng thái VoLTE/IMS (`AT*IMSRCFG="switch"` với A7670, `AT+QCFG="ims"` với EC20/EC2x). Với A7670, add-on kiểm tra thêm đăng ký IMS bằng `AT+CIREG?`; nếu IMS đã bật nhưng chưa đăng ký, cuộc gọi dừng với lỗi rõ ràng thay vì để mô-đun trả `ERROR`. Với EC20/EC2x, add-on ghi cảnh báo và vẫn thử gọi qua CSFB. **Bật VoLTE** ở mục **Thông tin kết nối** gửi lệnh bật IMS/VoLTE (`AT*IMSRCFG="switch","on"` với A7670, `AT+QCFG="ims",1,1` với EC20/EC2x); với A7670 add-on còn tạo/kích hoạt PDP `ims` và chờ IMS đăng ký. Thao tác này cần SIM, nhà mạng và vùng phủ 4G/LTE hỗ trợ VoLTE.
-- Lưu 40 lệnh AT gần nhất kèm phản hồi/lỗi để chẩn đoán cuộc gọi lỗi; số điện thoại và nội dung SMS được ẩn.
+- Đồng bộ trạng thái và sự kiện theo thời gian thực qua SSE; Home Assistant nhận cuộc gọi, chuông, báo động, SMS/OTP gần như ngay lập tức, tự kết nối lại khi mất luồng và có cảm biến sức khỏe luồng SSE.
+- Thông báo Home Assistant có nút xử lý nhanh: đánh dấu báo động đã xử lý, gọi lại số trong sự kiện, mở chat Telegram/Zalo, tắt chuông hoặc mở dashboard; hỗ trợ nhiều dịch vụ notify, lọc tài khoản/mức độ, giờ im lặng, chống trùng và định tuyến sự kiện nghiêm trọng.
+- Device trigger cho từng loại sự kiện và blueprint mẫu để dựng automation trực tiếp trong giao diện Home Assistant, không cần viết YAML.
+- Với SIM 4G: hội thoại SMS gộp tin đã gửi và đã nhận, bong bóng chat có nhãn gửi/nhận, thời gian theo đồng hồ điện thoại, tìm kiếm, tự ghép tin nhiều phần, soạn mới/trả lời trực tiếp, xoá SMS và đọc OTP; tin gửi được lưu trên add-on, tin nhận đọc trực tiếp từ SIM; quản lý danh bạ lưu trên SIM; xem nhà mạng, mức sóng, số dư, hạn dùng qua USSD (tự thử lại và fallback SMS số dư); tự phát hiện mất đăng ký mạng, thử lại nhà mạng đã chọn rồi fallback chọn mạng tự động với backoff để giữ kết nối ổn định.
+- Với EC20/EC25 hai cổng AT: tách **cổng điều khiển** (AT, USSD, SMS) và **cổng sự kiện** (RING, +CLIP, +CMTI, DTMF) để cuộc gọi không bị chặn khi đang tra USSD; tự fallback về một cổng nếu cổng sự kiện lỗi.
 - Tự động hóa SIM: CLIP, lệnh SMS, chuyển OTP, DTMF, cảnh báo mất điện/Internet, nuôi SIM, failover 4G và cảnh báo ngưỡng sức khỏe SIM qua Telegram/Home Assistant.
 - Sao lưu và khôi phục tài khoản, phiên đăng nhập, token, lịch sử cảnh báo và cấu hình automation bằng tệp mã hóa AES-256-GCM.
 - Điều khiển từ Home Assistant qua custom integration hoặc REST API.
@@ -38,7 +38,7 @@ Trung tâm gọi, nhắn tin và báo động đa kênh cho Home Assistant. Qu�
 - Signal: một signal-cli REST API đã liên kết thiết bị.
 - LINE: Messaging API channel access token.
 - Zalo: ứng dụng Zalo trên điện thoại để quét QR.
-- SIM 4G: module SIMCom A7670C-LANS hoặc Quectel EC20/EC2x, kết nối USB/UART hoặc TCP serial bridge; tắt PIN và dùng SIM đã đăng ký mạng. A7670C-LANS không hỗ trợ USSD; dùng SMS nhà mạng để kiểm tra số dư. Quectel EC20/EC2x giữ nguyên USSD.
+- SIM 4G: module SIMCom A7670C-LANS hoặc Quectel EC20/EC2x, kết nối USB/UART hoặc TCP serial bridge; tắt PIN và dùng SIM đã đăng ký mạng.
 
 ## Cài add-on
 
@@ -58,7 +58,7 @@ Copy thư mục `calling_messenger_hub/` vào thư mục add-ons của Home Assi
 1. Mở **Open Web UI**. Không cần cấu hình trong tab **Configuration** của add-on.
 2. Vào **Cài đặt → License**, nhập license key. Không cần nhập license server/site URL; add-on tự dùng mặc định.
 3. Vào **Cài đặt → API token cho custom integration**, sao chép token nếu dùng Home Assistant integration.
-4. Trong **Cài đặt → Mặc định add-on**, chỉnh giọng/tốc độ TTS, thời gian chờ, số lần gọi và âm lượng TTS cuộc gọi SIM (1-7, áp dụng cho Quectel EC20/EC2x) nếu cần.
+4. Trong **Cài đặt → Mặc định add-on**, chỉnh giọng/tốc độ TTS, thời gian chờ và số lần gọi nếu cần.
 5. Mở **Tài khoản & kênh** để thêm tài khoản.
 
 ## Hướng dẫn sử dụng
@@ -72,8 +72,7 @@ Copy thư mục `calling_messenger_hub/` vào thư mục add-ons của Home Assi
 - **Zalo:** bấm **Thêm Zalo**, quét QR và xác nhận trên điện thoại.
 - **SIM 4G:** chọn cổng serial/TCP, dòng module hoặc để tự nhận diện.
   - EC20/EC25 thường dùng `/dev/ttyUSB2`; A7670 dùng `/dev/ttyUSB2` hoặc `/dev/ttyACM0`.
-  - Với EC20/EC25 hoặc A7670 tạo hai cổng AT, đặt **Cổng điều khiển** và **Cổng sự kiện** khác nhau, ví dụ `ttyUSB2`/`ttyUSB3` hoặc `ttyACM0`/`ttyACM1`. Với A7670, dùng cổng AT phụ (thường là cổng thứ hai) cho sự kiện nếu firmware expose. Bấm **Quét cổng USB** để xem cổng đang map; để trống nếu chỉ có một cổng.
-  - Lịch sử 40 lệnh AT gần nhất nằm ở **Thông tin kết nối → Xem 40 lệnh AT gần nhất**; cuộc gọi lỗi cũng lưu snapshot này trong API.
+  - Với EC20/EC25, đặt **Cổng điều khiển** và **Cổng sự kiện** khác nhau nếu firmware tạo hai cổng AT, ví dụ `ttyUSB2` và `ttyUSB3`. Bấm **Quét cổng USB** để xem cổng đang map và gợi ý vai trò. Để trống nếu chỉ có một cổng.
   - Cổng sự kiện đọc URC liên tục; SMS vẫn được đối chiếu định kỳ 30 giây và ngay khi có `+CMTI`. Nếu firmware không route URC riêng, add-on tự quay lại chế độ poll một cổng.
   - Không dùng `/dev/bus/usb/...` cho pyserial. Add-on có thể tự đổi đường dẫn này sang cổng tty, nhưng nên nhập trực tiếp cổng tty.
   - Add-on đã bật `uart: true` và `kernel_modules: true`; tự nạp driver `option`/`usbserial` để EC20/EC25 tạo `/dev/ttyUSB*`. Không cần bật `usb: true` chỉ để gửi AT command.
@@ -84,12 +83,10 @@ Giao diện có hướng dẫn ngắn cho từng loại tài khoản.
 ### Theo dõi kết nối SIM
 
 - Trang **SIM & số dư** tự đọc lại trạng thái mô-đun khoảng 2,5 giây một lần, hiển thị thời điểm đồng bộ và độ trễ phản hồi.
-- Khối **Thông tin kết nối** có nút **Bật VoLTE** cho A7670/EC20/EC2x. Add-on gửi lệnh bật IMS/VoLTE và đọc lại cấu hình; nếu module chưa xác nhận, giao diện báo có thể cần khởi động lại module hoặc chờ đăng ký LTE. VoLTE chỉ hoạt động khi SIM, nhà mạng và vùng phủ 4G/LTE hỗ trợ.
 - Add-on giữ nhịp kết nối bằng lệnh `AT` mỗi 5 giây và làm mới sóng/nhà mạng mỗi 15 giây khi SIM đang rảnh.
-- Khối **Mạng & phủ sóng** đọc chi tiết serving cell (`AT+QENG="servingcell"`), quét nhà mạng bằng `AT+COPS=?` và đổi tự động/thủ công bằng `AT+COPS`. Bật **Tự động chọn lại mạng khi mất đăng ký** để add-on gửi `AT+COPS=0` khi SIM rớt mạng; lựa chọn mạng và ưu tiên được lưu theo từng mô-đun.
 - Khi mất kết nối, add-on đóng cổng cũ, chuyển sang **Đang kết nối lại** và tự thử lại sau 2, 4, 8, 16 rồi tối đa 30 giây; không cần bấm kết nối lại thủ công.
 - Trong cuộc gọi, add-on tạm dừng nhịp kiểm tra để không làm gián đoạn thoại.
-- Khi tra cứu USSD, add-on chờ phản hồi đến muộn, tự thử lại một lần nếu rỗng và dùng SMS số dư nhận trong 30 phút gần nhất nếu nhà mạng trả kết quả qua SMS.
+- Khi tra cứu USSD, add-on chờ phản hồi đến muộn, tự thử lại một lần nếu rỗng, tự kết nối lại nếu cổng serial/TCP mất kết nối giữa chừng và dùng SMS số dư nhận trong 30 phút gần nhất nếu nhà mạng trả kết quả qua SMS.
 
 ### Vận hành và giám sát
 
@@ -97,7 +94,7 @@ Giao diện có hướng dẫn ngắn cho từng loại tài khoản.
 - **Prometheus:** scrape `http://<add-on>:3030/metrics`. Endpoint trả `cmh_*` cho uptime, tài khoản, cuộc gọi, cảnh báo, SIM, MQTT và bản cập nhật. `/metrics` không yêu cầu token; chỉ mở cổng 3030 trong LAN tin cậy hoặc đặt sau reverse proxy có xác thực.
 - **Sức khỏe SIM:** trang **SIM & số dư** hiển thị badge tổng hợp; mặc định cảnh báo khi SIM offline, dữ liệu cũ quá 15 phút, sóng dưới 25% hoặc hạn dùng còn ≤ 7 ngày. Có thể bật cảnh báo sóng yếu, số dư thấp, sắp hết hạn và mất kết nối với ngưỡng riêng trong **Tự động hóa SIM → Cảnh báo sức khỏe SIM**; gửi qua Telegram và/hoặc action Home Assistant.
 - **Kiểm tra cập nhật:** nút trong **Cài đặt** gọi GitHub Releases và báo phiên bản mới; add-on không tự cài đặt.
-- **Sự kiện realtime:** integration mở `GET /api/events/stream` để nhận sự kiện qua SSE. Add-on gửi heartbeat mỗi 15 giây; integration tự kết nối lại với backoff 1–30 giây và vẫn dùng polling làm phương án dự phòng.
+- **Sự kiện realtime:** integration mở `GET /api/events/stream` để nhận sự kiện qua SSE. Add-on gửi heartbeat mỗi 15 giây; integration tự kết nối lại với backoff 1–30 giây và vẫn dùng polling làm phương án dự phòng. Trạng thái luồng, sự kiện gần nhất và số lần kết nối lại có entity riêng; nút **Khởi động lại luồng SSE** buộc kết nối mới khi cần.
 
 ### Gửi tin nhắn, ảnh và voice
 
@@ -111,13 +108,11 @@ Với ảnh, có thể dùng URL, tải file lên hoặc chọn file trong `/dat
 
 ### SMS trên SIM
 
-1. Mở **SIM 4G**, chọn mô-đun và bấm **Tải hộp thư**.
-2. Tìm SMS theo số gửi hoặc nội dung, bấm **Trả lời** để điền số nhận, hoặc nhập số mới và nội dung rồi bấm **Gửi SMS**.
-3. SMS gửi đi dùng chính mô-đun SIM đang chọn; tối đa 1.000 ký tự và có thể chia nhiều phần theo chuẩn GSM. Hỗ trợ cả số di động và số dịch vụ/tổng đài ngắn như `9199`, `1414`, `1900...`.
+1. Mở **SIM 4G**, chọn mô-đun và bấm **Tải hội thoại**.
+2. Chọn hội thoại để xem tin đã nhận/đã gửi, tìm theo số, tên hoặc nội dung, rồi nhập nội dung và bấm **Gửi SMS**. Bấm **Tin nhắn mới** để nhập số nhận khác.
+3. Thời gian tin nhận lấy từ đồng hồ của mô-đun/SIM; tin gửi được lưu trong lịch sử add-on để hiển thị cùng hội thoại. SMS gửi đi dùng chính mô-đun SIM đang chọn; tối đa 1.000 ký tự và có thể chia nhiều phần theo chuẩn GSM.
 
 ### Tự động hóa SIM
-
-Add-on dùng `SUPERVISOR_TOKEN` với quyền `homeassistant_api` để gọi Home Assistant Core; bấm **Kiểm tra HA** để xác thực token và quyền.
 
 Mở **SIM 4G → Tự động hóa SIM** để cấu hình:
 
@@ -191,13 +186,55 @@ Integration tạo các sensor:
 - `sensor.calling_messenger_hub_alerts_active`
 - `sensor.calling_messenger_hub_alerts_unacknowledged`
 
+Sensor sức khỏe luồng SSE:
+
+- `sensor.calling_messenger_hub_event_stream_last_event`: thời điểm sự kiện SSE gần nhất, kèm loại sự kiện và số sự kiện đã nhận.
+- `sensor.calling_messenger_hub_event_stream_reconnects`: số lần kết nối lại, trạng thái kết nối và lỗi gần nhất.
+
 Các entity bổ sung:
 
-- `binary_sensor`: kết nối API, license, MQTT, sự cố SIM, bản cập nhật.
-- `button`: làm mới trạng thái, kiểm tra cập nhật.
+- `binary_sensor`: kết nối API, kết nối luồng SSE, license, MQTT, sự cố SIM, bản cập nhật.
+- `button`: làm mới trạng thái, khởi động lại luồng SSE, kiểm tra cập nhật.
 - `switch.calling_messenger_hub_mqtt_bridge`: bật/tắt cầu nối MQTT.
 - `event.calling_messenger_hub_activity`: cuộc gọi, chuông, báo động, tin nhắn, SMS/OTP, tài khoản, automation và các sự kiện khác. Sự kiện SMS/OTP không chứa nội dung tin nhắn hoặc mã OTP.
 - Mỗi tài khoản có `binary_sensor` online riêng; mỗi tài khoản SIM có thêm cảm biến sóng, nhà mạng, số dư và hạn dùng. Entity được thêm hoặc gỡ tự động khi danh sách tài khoản thay đổi.
+
+### Thông báo có nút thao tác
+
+Mở **Settings → Devices & services → Calling Messenger Hub → Configure** để cấu hình:
+
+- **Nhiều dịch vụ thông báo:** danh sách service notify, cách nhau dấu phẩy hoặc xuống dòng, ví dụ `notify.mobile_app_dien_thoai, notify.mobile_app_may_tinh_bang`. Ô dịch vụ đơn cũ vẫn được dùng khi danh sách này để trống.
+- **Dịch vụ cho mức nghiêm trọng:** nếu đặt, sự kiện `critical` chỉ gửi tới danh sách này thay vì danh sách chính.
+- **Loại sự kiện:** mặc định gồm báo động, OTP, SMS và cuộc gọi.
+- **Lọc theo tài khoản:** chỉ gửi khi tài khoản khớp ID, tên, số điện thoại hoặc loại dịch vụ; để trống để nhận tất cả.
+- **Mức độ gửi:** chọn `info`, `warning`, `critical`; sự kiện không có mức được coi là `info`.
+- **Giờ im lặng:** nhập `HH:MM` theo múi giờ Home Assistant cho bắt đầu và kết thúc. Sự kiện `critical` vẫn gửi xuyên qua giờ im lặng.
+- **Chống trùng:** bỏ qua thông báo trùng cùng loại, tài khoản và người gửi trong số giây đã đặt; `0` là tắt.
+- **URL mở:** dashboard hoặc trang web mở khi bấm **Mở**.
+
+Các nút trên thông báo, tối đa 3 nút theo thứ tự ưu tiên:
+
+- **Đã xử lý:** resolve báo động hoặc xóa thông báo.
+- **Gọi lại:** mở trình gọi điện với số của người gửi SMS/OTP hoặc cuộc gọi SIM. Không dùng ID Telegram/Zalo và không tự gọi phía server.
+- **Mở chat:** mở hội thoại Telegram (`https://t.me/...` hoặc `tg://user?id=...`) hoặc Zalo (`https://zalo.me/...`) khi sự kiện có username/ID hợp lệ.
+- **Tắt chuông:** kết thúc cuộc gọi hoặc chuông đang chạy.
+- **Mở:** mở `notify_url` đã cấu hình.
+
+Sự kiện SMS/OTP chỉ gửi khi có người gửi; báo động chỉ gửi khi còn hoạt động.
+
+### Device trigger và blueprint
+
+Mỗi sự kiện SSE có device trigger tương ứng trên thiết bị **Calling Messenger Hub**, dùng được trong **Settings → Automations → Add trigger → Device**. Ví dụ chọn trigger `sms` để chạy automation khi SIM nhận SMS mới.
+
+Repo integration có sẵn hai blueprint mẫu trong `blueprints/automation/calling_messenger_hub/`:
+
+- `event_actions.yaml`: chọn event entity **Hoạt động** và loại sự kiện, sau đó chọn action.
+- `device_trigger_actions.yaml`: chọn thiết bị **Calling Messenger Hub** và loại sự kiện, sau đó chọn action.
+
+Có thể import blueprint trong **Settings → Automations → Blueprints → Import blueprint** bằng URL raw sau, sao chép vào `/config/blueprints/automation/calling_messenger_hub/`, hoặc giải nén gói `calling_messenger_hub_blueprints-<version>.zip` trong release vào `/config`:
+
+- `event_actions.yaml`: `https://raw.githubusercontent.com/trankhanhduy2929-beep/calling_messenger_hub/main/blueprints/automation/calling_messenger_hub/event_actions.yaml`
+- `device_trigger_actions.yaml`: `https://raw.githubusercontent.com/trankhanhduy2929-beep/calling_messenger_hub/main/blueprints/automation/calling_messenger_hub/device_trigger_actions.yaml`
 
 Gửi thông báo qua notify:
 
