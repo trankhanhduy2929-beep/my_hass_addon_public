@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.9.24
+
+- **Sửa Google Drive bị kẹt `database is locked`**: chỉ chèn file mới, commit sau
+  mỗi camera và không giữ transaction khi hàng đợi rỗng; giãn nhịp quét Drive lên 60 giây.
+- **Giới hạn WAL SQLite**: đặt `journal_size_limit=64MB`, autocheckpoint 1000 trang,
+  checkpoint lúc khởi động và mỗi 5 phút; thêm index `(cam_id, path)`. WAL phình to
+  sẽ được gộp và cắt sau khi cập nhật.
+- Đăng nhập web không còn lỗi 500 do khoá DB; hàng đợi Drive tự tiếp tục sau khi restart.
+- Ghim image LiteNVR `c694b71` cho bản phát hành này.
+
 ## 1.9.23
 
 - **Giảm RAM khi xem live H.265/HEVC**: hạ tối đa **576p** và dùng **1 thread** cho
