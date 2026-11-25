@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.9.28
+
+- **Không còn cảnh báo sai file ghi hình bị hỏng**: bỏ qua kiểm tra các segment
+  vừa tạo trong 60 giây, tránh báo lỗi khi ffmpeg còn đang ghi.
+- **Health camera được reset khi worker dừng**: FPS, trạng thái kẹt và tuổi dữ liệu
+  không còn giữ giá trị cũ sau khi camera dừng hoặc khởi động lại.
+- Ghim image LiteNVR `c2c7ae0` cho bản phát hành này.
+
 ## 1.9.27
 
 - **Chặn file ghi hình phình to khi nguồn thiếu keyframe**: thêm
