@@ -21,18 +21,18 @@ là lớp hiển thị và tự động hoá.
   bản ghi H.265/H.264 lạ tự chuyển mã H.264 khi phát.
 - ONVIF: dò/quét dải IP, tự thêm camera đa hãng, lấy RTSP, điều khiển PTZ và preset.
 - Lưu trữ linh hoạt: ổ cứng, Google Drive hoặc NAS (SMB/NFS/FTP).
-- Thông báo chuyển động qua Telegram và liên kết sâu mở thẳng bản ghi.
+- Thông báo chuyển động qua Telegram/ntfy/webhook và liên kết sâu mở thẳng bản ghi.
 - Tự công bố camera snapshot qua **MQTT Discovery** để Home Assistant tạo entity
   `camera.litenvr_<camera>` cho badge/card ảnh.
 - **Mô tả sự kiện bằng AI** (Gemini/OpenAI/Groq/custom): mô tả tiếng Việt dưới
-  ảnh sự kiện, trong chi tiết, Telegram/webhook và tìm kiếm được. Nút **Check AI**
+  ảnh sự kiện, trong chi tiết, Telegram/ntfy/webhook và tìm kiếm được. Nút **Check AI**
   kiểm tra API key/model trước khi lưu; chưa có license thì tự mở mục Bản quyền.
 - **LiteNVR Pro**: kích hoạt license trong **Cài đặt → Bản quyền**; mở khoá mô tả
-  AI và thông báo Telegram, tự kiểm tra 6 giờ/lần và dùng ngoại tuyến tối đa 7 ngày.
+  AI và thông báo Telegram; ntfy/webhook vẫn miễn phí. License tự kiểm tra 6 giờ/lần và dùng ngoại tuyến tối đa 7 ngày.
 
 ## Bản quyền Pro
 
-Mô tả AI và thông báo Telegram cần license **LiteNVR Pro**. Webhook JSON vẫn miễn phí.
+Mô tả AI và thông báo Telegram cần license **LiteNVR Pro**. ntfy và Webhook JSON miễn phí.
 
 1. Mở [trang bán license](https://litenvr-license.vercel.app), tạo tài khoản bằng
    email hoặc số điện thoại, chọn **Dùng thử 1 ngày** (miễn phí), **7 ngày**

@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.9.30
+
+- **Push ntfy miễn phí**: bật trong **Thông báo**, nhập server (mặc định
+  `https://ntfy.sh`), topic và access token nếu cần. Tin nhắn kèm link xem lại;
+  ntfy không cần license Pro.
+- **Lịch nhận thông báo áp dụng cho ntfy**: ngoài khung giờ vẫn ghi hình/lưu sự kiện,
+  chỉ tạm ẩn Telegram/ntfy/webhook. Cảnh báo ổ đĩa và camera offline vẫn gửi ntfy.
+- **Gửi thử** kiểm tra cả ntfy; token được che khi tải cấu hình.
+- Ghim image LiteNVR `abd8ab6` cho bản phát hành này.
+
 ## 1.9.29
 
 - **Upload Google Drive tiếp tục sau timeout/rớt mạng**: lưu resumable session và

@@ -1,10 +1,11 @@
 name: LiteNVR
-version: "1.9.29"
+version: "1.9.30"
 slug: litenvr
 description: >-
   LiteNVR - NVR gọn nhẹ: xem trực tiếp, ghi hình và xem lại camera RTSP/ONVIF.
   Lưu bản ghi trên ổ cứng (media/share), Google Drive hoặc NAS; nhận chuyển động
-  từ cảm biến Home Assistant, ONVIF/PTZ, nhãn AI và MQTT Discovery.
+  từ cảm biến Home Assistant, ONVIF/PTZ, nhãn AI, MQTT Discovery và gửi thông báo
+  Telegram/ntfy/webhook.
 url: "https://github.com/trankhanhduy2929-beep/my_hass_addon_public"
 arch:
   - amd64

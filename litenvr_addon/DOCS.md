@@ -405,7 +405,7 @@ khởi động lại add-on nếu nó ngừng phản hồi.
 - Trong LiteNVR vào **Cài đặt → Bản quyền**, dán key, bấm **Kích hoạt**, sau đó
   **Kiểm tra lại**. Chưa kích hoạt thì menu **Mô tả sự kiện AI** tự mở mục này.
 - Add-on kiểm tra license mỗi 6 giờ; nếu mất mạng vẫn dùng tiếp tối đa 7 ngày kể
-  từ lần kiểm tra thành công cuối. Mô tả AI và Telegram cần license còn hiệu lực.
+  từ lần kiểm tra thành công cuối. Mô tả AI và Telegram cần license còn hiệu lực; ntfy và webhook miễn phí.
 - Đổi thiết bị: vào trang quản trị license để **Gỡ máy**, rồi kích hoạt lại trên
   máy mới.
 
