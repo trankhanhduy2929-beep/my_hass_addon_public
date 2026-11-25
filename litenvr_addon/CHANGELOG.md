@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.9.26
+
+- **Giải phóng ổ khi bản ghi Drive bị kẹt**: cleanup được phép xoá file đang chờ/lỗi
+  upload cũ nhất khi ổ vượt ngưỡng; file được đánh dấu `skipped` và ghi log. File
+  mới hơn được giữ lại nếu đã đủ dung lượng, recording tự động resume.
+- Ghim image LiteNVR `f9c2ebd` cho bản phát hành này.
+
 ## 1.9.25
 
 - **Giữ live đa kênh khi ổ đầy**: camera hết người xem vẫn dừng worker, nhưng
