@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.9.25
+
+- **Giữ live đa kênh khi ổ đầy**: camera hết người xem vẫn dừng worker, nhưng
+  HLS/heartbeat sẽ khởi động lại; worker chạy chế độ live-only, không ghi hình.
+- **Tránh bật/tắt ghi hình liên tục**: ngưỡng ổ đĩa có hysteresis 1%, chỉ phục hồi
+  ghi hình khi dung lượng trống vượt ngưỡng an toàn.
+- Ghim image LiteNVR `91c8808` cho bản phát hành này.
+
 ## 1.9.24
 
 - **Sửa Google Drive bị kẹt `database is locked`**: chỉ chèn file mới, commit sau
