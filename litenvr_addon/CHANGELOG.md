@@ -1,5 +1,19 @@
 # Changelog
 
+## 1.9.29
+
+- **Upload Google Drive tiếp tục sau timeout/rớt mạng**: lưu resumable session và
+  offset vào SQLite, gửi tiếp đúng chunk thay vì tải lại file lớn từ đầu; chunk tự
+  tăng/giảm 256 KB–32 MB, timeout và retry an toàn.
+- **Quản lý từng file Drive**: hiện % tiến trình, nút thử lại, bỏ qua và xoá file gốc
+  khỏi hàng đợi; API `retry`/`skip`/`DELETE item`. Dọn dung lượng cũng xử lý file
+  Drive đang chờ khi vượt hạn mức GB.
+- **Vùng chuyển động (ROI)**: vẽ vùng trên ảnh snapshot, lọc theo tâm `bbox` gửi kèm
+  `/api/motion` và `/api/ai/detect`; cảm biến HA không có toạ độ vẫn được nhận.
+- **Lịch nhận thông báo**: chỉ gửi Telegram/webhook trong khung giờ đã chọn, hỗ trợ
+  qua đêm; ngoài giờ vẫn ghi hình và lưu sự kiện.
+- Ghim image LiteNVR `d9cfb8c` cho bản phát hành này.
+
 ## 1.9.28
 
 - **Không còn cảnh báo sai file ghi hình bị hỏng**: bỏ qua kiểm tra các segment
