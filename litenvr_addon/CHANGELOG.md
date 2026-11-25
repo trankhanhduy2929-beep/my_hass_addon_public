@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.9.27
+
+- **Chặn file ghi hình phình to khi nguồn thiếu keyframe**: thêm
+  `-break_non_keyframes` để segment 60 giây vẫn được cắt; kèm watchdog tối đa
+  180 giây/256MB, tự khởi động lại ffmpeg nếu segment muxer không cắt được.
+- Ghim image LiteNVR `a302925` cho bản phát hành này.
+
 ## 1.9.26
 
 - **Giải phóng ổ khi bản ghi Drive bị kẹt**: cleanup được phép xoá file đang chờ/lỗi
