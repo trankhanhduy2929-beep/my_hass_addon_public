@@ -1,4 +1,4 @@
-# Hướng dẫn HANET Connect Gateway 0.10.5
+# Hướng dẫn HANET Connect Gateway 0.13.7
 
 ## 1. Yêu cầu
 
@@ -23,7 +23,8 @@
 - `api_access_key`: khóa cho API cục bộ. Nếu bật cổng `9091`, nên dùng chuỗi ngẫu
   nhiên tối thiểu 24 ký tự.
 - `webhook_secret`: dùng làm `client_secret` cho chữ ký webhook HANET hoặc khóa
-  header `X-HANET-Webhook-Secret` cho hệ thống nội bộ.
+  header `X-HANET-Webhook-Secret` cho hệ thống nội bộ. Add-on lưu tối đa 2.000 ID
+  webhook đã nhận theo tài khoản để chống trùng cả sau khi khởi động lại.
 - `poll_interval`: chu kỳ đồng bộ đầy đủ, từ 15 đến 3600 giây.
 - `event_stream`: duy trì SSE; add-on tự fallback sang polling khi route không có.
 - `verify_tls`: xác minh chứng chỉ HTTPS, nên luôn bật.
@@ -112,6 +113,8 @@ thời gian đó, nhưng không vượt quá ngày hết hạn của license.
 ### Cài đặt
 
 - Xem trạng thái HANET Cloud, số địa điểm/camera và cổng add-on.
+- Xem chẩn đoán Webhook HANET: số lần nhận/trùng/bị từ chối, lần nhận và lỗi gần
+  nhất, số ID đã lưu; làm mới trạng thái hoặc gửi webhook thử.
 - Đổi mật khẩu hoặc khóa giao diện.
 - Bật/tắt RTSP, mở cấu hình username/password và copy URL từng camera.
 - Mở **API nâng cao** để gọi endpoint theo catalog.
@@ -126,8 +129,10 @@ X-HANET-Gateway-Key: <api_access_key>
 
 Các endpoint chính:
 
-- `GET /health`: healthcheck công khai, không chứa credential.
-- `GET /api/state`: snapshot chuẩn hóa.
+- `GET /health`: healthcheck công khai, không chứa credential; có tóm tắt webhook
+  an toàn gồm trạng thái cấu hình, counters, lần nhận/kết quả/lỗi gần nhất và số
+  ID đã lưu.
+- `GET /api/state`: snapshot chuẩn hóa, gồm chẩn đoán webhook đầy đủ.
 - `GET /api/catalog`: endpoint, setting và command đã phát hiện.
 - `GET /api/events?day=YYYY-MM-DD&limit=250`: lịch sử sự kiện.
 - `GET /api/people`, `/api/departments`, `/api/plates`: dữ liệu danh tính.
@@ -146,6 +151,8 @@ Các endpoint chính:
 - `POST /api/devices/{id}/commands/{command}`: gửi command camera.
 - `GET /api/devices/{id}/image`: ảnh camera/sự kiện gần nhất.
 - `GET /api/ws`: WebSocket trạng thái và sự kiện.
+- `POST /api/webhook/test`: gửi một sự kiện webhook thử có chữ ký hợp lệ, kiểm
+  tra nhận và chống trùng; endpoint được bảo vệ bởi API key/license/session.
 - `GET /api/license/status`: trạng thái license và link portal.
 - `POST /api/license/activate`: lưu và verify một License Key.
 - `POST /api/license/verify`: ép đối soát lại key đang lưu.
@@ -173,6 +180,20 @@ Content-Type: application/json
 Nếu payload có trường `hash`, add-on bắt buộc xác thực chữ ký HANET. Không dùng
 query string `?secret=...` để tránh secret xuất hiện trong URL và access log.
 
+Add-on lưu bền tối đa 2.000 ID webhook gần nhất theo từng tài khoản HANET. ID chỉ
+được đánh dấu sau khi sự kiện đã ghi thành công, nên lỗi đĩa không làm mất sự kiện
+khi HANET retry. Sau khi khởi động lại, các sự kiện webhook đã khôi phục tiếp tục
+được dùng để chống trùng.
+
+Trong **Cài đặt > Webhook HANET** có counters và trạng thái gần nhất. Nút **Gửi
+webhook thử** gọi `POST /api/webhook/test` (cần quyền truy cập dashboard/API) để
+kiểm tra chữ ký và gửi hai lần cùng một ID; một sự kiện thử sẽ xuất hiện trong mục
+Sự kiện. `/health` chỉ trả tóm tắt an toàn, không trả secret, payload, event ID hay
+thời điểm lỗi. `/api/state` trả đầy đủ chẩn đoán cho giao diện.
+
+Lý do từ chối được ghi ngắn gọn: `invalid_hash`, `invalid_secret`, `invalid_json`,
+`invalid_body` hoặc `storage_error`.
+
 ## 9. Custom integration
 
 Custom integration đăng nhập HANET Cloud bằng config entry riêng và tự chạy TUTK
@@ -191,6 +212,10 @@ Chạy đồng thời hai phần sẽ tạo hai phiên HANET Cloud và hai chu k
 - **Không có camera**: đăng nhập lại ứng dụng HANET chính thức và kiểm tra quyền
   chia sẻ/địa điểm.
 - **SSE lỗi 404**: đây là trường hợp đã hỗ trợ; add-on chuyển sang cloud polling.
+- **Webhook không tăng "Đã nhận"**: mở **Cài đặt > Webhook HANET** xem lỗi gần
+  nhất. `invalid_hash`/`invalid_secret` nghĩa là `webhook_secret` chưa trùng
+  `client_secret`; `invalid_json`/`invalid_body` nghĩa là payload gửi sai định
+  dạng. Có thể bấm **Gửi webhook thử** để kiểm tra phía add-on.
 - **Xóa FaceID báo 404**: bản `0.10.0` gửi `person_id` đúng Android 4.1.21 trước,
   sau đó mới thử alias/method/form tương thích trên
   cùng HANET host và chỉ báo thành công sau khi FaceID biến mất khỏi cloud.

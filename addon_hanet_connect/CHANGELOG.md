@@ -1,5 +1,20 @@
 # Changelog
 
+## 0.13.7 - 2026-11-26
+
+- Webhook HANET nhớ ID đã nhận qua khởi động lại (tối đa 2.000 ID, lưu riêng
+  theo tài khoản) nên HANET retry không tạo sự kiện trùng sau khi add-on restart.
+- Thêm chẩn đoán webhook trong **Cài đặt**: số lần nhận/trùng/bị từ chối, lần
+  nhận và lỗi gần nhất, số ID đã lưu, nút làm mới và nút **Gửi webhook thử**.
+  `/health` chỉ trả bản tóm tắt an toàn, không lộ secret, payload hay event ID.
+- Ghi nhận lý do từ chối (`invalid_hash`, `invalid_secret`, `invalid_json`,
+  `invalid_body`, `storage_error`) để dễ kiểm tra cấu hình HANET Cloud.
+- Nút **Gửi webhook thử** gọi endpoint được bảo vệ `POST /api/webhook/test`,
+  xác minh chữ ký và chống trùng bằng hai lần gửi cùng ID; một sự kiện thử sẽ
+  xuất hiện trong mục Sự kiện.
+- Nếu không ghi được sự kiện webhook, add-on không đánh dấu ID đã nhận để lần
+  retry sau vẫn được xử lý.
+
 ## 0.13.6 - 2026-11-26
 
 - Nhận webhook trực tiếp từ HANET Cloud: xác thực

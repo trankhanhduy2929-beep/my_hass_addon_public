@@ -1,7 +1,17 @@
-# HANET Connect Gateway 0.13.2
+# HANET Connect Gateway 0.13.7
 
 Add-on quản lý hệ sinh thái HANET trực tiếp trong Home Assistant với giao diện
 Ingress tiếng Việt mở trực tiếp, còn API cục bộ ngoài Ingress vẫn có xác thực.
+
+## Điểm mới trong 0.13.7: chẩn đoán và chống trùng webhook bền vững
+
+- Webhook HANET nhớ tối đa 2.000 ID gần nhất theo tài khoản, kể cả sau khi add-on
+  khởi động lại, nên HANET retry không tạo sự kiện trùng.
+- Tab **Cài đặt** có khu vực **Webhook HANET** hiển thị số lần nhận/trùng/bị từ
+  chối, lần nhận và lỗi gần nhất, số ID đã lưu.
+- Nút **Gửi webhook thử** kiểm tra chữ ký và chống trùng ngay trong add-on; sự kiện
+  thử xuất hiện trong mục Sự kiện.
+- `/health` thêm tóm tắt webhook an toàn, không chứa secret, payload hay event ID.
 
 ## Điểm mới trong 0.13.2: giảm tần suất gọi License Center
 
@@ -281,7 +291,8 @@ Chi tiết contract và SHA-256 APK nằm trong `APK_4.1.21_ANALYSIS.md` ở sou
 - Đồng bộ sự kiện qua SSE; tự chuyển sang cloud polling khi SSE không khả dụng.
 - WebSocket nội bộ cập nhật dashboard mà không phải tải lại trang.
 - API nâng cao cho toàn bộ catalog endpoint đã reverse engineering.
-- API cục bộ bằng `X-HANET-Gateway-Key` và webhook bằng secret riêng.
+- API cục bộ bằng `X-HANET-Gateway-Key` và webhook bằng secret riêng, có chẩn
+  đoán và chống trùng bền vững theo ID.
 
 ## Cài đặt nhanh
 
@@ -312,8 +323,8 @@ ra Internet.
 - **Sự kiện**: lọc theo ngày, camera, loại nhận diện, nguồn và từ khóa.
 - **Ghi hình**: tìm clip cloud theo ngày/camera và xem trực tiếp trong dialog.
 - **Danh tính**: quản lý Face ID, nhân viên, phòng ban, biển số và chấm công.
-- **Cài đặt**: kiểm tra kết nối, quản lý License Key, cấu hình/copy URL RTSP và dùng
-  API nâng cao.
+- **Cài đặt**: kiểm tra kết nối, quản lý License Key, chẩn đoán/gửi thử Webhook
+  HANET, cấu hình/copy URL RTSP và dùng API nâng cao.
 
 ## License rollout
 
