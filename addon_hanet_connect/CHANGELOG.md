@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.13.5 - 2026-11-26
+
+- Chuẩn hóa sự kiện webhook HANET: nhận diện đúng nhân viên, khách, người lạ,
+  báo động và biển số từ `action_type`/`personType`; giữ nguyên cách hiểu mã
+  sự kiện của API mobile hiện tại.
+
 ## 0.13.4 - 2026-10-25
 
 - Không còn gắn nhãn "Người lạ" cho sự kiện chuyển động hoặc cảnh báo
