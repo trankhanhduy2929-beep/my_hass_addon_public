@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.13.6 - 2026-11-26
+
+- Nhận webhook trực tiếp từ HANET Cloud: xác thực
+  `MD5(client_secret + id)`, chống trùng theo `id` và vẫn giữ header
+  `X-HANET-Webhook-Secret` cho hệ thống nội bộ.
+- Bổ sung tài liệu cấu hình `webhook_secret` và mô tả hai chế độ xác thực webhook.
+
 ## 0.13.5 - 2026-11-26
 
 - Chuẩn hóa sự kiện webhook HANET: nhận diện đúng nhân viên, khách, người lạ,

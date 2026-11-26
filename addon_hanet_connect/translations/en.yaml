@@ -13,7 +13,7 @@ configuration:
     description: Required for direct access through an exposed port.
   webhook_secret:
     name: Webhook secret
-    description: Secret accepted by the public webhook endpoint.
+    description: HANET client secret for webhook signatures, or the X-HANET-Webhook-Secret header value.
   poll_interval:
     name: Poll interval
     description: Seconds between cloud state updates.

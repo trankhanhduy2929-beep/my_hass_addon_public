@@ -22,7 +22,8 @@
 - `api_base_url`: mặc định là HANET Mobile API V4.
 - `api_access_key`: khóa cho API cục bộ. Nếu bật cổng `9091`, nên dùng chuỗi ngẫu
   nhiên tối thiểu 24 ký tự.
-- `webhook_secret`: khóa riêng cho `POST /api/webhook`.
+- `webhook_secret`: dùng làm `client_secret` cho chữ ký webhook HANET hoặc khóa
+  header `X-HANET-Webhook-Secret` cho hệ thống nội bộ.
 - `poll_interval`: chu kỳ đồng bộ đầy đủ, từ 15 đến 3600 giây.
 - `event_stream`: duy trì SSE; add-on tự fallback sang polling khi route không có.
 - `verify_tls`: xác minh chứng chỉ HTTPS, nên luôn bật.
@@ -155,8 +156,13 @@ API máy-máy độc lập với session của người dùng.
 
 ## 8. Webhook
 
-Webhook chỉ nhận secret qua header để tránh secret xuất hiện trong URL và access
-log:
+`POST /api/webhook` hỗ trợ hai cách xác thực:
+
+1. **HANET Cloud**: đặt `webhook_secret` trùng `client_secret` tại
+   connect.hanet.ai. Payload có `id` và `hash`:
+   `hash = lowercase_hex(MD5(client_secret + id))`. Add-on kiểm tra chữ ký và bỏ
+   qua bản ghi trùng `id` khi HANET retry.
+2. **Hệ thống nội bộ**: gửi header `X-HANET-Webhook-Secret`:
 
 ```text
 POST /api/webhook
@@ -164,7 +170,8 @@ X-HANET-Webhook-Secret: <webhook_secret>
 Content-Type: application/json
 ```
 
-Không dùng query string `?secret=...`.
+Nếu payload có trường `hash`, add-on bắt buộc xác thực chữ ký HANET. Không dùng
+query string `?secret=...` để tránh secret xuất hiện trong URL và access log.
 
 ## 9. Custom integration
 

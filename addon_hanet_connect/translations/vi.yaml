@@ -13,7 +13,7 @@ configuration:
     description: Bat buoc khi mo port va truy cap truc tiep ngoai Ingress.
   webhook_secret:
     name: Khoa webhook
-    description: Khoa xac thuc cho webhook cong khai.
+    description: Client secret HANET de xac thuc chu ky webhook, hoac gia tri header X-HANET-Webhook-Secret.
   poll_interval:
     name: Chu ky dong bo
     description: So giay giua hai lan cap nhat du lieu cloud.
