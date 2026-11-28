@@ -1,6 +1,6 @@
 # AI Proxy Router cho Home Assistant
 
-**Phiên bản 1.22.0** · Home Assistant OS / Supervised · `amd64`, `aarch64`
+**Phiên bản 1.23.0** · Home Assistant OS / Supervised · `amd64`, `aarch64`
 
 AI Proxy Router gom nhiều nguồn AI vào một API tương thích OpenAI, tự xoay API key, chuyển nguồn khi lỗi và định tuyến riêng cho yêu cầu Text/Vision. Dashboard chạy trong Home Assistant; ứng dụng bên ngoài chỉ gọi API `/v1/*` bằng Proxy Key.
 
@@ -133,6 +133,14 @@ Chỉ bật port này khi client LAN cần gọi trực tiếp. Dashboard và `/
 4. Kiểm tra `/health`, `/v1/models` và một request chat ngắn.
 5. Nếu có lỗi, xem **Log** của add-on trước khi khôi phục backup.
 
+Bản `1.23.0` thêm nguồn và tinh gọn giao diện:
+
+- Thêm **OpenCode** và **Command Code** vào danh sách provider.
+- Tự lọc model theo endpoint: OpenCode chỉ giữ model `chat-completions` trả phí; Command Code bỏ model chỉ hỗ trợ `/messages`.
+- Lưu khả năng Vision theo metadata của OpenCode/OpenRouter để định tuyến ảnh chính xác hơn.
+- Thêm gợi ý chọn nhanh nguồn có model ảnh miễn phí.
+- Hero Tổng quan gọn hơn, animation nhẹ và icon add-on mới.
+
 Bản `1.22.0` thay đổi tài liệu và siết API docs:
 
 - `/docs` và `/redoc` bị tắt.
@@ -176,7 +184,7 @@ Dashboard có bộ chọn **Tiếng Việt / English** trên thanh điều hư�
 3. Dán API key thật, hoặc chọn key đã lưu trong **Kho key & nhập nhiều key**.
 4. Với Custom Endpoint, nhập tên nguồn và Base URL tương thích OpenAI, thường kết thúc bằng `/v1`.
 5. Nhấn **Thêm & tự dò model**.
-6. Add-on gọi `/models`, chỉ giữ model chat/audio dùng được và lưu key vào kho.
+6. Add-on gọi `/models`, giữ model chat phù hợp với endpoint của provider và lưu key vào kho.
 7. Dùng **Đồng bộ** để dò lại, **Tạm tắt/Bật lại** để ngưng cả nguồn, hoặc **Xóa nguồn** để bỏ các model của nguồn đó.
 
 Lưu ý:
@@ -186,6 +194,9 @@ Lưu ý:
 - `auto-ai` ưu tiên nguồn còn hoạt động và thử nguồn dự phòng khi gặp lỗi xác thực, quota, rate limit hoặc lỗi mạng.
 - Hạn mức của nguồn là hạn mức bạn đặt trong add-on, không phải số dư thật trên trang nhà cung cấp.
 - Với Ollama hoặc LM Studio, dùng **Custom Endpoint** trỏ tới `/v1` của dịch vụ đó và đảm bảo Home Assistant truy cập được địa chỉ mạng tương ứng.
+- **OpenCode:** add-on chỉ giữ model `chat-completions` trả phí. Model miễn phí của OpenCode chỉ dùng được trong ứng dụng OpenCode, không dùng qua proxy.
+- **Command Code:** add-on chỉ giữ model có `/chat/completions`; model chỉ hỗ trợ `/messages` sẽ bị bỏ.
+- **Vision miễn phí:** nút gợi ý chọn nhanh OpenRouter, Gemini, Groq hoặc Mistral. Model và quota có thể thay đổi; hãy kiểm tra bằng tab **Test AI → Vision**.
 - Không dán key gốc vào ứng dụng bên ngoài. Hãy tạo Proxy Key.
 
 Ví dụ Custom Endpoint:
@@ -992,6 +1003,14 @@ The dashboard and `/api/*` remain protected by Home Assistant Ingress.
 4. Test `/health`, `/v1/models`, and a short chat request.
 5. If something fails, check the add-on log before restoring the backup.
 
+Version `1.23.0` changes:
+
+- Added **OpenCode** and **Command Code** providers.
+- Models are filtered by endpoint: OpenCode keeps paid `chat-completions` models only; Command Code drops `/messages`-only models.
+- Vision capability is stored from OpenCode/OpenRouter metadata for more accurate image routing.
+- Added quick picks for sources with free image models.
+- More compact Overview hero, subtle motion, and a new add-on icon.
+
 Version `1.22.0` changes:
 
 - `/docs` and `/redoc` are disabled.
@@ -1035,7 +1054,7 @@ The dashboard supports Vietnamese/English, light/dark mode, touch, and keyboard 
 3. Paste a provider API key or select a saved key from the key vault.
 4. For a custom source, enter a name and an OpenAI-compatible Base URL, usually ending in `/v1`.
 5. Click **Add and discover models**.
-6. The add-on calls `/models`, keeps usable chat/audio models, and stores the key in the vault.
+6. The add-on calls `/models`, keeps chat models supported by the provider endpoint, and stores the key in the vault.
 7. Use **Sync**, **Disable/Enable**, or **Delete source** on the source card.
 
 Notes:
@@ -1045,6 +1064,9 @@ Notes:
 - `auto-ai` prefers healthy sources and tries fallbacks on auth, quota, rate-limit, or network errors.
 - Source budgets are add-on limits, not the provider's real account balance.
 - For Ollama or LM Studio, use **Custom Endpoint** with that service's `/v1` URL and make sure Home Assistant can reach it.
+- **OpenCode:** the add-on keeps paid `chat-completions` models only. OpenCode free models work only inside OpenCode, not through the proxy.
+- **Command Code:** the add-on keeps models with `/chat/completions`; `/messages`-only models are removed.
+- **Free vision:** quick picks select OpenRouter, Gemini, Groq, or Mistral. Models and quotas can change; verify with **Test AI → Vision**.
 - Never give a provider API key to an external app. Create a Proxy Key.
 
 ### 7. Proxy Keys

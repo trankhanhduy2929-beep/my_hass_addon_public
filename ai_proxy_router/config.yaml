@@ -1,12 +1,12 @@
 name: "AI Proxy Router"
 description: "Xoay API Key, tự dò model, Text/Vision, SSE, Responses API, Function Tools, JSON Schema và Token Saver."
-version: "1.22.0"
+version: "1.23.0"
 slug: "ai_proxy_router"
 init: false
 arch:
   - amd64
   - aarch64
-panel_icon: mdi:robot-outline
+panel_icon: mdi:transit-connection-variant
 panel_title: "AI Proxy"
 panel_admin: true
 ingress: true

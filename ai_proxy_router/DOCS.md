@@ -1,6 +1,6 @@
 # AI Proxy Router
 
-**Phiên bản 1.22.0** · Home Assistant OS / Supervised · `amd64`, `aarch64`
+**Phiên bản 1.23.0** · Home Assistant OS / Supervised · `amd64`, `aarch64`
 
 AI Proxy Router gom nhiều nguồn AI vào một API tương thích OpenAI, tự xoay API key, chuyển nguồn khi lỗi và định tuyến Text/Vision tự động. Dashboard chỉ mở qua Home Assistant Ingress; ứng dụng bên ngoài gọi `/v1/*` bằng Proxy Key.
 
@@ -99,6 +99,12 @@ Lưu ý:
 - Backup chứa bí mật; hãy mã hóa và không chia sẻ.
 - Chỉ dùng HTTPS khi truy cập từ xa.
 - Giữ `/`, `/api/*`, `/docs`, `/redoc`, `/openapi.json` ngoài Internet.
+
+Từ `1.23.0`:
+
+- Hỗ trợ nguồn **OpenCode** và **Command Code**.
+- Tự lọc model theo endpoint và lưu khả năng Vision từ metadata.
+- Có gợi ý chọn nhanh nguồn có model ảnh miễn phí.
 
 Từ `1.22.0`:
 
@@ -235,6 +241,12 @@ Notes:
 - Backups contain secrets; encrypt and protect them.
 - Use HTTPS for remote access.
 - Keep `/`, `/api/*`, `/docs`, `/redoc`, and `/openapi.json` off the Internet.
+
+From `1.23.0`:
+
+- Added **OpenCode** and **Command Code** sources.
+- Models are filtered by endpoint, and Vision capability is stored from metadata.
+- Free image-model source quick picks are available in Sources & Keys.
 
 From `1.22.0`:
 
