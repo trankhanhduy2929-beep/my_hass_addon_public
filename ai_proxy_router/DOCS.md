@@ -1,737 +1,282 @@
-# 🚀 AI Proxy Router Add-on
+# AI Proxy Router
 
-**Ngôn ngữ / Language:** [Tiếng Việt](#hướng-dẫn-tiếng-việt) · [English](#english-guide)
+**Phiên bản 1.22.0** · Home Assistant OS / Supervised · `amd64`, `aarch64`
 
-README song ngữ đầy đủ nằm trong file `README.md` của add-on. Phần tiếng Việt hiện có được giữ bên dưới; phần hướng dẫn English nằm ở cuối tài liệu.
+AI Proxy Router gom nhiều nguồn AI vào một API tương thích OpenAI, tự xoay API key, chuyển nguồn khi lỗi và định tuyến Text/Vision tự động. Dashboard chỉ mở qua Home Assistant Ingress; ứng dụng bên ngoài gọi `/v1/*` bằng Proxy Key.
 
-The complete bilingual README is included as `README.md`. The existing Vietnamese guide remains below, followed by an English guide at the end.
+Hướng dẫn đầy đủ song ngữ nằm trong `README.md`. Trang này là bản tóm tắt dùng trong Add-on Store.
 
-## Hướng dẫn Tiếng Việt
-
-Chào mừng bạn đến với AI Proxy Router! Add-on này biến Home Assistant của bạn thành một trạm trung chuyển (Proxy) AI siêu mạnh mẽ, giúp bạn gom chung tất cả API Keys từ các nhà cung cấp (Groq, Gemini, OpenRouter, OpenAI, và cả Các Nguồn Custom) vào một chỗ và tự động định tuyến thông minh.
-
-Dưới đây là hướng dẫn từ A-Z để bạn làm chủ hệ thống này.
-
-🌟 TÍNH NĂNG NỔI BẬT
-
-Smart Routing (Định tuyến thông minh): Gửi chữ thì gọi LLM (Llama, Claude), gửi ảnh thì tự động bẻ lái sang model Vision (Gemini, GPT-4o).
-
-Key Rotation (Xoay vòng): Add-on sẽ tự chuyển sang API Key khác nếu Key đang dùng bị lỗi mạng hoặc hết tiền (Quota Exceeded).
-
-Auto-AI: Tính năng chọn model tự động theo thứ tự ưu tiên mà bạn sắp xếp.
-
-Custom Endpoints: Hỗ trợ cấu hình thêm API từ DeepSeek, Together AI, Mistral hoặc thậm chí mô hình Local (LM Studio, Ollama).
-
-Quản lý Hạn mức (Quota Limits): Bảo vệ túi tiền của bạn bằng cách giới hạn số USD tối đa mà mỗi Client được xài.
-
-Thống kê: Theo dõi Token, dự tính chi phí.
-
-Tool Calling & Structured Output: Hỗ trợ function tools trên Chat Completions/Responses, streaming arguments, JSON Object/JSON Schema và failover khi output sai schema. Function chỉ được trả về cho client; Router không tự thực thi.
-
-🛠️ HƯỚNG DẪN CÀI ĐẶT & CẤU HÌNH
-
-Bước 1: Mở Dashboard
-
-Sau khi nhấn Start Add-on, bạn hãy nhấn vào nút Open Web UI (hoặc tích chọn Show in sidebar rồi nhấn vào thanh menu bên trái). Add-on mở thẳng dashboard qua Home Assistant Ingress, không có tài khoản/mật khẩu nội bộ.
-
-Dashboard và API quản trị `/api/*` chỉ hoạt động qua Home Assistant Ingress. Cổng LAN `1236` mặc định tắt; nếu client ngoài Home Assistant cần kết nối, hãy publish `1236/tcp` trong mục Network của add-on hoặc dùng reverse proxy HTTPS chỉ forward `/v1/*`. Proxy Key được yêu cầu cho `/v1/models`, `/v1/chat/completions` và `/v1/responses`.
-
-Bước 2: Thêm API Key Gốc (Nguồn cấp)
-
-Đây là nơi bạn khai báo các Key thật từ các hãng AI.
-
-Tại mục API Các Nguồn, chọn tên nhà cung cấp (Ví dụ: Groq).
-
-Mẹo: Nếu bạn muốn thêm hãng khác (như DeepSeek), hãy chọn 🌐 Custom Endpoint. Lúc này bảng sẽ hiện thêm 2 ô để bạn điền Tên hiển thị và Base URL của hãng đó (Ví dụ: https://api.deepseek.com/v1).
-
-Dán API Key thật của bạn vào ô kế bên.
-
-Nhấn nút Tải Model. Lúc này Add-on sẽ tự động liên hệ máy chủ để lấy danh sách các model có sẵn (giúp bạn không phải gõ tay dễ sai sót).
-
-Chọn Model bạn muốn dùng từ Menu xổ xuống.
-
-Thiết lập Quota ($) (Hạn mức): Nếu bạn mua Key đó 5$, hãy nhập số 5. Khi xài hết 5$, Proxy sẽ khóa Key đó lại. (Nếu xài Free, hãy để là 0).
-
-Nhấn Lưu Nguồn.
-
-Bước 3: Sắp xếp Ưu tiên
-
-Hệ thống sẽ chạy từ trên xuống dưới danh sách Nguồn bạn đã thêm.
-
-Sử dụng các nút mũi tên ▲ / ▼ để thay đổi vị trí ưu tiên.
-
-Ví dụ: Bạn xếp Groq (miễn phí) ở trên cùng, Custom DeepSeek ở giữa, OpenRouter (trả phí) ở dưới. Khi các nguồn free bị sập, hệ thống mới tự chuyển sang dùng OpenRouter để tiết kiệm.
-
-Bước 4: Tạo Proxy Key (Giấy thông hành)
-
-Thay vì dùng Key gốc đem đi phân phát dễ bị lộ, bạn sẽ cấp Proxy Key cho các ứng dụng.
-
-Đến mục Quản lý Proxy Keys.
-
-Đặt tên cho ứng dụng (VD: LobeChat).
-
-Nhập giới hạn ngân sách $ muốn cấp cho app đó (Nhập 0 nếu cho xài thả ga). Nhấn Tạo mới.
-
-Nhấn nút 📋 để copy mã Proxy Key (có dạng sk-proxy-...).
-
-🔗 KẾT NỐI VỚI ỨNG DỤNG BÊN NGOÀI
-
-Bây giờ bạn đã có Base URL (xem trên Dashboard) và Proxy Key. Hãy mở các ứng dụng như Dify, LobeChat, ChatGPT Next Web, hoặc Home Assistant OpenAI Conversation và cấu hình như sau:
-
-API Endpoint / Base URL / Custom Endpoint: Sau khi bật port `1236` trong mục Network, dùng đường dẫn có dạng http://<IP_HASS_CỦA_BẠN>:1236/v1
-
-Kết nối khi Home Assistant đã public: mở tab **Endpoint → Kết nối bên ngoài**, nhập **Public Base URL** rồi lưu. Có thể dùng `https://ai.example.com/v1` qua reverse proxy HTTPS trỏ tới `http://<IP_HASS>:1236` và chỉ cho phép `/v1/*`, hoặc `http://<PUBLIC_HOST>:1236/v1` nếu forward port trực tiếp. Dashboard và `/api/*` vẫn chỉ qua Ingress. URL public sẽ hiện ở thẻ Base URL, tab Endpoint và CLI Tools (chọn **Bên ngoài**).
-
-API Key: Dán mã sk-proxy-... bạn vừa tạo ở Bước 4.
-
-Custom Model: * Gõ chữ auto-ai (Đây là tính năng độc quyền: Add-on sẽ tự động tìm và dùng model đang rảnh nhất trên hệ thống của bạn).
-
-Hoặc gõ chính xác tên model (VD: gpt-4o hoặc deepseek-chat) nếu bạn chỉ muốn "bắt" nó dùng đúng model đó.
-
-❓ XỬ LÝ SỰ CỐ THƯỜNG GẶP
-
-Dashboard hiện IP lỗi homeassistant.local: Bạn chưa cấp quyền mạng cho Add-on. Hãy đảm bảo bạn đã chèn dòng hassio_api: true vào file cấu hình config.yaml và Rebuild lại Add-on.
-
-Quét Lỗi Key báo đỏ:
-Nhà cung cấp đã xóa (deprecated) cái model đó, hoặc API Key của bạn đã bị khóa. Hãy tạo/cập nhật Key khác!
-
-Lỗi khi thêm Custom Endpoint:
-Hãy chắc chắn rằng Base URL của hãng đó chuẩn định dạng OpenAI và phải kết thúc bằng /v1 (Ví dụ: https://api.together.xyz/v1).
+**Ngôn ngữ:** [Tiếng Việt](#tiếng-việt) · [English](#english)
 
 ---
 
-## Cập nhật 1.0.4
+## Tiếng Việt
 
-- Tạo Proxy Key mặc định ngẫu nhiên thay vì dùng key cố định
-- Session đăng nhập dùng token ngẫu nhiên thay cho cookie tĩnh
-- Đổi mật khẩu tài khoản sẽ được lưu dạng hash SHA-256 có salt
-- Ẩn API key gốc khi trả dữ liệu dashboard `/api/stats`
-- Ghi `data.json` theo kiểu atomic write để an toàn hơn khi có nhiều request
-- Thêm endpoint kiểm tra sống `/health`
-- Tự ép `stream=false` để tương thích ổn định hơn với client/Home Assistant ở bản này
-- Bổ sung OpenRouter headers cho request chat completion
-- Normalize custom base URL tốt hơn cho endpoint `/models` và `/chat/completions`
-- Cải thiện nhận diện Vision input
+### 1. Cài đặt
 
+1. Mở **Settings → Add-ons → Add-on Store**.
+2. Mở menu ba chấm → **Repositories**.
+3. Thêm:
 
-## Cập nhật 1.0.5
+   ```text
+   https://github.com/trankhanhduy2929-beep/my_hass_addon_public
+   ```
 
-- Thêm CSRF protection cho toàn bộ API thay đổi dữ liệu (POST/DELETE quản trị)
-- Dashboard tự gửi `X-CSRF-Token` từ cookie đăng nhập
-- Siết CORS mặc định: không mở `*`; dùng same-origin/Ingress là chính
-- Có thể mở CORS có kiểm soát qua biến `ALLOWED_ORIGINS` (danh sách URL, cách nhau dấu phẩy)
-- Tự migrate mật khẩu plaintext cũ sang hash SHA-256 + salt khi boot
+4. Tìm **AI Proxy Router → Install**.
+5. Bật **Start on boot**, **Watchdog** và **Show in sidebar** nếu cần.
+6. Nhấn **Start**, mở **Web UI**.
 
+Port `1236` mặc định không publish. Chỉ bật trong **Network** khi client LAN cần gọi trực tiếp `/v1/*`. Dashboard và `/api/*` vẫn chỉ truy cập qua Ingress.
 
-## Cập nhật 1.0.6
+### 2. Bắt đầu nhanh
 
-- Thêm rate limit cho đăng nhập (giới hạn số lần sai và khóa tạm thời)
-- Thêm session idle timeout (hết phiên nếu không hoạt động)
-- Cookie đăng nhập/CSRF có `max_age`, tự bật `secure` khi truy cập HTTPS qua reverse proxy
-- `/api/stats` không còn trả full proxy key, chỉ trả key đã mask
-- Thêm endpoint quản trị Proxy Key:
-  - `POST /api/proxy_keys/{index}/reveal` để lấy full key khi cần
-  - `POST /api/proxy_keys/{index}/regenerate` để tạo key mới và vô hiệu key cũ
-- Dashboard cập nhật nút copy theo cơ chế reveal + thêm nút regenerate key
+1. Mở tab **Nguồn & Key**.
+2. Chọn provider hoặc **Custom Endpoint**, dán API key thật, bấm **Thêm & tự dò model**.
+3. Mở **Quản lý Proxy Keys**, tạo key cho ứng dụng.
+4. Mở **Test AI**, chạy Chat/Vision để kiểm tra.
+5. Mở **Endpoint**, sao chép Base URL.
+6. Cấu hình ứng dụng:
 
+   ```text
+   Base URL: http://HOME_ASSISTANT_IP:1236/v1
+   API Key: sk-proxy-...
+   Model: auto-ai
+   ```
 
-## Nguồn tự động và đồng bộ model (v1.19.0)
+7. Nếu dùng từ xa, xem mục **Truy cập từ Internet** bên dưới.
 
-Từ 1.19.0, mỗi nguồn chỉ cần nhập API key một lần. Add-on gọi `/models`, chỉ giữ model chat/audio dùng được, lưu từng model thành một entry và giữ key trong kho key. Card nguồn cho phép đồng bộ ngay, tạm tắt/bật lại hoặc xóa cả nguồn mà không xóa key gốc.
+### 3. Truy cập từ Internet
 
-- Tự đồng bộ model mỗi 6 giờ, độc lập với kiểm tra sức khỏe.
-- Model mới tự thêm; model provider đã bỏ tự xóa; lỗi mạng tạm thời không xóa model.
-- Model embedding, rerank, moderation, image/video, realtime và native-audio bị loại khỏi danh sách route; model STT/TTS vẫn được giữ cho tab Voice.
-- Token Saver và sơ đồ định tuyến được thiết kế lại; sơ đồ sáng theo request gần nhất và tự tắt sau khoảng 12 giây.
-- Đăng nhập Codex OAuth đã được loại bỏ hoàn toàn; Codex CLI vẫn dùng được như một client OpenAI-compatible bình thường.
+Không dùng URL Ingress của Home Assistant làm Base URL API.
 
-## Cập nhật 1.5.0 — Tự phục hồi nguồn
+#### Reverse proxy HTTPS
 
-- Thêm nút **Tự phục hồi nguồn** trong khu vực Chat test nhanh.
-- Hệ thống kiểm tra đồng thời các provider đã lưu và chỉ kích hoạt lại nguồn khi endpoint phản hồi thành công.
-- Nguồn phục hồi thành công được xóa số lần lỗi, cooldown và thông báo lỗi cũ.
-- Thêm tùy chọn **Tự đổi model khi model cũ không còn**. Tùy chọn này mặc định tắt để tránh tự thay đổi cấu hình ngoài ý muốn.
-- Khi bật tự đổi model, Router ưu tiên model cùng họ với model cũ; nếu không tìm thấy mới chọn model phổ biến phù hợp từ danh sách provider trả về.
-- Bảng nguồn hiển thị thêm độ trễ, thời điểm kiểm tra và dấu hiệu lỗi gần nhất.
-- Mọi lần tự phục hồi đều được ghi vào Audit log.
-- Giữ nguyên định tuyến dự phòng thông minh và các sửa lỗi ổn định từ v1.4.0.
+Chỉ forward `/v1/*` tới add-on, giữ dashboard và `/api/*` nội bộ. Nếu reverse proxy chạy cùng Docker network, dùng hostname nội bộ của add-on; nếu chạy trên host/LAN, publish port `1236` rồi trỏ tới IP LAN.
 
+Sau khi có URL:
 
-## Cập nhật 1.6.0 — Giám sát tự động, Telegram và backup an toàn
+1. Mở **Endpoint → Kết nối bên ngoài**.
+2. Nhập **Public Base URL**, ví dụ `https://ai.example.com/v1`.
+3. Lưu và kiểm tra bằng request thật.
 
-- Thêm kiểm tra provider định kỳ chạy nền nhẹ, chu kỳ tối thiểu 5 phút và có thể tắt hoàn toàn.
-- Có tùy chọn tự kích hoạt lại nguồn sau khi kiểm tra xác nhận nguồn đã hoạt động tốt.
-- Thêm nút **Kiểm tra ngay** và phần tổng quan vận hành: số nguồn khỏe/lỗi, tỉ lệ request thành công và nhóm lỗi xác thực, hạn mức, model, mạng/timeout.
-- Thêm cảnh báo Telegram khi toàn bộ nguồn lỗi, hệ thống suy giảm hoặc tự phục hồi thành công.
-- Telegram có thời gian chống gửi trùng; Bot Token và Chat ID được cấu hình ngay trong giao diện quản trị.
-- Thêm nút gửi thử Telegram để kiểm tra cấu hình.
-- Trước khi Restore JSON, Router tự tạo một bản sao an toàn trong `/data` và giữ tối đa 5 bản gần nhất.
-- Giữ nguyên toàn bộ tính năng v1.5.0: tự phục hồi nguồn, tùy chọn sửa model, failover thông minh và kiểm tra đồng loạt provider.
+#### Cloudflare Tunnel
 
+1. Cài add-on **Cloudflared**.
+2. Thêm hostname public một cấp, ví dụ `ai.example.com`.
+3. Trỏ service tới AI Proxy Router:
 
-## Cập nhật 1.7.3 — Tùy chọn bỏ mật khẩu
+   ```yaml
+   additional_hosts:
+     - hostname: ai.example.com
+       service: http://<ai-proxy-container>:1236
+   ```
 
-- Thêm tùy chọn **Tắt yêu cầu mật khẩu khi mở addon** trong tab Cài đặt.
-- Khi bật tùy chọn này, mở Web UI sẽ vào thẳng dashboard. Chỉ nên dùng khi addon chạy qua Home Assistant Ingress hoặc mạng tin cậy.
+4. Restart Cloudflared và chờ tunnel kết nối lại.
+5. Kiểm tra:
 
-## Cập nhật 1.8.1 — Tối ưu thao tác vuốt trên điện thoại
+   ```bash
+   curl -i "https://ai.example.com/health"
+   curl -i "https://ai.example.com/v1/models" \
+     -H "Authorization: Bearer sk-proxy-YOUR_KEY"
+   ```
 
-- Tăng khoảng vuốt tối thiểu để tránh chạm nhẹ làm chuyển tab ngoài ý muốn.
-- Chỉ chuyển tab khi cử chỉ vuốt ngang đủ rõ và có chủ ý.
-- Tự hủy nhận diện swipe khi người dùng đang cuộn dọc.
-- Không nhận swipe trên nút, liên kết, ô nhập, biểu đồ, bảng cuộn và vùng chọn nội dung.
-- Bỏ qua cử chỉ bắt đầu sát mép màn hình để không xung đột thao tác quay lại của điện thoại.
+6. Nhập `https://ai.example.com/v1` vào **Public Base URL**.
 
-## Cập nhật 1.8.2 — Test nhanh và Vision
+Lưu ý:
 
-- Chat test tự chọn Proxy Key đang hoạt động, không cần dán token thủ công.
+- Cloudflare Universal SSL thường chỉ phủ `example.com` và `*.example.com`. Dùng `ai.example.com`, không dùng `ai.ha.example.com` nếu không có chứng chỉ phù hợp.
+- Lỗi TLS thường gặp: `sslv3 alert handshake failure` hoặc `SSL alert number 40`.
+- Restart Cloudflared có thể gây `530`/`error code: 1033` tạm thời.
+- Không public dashboard, `/api/*` hoặc Ingress URL.
+- Nếu bật Cloudflare Access cho API, client phải gửi service token; nhiều ứng dụng không hỗ trợ.
 
-## Cập nhật 1.9.0 — Bolt Token Saver
+### 4. Proxy Key và bảo mật
 
-Dashboard có thêm khối **⚡ Bolt Token Saver** với bốn module độc lập:
+- Tạo Proxy Key riêng cho từng ứng dụng.
+- Không đưa API key gốc của provider cho ứng dụng bên ngoài.
+- Đặt hạn mức, rate limit và ngày hết hạn.
+- Tạo lại key ngay nếu bị lộ.
+- Backup chứa bí mật; hãy mã hóa và không chia sẻ.
+- Chỉ dùng HTTPS khi truy cập từ xa.
+- Giữ `/`, `/api/*`, `/docs`, `/redoc`, `/openapi.json` ngoài Internet.
 
-- **RTK:** tự nhận dạng và nén các `tool`/`tool_result` dạng `git diff`, `git status`, `grep`, `find`, `ls`, `tree`, log và output build. Nếu bộ lọc lỗi hoặc kết quả không nhỏ hơn, Router giữ nguyên output ban đầu.
-- **Headroom:** gửi `{messages, model}` tới endpoint `/v1/compress` trước khi chọn provider. Nếu Headroom không chạy, timeout hoặc trả dữ liệu sai, Router fail-open và tiếp tục bằng context gốc.
-- **Caveman:** chèn system prompt trả lời ngắn theo mức Lite/Full/Ultra. Code, command, đường dẫn, URL, lỗi và cảnh báo an toàn vẫn phải giữ rõ ràng.
-- **Ponytail:** hướng model làm code tối thiểu theo YAGNI, ưu tiên xóa/reuse/stdlib/native trước khi thêm abstraction hoặc dependency.
+Từ `1.22.0`:
 
-Các tùy chọn mặc định không tự bật master Token Saver để giữ tương thích với cấu hình cũ. Khi bật master, RTK được chọn mặc định; Headroom, Caveman và Ponytail bật riêng theo nhu cầu.
+- `/docs` và `/redoc` bị tắt.
+- `/openapi.json` chỉ mở qua Home Assistant Ingress.
+- Response có thêm `X-Content-Type-Options: nosniff` và `Referrer-Policy: no-referrer`.
 
-### Chạy Headroom riêng
+### 5. Kiểm tra và xử lý sự cố
 
-Headroom là dịch vụ tùy chọn. Có thể chạy trong container/máy khác rồi nhập URL tại dashboard:
-
-```bash
-pip install "headroom-ai[proxy,code,ml]"
-headroom proxy --port 8787
-```
-
-Ví dụ URL: `http://headroom:8787`. Nút **Kiểm tra** sẽ gọi `/health` để hiển thị trạng thái. Không nên cài trực tiếp thủ công vào container Add-on vì thay đổi sẽ mất khi rebuild/update image.
-
-### Bỏ qua theo từng request
-
-Gửi header sau để không áp dụng Token Saver cho một request cụ thể:
-
-```http
-X-AI-Proxy-Token-Saver: off
-```
-
-Response thành công có các header `X-AI-Proxy-Token-Saver`, `X-AI-Proxy-Input-Chars-Saved` và `X-AI-Proxy-Estimated-Tokens-Saved`. Dashboard lưu tổng request, ký tự context giảm, token input ước tính, số lần RTK/Headroom/Caveman/Ponytail hoạt động và lỗi Headroom gần nhất.
-
-## Cập nhật 1.10.0 — Giao diện song ngữ Việt/Anh
-
-- Thêm lựa chọn **Tiếng Việt / English** ở khu vực đầu giao diện, dùng được ngay khi mở dashboard.
-- Dashboard cũng có bộ chọn ngôn ngữ trên thanh điều hướng để đổi lại bất cứ lúc nào.
-- Nếu chưa từng chọn, trình duyệt có ngôn ngữ `vi` sẽ dùng tiếng Việt; các ngôn ngữ khác mặc định dùng English.
-- Lựa chọn được lưu trong `localStorage` của trình duyệt và tiếp tục được dùng sau khi tải lại trang.
-- Dịch các tab, form, placeholder, tooltip, trạng thái nguồn, Token Saver, bảng nguồn, test chat, Telegram, backup, diagnostics, toast và hộp xác nhận.
-- Nội dung tạo động sau khi gọi API được dịch bằng `MutationObserver`; nội dung AI trả lời, code, command, URL và dữ liệu trong khối `pre/code` không bị tự động dịch.
-- Script i18n được phục vụ nội bộ qua `/ui-i18n.js`, tương thích Home Assistant Ingress và không phụ thuộc dịch vụ dịch bên ngoài.
-
-## Cập nhật 1.10.1 — Tài liệu hướng dẫn song ngữ
-
-- Thêm `README.md` hướng dẫn đầy đủ bằng Tiếng Việt và English.
-- Bổ sung hướng dẫn cài đặt, đăng nhập, chọn ngôn ngữ, thêm provider, tạo Proxy Key và kết nối API tương thích OpenAI.
-- Bổ sung ví dụ Text/Vision, nguồn tự động, Bolt Token Saver, backup/restore, xử lý sự cố và lưu ý bảo mật.
-- Thêm phần English Guide ngay trong `DOCS.md` để người dùng nước ngoài đọc được từ trang tài liệu của Home Assistant.
-
-## Cập nhật 1.10.2 — Sửa treo khi đổi ngôn ngữ
-
-- Sửa vòng lặp `MutationObserver` do ghi lại `nodeValue` dù nội dung dịch không thay đổi.
-- Chỉ cập nhật text và thuộc tính khi giá trị mới thực sự khác giá trị hiện tại.
-- Tạm ngắt observer khi dịch toàn trang rồi bật lại sau khi hoàn tất, tránh observer tự bắt chính thay đổi của nó.
-- Giảm tải CPU khi đổi Tiếng Việt/English, đặc biệt khi mở dashboard qua Home Assistant Ingress trên điện thoại.
-
-## Cập nhật 1.11.0 — Mở thẳng dashboard
-
-- Bỏ hoàn toàn màn hình đăng nhập, tài khoản, mật khẩu và session nội bộ của add-on.
-- Khi mở Web UI, người dùng vào thẳng dashboard; không còn nút đăng xuất hoặc form đổi tài khoản.
-- Giữ Proxy Key cho các client API; đây vẫn là lớp xác thực riêng của endpoint `/v1/chat/completions`.
-- Xóa dữ liệu tài khoản cũ khỏi cấu hình runtime và bỏ qua trường legacy khi restore backup.
-- Khuyến nghị chỉ expose dashboard qua Home Assistant Ingress hoặc mạng nội bộ tin cậy.
-
-## Cập nhật 1.12.0 — Ingress-only Dashboard
-
-- Dashboard `/`, script giao diện và toàn bộ API quản trị `/api/*` chỉ chấp nhận request qua Home Assistant Ingress.
-- Kiểm tra đồng thời `X-Ingress-Path` và địa chỉ gateway Supervisor để request LAN giả header không vượt qua được.
-- Truy cập trực tiếp `IP_HOME_ASSISTANT:1236/` trả hướng dẫn mở addon từ sidebar thay vì hiển thị dashboard.
-- Port `1236` mặc định không publish; người dùng chủ động bật trong mục Network nếu cần API cho client LAN.
-- `/health` vẫn hoạt động cho watchdog; `/v1/models` và `/v1/chat/completions` đều yêu cầu Proxy Key.
-- Thêm `watchdog`, mô tả port, `panel_admin`, `boot`, `startup` và `stage` vào cấu hình add-on.
-
-## Cập nhật 1.12.1 — Base URL hiện IP HASS
-
-- Thẻ **📡 Base URL Connect** lấy IP Home Assistant thực tế từ Supervisor và hiển thị ngay khi render dashboard.
-- Tách rõ ba dòng: IP HASS, Base URL `/v1` và endpoint LLM Vision `/v1/chat/completions`.
-- Mỗi dòng có nút copy một chạm, hỗ trợ clipboard chuẩn và fallback cho WebView/HTTP.
-- Bỏ placeholder `IP Hass` và cách ghép URL theo hostname trình duyệt dễ sai khi chạy qua Ingress.
-
-## Cập nhật 1.13.0 — Streaming SSE + Responses API
-
-- `/v1/chat/completions` hỗ trợ SSE khi request gửi `"stream": true`; mặc định vẫn trả JSON để không phá client cũ.
-- Thêm `/v1/responses` cho `input` dạng chuỗi, message/content arrays, `input_text`, `input_image`, URL ảnh và `data:image/...` URI.
-- Responses streaming phát các event chính: `response.created`, `response.output_text.delta`, `response.output_text.done` và `response.completed`.
-- Token Saver được áp dụng trước routing cho cả Chat Completions và Responses, đồng thời giữ nguyên dữ liệu Vision.
-- Router có thể retry/chuyển nguồn trước event SSE đầu tiên. Sau khi stream bắt đầu, lỗi được gửi trong stream hiện tại và không ghép nội dung từ provider khác.
-- Thẻ **📡 Base URL Connect** có thêm dòng `/v1/responses` với nút copy một chạm.
-
-## Cập nhật 1.14.0 — Tool Calling + Structured Output
-
-- `/v1/chat/completions` và `/v1/responses` hỗ trợ function tools, `tool_choice` và `parallel_tool_calls`.
-- Responses nhận tool định dạng phẳng, `function_call`, `function_call_output` và phát event arguments khi streaming.
-- Structured Output hỗ trợ JSON Object/JSON Schema; output sai JSON/schema sẽ bị loại và Router thử nguồn tương thích tiếp theo.
-- Router tự bỏ qua provider không hỗ trợ tools/JSON Schema. Có thể đặt `supports_tools` hoặc `supports_json_schema` trên nguồn để override khả năng tương thích.
-- Dashboard có ba chế độ test: Chat/Vision, Tool Calling và JSON Schema; test tự dùng Proxy Key đang hoạt động.
-- Tool arguments chỉ được trả cho client, không ghi vào request log/CSV/test history. Client phải tự xác thực, cấp quyền và thực thi function.
-- Hosted web/file/computer tools bị từ chối và router không bao giờ tự thực thi tools.
-
-## Cập nhật 1.14.1 — Bảo mật lưu trữ và CSRF
-
-- Mọi endpoint `/api/*` thay đổi dữ liệu yêu cầu header `X-CSRF-Token`; dashboard tự gắn token, request thiếu hoặc sai bị trả `403`.
-- `data.json` và file backup được ghi với quyền `600`.
-- JSON hỏng không còn bị bỏ qua im lặng: file lỗi được sao thành `data.json.corrupt-*`, cảnh báo được ghi vào dashboard và việc ghi bị chặn nếu không thể giữ bản lỗi.
-- `X-Forwarded-For` chỉ được tin khi kết nối đến từ ingress gateway tin cậy.
-- Tailwind và Chart.js được đóng gói cục bộ trong `vendor/`; bỏ phụ thuộc Google Fonts.
-
-## Cập nhật 1.14.2 — Giao diện dashboard hiện đại
-
-- Desktop dùng thanh điều hướng dọc cố định, top bar kính mờ và vùng nội dung rộng hơn; mobile giữ thanh tab ngang và bottom navigation.
-- Hero gọn hơn, bỏ cụm số liệu trùng lặp; KPI chuyển thành ba cột, thẻ Base URL trải rộng với bốn endpoint dạng lưới.
-- Chuyển Advanced timeout/retry và Token Saver từ tab Chat sang tab Hệ thống để giữ luồng test AI gọn.
-- Đồng bộ card, input, bảng, trạng thái focus bàn phím, reduced motion và màu nền theo một bộ token giao diện mới.
-- Giữ nguyên API, CSRF, i18n, HA Ingress và các asset vendored; thêm stylesheet nội bộ `/dashboard.css` qua cùng lớp xác thực ingress.
-
-## Cập nhật 1.21.0 — Public Base URL cho client bên ngoài
-
-- Thêm mục **Endpoint → Kết nối bên ngoài** để lưu một `Public Base URL` khi Home Assistant đã public qua reverse proxy hoặc mở cổng `1236`.
-- URL public tự hiện ở thẻ Base URL, tab Endpoint và CLI Tools; CLI có nút chuyển **Nội bộ / Bên ngoài** và vẫn dùng `PROXY_KEY`.
-- URL được chuẩn hóa server-side: tự thêm `https://` nếu thiếu scheme, tự thêm `/v1` nếu thiếu path, bỏ dấu `/` cuối; từ chối scheme lạ, userinfo, query, fragment và cổng sai.
-- Dashboard/`/api/*` vẫn chỉ qua Home Assistant Ingress; không tự bật quyền HA hay tự public port. Tài liệu khuyến nghị reverse proxy HTTPS chỉ forward `/v1/*`.
-
-## Cập nhật 1.20.0 — Giao diện 1.20, màu nhấn và tối ưu hiệu năng
-
-- Điều hướng desktop chia bốn nhóm Cấu hình, Theo dõi, Công cụ, Quản trị; Proxy Key chuyển vào tab Nguồn & Key, tab Endpoint chỉ còn Base URL và các endpoint để tránh trùng lặp.
-- Thêm bảng chọn màu nhấn (coral, indigo, teal, ocean, plum, amber và màu tùy chọn) ở top bar/mobile; lưu `localStorage`, tự chọn màu chữ tương phản và đóng bảng ngay sau khi chọn.
-- Tăng chữ và nhịp khoảng cách; sidebar 258px, vùng nội dung rộng hơn; KPI bốn cột trên desktop, hai cột tablet/mobile, thẻ Base URL chiếm toàn hàng trên điện thoại.
-- Sửa tràn số token/chi phí trong KPI, input Base URL và sơ đồ định tuyến; nhãn phụ tăng lên 10.5–11px, chữ mã trong hướng dẫn tăng lên 12px.
-- Giảm tải dashboard: polling theo tab, gộp request đang chạy, `cache: no-store`, chỉ tải Chart.js khi mở Usage và tách hydrate Token Saver khỏi Settings để không ghi đè khi đang nhập.
-- Giữ nguyên API, Proxy Key, CSRF, i18n, HA Ingress, dark mode, reduced motion và asset vendored; tăng phiên bản lên `1.20.0`.
-
-## Cập nhật 1.19.0 — Nguồn tự động và giao diện gọn hơn
-
-- Bỏ hoàn toàn đăng nhập Codex OAuth; chỉ còn nguồn API key chuẩn.
-- Thêm nguồn một lần: tự dò model chat/audio, tự thêm model mới và loại model provider đã bỏ.
-- Tự đồng bộ model mỗi 6 giờ, độc lập với kiểm tra sức khỏe; lỗi tạm thời không xóa model.
-- Quản lý nguồn theo nhóm với đồng bộ, tạm tắt, xóa và xem toàn bộ model.
-- Thiết kế lại Token Saver và sơ đồ định tuyến theo phong cách sáng, gọn.
-- `/v1/models` trả danh sách model active/enabled duy nhất, gồm cả model audio, để client tự chọn.
-
-## Cập nhật 1.18.0 — Menu gọn gàng và nâng cấp Kho key/Voice
-
-- Sidebar chia nhóm rõ ràng: Kết nối, Theo dõi, Công cụ, Hệ thống; thứ tự tab và thao tác vuốt được đồng bộ, Voice đứng cạnh CLI Tools.
-- Bottom navigation mobile còn 6 mục trên một hàng; nút `Thêm` mở sheet chứa Endpoint & Key, Quota, Token Saver, CLI Tools và Hệ thống, có `aria-expanded`, đóng bằng ESC/chạm nền và trả focus về nút mở.
-- Key Vault có ô tìm kiếm theo provider/nhãn/key, bộ đếm kết quả, nhãn chung khi nhập nhiều key và sửa/xóa nhãn qua `PATCH /api/key_vault/{id}` có CSRF và audit log.
-- Voice cho chọn Proxy Key đang hoạt động (reveal qua endpoint CSRF), chọn ngôn ngữ STT, giọng/định dạng/tốc độ TTS; snippet Home Assistant copy theo lựa chọn hiện tại.
-- Bổ sung CSS cho sheet mobile, dark mode, responsive vault/voice và tăng phiên bản lên `1.18.0`.
-
-## Cập nhật 1.17.0 — Key Vault và Voice (STT/TTS)
-
-- Thêm **Key Vault**: nhập một lần nhiều API key (mỗi dòng một key), lưu theo provider và hiển thị ở ô chọn `🔐 Chọn key đã lưu` khi thêm model. Key được che khi trả về dashboard và chỉ lộ qua endpoint reveal có CSRF.
-- Khi tải model hoặc thêm Nguồn, có thể chọn key đã lưu thay vì dán lại key; key dùng thành công được tự động ghi nhớ vào vault.
-- Key Vault tự migrate từ các key đang có khi nâng cấp và hiển thị trong `get_stats`; backup/debug bundle đã che key.
-- Thêm endpoint OpenAI-compatible `POST /v1/audio/transcriptions` (multipart) và `POST /v1/audio/speech` (JSON), tự chọn nguồn có model audio phù hợp và trả nguyên content-type.
-- `/v1/models` ẩn model audio để client chat không chọn nhầm.
-- Thêm tab `Voice`: tải model audio, thử STT bằng file và TTS ra trình phát, kèm snippet Home Assistant (`shell_command` cho STT, `rest_command` cho TTS).
-- Thêm CSS vault/voice, bản dịch Việt/Anh cho nhãn mới và tăng phiên bản lên `1.17.0`.
-
-## Cập nhật 1.16.0 — Tab Quota và CLI Tools
-
-- Thêm tab `Quota`: tổng hạn mức, đã dùng, số nguồn không giới hạn, số key sắp chạm ngưỡng, kèm thanh tiến độ và mức còn lại cho từng nguồn và Proxy Key.
-- Thêm tab `CLI Tools`: snippet copy một chạm cho OpenAI SDK (Python), cURL, biến môi trường và Codex CLI dùng endpoint OpenAI-compatible của router.
-- Liên kết nhanh `Xem Quota` trong tab Usage và `Mở CLI Tools` trong tab Endpoint & Key; vẫn hỗ trợ vuốt tab trên mobile.
-- Bổ sung CSS responsive cho hai tab mới và bản dịch Việt/Anh cho toàn bộ nhãn, nút copy và thông báo.
-- Giữ nguyên API, CSRF, i18n, HA Ingress và asset vendored.
-
-## Cập nhật 1.15.0 — Giao diện 9router, theme sáng/tối và tab mới
-
-- Đổi bộ màu theo 9router: nền kem `#fdfaf6`, nhấn cam `#e56a4a`, sidebar sáng, card phẳng và bo góc lớn hơn.
-- Thêm nút chuyển sáng/tối ở top bar; lưu lựa chọn vào `localStorage` và tôn trọng `prefers-color-scheme`.
-- Thêm ba tab: `Endpoint & Key` (Base URL, Chat Completions, Responses, Models kèm nút copy), `Usage` (biểu đồ + nhật ký) và `Token Saver`.
-- Hero chuyển sang bố cục grid ổn định; KPI 3 cột ở tablet và 2 cột trên điện thoại nhỏ, hết tràn số liệu chi phí ở 360px.
-- Biểu đồ tròn dùng bảng màu thương hiệu và tự cập nhật màu chú giải khi đổi theme.
-- Giữ nguyên API, CSRF, i18n, HA Ingress và asset vendored.
-
-## Cập nhật 1.14.4 — Giao diện điều khiển cao cấp
-
-- Dựng lại toàn bộ khung dashboard: sidebar tối cố định, top bar kính mờ, vùng nội dung rộng và nhịp khoảng trắng thoáng hơn.
-- Hero mới dạng control center với nền graphite, điểm nhấn xanh indigo/teal và cụm đồ họa vòng định tuyến.
-- Điều hướng dùng icon SVG thay emoji, trạng thái hệ thống, phiên bản và bộ chọn ngôn ngữ gom vào sidebar.
-- Chuẩn hóa card, KPI, input, bảng và nút theo bộ token mới; mobile giữ bottom navigation tối, thêm nút kiểm tra nhanh.
-- Sửa tiêu đề Chat test co giãn trên mobile; giữ nguyên API, CSRF, i18n, HA Ingress và asset vendored.
-
-## Cập nhật 1.14.3 — Giao diện mềm và mượt hơn
-
-- Bỏ thanh điều hướng dọc cố định; chuyển sang dải tab nổi dạng viên thuốc, nằm ngay dưới top bar và cuộn theo trang.
-- Top bar dạng kính mờ nổi, bo tròn; nền dashboard dùng gradient aurora nhẹ thay cho các mảng màu tương phản mạnh.
-- Hero chuyển sang tông sáng pastel, chữ đậm dễ đọc; nút hành động bo tròn, chuyển động nâng nhẹ khi hover.
-- Card, KPI, Base URL, sơ đồ định tuyến dùng bo góc lớn hơn, viền sáng và bóng đổ khuếch tán; input/select bo tròn, focus ring mềm.
-- Mobile ẩn dải tab ngang, giữ bottom navigation dạng kính nổi; thêm hiệu ứng chuyển tab và reduced-motion fallback.
-- Giữ nguyên toàn bộ API, handler, CSRF, i18n, HA Ingress và asset vendored.
-
-## Version 1.10.2 — Language switch freeze fix
-
-- Fixed a `MutationObserver` loop caused by rewriting unchanged text nodes.
-- Text and attributes are now updated only when the translated value is different.
-- The observer is temporarily disconnected during a full-page language update and safely reconnected afterward.
-- Reduced CPU load when switching Vietnamese/English, especially in Home Assistant Ingress on mobile devices.
-
-## Version 1.11.0 — Direct dashboard access
-
-- Removed the add-on's internal login screen, username, password, and session layer.
-- The Web UI now opens directly on the dashboard; logout and account-change controls are gone.
-- Proxy Keys remain required for client API calls to `/v1/chat/completions`.
-- Legacy account data is removed from runtime configuration and ignored during backup restore.
-- Expose the dashboard only through Home Assistant Ingress or a trusted local network.
-
-## Version 1.12.0 — Ingress-only Dashboard
-
-- Restricted `/`, UI assets, and all `/api/*` administration endpoints to Home Assistant Ingress.
-- Validates both `X-Ingress-Path` and the Supervisor ingress gateway address to reject spoofed LAN requests.
-- Direct `HOME_ASSISTANT_IP:1236/` access returns instructions instead of the dashboard.
-- Port `1236` is not published by default and can be enabled manually for LAN API clients.
-- `/health` remains available for the watchdog; `/v1/models` and `/v1/chat/completions` both require a Proxy Key.
-- Added watchdog, port description, `panel_admin`, boot/startup, and release-stage metadata.
-
-## Version 1.12.1 — Home Assistant IP in Base URL
-
-- The **📡 Base URL Connect** card now displays the actual Home Assistant IP obtained from Supervisor data.
-- Shows separate Home Assistant IP, `/v1` Base URL, and `/v1/chat/completions` LLM Vision endpoint rows.
-- Each row provides one-click copying with clipboard and WebView/HTTP fallback support.
-- Removed the `IP Hass` placeholder and browser-hostname URL construction that could be incorrect through Ingress.
-
-## Version 1.13.0 — Streaming SSE + Responses API
-
-- `/v1/chat/completions` supports opt-in SSE with `"stream": true`; existing requests remain non-streaming JSON by default.
-- Added `/v1/responses` with string input, message/content arrays, `input_text`, `input_image`, image URLs, and `data:image/...` URIs.
-- Responses streaming emits core events including `response.created`, `response.output_text.delta`, `response.output_text.done`, and `response.completed`.
-- Token Saver runs before routing for both APIs while preserving Vision content.
-- Retry/failover is available before the first SSE event. Once streaming starts, errors stay in the current stream and output from different providers is never merged.
-- The **📡 Base URL Connect** card adds a one-click `/v1/responses` endpoint row.
-
-## Version 1.14.0 — Tool Calling + Structured Output
-
-- `/v1/chat/completions` and `/v1/responses` support function tools, `tool_choice`, and `parallel_tool_calls`.
-- Responses accepts flat function definitions, `function_call`, `function_call_output`, and streamed argument events.
-- JSON Object/JSON Schema structured output is validated; invalid JSON/schema output triggers fallback to the next compatible source.
-- Providers without tools/JSON Schema support are skipped automatically. Per-source `supports_tools` and `supports_json_schema` overrides are supported.
-- The dashboard adds Chat/Vision, Tool Calling, and JSON Schema test modes and automatically uses an active Proxy Key.
-- Tool arguments are returned to the client but excluded from request logs, CSV exports, and test history. The client must validate, authorize, and execute functions safely.
-- Hosted web/file/computer tools are rejected and the router never executes tools on behalf of the client.
-
-## Version 1.14.1 — Storage security and CSRF
-
-- Every data-changing `/api/*` endpoint requires an `X-CSRF-Token` header; the dashboard adds it automatically and missing/invalid tokens return `403`.
-- `data.json` and backup files are written with mode `600`.
-- Corrupt JSON is no longer ignored silently: the bad file is copied to `data.json.corrupt-*`, an alert is recorded in the dashboard, and writes are blocked if the corrupt copy cannot be preserved.
-- `X-Forwarded-For` is trusted only when the connection comes from a trusted ingress gateway.
-- Tailwind and Chart.js are bundled locally under `vendor/`; the Google Fonts dependency is removed.
-
-## Version 1.14.2 — Modern dashboard interface
-
-- Desktop uses a fixed vertical navigation rail, a frosted top bar, and a wider content area; mobile keeps horizontal tabs and bottom navigation.
-- The hero is more compact and no longer duplicates KPI values; KPIs use three columns and the Base URL card spans the row with a four-endpoint grid.
-- Advanced timeout/retry and Token Saver move from Chat to the System tab so AI testing stays focused.
-- Cards, inputs, tables, keyboard focus, reduced motion, and background colors share a new interface token set.
-- API behavior, CSRF, i18n, HA Ingress, and vendored assets are unchanged; a local `/dashboard.css` stylesheet is served through the same ingress authentication.
-
-## Version 1.21.0 — Public Base URL for external clients
-
-- Added **Endpoint → External access** to save a `Public Base URL` when Home Assistant is public through a reverse proxy or an exposed port `1236`.
-- The public URL appears in the Base URL card, Endpoint tab, and CLI Tools; CLI includes **Local / External** switching while still using `PROXY_KEY`.
-- URLs are normalized server-side: `https://` is added when missing, `/v1` is appended when the path is empty, trailing slashes are removed, and unknown schemes, userinfo, query strings, fragments, and invalid ports are rejected.
-- The dashboard and `/api/*` remain Home Assistant Ingress-only; the add-on does not enable HA permissions or expose ports automatically. Docs recommend an HTTPS reverse proxy that forwards only `/v1/*`.
-
-## Version 1.20.0 — 1.20 interface, accent colors, and performance tuning
-
-- Desktop navigation is grouped into Setup, Monitoring, Tools, and Admin. Proxy Keys move into Sources & Keys, while the Endpoint tab keeps only the Base URL and endpoint list to avoid duplication.
-- Added an accent palette (coral, indigo, teal, ocean, plum, amber, and a custom color) in the top bar and mobile header; the choice persists in `localStorage`, picks a contrasting text color automatically, and closes after selection.
-- Larger typography and spacing: a 258px sidebar and wider workspace; four KPI columns on desktop, two on tablet/mobile, and a full-width Base URL card on phones.
-- Fixed token/cost overflow in KPI cards, Base URL inputs, and the routing map; secondary labels are now 10.5–11px and guide code is 12px.
-- Reduced dashboard load: tab-aware polling, in-flight request coalescing, `cache: no-store`, Chart.js only loads for Usage, and Token Saver hydration is separated from Settings so polling cannot overwrite edits.
-- API, Proxy Keys, CSRF, i18n, HA Ingress, dark mode, reduced motion, and vendored assets are unchanged; the version is now `1.20.0`.
-
-## Version 1.19.0 — Automatic sources and a cleaner UI
-
-- Removed Codex OAuth sign-in entirely; only standard API-key sources remain.
-- Add a source once: usable chat/audio models are discovered automatically, new models are added, and retired models are removed.
-- Automatic model sync every 6 hours, independent of health checks; temporary errors do not delete models.
-- Grouped source management with sync, pause, delete, and a full model list.
-- Redesigned Token Saver and routing map with a brighter, compact layout.
-- `/v1/models` returns each active/enabled model once, including audio models, so clients can choose.
-
-## Version 1.18.0 — Tidier navigation and Key Vault/Voice upgrades
-
-- The sidebar is grouped into Connect, Monitoring, Tools, and System; tab order and swipe order stay in sync, with Voice next to CLI Tools.
-- Mobile bottom navigation now fits six items in one row; the `More` button opens a sheet with Endpoint & Key, Quota, Token Saver, CLI Tools, and System, including `aria-expanded`, ESC/backdrop close, and focus return.
-- Key Vault adds provider/label/key search, a result count, a shared label for bulk imports, and label editing through the CSRF-protected `PATCH /api/key_vault/{id}` with audit logging.
-- Voice can pick an active Proxy Key (revealed through the CSRF endpoint), choose the STT language, and set TTS voice/format/speed; the Home Assistant snippet follows the current selection.
-- Added mobile-sheet, dark-mode, and responsive vault/voice CSS, and bumped the version to `1.18.0`.
-
-## Version 1.17.0 — Key Vault and Voice (STT/TTS)
-
-- Added a **Key Vault**: paste many API keys at once (one per line), store them per provider, and pick a saved key with `🔐 Choose a saved key` when adding a model. Keys are masked in the dashboard and revealed only through a CSRF-protected endpoint.
-- Loading models or adding a source can reuse a saved key instead of pasting it again; a key that works is remembered automatically.
-- The vault migrates existing keys on upgrade, is included in `get_stats`, and is masked in backups and debug bundles.
-- Added OpenAI-compatible `POST /v1/audio/transcriptions` (multipart) and `POST /v1/audio/speech` (JSON); the router picks a source with a matching audio model and preserves the upstream content type.
-- `/v1/models` hides audio models so chat clients do not pick them.
-- Added a `Voice` tab: load audio models, test STT from a file and TTS to a player, plus a Home Assistant snippet (`shell_command` for STT, `rest_command` for TTS).
-- Added vault/voice CSS, Vietnamese/English labels, and bumped the version to `1.17.0`.
-
-## Version 1.16.0 — Quota and CLI Tools tabs
-
-- Added the `Quota` tab: total budget, used amount, unlimited source count, and keys near their limit, with progress bars and remaining balance per source and Proxy Key.
-- Added the `CLI Tools` tab: one-tap copy snippets for the OpenAI Python SDK, cURL, environment variables, and Codex CLI against the router's OpenAI-compatible endpoint.
-- Quick links `View Quota` in the Usage tab and `Open CLI Tools` in the Endpoint & Key tab; mobile tab swiping is unchanged.
-- Responsive CSS for both new tabs plus Vietnamese/English translations for every label, copy button, and toast.
-- API, CSRF, i18n, HA Ingress, and vendored assets are unchanged.
-
-## Version 1.15.0 — 9router interface, light/dark theme, and new tabs
-
-- Adopted the 9router palette: cream background `#fdfaf6`, coral accent `#e56a4a`, light sidebar, flatter cards, and larger radii.
-- Added a light/dark toggle in the top bar; the choice is stored in `localStorage` and falls back to `prefers-color-scheme`.
-- Added three tabs: `Endpoint & Key` (Base URL, Chat Completions, Responses, Models with copy buttons), `Usage` (chart and request logs), and `Token Saver`.
-- The hero uses a stable grid; KPIs stay three columns on tablets and switch to two columns on small phones, fixing cost-value overflow at 360px.
-- The doughnut chart uses brand colors and refreshes its legend color when the theme changes.
-- API behavior, CSRF, i18n, HA Ingress, and vendored assets are unchanged.
-
-## Version 1.14.4 — Premium control center interface
-
-- Rebuilt the dashboard shell with a fixed dark sidebar, frosted top bar, wider content area, and more generous spacing.
-- New control-center hero with a graphite surface, indigo/teal accents, and a routing-ring visual.
-- SVG navigation icons replace emoji; system status, version, and language selector move into the sidebar.
-- Unified cards, KPIs, inputs, tables, and buttons under the new token set; mobile keeps a dark bottom navigation and quick-check action.
-- Fixed the Chat test header wrapping on mobile; APIs, CSRF, i18n, HA Ingress, and vendored assets remain unchanged.
-
-## Version 1.14.3 — Softer, smoother interface
-
-- The fixed vertical rail is replaced by a floating pill-style tab strip directly below the top bar.
-- The top bar floats as frosted glass with larger rounding; the dashboard background uses a soft aurora gradient instead of high-contrast blocks.
-- The hero uses a light pastel surface with dark, readable text; action buttons are pill-shaped and lift gently on hover.
-- Cards, KPIs, Base URL, and the routing map use larger radii, bright hairline borders, and diffuse shadows; inputs and selects are rounded with a soft focus ring.
-- Mobile hides the horizontal tab strip, keeps a floating glass bottom navigation, and retains the tab transition plus reduced-motion fallback.
-- All APIs, handlers, CSRF, i18n, HA Ingress, and vendored assets remain unchanged.
-
----
-
-## English Guide
-
-### Overview
-
-AI Proxy Router combines multiple AI providers behind one OpenAI-compatible API. It rotates API keys, automatically fails over when a source is unavailable, supports Text/Vision routing, and provides separate Proxy Keys for client applications.
-
-Main features:
-
-- OpenAI-compatible `/v1/models`, `/v1/chat/completions`, and `/v1/responses` endpoints.
-- Function tools, streamed tool-call arguments, and `function_call_output` follow-ups.
-- JSON Object/JSON Schema structured output with validation and compatible-provider fallback.
-- Automatic routing through the `auto-ai` model.
-- Built-in providers and OpenAI-compatible Custom Endpoints with automatic model discovery.
-- Text, Vision, and automatic model sync every 6 hours.
-- Bolt Token Saver with RTK, Headroom, Caveman, and Ponytail.
-- Per-client budgets, rate limits, expiration dates, statistics, provider checks, Telegram alerts, backup/restore, and masked diagnostics.
-- Vietnamese/English dashboard with a language selector on the navigation bar.
-
-### Installation
-
-1. Extract the `ai_proxy_router` folder into the Home Assistant local add-ons directory, usually `/addons/ai_proxy_router`.
-2. Open **Settings → Add-ons → Add-on Store**.
-3. Use **Check for updates** from the top-right menu or reload the page.
-4. Select **AI Proxy Router**, click **Install**, then **Start**.
-5. Open the **Web UI** and optionally enable **Show in sidebar**.
-
-Supported add-on architectures are `amd64` and `aarch64`.
-
-### Direct dashboard access and language
-
-- The add-on opens the dashboard directly; there is no built-in login screen, username, or password.
-- Select **Tiếng Việt** or **English** from the navigation bar.
-- Vietnamese browsers default to Vietnamese; other browser languages default to English on first use.
-- The language is stored in the browser and can be changed again from the dashboard navigation bar.
-
-The Web UI and administration endpoints are available only through Home Assistant Ingress. Proxy Keys remain required for client API calls.
-
-### Add an AI source
-
-1. Open **API Sources**.
-2. Select a built-in provider or **Custom Endpoint**.
-3. Enter the upstream provider API key.
-4. For a Custom Endpoint, enter a name and an OpenAI-compatible Base URL such as `https://api.example.com/v1`.
-5. Click **Load Models**, select a model, and optionally set a budget.
-6. Save the source and use `▲`/`▼` to change priority.
-
-When the requested model is `auto-ai`, the router selects a healthy source and tries fallback sources after quota, authentication, rate-limit, or network failures.
-
-### Create a Proxy Key
-
-Create one Proxy Key per application instead of sharing upstream API keys:
-
-1. Open **Proxy Key Management**.
-2. Enter the client name and optional budget, rate limit, tag, or expiration date.
-3. Create and copy the generated `sk-proxy-...` key.
-4. Use the dashboard to disable, reveal, regenerate, or delete the key.
-
-Client configuration:
-
-| Field | Value |
+| Hiện tượng | Cách xử lý |
 |---|---|
-| Base URL | `http://HOME_ASSISTANT_IP:1236/v1` |
-| API Key | `sk-proxy-YOUR_KEY` |
-| Model | `auto-ai` or a saved model name |
+| Dashboard không mở | Mở từ **Web UI** hoặc sidebar Home Assistant |
+| Client LAN không kết nối | Publish port `1236` trong **Network** |
+| `401` | Kiểm tra `Authorization: Bearer sk-proxy-...` |
+| `402`/`403`/`429` | Kiểm tra hạn mức, trạng thái key, ngày hết hạn, rate limit |
+| `503` | Kiểm tra nguồn, model, key và log |
+| `530`/`1033` | Cloudflared chưa kết nối; chờ 1–2 phút và xem log |
+| Lỗi TLS `alert 40` | Dùng hostname một cấp hoặc chứng chỉ phù hợp |
+| Public Base URL báo Đã cấu hình nhưng lỗi | Kiểm tra DNS, TLS, tunnel, firewall; gọi thử `/health` |
+| Voice `503` | Thêm nguồn có model STT/TTS và đồng bộ |
+| Headroom offline | Chạy dịch vụ `/v1/compress` và kiểm tra URL |
 
-Port `1236` is disabled by default. Enable the `1236/tcp` mapping in the add-on Network settings before using this Base URL. Do not use the Home Assistant Ingress URL as an external API Base URL.
-
-When Home Assistant is public, open **Endpoint → External access**, enter the **Public Base URL**, and save it. Use `https://ai.example.com/v1` through an HTTPS reverse proxy to `http://HOME_ASSISTANT_IP:1236` that allows only `/v1/*`, or `http://PUBLIC_HOST:1236/v1` with direct port forwarding. Keep the dashboard and `/api/*` Ingress-only. The dashboard shows the public URL in the Base URL card, Endpoint tab, and CLI Tools (**External**).
-
-### Dashboard test
-
-The test tab does not require a manually entered token. It automatically uses an enabled, valid Proxy Key. Create at least one Proxy Key before testing. Choose **Chat / Vision**, **Tool Calling**, or **JSON Schema**. Tool mode displays generated arguments without executing the function; JSON mode validates structured output and provider failover.
-
-### API examples
-
-Text request:
+Kiểm tra nhanh:
 
 ```bash
-curl "http://HOME_ASSISTANT_IP:1236/v1/chat/completions" \
-  -H "Authorization: Bearer sk-proxy-YOUR_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "model": "auto-ai",
-    "messages": [{"role": "user", "content": "Summarize the home status."}]
-  }'
+curl -i "https://ai.example.com/health"
+
+curl -i "https://ai.example.com/v1/models" \
+  -H "Authorization: Bearer sk-proxy-YOUR_KEY"
 ```
 
-Vision request:
+### 6. Nâng cấp
+
+1. Tải backup trong **Hệ thống**.
+2. Cập nhật add-on từ Add-on Store.
+3. Kiểm tra phiên bản, `/health`, `/v1/models` và một request chat.
+4. Nếu lỗi, xem **Log** và khôi phục backup khi cần.
+
+### 7. Liên kết
+
+- Kho add-on: `https://github.com/trankhanhduy2929-beep/my_hass_addon_public`
+- Hướng dẫn đầy đủ: `README.md`
+- API: `/v1/models`, `/v1/chat/completions`, `/v1/responses`, `/v1/audio/transcriptions`, `/v1/audio/speech`
+- Health check: `/health`
+
+---
+
+## English
+
+### 1. Install
+
+1. Open **Settings → Add-ons → Add-on Store**.
+2. Open the top-right menu → **Repositories**.
+3. Add:
+
+   ```text
+   https://github.com/trankhanhduy2929-beep/my_hass_addon_public
+   ```
+
+4. Find **AI Proxy Router → Install**.
+5. Enable **Start on boot**, **Watchdog**, and **Show in sidebar** if desired.
+6. Select **Start**, then open **Web UI**.
+
+Port `1236` is not published by default. Enable it in **Network** only when a LAN client must call `/v1/*` directly. Dashboard and `/api/*` remain Ingress-only.
+
+### 2. Quick start
+
+1. Open **Sources & Keys**.
+2. Choose a provider or **Custom Endpoint**, paste a provider API key, and click **Add and discover models**.
+3. Open **Manage Proxy Keys** and create a key for the app.
+4. Open **Test AI** and run a Chat/Vision test.
+5. Open **Endpoint** and copy the Base URL.
+6. Configure the app:
+
+   ```text
+   Base URL: http://HOME_ASSISTANT_IP:1236/v1
+   API Key: sk-proxy-...
+   Model: auto-ai
+   ```
+
+7. For remote access, see **Internet access** below.
+
+### 3. Internet access
+
+Never use the Home Assistant Ingress URL as an API Base URL.
+
+#### HTTPS reverse proxy
+
+Forward only `/v1/*` to the add-on and keep the dashboard and `/api/*` internal. If the proxy shares the add-on Docker network, use the add-on's internal hostname. If the proxy runs on the host/LAN, publish port `1236` and use the LAN address.
+
+After the public URL works:
+
+1. Open **Endpoint → External access**.
+2. Enter the **Public Base URL**, for example `https://ai.example.com/v1`.
+3. Save and verify with a real request.
+
+#### Cloudflare Tunnel
+
+1. Install the **Cloudflared** add-on.
+2. Add a one-level public hostname such as `ai.example.com`.
+3. Point the service at AI Proxy Router:
+
+   ```yaml
+   additional_hosts:
+     - hostname: ai.example.com
+       service: http://<ai-proxy-container>:1236
+   ```
+
+4. Restart Cloudflared and wait for the tunnel to reconnect.
+5. Test:
+
+   ```bash
+   curl -i "https://ai.example.com/health"
+   curl -i "https://ai.example.com/v1/models" \
+     -H "Authorization: Bearer sk-proxy-YOUR_KEY"
+   ```
+
+6. Enter `https://ai.example.com/v1` as the **Public Base URL**.
+
+Notes:
+
+- Cloudflare Universal SSL normally covers `example.com` and `*.example.com`. Use `ai.example.com`, not `ai.ha.example.com` without a suitable certificate.
+- Common TLS errors: `sslv3 alert handshake failure` or `SSL alert number 40`.
+- A Cloudflared restart can cause temporary `530`/`error code: 1033` responses.
+- Do not expose the dashboard, `/api/*`, or the Ingress URL.
+- Cloudflare Access requires service tokens; many OpenAI-compatible clients do not support them.
+
+### 4. Proxy Keys and security
+
+- Create a separate Proxy Key for each app.
+- Never give provider API keys to external apps.
+- Set budgets, rate limits, and expiration dates.
+- Regenerate a key immediately if it leaks.
+- Backups contain secrets; encrypt and protect them.
+- Use HTTPS for remote access.
+- Keep `/`, `/api/*`, `/docs`, `/redoc`, and `/openapi.json` off the Internet.
+
+From `1.22.0`:
+
+- `/docs` and `/redoc` are disabled.
+- `/openapi.json` is available only through Home Assistant Ingress.
+- Responses include `X-Content-Type-Options: nosniff` and `Referrer-Policy: no-referrer`.
+- Public `/health` returns only status, name, version, and uptime; use `/health` or `/api/health` through Ingress for full details.
+
+### 5. Troubleshooting
+
+| Symptom | Fix |
+|---|---|
+| Dashboard does not open | Open **Web UI** or the Home Assistant sidebar |
+| LAN client cannot connect | Publish port `1236` in **Network** |
+| `401` | Check `Authorization: Bearer sk-proxy-...` |
+| `402`/`403`/`429` | Check budget, key state, expiration, and rate limit |
+| `503` | Check sources, models, keys, and logs |
+| `530`/`1033` | Cloudflared is not connected; wait 1–2 minutes and check logs |
+| TLS `alert 40` | Use a one-level hostname or a suitable certificate |
+| Public Base URL says Configured but fails | Check DNS, TLS, tunnel, firewall, and `/health` |
+| Voice `503` | Add an STT/TTS source and sync |
+| Headroom offline | Run the `/v1/compress` service and check its URL |
+
+Quick checks:
 
 ```bash
-curl "http://HOME_ASSISTANT_IP:1236/v1/chat/completions" \
-  -H "Authorization: Bearer sk-proxy-YOUR_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "model": "auto-ai",
-    "messages": [{
-      "role": "user",
-      "content": [
-        {"type": "text", "text": "Describe this image."},
-        {"type": "image_url", "image_url": {"url": "https://example.com/camera.jpg"}}
-      ]
-    }]
-  }'
+curl -i "https://ai.example.com/health"
+
+curl -i "https://ai.example.com/v1/models" \
+  -H "Authorization: Bearer sk-proxy-YOUR_KEY"
 ```
 
-Images may use an `http(s)` URL or a `data:image/...` URI. Add `"stream": true` to Chat Completions for SSE.
+### 6. Upgrade
 
-Streaming chat:
+1. Download a backup from **System**.
+2. Update the add-on from the Add-on Store.
+3. Check the version, `/health`, `/v1/models`, and a chat request.
+4. If something fails, check **Log** and restore the backup when needed.
 
-```bash
-curl -N "http://HOME_ASSISTANT_IP:1236/v1/chat/completions" \
-  -H "Authorization: Bearer sk-proxy-YOUR_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{"model":"auto-ai","stream":true,"messages":[{"role":"user","content":"Hello"}]}'
-```
+### 7. Links
 
-Responses API:
-
-```bash
-curl "http://HOME_ASSISTANT_IP:1236/v1/responses" \
-  -H "Authorization: Bearer sk-proxy-YOUR_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{"model":"auto-ai","input":"Summarize the home status."}'
-```
-
-Function tool:
-
-```json
-{
-  "model": "auto-ai",
-  "messages": [{"role": "user", "content": "Check the kitchen"}],
-  "tools": [{
-    "type": "function",
-    "function": {
-      "name": "get_home_status",
-      "parameters": {
-        "type": "object",
-        "properties": {"room": {"type": "string"}},
-        "required": ["room"],
-        "additionalProperties": false
-      }
-    }
-  }],
-  "tool_choice": "required",
-  "parallel_tool_calls": false
-}
-```
-
-Responses uses flat function definitions and accepts `function_call_output` items with the matching `call_id`. Structured output uses `text.format.type=json_schema` or Chat Completions `response_format`. Responses tool streams emit `response.output_item.added`, `response.function_call_arguments.delta`, `response.function_call_arguments.done`, `response.output_item.done`, and `response.completed`.
-
-The client is responsible for validating and authorizing tool arguments before execution. Hosted web/file/computer tools are rejected, arguments are excluded from logs, and the router never executes tools.
-
-Set `"stream": true` on the Responses request to receive events such as `response.output_text.delta` and `response.completed`. Failover is available before the first SSE event; after streaming starts, errors remain in the current stream. Sources without token-level streaming fall back to synthesized SSE chunks from the completed answer.
-
-### Automatic sources and model sync (v1.19.0)
-
-From 1.19.0, each source only needs an API key once. The add-on calls `/models`, keeps only usable chat/audio models, stores each model as an entry, and keeps the key in the key vault. Source cards support immediate sync, pause/resume, or deleting the whole source without deleting the original key.
-
-- Automatic model sync every 6 hours, independent of health checks.
-- New models are added automatically; retired provider models are removed; temporary network errors do not delete models.
-- Embedding, rerank, moderation, image/video, realtime, and native-audio models are excluded from routing; STT/TTS models remain available for the Voice tab.
-- Token Saver and the routing map were redesigned; the map lights up for the latest request and fades after about 12 seconds.
-- Codex OAuth sign-in was removed entirely; Codex CLI still works as a regular OpenAI-compatible client.
-
-### Token Saver
-
-Enable the main **Token Saver** switch and then configure the required modules:
-
-- **RTK:** compresses long `git`, `grep`, `ls`, `tree`, logs, and build output before sending it to the model.
-- **Headroom:** calls a separate `/v1/compress` service before routing. Errors and timeouts fail open to the original context.
-- **Caveman:** adds a terse Lite/Full/Ultra response instruction while preserving code, commands, paths, errors, and safety warnings.
-- **Ponytail:** biases coding answers toward YAGNI, deletion, reuse, standard-library, and native solutions.
-
-RTK is selected by default at the module level but only runs after the main Token Saver switch is enabled. Headroom, Caveman, and Ponytail are optional.
-
-Bypass Token Saver for one request:
-
-```http
-X-AI-Proxy-Token-Saver: off
-```
-
-Headroom must run as a separate service that exposes `/v1/compress`. Enter its URL on the dashboard and test the connection before enabling it.
-
-### Backup and restore
-
-- **Download Backup** exports the complete JSON configuration.
-- **Restore Backup** validates and imports a backup file.
-- A safety backup is created automatically before restoration.
-- Masked preview and debug bundle output can be used for diagnostics without exposing API keys.
-
-A full backup contains upstream API keys, Proxy Keys, and sensitive settings. Store it securely and never publish it.
-
-### Troubleshooting
-
-- **Dashboard unavailable:** open it through **Open Web UI** or the Home Assistant sidebar; direct `IP:1236` dashboard access is blocked.
-- **LAN API unavailable:** publish container port `1236/tcp` in the add-on Network settings.
-- **401:** verify `Authorization: Bearer sk-proxy-...` and confirm the key still exists.
-- **402/403/429:** check key status, expiration, budget, and rate limit.
-- **No suitable source:** enable a valid source and choose a Vision-capable model for image requests.
-- **Custom Endpoint failure:** use an OpenAI-compatible Base URL, usually ending in `/v1`.
-- **A source stops updating models:** click **Sync** on the source card, verify the key, and inspect the error shown on the card.
-- **Headroom offline:** verify the separate service URL and port.
-- **Dashboard test failure:** create at least one enabled Proxy Key; the test no longer accepts a manual token.
-- **Language does not change:** reload the page and allow browser `localStorage`.
-
-### Security
-
-- The dashboard and administration APIs are restricted to Home Assistant Ingress.
-- Port `1236` is disabled by default; if enabled, use it only for Proxy Key-protected `/v1/*` requests. For Internet access, prefer an HTTPS reverse proxy that forwards only `/v1/*`; direct exposure needs firewall rules and rate limits.
-- Use a separate Proxy Key with budgets/rate limits for each client.
-- Regenerate any Proxy Key that may have leaked.
-- Treat full backup files as secrets.
+- Add-on repository: `https://github.com/trankhanhduy2929-beep/my_hass_addon_public`
+- Full guide: `README.md`
+- API: `/v1/models`, `/v1/chat/completions`, `/v1/responses`, `/v1/audio/transcriptions`, `/v1/audio/speech`
+- Health check: `/health`
