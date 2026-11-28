@@ -1,6 +1,6 @@
 # AI Proxy Router cho Home Assistant
 
-**Phiên bản 1.23.0** · Home Assistant OS / Supervised · `amd64`, `aarch64`
+**Phiên bản 1.24.0** · Home Assistant OS / Supervised · `amd64`, `aarch64`
 
 AI Proxy Router gom nhiều nguồn AI vào một API tương thích OpenAI, tự xoay API key, chuyển nguồn khi lỗi và định tuyến riêng cho yêu cầu Text/Vision. Dashboard chạy trong Home Assistant; ứng dụng bên ngoài chỉ gọi API `/v1/*` bằng Proxy Key.
 
@@ -132,6 +132,12 @@ Chỉ bật port này khi client LAN cần gọi trực tiếp. Dashboard và `/
 3. Chờ add-on khởi động lại, mở dashboard và kiểm tra số phiên bản ở góc giao diện.
 4. Kiểm tra `/health`, `/v1/models` và một request chat ngắn.
 5. Nếu có lỗi, xem **Log** của add-on trước khi khôi phục backup.
+
+Bản `1.24.0` tinh gọn trạng thái model trong Nguồn & Key:
+
+- Thẻ nguồn không còn liệt kê tên model hoặc lỗi 429; chỉ hiện số model, số sẵn sàng và số hết quota.
+- Mở **Xem toàn bộ N model** để xem từng model, sắp xếp model sẵn sàng lên trước và gắn nhãn Sẵn sàng/Hết quota/Tạm nghỉ/Lỗi key/Đang tắt.
+- Giữ nguyên logic định tuyến, đồng bộ và dữ liệu nguồn.
 
 Bản `1.23.0` thêm nguồn và tinh gọn giao diện:
 
@@ -1002,6 +1008,12 @@ The dashboard and `/api/*` remain protected by Home Assistant Ingress.
 3. Wait for the add-on to restart, then check the version in the dashboard.
 4. Test `/health`, `/v1/models`, and a short chat request.
 5. If something fails, check the add-on log before restoring the backup.
+
+Version `1.24.0` changes:
+
+- Source cards no longer list model names or raw quota errors; they show model, ready, and quota-exhausted counts only.
+- **View all N models** lists each model with ready models first and labels for Ready, Quota exhausted, Cooling down, Key error, or Disabled.
+- Routing, model sync, and source data are unchanged.
 
 Version `1.23.0` changes:
 
