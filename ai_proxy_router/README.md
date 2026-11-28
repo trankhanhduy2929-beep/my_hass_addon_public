@@ -19,9 +19,9 @@ AI Proxy Router combines multiple AI providers behind one OpenAI-compatible API,
 - Hỗ trợ function tools, `tool_choice`, `parallel_tool_calls`, streaming tool-call events và vòng lặp `function_call_output`.
 - Hỗ trợ Structured Output dạng JSON Object/JSON Schema, có kiểm tra kết quả và tự chuyển nguồn khi output sai schema.
 - Model `auto-ai` tự chọn nguồn Text/Vision phù hợp theo tình trạng thực tế.
-- Hỗ trợ nguồn dựng sẵn, Custom Endpoint và OpenAI Codex OAuth.
-- Codex OAuth có thể xử lý cả văn bản và ảnh qua cùng endpoint proxy.
-- Bolt Token Saver gồm RTK, Headroom, Caveman và Ponytail.
+- Hỗ trợ nguồn dựng sẵn và Custom Endpoint; thêm key một lần là tự dò toàn bộ model dùng được.
+- Tự đồng bộ model mỗi 6 giờ: tự thêm model mới, tự loại model provider đã bỏ và tạm ngừng model lỗi.
+- Token Saver gồm RTK, Headroom, Caveman và Ponytail.
 - Proxy Key riêng cho từng ứng dụng, có hạn mức, rate limit, ngày hết hạn và bật/tắt nhanh.
 - Dashboard song ngữ Việt/Anh, tối ưu thao tác chạm và chỉ mở qua Home Assistant Ingress.
 - Thống kê token/chi phí, kiểm tra nguồn, Telegram, backup/restore và debug bundle đã che bí mật.
@@ -50,13 +50,13 @@ Truy cập trực tiếp `http://HOME_ASSISTANT_IP:1236/` sẽ bị từ chối.
 
 ### 4. Thêm nguồn AI/API key
 
-1. Mở tab **API Các Nguồn**.
+1. Mở tab **Nguồn cấp**.
 2. Chọn provider hoặc chọn **Custom Endpoint**.
-3. Nhập API key thật của provider.
+3. Dán API key thật của provider, hoặc chọn một key đã lưu trong mục **Kho key & nhập nhiều key**.
 4. Với Custom Endpoint, nhập tên nguồn và Base URL tương thích OpenAI, ví dụ `https://api.example.com/v1`.
-5. Nhấn **Tải Model**, chọn model rồi đặt hạn mức chi phí nếu cần.
-6. Nhấn **Lưu Nguồn**.
-7. Dùng nút `▲`/`▼` để sắp xếp ưu tiên nguồn.
+5. Nhấn **Thêm & tự dò model**. Add-on tự gọi `/models`, chỉ giữ model chat/audio dùng được và lưu key vào kho.
+6. Theo dõi card nguồn để xem số model, model đang dùng được, chi phí và lần đồng bộ gần nhất.
+7. Dùng **Đồng bộ**, **Tạm tắt/Bật lại** hoặc **Xóa nguồn** ngay trên card. Key gốc vẫn được giữ trong kho khi xóa nguồn.
 
 Khi dùng `auto-ai`, router ưu tiên nguồn còn hoạt động và tự thử nguồn dự phòng khi gặp lỗi xác thực, quota, rate limit hoặc lỗi mạng.
 
@@ -188,9 +188,9 @@ curl "http://HOME_ASSISTANT_IP:1236/v1/responses" \
   }'
 ```
 
-Khi stream tool calls qua Responses, client nhận các event `response.output_item.added`, `response.function_call_arguments.delta`, `response.function_call_arguments.done`, `response.output_item.done` và `response.completed`. Router tự bỏ qua nguồn không hỗ trợ tính năng yêu cầu. Codex OAuth vẫn dùng Text/Vision nhưng bị loại khỏi request tools/JSON Schema và không bao giờ thực thi tool.
+Khi stream tool calls qua Responses, client nhận các event `response.output_item.added`, `response.function_call_arguments.delta`, `response.function_call_arguments.done`, `response.output_item.done` và `response.completed`. Router tự bỏ qua nguồn không hỗ trợ tính năng yêu cầu và không bao giờ tự thực thi tool.
 
-Router chỉ chuyển nguồn dự phòng trước khi event SSE đầu tiên được gửi. Sau khi stream đã bắt đầu, lỗi được trả trong stream hiện tại để tránh ghép nội dung từ hai provider. Codex OAuth dùng fallback SSE tổng hợp từ nội dung hoàn chỉnh vì app-server không luôn cung cấp stream token-level ổn định.
+Router chỉ chuyển nguồn dự phòng trước khi event SSE đầu tiên được gửi. Sau khi stream đã bắt đầu, lỗi được trả trong stream hiện tại để tránh ghép nội dung từ hai provider. Một số nguồn không hỗ trợ stream token-level sẽ dùng fallback SSE tổng hợp từ nội dung hoàn chỉnh.
 
 ### 8. Cấu hình client/Home Assistant
 
@@ -221,27 +221,22 @@ print(response.choices[0].message.content)
 
 Nếu client chạy trên thiết bị khác, bật port `1236`, sau đó thay `HOME_ASSISTANT_IP` bằng địa chỉ LAN của máy Home Assistant. Không dùng URL Ingress làm Base URL cho ứng dụng API bên ngoài.
 
-### 9. Đăng nhập OpenAI Codex OAuth
+### 9. Nguồn tự động và đồng bộ model
 
-1. Mở phần **OpenAI Codex OAuth** trên dashboard.
-2. Nhấn **Đăng nhập Codex**.
-3. Sao chép mã thiết bị và mở liên kết xác thực được hiển thị.
-4. Đăng nhập tài khoản ChatGPT/OpenAI và xác nhận mã.
-5. Quay lại dashboard; trạng thái sẽ tự cập nhật và nguồn `codex-auto` được bật tự động.
-6. Có thể tải danh sách model và chọn model cụ thể, hoặc giữ `codex-auto` để tự chọn Text/Vision.
+1. Mở tab **Nguồn cấp**.
+2. Chọn provider, dán API key hoặc chọn key trong kho, rồi bấm **Thêm & tự dò model**.
+3. Add-on gọi `/models`, chỉ giữ model chat/audio dùng được, lưu từng model thành một entry và giữ key trong kho.
+4. Card nguồn hiển thị số model, model đang dùng được, chi phí và lần đồng bộ gần nhất.
+5. Dùng **Đồng bộ** để dò lại ngay, **Tạm tắt/Bật lại** để ngưng cả nguồn, **Xóa nguồn** để bỏ toàn bộ model (key vẫn trong kho).
+6. Tự đồng bộ mỗi 6 giờ; model mới tự thêm, model provider đã bỏ tự xóa, lỗi mạng tạm thời không xóa model.
 
-Thông tin OAuth được Codex CLI lưu trong vùng dữ liệu bền vững `/data/codex`. AI Proxy Router không hiển thị access token và không đưa token Codex vào file backup của router.
+### 10. Sơ đồ định tuyến
 
-### 10. Dùng Codex Vision
+Sơ đồ Client → AI Proxy → Nguồn sáng lên theo request gần nhất và tự tắt sau khoảng 12 giây. Mỗi dòng nguồn hiển thị số model dùng được; nguồn đang phục vụ request được đánh dấu màu coral. Khi chưa có request, trạng thái là **Đang chờ request**.
 
-- Giữ model `codex-auto` để bridge tự chọn model phù hợp khi message có ảnh.
-- Gửi ảnh bằng `image_url`, `input_image`, URL `http(s)` hoặc data URI.
-- Có thể thử trực tiếp trong tab test bằng cách tải ảnh lên; không cần nhập token test.
-- Nếu Vision lỗi, kiểm tra trạng thái OAuth, model đã chọn và định dạng ảnh.
+### 11. Token Saver
 
-### 11. Bolt Token Saver
-
-Bật master **Bolt Token Saver** trong phần cài đặt, sau đó chọn các module cần dùng:
+Bật master **Token Saver** trong phần cài đặt, sau đó chọn các module cần dùng:
 
 - **RTK — Compress tool output:** nén đầu ra dài của `git`, `grep`, `ls`, `tree`, log/build output và dữ liệu tương tự trước khi gửi model.
 - **Headroom — Compress context:** gọi `/v1/compress` của dịch vụ Headroom trước khi routing. Nếu lỗi, timeout hoặc dữ liệu trả về không hợp lệ, router tự dùng context gốc.
@@ -283,7 +278,7 @@ Headroom phải chạy như dịch vụ riêng có endpoint `/v1/compress`. Nh�
 - **Client báo 403/402/429:** Proxy Key có thể đang tắt, hết hạn, hết hạn mức hoặc vượt rate limit.
 - **Không có nguồn phù hợp:** bật ít nhất một nguồn, tải đúng model và dùng model hỗ trợ Vision nếu request có ảnh.
 - **Custom Endpoint lỗi:** Base URL phải trỏ đến API tương thích OpenAI; thường kết thúc bằng `/v1`.
-- **Codex OAuth lỗi:** đăng xuất rồi đăng nhập lại, xác nhận mã thiết bị còn hạn và xem log add-on.
+- **Nguồn không cập nhật model:** bấm **Đồng bộ** trên card nguồn, kiểm tra key còn hạn và xem lỗi hiển thị trên card. Model đang lỗi tạm thời không bị xóa.
 - **Headroom báo Not installed/offline:** chạy Headroom riêng, kiểm tra URL/port và nút kiểm tra trên dashboard.
 - **Test không chạy:** tạo ít nhất một Proxy Key hợp lệ; ô test không còn nhận token thủ công.
 - **Ngôn ngữ không đổi:** tải lại trang và cho phép `localStorage`; lựa chọn được lưu riêng theo trình duyệt.
@@ -310,9 +305,9 @@ Headroom phải chạy như dịch vụ riêng có endpoint `/v1/compress`. Nh�
 - Function tools with `tool_choice`, `parallel_tool_calls`, streaming tool-call events, and `function_call_output` follow-ups.
 - JSON Object/JSON Schema structured output with validation and automatic fallback after invalid output.
 - The `auto-ai` model selects a healthy Text/Vision source automatically.
-- Supports built-in providers, Custom Endpoints, and OpenAI Codex OAuth.
-- Codex OAuth supports both text and image requests through the same proxy endpoint.
-- Bolt Token Saver includes RTK, Headroom, Caveman, and Ponytail.
+- Supports built-in providers and Custom Endpoints with automatic model discovery from a single API key.
+- Automatic model sync every 6 hours adds new models, removes retired ones, and pauses failing models.
+- Token Saver includes RTK, Headroom, Caveman, and Ponytail.
 - Per-application Proxy Keys with budgets, rate limits, expiration dates, and enable/disable controls.
 - Vietnamese/English dashboard with touch-friendly navigation, restricted to Home Assistant Ingress.
 - Token/cost statistics, provider checks, Telegram alerts, backup/restore, and a masked debug bundle.
@@ -341,13 +336,13 @@ Direct access to `http://HOME_ASSISTANT_IP:1236/` is denied. If the LAN port is 
 
 ### 4. Add an AI provider/API key
 
-1. Open the **API Sources** tab.
+1. Open the **Sources** tab.
 2. Select a provider or choose **Custom Endpoint**.
-3. Enter the provider's real API key.
+3. Paste the provider's real API key, or pick a saved key under **Key vault & bulk import**.
 4. For a Custom Endpoint, enter a display name and an OpenAI-compatible Base URL such as `https://api.example.com/v1`.
-5. Click **Load Models**, select a model, and optionally set a cost budget.
-6. Click **Save Source**.
-7. Use the `▲`/`▼` controls to change source priority.
+5. Click **Add & discover models**. The add-on calls `/models`, keeps only usable chat/audio models, and stores the key in the vault.
+6. Watch the source card for model count, healthy models, cost, and the latest sync time.
+7. Use **Sync**, **Pause/Resume**, or **Delete source** directly on the card. The original key stays in the vault when a source is deleted.
 
 With `auto-ai`, the router prefers healthy sources and automatically tries fallbacks after authentication, quota, rate-limit, or network failures.
 
@@ -479,9 +474,9 @@ curl "http://HOME_ASSISTANT_IP:1236/v1/responses" \
   }'
 ```
 
-Responses tool streaming emits `response.output_item.added`, `response.function_call_arguments.delta`, `response.function_call_arguments.done`, `response.output_item.done`, and `response.completed`. Unsupported providers are skipped automatically. Codex OAuth remains available for Text/Vision but is excluded from tools/JSON Schema requests and never executes tools.
+Responses tool streaming emits `response.output_item.added`, `response.function_call_arguments.delta`, `response.function_call_arguments.done`, `response.output_item.done`, and `response.completed`. Unsupported providers are skipped automatically. The router never executes tools on behalf of the client.
 
-The router can fail over before the first SSE event is sent. After streaming starts, an error stays in the current stream so output from two providers is never merged. Codex OAuth uses synthesized SSE chunks from its completed answer because token-level app-server streaming is not consistently available.
+The router can fail over before the first SSE event is sent. After streaming starts, an error stays in the current stream so output from two providers is never merged. Sources without token-level streaming fall back to synthesized SSE chunks from the completed answer.
 
 ### 8. Configure a client/Home Assistant
 
@@ -512,27 +507,22 @@ print(response.choices[0].message.content)
 
 If the client runs on another device, enable port `1236`, then replace `HOME_ASSISTANT_IP` with the Home Assistant host's LAN address. Do not use the Ingress URL as an external API Base URL.
 
-### 9. Sign in with OpenAI Codex OAuth
+### 9. Automatic sources and model sync
 
-1. Open **OpenAI Codex OAuth** on the dashboard.
-2. Click **Sign in to Codex**.
-3. Copy the device code and open the displayed verification link.
-4. Sign in to your ChatGPT/OpenAI account and confirm the code.
-5. Return to the dashboard; the status updates automatically and the `codex-auto` source is enabled.
-6. Load and select a specific model, or keep `codex-auto` for automatic Text/Vision selection.
+1. Open the **Sources** tab.
+2. Select a provider, paste an API key or pick a vault key, then click **Add & discover models**.
+3. The add-on calls `/models`, keeps only usable chat/audio models, stores each model as an entry, and keeps the key in the vault.
+4. Each source card shows model count, healthy models, cost, and the latest sync time.
+5. Use **Sync** to refresh now, **Pause/Resume** to disable the whole source, or **Delete source** to remove its models (the key stays in the vault).
+6. Automatic sync runs every 6 hours: new models are added, retired provider models are removed, and temporary network errors do not delete models.
 
-OAuth credentials are stored by the Codex CLI in persistent `/data/codex` storage. AI Proxy Router does not expose the access token or include the Codex token in router backups.
+### 10. Routing map
 
-### 10. Use Codex Vision
+The Client → AI Proxy → Sources map lights up for the latest request and fades after about 12 seconds. Each source row shows how many models are usable; the source serving the request is highlighted in coral. With no recent request, the status reads **Waiting for request**.
 
-- Keep `codex-auto` selected so the bridge can choose an appropriate model when an image is present.
-- Send images as `image_url` or `input_image` parts using an `http(s)` URL or data URI.
-- You can also upload an image in the dashboard test tab; no test token is required.
-- If Vision fails, verify OAuth status, the selected model, and the image format.
+### 11. Token Saver
 
-### 11. Bolt Token Saver
-
-Enable the main **Bolt Token Saver** switch, then choose the required modules:
+Enable the main **Token Saver** switch, then choose the required modules:
 
 - **RTK — Compress tool output:** reduces long `git`, `grep`, `ls`, `tree`, log/build, and similar tool output before it reaches the model.
 - **Headroom — Compress context:** calls a Headroom `/v1/compress` service before routing. On errors, timeouts, or invalid responses, the router safely falls back to the original context.
@@ -574,7 +564,7 @@ Headroom must run as a separate service exposing `/v1/compress`. Enter its servi
 - **Client returns 403/402/429:** the Proxy Key may be disabled, expired, over budget, or rate-limited.
 - **No suitable source:** enable at least one source, load a valid model, and use a Vision-capable model for image requests.
 - **Custom Endpoint fails:** the Base URL must expose an OpenAI-compatible API and usually ends in `/v1`.
-- **Codex OAuth fails:** sign out and sign in again, verify that the device code is still valid, and inspect add-on logs.
+- **A source stops updating models:** click **Sync** on the source card, verify the key is still valid, and read the error shown on the card. Temporarily failing models are not deleted.
 - **Headroom shows Not installed/offline:** run Headroom separately and verify its URL, port, and dashboard status check.
 - **Dashboard test fails:** create at least one valid Proxy Key; the test form no longer accepts a manually entered token.
 - **Language does not change:** reload the page and allow `localStorage`; the preference is stored per browser.
@@ -593,6 +583,6 @@ Headroom must run as a separate service exposing `/v1/compress`. Enter its servi
 
 ## Phiên bản / Version
 
-Tài liệu này áp dụng cho AI Proxy Router `1.18.0`.
+Tài liệu này áp dụng cho AI Proxy Router `1.19.0`.
 
-This guide applies to AI Proxy Router `1.18.0`.
+This guide applies to AI Proxy Router `1.19.0`.

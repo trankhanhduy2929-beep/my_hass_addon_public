@@ -133,20 +133,15 @@ Hãy chắc chắn rằng Base URL của hãng đó chuẩn định dạng OpenA
 - Dashboard cập nhật nút copy theo cơ chế reveal + thêm nút regenerate key
 
 
-## OpenAI Codex OAuth (v1.3.0)
+## Nguồn tự động và đồng bộ model (v1.19.0)
 
-Bản 1.3.0 cho phép dùng OpenAI Codex qua tài khoản ChatGPT mà không phải nhập API key thủ công.
+Từ 1.19.0, mỗi nguồn chỉ cần nhập API key một lần. Add-on gọi `/models`, chỉ giữ model chat/audio dùng được, lưu từng model thành một entry và giữ key trong kho key. Card nguồn cho phép đồng bộ ngay, tạm tắt/bật lại hoặc xóa cả nguồn mà không xóa key gốc.
 
-1. Mở giao diện Add-on.
-2. Tại thẻ **OpenAI Codex — đăng nhập không cần API Key**, bấm **Đăng nhập Codex**.
-3. Mở trang `https://auth.openai.com/codex/device` bằng nút trong giao diện.
-4. Nhập mã một lần được Add-on hiển thị và hoàn thành đăng nhập ChatGPT.
-5. Quay lại Add-on, chọn model rồi bấm **Bật nguồn Codex**.
-
-Thông tin xác thực được Codex CLI chính thức lưu trong `/data/codex`, tồn tại qua lần khởi động lại Add-on và được Codex tự làm mới. AI Proxy Router không đọc hoặc đưa access token ra giao diện/backup. Nguồn Codex chạy ở sandbox chỉ đọc, approval `never`, đồng thời client từ chối các yêu cầu chạy công cụ để phù hợp chế độ proxy trả lời văn bản.
-
-Lưu ý: Codex sử dụng hạn mức của gói ChatGPT/Codex đang đăng nhập. Khả năng truy cập model và giới hạn sử dụng phụ thuộc tài khoản, workspace và chính sách hiện hành của OpenAI.
-
+- Tự đồng bộ model mỗi 6 giờ, độc lập với kiểm tra sức khỏe.
+- Model mới tự thêm; model provider đã bỏ tự xóa; lỗi mạng tạm thời không xóa model.
+- Model embedding, rerank, moderation, image/video, realtime và native-audio bị loại khỏi danh sách route; model STT/TTS vẫn được giữ cho tab Voice.
+- Token Saver và sơ đồ định tuyến được thiết kế lại; sơ đồ sáng theo request gần nhất và tự tắt sau khoảng 12 giây.
+- Đăng nhập Codex OAuth đã được loại bỏ hoàn toàn; Codex CLI vẫn dùng được như một client OpenAI-compatible bình thường.
 
 ## Cập nhật 1.5.0 — Tự phục hồi nguồn
 
@@ -169,7 +164,7 @@ Lưu ý: Codex sử dụng hạn mức của gói ChatGPT/Codex đang đăng nh�
 - Telegram có thời gian chống gửi trùng; Bot Token và Chat ID được cấu hình ngay trong giao diện quản trị.
 - Thêm nút gửi thử Telegram để kiểm tra cấu hình.
 - Trước khi Restore JSON, Router tự tạo một bản sao an toàn trong `/data` và giữ tối đa 5 bản gần nhất.
-- Giữ nguyên toàn bộ tính năng v1.5.0: tự phục hồi nguồn, tùy chọn sửa model, failover thông minh, Codex OAuth và kiểm tra đồng loạt provider.
+- Giữ nguyên toàn bộ tính năng v1.5.0: tự phục hồi nguồn, tùy chọn sửa model, failover thông minh và kiểm tra đồng loạt provider.
 
 
 ## Cập nhật 1.7.3 — Tùy chọn bỏ mật khẩu
@@ -185,13 +180,9 @@ Lưu ý: Codex sử dụng hạn mức của gói ChatGPT/Codex đang đăng nh�
 - Không nhận swipe trên nút, liên kết, ô nhập, biểu đồ, bảng cuộn và vùng chọn nội dung.
 - Bỏ qua cử chỉ bắt đầu sát mép màn hình để không xung đột thao tác quay lại của điện thoại.
 
-## Cập nhật 1.8.2 — Test nhanh và Codex Vision
+## Cập nhật 1.8.2 — Test nhanh và Vision
 
-- Loại bỏ hoàn toàn giao diện Quota Tracker Codex để dashboard gọn hơn.
 - Chat test tự chọn Proxy Key đang hoạt động, không cần dán token thủ công.
-- Đăng nhập Codex thành công sẽ tự bật nguồn `codex-auto`.
-- Request có ảnh được chuyển sang input Vision của Codex app-server.
-- Codex tự ưu tiên model có `inputModalities` hỗ trợ ảnh; danh sách model hiển thị nhãn **Vision**.
 
 ## Cập nhật 1.9.0 — Bolt Token Saver
 
@@ -231,7 +222,7 @@ Response thành công có các header `X-AI-Proxy-Token-Saver`, `X-AI-Proxy-Inpu
 - Dashboard cũng có bộ chọn ngôn ngữ trên thanh điều hướng để đổi lại bất cứ lúc nào.
 - Nếu chưa từng chọn, trình duyệt có ngôn ngữ `vi` sẽ dùng tiếng Việt; các ngôn ngữ khác mặc định dùng English.
 - Lựa chọn được lưu trong `localStorage` của trình duyệt và tiếp tục được dùng sau khi tải lại trang.
-- Dịch các tab, form, placeholder, tooltip, trạng thái Codex, Token Saver, bảng nguồn, test chat, Telegram, backup, diagnostics, toast và hộp xác nhận.
+- Dịch các tab, form, placeholder, tooltip, trạng thái nguồn, Token Saver, bảng nguồn, test chat, Telegram, backup, diagnostics, toast và hộp xác nhận.
 - Nội dung tạo động sau khi gọi API được dịch bằng `MutationObserver`; nội dung AI trả lời, code, command, URL và dữ liệu trong khối `pre/code` không bị tự động dịch.
 - Script i18n được phục vụ nội bộ qua `/ui-i18n.js`, tương thích Home Assistant Ingress và không phụ thuộc dịch vụ dịch bên ngoài.
 
@@ -239,7 +230,7 @@ Response thành công có các header `X-AI-Proxy-Token-Saver`, `X-AI-Proxy-Inpu
 
 - Thêm `README.md` hướng dẫn đầy đủ bằng Tiếng Việt và English.
 - Bổ sung hướng dẫn cài đặt, đăng nhập, chọn ngôn ngữ, thêm provider, tạo Proxy Key và kết nối API tương thích OpenAI.
-- Bổ sung ví dụ Text/Vision, Codex OAuth/Vision, Bolt Token Saver, backup/restore, xử lý sự cố và lưu ý bảo mật.
+- Bổ sung ví dụ Text/Vision, nguồn tự động, Bolt Token Saver, backup/restore, xử lý sự cố và lưu ý bảo mật.
 - Thêm phần English Guide ngay trong `DOCS.md` để người dùng nước ngoài đọc được từ trang tài liệu của Home Assistant.
 
 ## Cập nhật 1.10.2 — Sửa treo khi đổi ngôn ngữ
@@ -280,7 +271,6 @@ Response thành công có các header `X-AI-Proxy-Token-Saver`, `X-AI-Proxy-Inpu
 - Responses streaming phát các event chính: `response.created`, `response.output_text.delta`, `response.output_text.done` và `response.completed`.
 - Token Saver được áp dụng trước routing cho cả Chat Completions và Responses, đồng thời giữ nguyên dữ liệu Vision.
 - Router có thể retry/chuyển nguồn trước event SSE đầu tiên. Sau khi stream bắt đầu, lỗi được gửi trong stream hiện tại và không ghép nội dung từ provider khác.
-- Codex OAuth giữ Vision và dùng SSE tổng hợp từ câu trả lời hoàn chỉnh khi app-server không cung cấp token stream ổn định.
 - Thẻ **📡 Base URL Connect** có thêm dòng `/v1/responses` với nút copy một chạm.
 
 ## Cập nhật 1.14.0 — Tool Calling + Structured Output
@@ -291,7 +281,7 @@ Response thành công có các header `X-AI-Proxy-Token-Saver`, `X-AI-Proxy-Inpu
 - Router tự bỏ qua provider không hỗ trợ tools/JSON Schema. Có thể đặt `supports_tools` hoặc `supports_json_schema` trên nguồn để override khả năng tương thích.
 - Dashboard có ba chế độ test: Chat/Vision, Tool Calling và JSON Schema; test tự dùng Proxy Key đang hoạt động.
 - Tool arguments chỉ được trả cho client, không ghi vào request log/CSV/test history. Client phải tự xác thực, cấp quyền và thực thi function.
-- Hosted web/file/computer tools bị từ chối. Codex OAuth không được chọn cho request tools/JSON Schema và không bao giờ thực thi tools.
+- Hosted web/file/computer tools bị từ chối và router không bao giờ tự thực thi tools.
 
 ## Cập nhật 1.14.1 — Bảo mật lưu trữ và CSRF
 
@@ -300,7 +290,6 @@ Response thành công có các header `X-AI-Proxy-Token-Saver`, `X-AI-Proxy-Inpu
 - JSON hỏng không còn bị bỏ qua im lặng: file lỗi được sao thành `data.json.corrupt-*`, cảnh báo được ghi vào dashboard và việc ghi bị chặn nếu không thể giữ bản lỗi.
 - `X-Forwarded-For` chỉ được tin khi kết nối đến từ ingress gateway tin cậy.
 - Tailwind và Chart.js được đóng gói cục bộ trong `vendor/`; bỏ phụ thuộc Google Fonts.
-- Pin Codex CLI `0.167.1` thay vì `@latest`.
 
 ## Cập nhật 1.14.2 — Giao diện dashboard hiện đại
 
@@ -309,6 +298,15 @@ Response thành công có các header `X-AI-Proxy-Token-Saver`, `X-AI-Proxy-Inpu
 - Chuyển Advanced timeout/retry và Token Saver từ tab Chat sang tab Hệ thống để giữ luồng test AI gọn.
 - Đồng bộ card, input, bảng, trạng thái focus bàn phím, reduced motion và màu nền theo một bộ token giao diện mới.
 - Giữ nguyên API, CSRF, i18n, HA Ingress và các asset vendored; thêm stylesheet nội bộ `/dashboard.css` qua cùng lớp xác thực ingress.
+
+## Cập nhật 1.19.0 — Nguồn tự động và giao diện gọn hơn
+
+- Bỏ hoàn toàn đăng nhập Codex OAuth; chỉ còn nguồn API key chuẩn.
+- Thêm nguồn một lần: tự dò model chat/audio, tự thêm model mới và loại model provider đã bỏ.
+- Tự đồng bộ model mỗi 6 giờ, độc lập với kiểm tra sức khỏe; lỗi tạm thời không xóa model.
+- Quản lý nguồn theo nhóm với đồng bộ, tạm tắt, xóa và xem toàn bộ model.
+- Thiết kế lại Token Saver và sơ đồ định tuyến theo phong cách sáng, gọn.
+- `/v1/models` trả danh sách model active/enabled duy nhất, gồm cả model audio, để client tự chọn.
 
 ## Cập nhật 1.18.0 — Menu gọn gàng và nâng cấp Kho key/Voice
 
@@ -400,7 +398,6 @@ Response thành công có các header `X-AI-Proxy-Token-Saver`, `X-AI-Proxy-Inpu
 - Responses streaming emits core events including `response.created`, `response.output_text.delta`, `response.output_text.done`, and `response.completed`.
 - Token Saver runs before routing for both APIs while preserving Vision content.
 - Retry/failover is available before the first SSE event. Once streaming starts, errors stay in the current stream and output from different providers is never merged.
-- Codex OAuth keeps Vision support and synthesizes SSE chunks from the completed answer when stable token-level app-server streaming is unavailable.
 - The **📡 Base URL Connect** card adds a one-click `/v1/responses` endpoint row.
 
 ## Version 1.14.0 — Tool Calling + Structured Output
@@ -411,7 +408,7 @@ Response thành công có các header `X-AI-Proxy-Token-Saver`, `X-AI-Proxy-Inpu
 - Providers without tools/JSON Schema support are skipped automatically. Per-source `supports_tools` and `supports_json_schema` overrides are supported.
 - The dashboard adds Chat/Vision, Tool Calling, and JSON Schema test modes and automatically uses an active Proxy Key.
 - Tool arguments are returned to the client but excluded from request logs, CSV exports, and test history. The client must validate, authorize, and execute functions safely.
-- Hosted web/file/computer tools are rejected. Codex OAuth is excluded from tools/JSON Schema requests and never executes tools.
+- Hosted web/file/computer tools are rejected and the router never executes tools on behalf of the client.
 
 ## Version 1.14.1 — Storage security and CSRF
 
@@ -420,7 +417,6 @@ Response thành công có các header `X-AI-Proxy-Token-Saver`, `X-AI-Proxy-Inpu
 - Corrupt JSON is no longer ignored silently: the bad file is copied to `data.json.corrupt-*`, an alert is recorded in the dashboard, and writes are blocked if the corrupt copy cannot be preserved.
 - `X-Forwarded-For` is trusted only when the connection comes from a trusted ingress gateway.
 - Tailwind and Chart.js are bundled locally under `vendor/`; the Google Fonts dependency is removed.
-- Codex CLI is pinned to `0.167.1` instead of `@latest`.
 
 ## Version 1.14.2 — Modern dashboard interface
 
@@ -429,6 +425,15 @@ Response thành công có các header `X-AI-Proxy-Token-Saver`, `X-AI-Proxy-Inpu
 - Advanced timeout/retry and Token Saver move from Chat to the System tab so AI testing stays focused.
 - Cards, inputs, tables, keyboard focus, reduced motion, and background colors share a new interface token set.
 - API behavior, CSRF, i18n, HA Ingress, and vendored assets are unchanged; a local `/dashboard.css` stylesheet is served through the same ingress authentication.
+
+## Version 1.19.0 — Automatic sources and a cleaner UI
+
+- Removed Codex OAuth sign-in entirely; only standard API-key sources remain.
+- Add a source once: usable chat/audio models are discovered automatically, new models are added, and retired models are removed.
+- Automatic model sync every 6 hours, independent of health checks; temporary errors do not delete models.
+- Grouped source management with sync, pause, delete, and a full model list.
+- Redesigned Token Saver and routing map with a brighter, compact layout.
+- `/v1/models` returns each active/enabled model once, including audio models, so clients can choose.
 
 ## Version 1.18.0 — Tidier navigation and Key Vault/Voice upgrades
 
@@ -496,8 +501,8 @@ Main features:
 - Function tools, streamed tool-call arguments, and `function_call_output` follow-ups.
 - JSON Object/JSON Schema structured output with validation and compatible-provider fallback.
 - Automatic routing through the `auto-ai` model.
-- Built-in providers, OpenAI-compatible Custom Endpoints, and OpenAI Codex OAuth.
-- Text and Vision support, including Codex Vision.
+- Built-in providers and OpenAI-compatible Custom Endpoints with automatic model discovery.
+- Text, Vision, and automatic model sync every 6 hours.
 - Bolt Token Saver with RTK, Headroom, Caveman, and Ponytail.
 - Per-client budgets, rate limits, expiration dates, statistics, provider checks, Telegram alerts, backup/restore, and masked diagnostics.
 - Vietnamese/English dashboard with a language selector on the navigation bar.
@@ -632,24 +637,23 @@ Function tool:
 
 Responses uses flat function definitions and accepts `function_call_output` items with the matching `call_id`. Structured output uses `text.format.type=json_schema` or Chat Completions `response_format`. Responses tool streams emit `response.output_item.added`, `response.function_call_arguments.delta`, `response.function_call_arguments.done`, `response.output_item.done`, and `response.completed`.
 
-The client is responsible for validating and authorizing tool arguments before execution. Hosted web/file/computer tools are rejected, arguments are excluded from logs, and Codex OAuth never executes tools.
+The client is responsible for validating and authorizing tool arguments before execution. Hosted web/file/computer tools are rejected, arguments are excluded from logs, and the router never executes tools.
 
-Set `"stream": true` on the Responses request to receive events such as `response.output_text.delta` and `response.completed`. Failover is available before the first SSE event; after streaming starts, errors remain in the current stream. Codex OAuth synthesizes SSE chunks from its completed answer when token-level streaming is unavailable.
+Set `"stream": true` on the Responses request to receive events such as `response.output_text.delta` and `response.completed`. Failover is available before the first SSE event; after streaming starts, errors remain in the current stream. Sources without token-level streaming fall back to synthesized SSE chunks from the completed answer.
 
-### OpenAI Codex OAuth and Vision
+### Automatic sources and model sync (v1.19.0)
 
-1. Open **OpenAI Codex OAuth** on the dashboard.
-2. Click **Sign in to Codex**.
-3. Copy the device code and open the displayed verification link.
-4. Sign in to your ChatGPT/OpenAI account and confirm the code.
-5. Return to the dashboard. The status updates automatically and `codex-auto` is enabled.
-6. Keep `codex-auto` for automatic Text/Vision selection, or load and select a specific model.
+From 1.19.0, each source only needs an API key once. The add-on calls `/models`, keeps only usable chat/audio models, stores each model as an entry, and keeps the key in the key vault. Source cards support immediate sync, pause/resume, or deleting the whole source without deleting the original key.
 
-Codex credentials are stored by the Codex CLI in persistent `/data/codex` storage. AI Proxy Router does not expose the access token or include the Codex token in router backups. Vision accepts `image_url` and `input_image` message parts.
+- Automatic model sync every 6 hours, independent of health checks.
+- New models are added automatically; retired provider models are removed; temporary network errors do not delete models.
+- Embedding, rerank, moderation, image/video, realtime, and native-audio models are excluded from routing; STT/TTS models remain available for the Voice tab.
+- Token Saver and the routing map were redesigned; the map lights up for the latest request and fades after about 12 seconds.
+- Codex OAuth sign-in was removed entirely; Codex CLI still works as a regular OpenAI-compatible client.
 
-### Bolt Token Saver
+### Token Saver
 
-Enable the main **Bolt Token Saver** switch and then configure the required modules:
+Enable the main **Token Saver** switch and then configure the required modules:
 
 - **RTK:** compresses long `git`, `grep`, `ls`, `tree`, logs, and build output before sending it to the model.
 - **Headroom:** calls a separate `/v1/compress` service before routing. Errors and timeouts fail open to the original context.
@@ -683,7 +687,7 @@ A full backup contains upstream API keys, Proxy Keys, and sensitive settings. St
 - **402/403/429:** check key status, expiration, budget, and rate limit.
 - **No suitable source:** enable a valid source and choose a Vision-capable model for image requests.
 - **Custom Endpoint failure:** use an OpenAI-compatible Base URL, usually ending in `/v1`.
-- **Codex OAuth failure:** sign out, start a new device login, and inspect add-on logs.
+- **A source stops updating models:** click **Sync** on the source card, verify the key, and inspect the error shown on the card.
 - **Headroom offline:** verify the separate service URL and port.
 - **Dashboard test failure:** create at least one enabled Proxy Key; the test no longer accepts a manual token.
 - **Language does not change:** reload the page and allow browser `localStorage`.
