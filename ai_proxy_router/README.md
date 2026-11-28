@@ -35,7 +35,7 @@ AI Proxy Router combines multiple AI providers behind one OpenAI-compatible API,
 5. Bật **Show in sidebar** nếu muốn mở nhanh từ thanh bên.
 6. Mở **Web UI** để cấu hình.
 
-Cổng API LAN `1236` mặc định không được publish. Nếu ứng dụng trên thiết bị khác cần gọi proxy, mở tab **Network** của add-on và gán host port `1236` cho container port `1236/tcp`.
+Cổng API LAN `1236` mặc định không được publish. Nếu ứng dụng trên thiết bị khác cần gọi proxy, mở tab **Network** của add-on và gán host port `1236` cho container port `1236/tcp`. Nếu Home Assistant đã public, có thể dùng URL public thay IP LAN; xem mục **Kết nối khi Home Assistant đã public** bên dưới.
 
 Kiến trúc được khai báo trong add-on: `amd64` và `aarch64`.
 
@@ -90,6 +90,15 @@ Responses API endpoint:
 ```text
 http://HOME_ASSISTANT_IP:1236/v1/responses
 ```
+
+### Kết nối khi Home Assistant đã public
+
+Nếu Home Assistant đã được public, có hai cách đưa router ra ngoài:
+
+1. **Reverse proxy HTTPS (khuyến nghị):** proxy `https://ai.example.com` tới `http://HOME_ASSISTANT_IP:1236` và chỉ cho phép `/v1/*`, giữ dashboard và `/api/*` nội bộ. Bật HTTPS, giới hạn IP/rate limit nếu có thể.
+2. **Mở cổng trực tiếp:** forward port `1236` trên router/firewall rồi dùng `http://PUBLIC_HOST:1236/v1`; cách này không có TLS và không nên dùng lâu dài.
+
+Sau khi có URL, mở tab **Endpoint → Kết nối bên ngoài**, nhập **Public Base URL** rồi lưu. URL public sẽ xuất hiện ở thẻ Base URL, tab Endpoint và **CLI Tools** (nút **Bên ngoài**). Proxy Key vẫn bắt buộc cho `/v1/*`; không dùng URL Ingress của Home Assistant làm Base URL API.
 
 ### 6. Kiểm tra nhanh trên dashboard
 
@@ -219,7 +228,7 @@ response = client.chat.completions.create(
 print(response.choices[0].message.content)
 ```
 
-Nếu client chạy trên thiết bị khác, bật port `1236`, sau đó thay `HOME_ASSISTANT_IP` bằng địa chỉ LAN của máy Home Assistant. Không dùng URL Ingress làm Base URL cho ứng dụng API bên ngoài.
+Nếu client chạy trên thiết bị khác, bật port `1236`, sau đó thay `HOME_ASSISTANT_IP` bằng địa chỉ LAN của máy Home Assistant. Khi Home Assistant đã public, dùng **Public Base URL** đã lưu ở tab Endpoint thay cho địa chỉ LAN. Không dùng URL Ingress làm Base URL cho ứng dụng API bên ngoài.
 
 ### 9. Nguồn tự động và đồng bộ model
 
@@ -288,7 +297,7 @@ Headroom phải chạy như dịch vụ riêng có endpoint `/v1/compress`. Nh�
 - Dashboard và API quản trị chỉ nhận request từ Home Assistant Ingress.
 - Mọi thao tác thay đổi dữ liệu qua `/api/*` yêu cầu header `X-CSRF-Token` do dashboard tự gắn.
 - `data.json` và file backup được đặt quyền `600`; file JSON lỗi được giữ thành bản `.corrupt-*` thay vì ghi đè.
-- Port `1236` mặc định tắt; nếu bật, chỉ dùng cho API `/v1/*` có Proxy Key và không nên mở trực tiếp ra Internet.
+- Port `1236` mặc định tắt; nếu bật, chỉ dùng cho API `/v1/*` có Proxy Key. Khi cần truy cập từ Internet, ưu tiên reverse proxy HTTPS chỉ forward `/v1/*`; mở trực tiếp port ra Internet là phương án cuối và cần firewall/rate limit.
 - Không chia sẻ API key nguồn; cấp Proxy Key riêng cho từng ứng dụng và đặt hạn mức/rate limit.
 - Tạo lại Proxy Key ngay nếu nghi ngờ bị lộ.
 - Kiểm tra kỹ file backup trước khi sao chép hoặc gửi cho người khác.
@@ -321,7 +330,7 @@ Headroom phải chạy như dịch vụ riêng có endpoint `/v1/compress`. Nh�
 5. Enable **Show in sidebar** for quick access if desired.
 6. Open the **Web UI** to configure the router.
 
-LAN API port `1236` is not published by default. If a client on another device needs the proxy, open the add-on **Network** settings and map host port `1236` to container port `1236/tcp`.
+LAN API port `1236` is not published by default. If a client on another device needs the proxy, open the add-on **Network** settings and map host port `1236` to container port `1236/tcp`. If Home Assistant is already public, use a public URL instead of the LAN IP; see **Connect when Home Assistant is public** below.
 
 The add-on currently declares `amd64` and `aarch64` architectures.
 
@@ -376,6 +385,15 @@ http://HOME_ASSISTANT_IP:1236/v1/responses
 ```
 
 These addresses work only after port `1236` is enabled in the add-on **Network** settings. `/v1/models`, `/v1/chat/completions`, and `/v1/responses` require a Proxy Key.
+
+### Connect when Home Assistant is public
+
+If Home Assistant is already public, expose the router in one of two ways:
+
+1. **HTTPS reverse proxy (recommended):** proxy `https://ai.example.com` to `http://HOME_ASSISTANT_IP:1236` and allow only `/v1/*`; keep the dashboard and `/api/*` internal. Enable HTTPS and IP/rate limits where possible.
+2. **Direct port forwarding:** forward port `1236` on the router/firewall and use `http://PUBLIC_HOST:1236/v1`. This has no TLS and should not be a long-term setup.
+
+Then open **Endpoint → External access**, enter the **Public Base URL**, and save it. The dashboard shows it in the Base URL card, Endpoint tab, and **CLI Tools** (select **External**). Proxy Keys are still required for `/v1/*`; do not use the Home Assistant Ingress URL as an API Base URL.
 
 ### 6. Dashboard quick test
 
@@ -505,7 +523,7 @@ response = client.chat.completions.create(
 print(response.choices[0].message.content)
 ```
 
-If the client runs on another device, enable port `1236`, then replace `HOME_ASSISTANT_IP` with the Home Assistant host's LAN address. Do not use the Ingress URL as an external API Base URL.
+If the client runs on another device, enable port `1236`, then replace `HOME_ASSISTANT_IP` with the Home Assistant host's LAN address. When Home Assistant is public, use the **Public Base URL** saved in the Endpoint tab instead. Do not use the Ingress URL as an external API Base URL.
 
 ### 9. Automatic sources and model sync
 
@@ -574,7 +592,7 @@ Headroom must run as a separate service exposing `/v1/compress`. Enter its servi
 - The dashboard and administration APIs accept requests only through Home Assistant Ingress.
 - Every data-changing `/api/*` call requires an `X-CSRF-Token` header added automatically by the dashboard.
 - `data.json` and backup files are written with mode `600`; corrupt JSON is preserved as a `.corrupt-*` copy instead of being overwritten.
-- Port `1236` is disabled by default; if enabled, use it only for Proxy Key-protected `/v1/*` APIs and do not expose it directly to the Internet.
+- Port `1236` is disabled by default; if enabled, use it only for Proxy Key-protected `/v1/*` APIs. For Internet access, prefer an HTTPS reverse proxy that forwards only `/v1/*`; direct port exposure is a last resort and needs firewall rules and rate limits.
 - Never share upstream API keys; issue a separate Proxy Key per application and apply budgets/rate limits.
 - Regenerate a Proxy Key immediately if it may have leaked.
 - Treat full backup files as secrets before copying or sharing them.
@@ -583,6 +601,6 @@ Headroom must run as a separate service exposing `/v1/compress`. Enter its servi
 
 ## Phiên bản / Version
 
-Tài liệu này áp dụng cho AI Proxy Router `1.20.0`.
+Tài liệu này áp dụng cho AI Proxy Router `1.21.0`.
 
-This guide applies to AI Proxy Router `1.20.0`.
+This guide applies to AI Proxy Router `1.21.0`.

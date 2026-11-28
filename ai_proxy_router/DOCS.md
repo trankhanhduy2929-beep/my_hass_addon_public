@@ -34,7 +34,7 @@ Bước 1: Mở Dashboard
 
 Sau khi nhấn Start Add-on, bạn hãy nhấn vào nút Open Web UI (hoặc tích chọn Show in sidebar rồi nhấn vào thanh menu bên trái). Add-on mở thẳng dashboard qua Home Assistant Ingress, không có tài khoản/mật khẩu nội bộ.
 
-Dashboard và API quản trị `/api/*` chỉ hoạt động qua Home Assistant Ingress. Cổng LAN `1236` mặc định tắt; nếu client ngoài Home Assistant cần kết nối, hãy publish `1236/tcp` trong mục Network của add-on. Proxy Key được yêu cầu cho `/v1/models`, `/v1/chat/completions` và `/v1/responses`.
+Dashboard và API quản trị `/api/*` chỉ hoạt động qua Home Assistant Ingress. Cổng LAN `1236` mặc định tắt; nếu client ngoài Home Assistant cần kết nối, hãy publish `1236/tcp` trong mục Network của add-on hoặc dùng reverse proxy HTTPS chỉ forward `/v1/*`. Proxy Key được yêu cầu cho `/v1/models`, `/v1/chat/completions` và `/v1/responses`.
 
 Bước 2: Thêm API Key Gốc (Nguồn cấp)
 
@@ -79,6 +79,8 @@ Nhấn nút 📋 để copy mã Proxy Key (có dạng sk-proxy-...).
 Bây giờ bạn đã có Base URL (xem trên Dashboard) và Proxy Key. Hãy mở các ứng dụng như Dify, LobeChat, ChatGPT Next Web, hoặc Home Assistant OpenAI Conversation và cấu hình như sau:
 
 API Endpoint / Base URL / Custom Endpoint: Sau khi bật port `1236` trong mục Network, dùng đường dẫn có dạng http://<IP_HASS_CỦA_BẠN>:1236/v1
+
+Kết nối khi Home Assistant đã public: mở tab **Endpoint → Kết nối bên ngoài**, nhập **Public Base URL** rồi lưu. Có thể dùng `https://ai.example.com/v1` qua reverse proxy HTTPS trỏ tới `http://<IP_HASS>:1236` và chỉ cho phép `/v1/*`, hoặc `http://<PUBLIC_HOST>:1236/v1` nếu forward port trực tiếp. Dashboard và `/api/*` vẫn chỉ qua Ingress. URL public sẽ hiện ở thẻ Base URL, tab Endpoint và CLI Tools (chọn **Bên ngoài**).
 
 API Key: Dán mã sk-proxy-... bạn vừa tạo ở Bước 4.
 
@@ -299,6 +301,13 @@ Response thành công có các header `X-AI-Proxy-Token-Saver`, `X-AI-Proxy-Inpu
 - Đồng bộ card, input, bảng, trạng thái focus bàn phím, reduced motion và màu nền theo một bộ token giao diện mới.
 - Giữ nguyên API, CSRF, i18n, HA Ingress và các asset vendored; thêm stylesheet nội bộ `/dashboard.css` qua cùng lớp xác thực ingress.
 
+## Cập nhật 1.21.0 — Public Base URL cho client bên ngoài
+
+- Thêm mục **Endpoint → Kết nối bên ngoài** để lưu một `Public Base URL` khi Home Assistant đã public qua reverse proxy hoặc mở cổng `1236`.
+- URL public tự hiện ở thẻ Base URL, tab Endpoint và CLI Tools; CLI có nút chuyển **Nội bộ / Bên ngoài** và vẫn dùng `PROXY_KEY`.
+- URL được chuẩn hóa server-side: tự thêm `https://` nếu thiếu scheme, tự thêm `/v1` nếu thiếu path, bỏ dấu `/` cuối; từ chối scheme lạ, userinfo, query, fragment và cổng sai.
+- Dashboard/`/api/*` vẫn chỉ qua Home Assistant Ingress; không tự bật quyền HA hay tự public port. Tài liệu khuyến nghị reverse proxy HTTPS chỉ forward `/v1/*`.
+
 ## Cập nhật 1.20.0 — Giao diện 1.20, màu nhấn và tối ưu hiệu năng
 
 - Điều hướng desktop chia bốn nhóm Cấu hình, Theo dõi, Công cụ, Quản trị; Proxy Key chuyển vào tab Nguồn & Key, tab Endpoint chỉ còn Base URL và các endpoint để tránh trùng lặp.
@@ -434,6 +443,13 @@ Response thành công có các header `X-AI-Proxy-Token-Saver`, `X-AI-Proxy-Inpu
 - Advanced timeout/retry and Token Saver move from Chat to the System tab so AI testing stays focused.
 - Cards, inputs, tables, keyboard focus, reduced motion, and background colors share a new interface token set.
 - API behavior, CSRF, i18n, HA Ingress, and vendored assets are unchanged; a local `/dashboard.css` stylesheet is served through the same ingress authentication.
+
+## Version 1.21.0 — Public Base URL for external clients
+
+- Added **Endpoint → External access** to save a `Public Base URL` when Home Assistant is public through a reverse proxy or an exposed port `1236`.
+- The public URL appears in the Base URL card, Endpoint tab, and CLI Tools; CLI includes **Local / External** switching while still using `PROXY_KEY`.
+- URLs are normalized server-side: `https://` is added when missing, `/v1` is appended when the path is empty, trailing slashes are removed, and unknown schemes, userinfo, query strings, fragments, and invalid ports are rejected.
+- The dashboard and `/api/*` remain Home Assistant Ingress-only; the add-on does not enable HA permissions or expose ports automatically. Docs recommend an HTTPS reverse proxy that forwards only `/v1/*`.
 
 ## Version 1.20.0 — 1.20 interface, accent colors, and performance tuning
 
@@ -574,6 +590,8 @@ Client configuration:
 
 Port `1236` is disabled by default. Enable the `1236/tcp` mapping in the add-on Network settings before using this Base URL. Do not use the Home Assistant Ingress URL as an external API Base URL.
 
+When Home Assistant is public, open **Endpoint → External access**, enter the **Public Base URL**, and save it. Use `https://ai.example.com/v1` through an HTTPS reverse proxy to `http://HOME_ASSISTANT_IP:1236` that allows only `/v1/*`, or `http://PUBLIC_HOST:1236/v1` with direct port forwarding. Keep the dashboard and `/api/*` Ingress-only. The dashboard shows the public URL in the Base URL card, Endpoint tab, and CLI Tools (**External**).
+
 ### Dashboard test
 
 The test tab does not require a manually entered token. It automatically uses an enabled, valid Proxy Key. Create at least one Proxy Key before testing. Choose **Chat / Vision**, **Tool Calling**, or **JSON Schema**. Tool mode displays generated arguments without executing the function; JSON mode validates structured output and provider failover.
@@ -713,7 +731,7 @@ A full backup contains upstream API keys, Proxy Keys, and sensitive settings. St
 ### Security
 
 - The dashboard and administration APIs are restricted to Home Assistant Ingress.
-- Port `1236` is disabled by default; if enabled, use it only for Proxy Key-protected `/v1/*` requests and do not expose it directly to the Internet.
+- Port `1236` is disabled by default; if enabled, use it only for Proxy Key-protected `/v1/*` requests. For Internet access, prefer an HTTPS reverse proxy that forwards only `/v1/*`; direct exposure needs firewall rules and rate limits.
 - Use a separate Proxy Key with budgets/rate limits for each client.
 - Regenerate any Proxy Key that may have leaked.
 - Treat full backup files as secrets.

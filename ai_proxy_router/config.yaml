@@ -1,6 +1,6 @@
 name: "AI Proxy Router"
 description: "Xoay API Key, tự dò model, Text/Vision, SSE, Responses API, Function Tools, JSON Schema và Token Saver."
-version: "1.20.0"
+version: "1.21.0"
 slug: "ai_proxy_router"
 init: false
 arch:
@@ -14,7 +14,7 @@ ingress_port: 1236
 ports:
   1236/tcp: null
 ports_description:
-  1236/tcp: "OpenAI-compatible API /v1 (bật thủ công nếu client LAN cần truy cập)"
+  1236/tcp: "OpenAI-compatible API /v1 (bật thủ công khi client LAN/public cần truy cập)"
 watchdog: "http://[HOST]:[PORT:1236]/health"
 startup: services
 boot: auto
