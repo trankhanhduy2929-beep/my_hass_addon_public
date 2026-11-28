@@ -299,6 +299,15 @@ Response thành công có các header `X-AI-Proxy-Token-Saver`, `X-AI-Proxy-Inpu
 - Đồng bộ card, input, bảng, trạng thái focus bàn phím, reduced motion và màu nền theo một bộ token giao diện mới.
 - Giữ nguyên API, CSRF, i18n, HA Ingress và các asset vendored; thêm stylesheet nội bộ `/dashboard.css` qua cùng lớp xác thực ingress.
 
+## Cập nhật 1.20.0 — Giao diện 1.20, màu nhấn và tối ưu hiệu năng
+
+- Điều hướng desktop chia bốn nhóm Cấu hình, Theo dõi, Công cụ, Quản trị; Proxy Key chuyển vào tab Nguồn & Key, tab Endpoint chỉ còn Base URL và các endpoint để tránh trùng lặp.
+- Thêm bảng chọn màu nhấn (coral, indigo, teal, ocean, plum, amber và màu tùy chọn) ở top bar/mobile; lưu `localStorage`, tự chọn màu chữ tương phản và đóng bảng ngay sau khi chọn.
+- Tăng chữ và nhịp khoảng cách; sidebar 258px, vùng nội dung rộng hơn; KPI bốn cột trên desktop, hai cột tablet/mobile, thẻ Base URL chiếm toàn hàng trên điện thoại.
+- Sửa tràn số token/chi phí trong KPI, input Base URL và sơ đồ định tuyến; nhãn phụ tăng lên 10.5–11px, chữ mã trong hướng dẫn tăng lên 12px.
+- Giảm tải dashboard: polling theo tab, gộp request đang chạy, `cache: no-store`, chỉ tải Chart.js khi mở Usage và tách hydrate Token Saver khỏi Settings để không ghi đè khi đang nhập.
+- Giữ nguyên API, Proxy Key, CSRF, i18n, HA Ingress, dark mode, reduced motion và asset vendored; tăng phiên bản lên `1.20.0`.
+
 ## Cập nhật 1.19.0 — Nguồn tự động và giao diện gọn hơn
 
 - Bỏ hoàn toàn đăng nhập Codex OAuth; chỉ còn nguồn API key chuẩn.
@@ -425,6 +434,15 @@ Response thành công có các header `X-AI-Proxy-Token-Saver`, `X-AI-Proxy-Inpu
 - Advanced timeout/retry and Token Saver move from Chat to the System tab so AI testing stays focused.
 - Cards, inputs, tables, keyboard focus, reduced motion, and background colors share a new interface token set.
 - API behavior, CSRF, i18n, HA Ingress, and vendored assets are unchanged; a local `/dashboard.css` stylesheet is served through the same ingress authentication.
+
+## Version 1.20.0 — 1.20 interface, accent colors, and performance tuning
+
+- Desktop navigation is grouped into Setup, Monitoring, Tools, and Admin. Proxy Keys move into Sources & Keys, while the Endpoint tab keeps only the Base URL and endpoint list to avoid duplication.
+- Added an accent palette (coral, indigo, teal, ocean, plum, amber, and a custom color) in the top bar and mobile header; the choice persists in `localStorage`, picks a contrasting text color automatically, and closes after selection.
+- Larger typography and spacing: a 258px sidebar and wider workspace; four KPI columns on desktop, two on tablet/mobile, and a full-width Base URL card on phones.
+- Fixed token/cost overflow in KPI cards, Base URL inputs, and the routing map; secondary labels are now 10.5–11px and guide code is 12px.
+- Reduced dashboard load: tab-aware polling, in-flight request coalescing, `cache: no-store`, Chart.js only loads for Usage, and Token Saver hydration is separated from Settings so polling cannot overwrite edits.
+- API, Proxy Keys, CSRF, i18n, HA Ingress, dark mode, reduced motion, and vendored assets are unchanged; the version is now `1.20.0`.
 
 ## Version 1.19.0 — Automatic sources and a cleaner UI
 
